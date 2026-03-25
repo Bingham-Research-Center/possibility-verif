@@ -17,7 +17,7 @@ SPC_N = len(SPC_CATEGORIES)
 import os as _os
 FIG_DIR = _os.path.join(_os.path.dirname(_os.path.dirname(_os.path.abspath(__file__))), "figures")
 DPI = 300
-FIG_FORMAT = "pdf"
+FIG_FORMAT = "png"
 
 def apply_style():
     """Apply shared matplotlib rcParams."""
@@ -41,11 +41,11 @@ def apply_style():
     })
 
 def save_fig(fig, name):
-    """Save figure to the figures directory as PDF."""
+    """Save figure to the figures directory as PNG."""
     import os
     os.makedirs(FIG_DIR, exist_ok=True)
     path = os.path.join(FIG_DIR, f"{name}.{FIG_FORMAT}")
-    fig.savefig(path)
+    fig.savefig(path, facecolor="white", transparent=False)
     plt.close(fig)
     print(f"Saved: {path}")
     return path
