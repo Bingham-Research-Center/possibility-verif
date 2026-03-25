@@ -43,6 +43,28 @@
 %    is straightforward.]
 
 %----------------------------------------------------------
+\subsection{Structured Uncertainty and LLM-Mediated Communication}%
+\label{sec:llm_communication}
+
+The three-component representation ($\poss$, $\ign$, $\Nc$) was designed
+not only for verification but also for downstream communication.  In a
+companion system, a large language model (LLM) ingests the structured
+triplet and generates plain-language advisories at multiple complexity
+levels---public, operational, and technical---with each statement grounded
+in specific forecast quantities.  The explicit ignorance signal is
+critical: it gives the LLM a principled basis for expressing uncertainty
+(``confidence is limited today; conditions are unusual'') rather than
+manufacturing false precision from a normalised distribution.
+Conditional necessity provides the complementary trigger for confident
+statements (``\spc{MDT} risk dominates all alternatives'').  The
+verification framework developed here closes the loop: the five-number
+scorecard evaluates whether the structured output that feeds
+communication is itself trustworthy.  Details of the LLM translation
+layer are beyond the present scope; the point relevant to verification is
+that possibilistic forecasts produce machine-readable uncertainty
+metadata that probabilistic point forecasts do not.
+
+%----------------------------------------------------------
 \subsection{Software Availability}\label{sec:software}
 
 % [PLACEHOLDER: 1–2 paragraphs describing:
