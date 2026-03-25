@@ -156,7 +156,7 @@ verification pathway.
     distribution feeds three parallel verification pathways:
     \textbf{Lane~1} (deterministic) evaluates the defuzzified point
     forecast via RMSE and bias; \textbf{Lane~2} (probabilistic) applies
-    the tripartite pignistic bridge and evaluates information gain;
+    the possibility-to-probability bridge and evaluates information gain;
     \textbf{Lane~3} (native possibilistic, highlighted in purple)
     evaluates the raw distribution via the five-number scorecard and
     interval log score.  Each lane diagnoses failure modes invisible to
@@ -164,9 +164,39 @@ verification pathway.
 \label{fig:three_lanes_schematic}
 \end{figure*}
 
-% [PLACEHOLDER: 1–2 paragraphs expanding on how a forecaster or
-%  verification analyst would use the three lanes in practice.  Suggest a
-%  diagnostic workflow: start with the deterministic lane for quick
-%  screening, move to the probabilistic lane for calibration assessment,
-%  then examine the native possibilistic lane for deeper insight into
-%  system behaviour.]
+In practice, a verification analyst would compile scorecard aggregates
+across a test sample, tracking changes between model versions or
+seasons.  Figure~\ref{fig:scorecard_table} illustrates this convention
+using synthetic data for four model versions.  Metrics are grouped by
+verification lane; filled triangles denote statistically significant
+change and marker size encodes magnitude, following the scorecard style
+used by ECMWF and WMO Lead Centres for NWP inter-comparisons.
+
+\textit{Reading the scorecard at a glance:} a column of large green
+triangles means the new version is broadly better; a red triangle amid
+green ones flags a trade-off that warrants investigation.  The example
+tells a common development story: version~2.0 improved discrimination
+but increased ignorance (the system learned to hedge more honestly);
+version~3.0 delivered broad gains across all three lanes; version~4.0
+pushed discrimination further at the cost of slight reliability
+degradation---a trade-off the three-lane view makes immediately visible
+but that no single metric could reveal.
+
+\begin{figure*}[t]
+\centering
+\includegraphics[width=0.80\textwidth]{fig10_scorecard_table.pdf}
+\caption{Verification scorecard for a hypothetical possibilistic
+    forecasting system across three development versions, each compared
+    to a v1.0 baseline.  Rows are grouped into three verification lanes:
+    native possibilistic (five-number scorecard), probabilistic
+    (information gain and its decomposition, probability of exceedance),
+    and deterministic (RMSE, bias).  Filled triangles indicate
+    statistically significant improvement (green, upward) or degradation
+    (red, downward); open triangles indicate non-significant changes.
+    Marker size encodes the magnitude of the change.  Note the
+    $\overline{H_\Pi}$ degradation in v2.0: the system became more
+    ignorant before improving in subsequent versions---a signature of
+    recalibrated uncertainty that the native possibilistic lane detects
+    but the probabilistic lane may absorb.}
+\label{fig:scorecard_table}
+\end{figure*}

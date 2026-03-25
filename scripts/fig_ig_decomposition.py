@@ -54,10 +54,12 @@ def main():
                        edgecolor="white", linewidth=0.8, zorder=2,
                        label=r"UNC (uncertainty)")
 
-    # Component 2: DSC (purple, shown as reduction below UNC top)
-    # We plot |DSC| as the discriminative skill removed from UNC.
-    # Positive DSC means skill; negative DSC means anti-skill.
-    bars_dsc = ax.bar(x, np.abs(DSC), width=bar_width, bottom=0,
+    # Component 2: DSC (purple).
+    # Positive DSC (skill): overlaps grey from the base, showing UNC removed.
+    # Negative DSC (anti-skill): sits above grey, showing score inflated
+    #   beyond UNC — this fills the gap to the REL bar at UNC - DSC.
+    dsc_bottoms = np.where(DSC >= 0, 0, UNC)
+    bars_dsc = ax.bar(x, np.abs(DSC), width=bar_width, bottom=dsc_bottoms,
                        color=PURPLE, edgecolor="white", linewidth=0.8,
                        zorder=3, alpha=0.75,
                        label=r"DSC (discrimination)")

@@ -8,18 +8,24 @@
 
 \section{Pignistic Bridge}\label{sec:pignistic_bridge}
 
-% [PLACEHOLDER: Opening paragraph — motivate why converting possibilities
-%  to probabilities is needed.  Standard verification scores (log score,
-%  Brier, IG) require probabilities.  The bridge enables probabilistic
-%  verification of possibilistic forecasts without discarding the
-%  ignorance signal.]
+The term \textit{pignistic} derives from the Latin \textit{pignus} (a
+wager): it denotes the probabilities one would assign if forced to bet.
+Standard verification scores---the logarithmic score, Brier score, and
+information gain---require probability inputs that sum to unity.  A
+possibility distribution does not satisfy this constraint: its values
+encode plausibility rather than relative frequency, and a subnormal
+distribution does not even reach a maximum of one.  The
+\textit{possibility-to-probability bridge} developed below converts a
+subnormal possibility distribution into an $(n{+}1)$-category probability
+vector, preserving the subnormality signal as an explicit ignorance
+outcome rather than erasing it through na\"ive normalisation.
 
 %----------------------------------------------------------
-\subsection{Tripartite Transformation}\label{sec:tripartite_transform}
+\subsection{Possibility-to-Probability Bridge}\label{sec:poss_prob_bridge}
 
 Applying probabilistic verification to possibilistic forecasts requires
 converting possibility distributions to probabilities.  The
-\textit{tripartite pignistic transformation} preserves the subnormality
+\textit{possibility-to-probability bridge} preserves the subnormality
 signal through three steps:
 
 \begin{enumerate}[leftmargin=2em]
@@ -39,7 +45,7 @@ Simple normalisation ($p_i = \pi_i / \sum_j \pi_j$) erases
 subnormality---probabilities always sum to one regardless of model
 confidence.  This is equivalent to the pignistic transformation of
 \citet{Smets1990-MISSING}, which was designed for normal belief
-functions.  The tripartite approach preserves the ignorance signal,
+functions.  The bridge preserves the ignorance signal,
 ensuring that verification scores correctly penalise uncertain forecasts
 by routing probability mass into a non-observed outcome.  For normal
 distributions ($\max \pi = 1$, $\ign = 0$), both methods coincide.
@@ -76,7 +82,7 @@ Figure~\ref{fig:pignistic_bridge} visualises this transformation.
 \begin{figure*}[t]
 \centering
 \includegraphics[width=0.85\textwidth]{fig4_pignistic_bridge.pdf}
-\caption{Tripartite pignistic bridge applied to a subnormal possibility
+\caption{Possibility-to-probability bridge applied to a subnormal possibility
     distribution.  \textbf{Left:} raw possibility values $\pi(\omega)$
     for five SPC categories.  \textbf{Right:} resulting $(n{+}1)$-category
     probability vector, with the grey bar representing the explicit
@@ -93,7 +99,7 @@ Figure~\ref{fig:pignistic_bridge} visualises this transformation.
 % [PLACEHOLDER: Opening paragraph — briefly introduce the information-gain
 %  framework and its relationship to the logarithmic scoring rule.]
 
-After the tripartite bridge converts possibilities to probabilities,
+After the bridge converts possibilities to probabilities,
 standard information-theoretic verification applies.  Information gain
 measures the reduction in surprise from replacing one forecast with
 another:
@@ -151,27 +157,36 @@ IGN used in some verification literature.
 \subsection{Why Na\"ive Normalisation Erases Information}%
 \label{sec:naive_normalisation}
 
-% [PLACEHOLDER: This is the key conceptual argument of the paper.
-%  2–3 paragraphs arguing:
-%
-%  1. Simple normalisation (divide pi by sum) is the standard approach
-%     in the possibility-theory literature.  It forces probabilities to
-%     sum to 1 regardless of model confidence.
-%
-%  2. Consequences: a system that is 90% unsure looks identical to one
-%     that is 10% unsure after normalisation.  The ignorance signal is
-%     erased.  Verification scores cannot distinguish "sharp correct"
-%     from "hedged correct" forecasts.
-%
-%  3. The tripartite bridge avoids this by routing ignorance mass into
-%     an explicit (n+1)-th outcome.  Uncertain forecasts are penalised
-%     because probability mass sits in a category that is never the
-%     observed outcome.  The penalty is proportional to H_Pi — the
-%     more ignorant the system, the more mass is stranded.
-%
-%  4. Worked contrast: show the same pi evaluated under simple
-%     normalisation vs. tripartite bridge, demonstrating the difference
-%     in verification scores.]
+Simple normalisation ($p_i = \pi_i / \sum_j \pi_j$) is the standard
+route from possibilities to probabilities.  It forces the result to sum
+to one regardless of model confidence: a system that is $90\%$ unsure
+($\ign = 0.9$) produces the same probability vector as one that is
+$10\%$ unsure ($\ign = 0.1$), provided their raw shapes are
+proportional.  The ignorance signal is erased.  Verification scores
+applied to the normalised vector cannot distinguish a sharp, confident
+forecast from a diffuse, hedged one---the answer to ``how would you
+bet?'' is given without acknowledging ``I wouldn't bet at all.''
+
+The possibility-to-probability bridge avoids this by deferring
+probabilistic commitment for the ignorance portion.  Mass equal to
+$\ign$ is routed into an $(n{+}1)$-th outcome that can never be the
+observed category.  Uncertain forecasts are penalised because this
+stranded mass earns no verification credit: it inflates the self-entropy
+of the converted forecast in proportion to $\ign$.  The more ignorant
+the system, the more mass is stranded, and the larger the penalty.
+
+\textbf{Worked contrast.}
+Using $\pi = (0.2,\, 0.4,\, 0.6,\, 0.1,\, 0.0)$ from the worked
+example in Section~\ref{sec:poss_prob_bridge}:
+\begin{itemize}[leftmargin=2em]
+\item Simple normalisation: $p(\spc{ENH}) = 0.6 / 1.3 = 0.462$.
+\item Bridge: $p(\spc{ENH}) = 0.277$, $p_{\mathrm{ign}} = 0.400$.
+\item If \spc{ENH} is observed: self-entropy $= -\log_2(0.462) = 1.11$~bits
+    (simple) vs.\ $-\log_2(0.277) = 1.85$~bits (bridge).
+\item The $0.74$-bit gap is the verification cost of ignoring the
+    system's admitted uncertainty.  Simple normalisation rewards the
+    system for confidence it never claimed.
+\end{itemize}
 
 \textbf{Complementarity of \ign{} and IG.}
 Possibilistic ignorance $\ign$ and information gain IG capture

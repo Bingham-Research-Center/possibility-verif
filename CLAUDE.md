@@ -39,7 +39,7 @@ Standalone methods paper: "Possible, yes; ignorant, perhaps: a scorecard for pos
 - **First use** (§2 Examples 1–2, §6 Scenarios A–C): `\begin{cases}` format, one category per line. Fits two-column layout cleanly.
 - **Subsequent uses** (§3, §4 worked examples): ordered-tuple notation `$\pi = (0.2,\, 0.4,\, 0.6,\, 0.1,\, 0.0)$` with ordering convention stated in §2: (MRGL, SLGT, ENH, MDT, HIGH).
 
-## Figures (9 total)
+## Figures (11 total)
 
 | Fig | Script | Placed in | Type | What it shows |
 |-----|--------|-----------|------|---------------|
@@ -52,6 +52,8 @@ Standalone methods paper: "Possible, yes; ignorant, perhaps: a scorecard for pos
 | 7 | `fig_ig_decomposition.py` | §3.2 | `figure*` | Stacked bar IG decomposition (UNC, DSC, REL) |
 | 8 | `fig_verification_lanes.py` | §5.2 | `figure*` | Three-lane flowchart schematic |
 | 9 | `fig_ffion_advisory.py` | §7.3 | `figure*` | Structured JSON → LLM advisory mock-up |
+| 10 | `fig_scorecard_table.py` | §5.2 | `figure*` | ECMWF-style scorecard with triangle indicators across model versions |
+| 11 | `fig_performance_diagram.py` | §4.2 | `figure*` | Roebber-style diagram encoding all five scorecard metrics |
 
 ## Python
 
@@ -73,20 +75,25 @@ Scorecard computation canonical in `fig_three_scenario.py:compute_scorecard`.
 ### Done
 - All 10 section files created with equations migrated from preprint
 - 15 labelled equations, all cross-references resolve
-- 9 figures generated and embedded with captions + in-text references
+- 11 figures generated and embedded with captions + in-text references
 - Notation table (§2) with Form (raw/norm) and Eq. columns
 - Ffion/LLM communication subsection (§7.3) with pipeline sketch
 - ILS framed as probability-of-exceedance (50 ppb, 5 in. snowfall examples)
+- §3 opening paragraph filled (etymology, motivation, bridge summary)
+- §3.3 "Why Naive Normalisation Erases Information" filled (3 paragraphs + worked contrast)
+- "Tripartite pignistic" renamed to "possibility-to-probability bridge" globally
+- §5.2 diagnostic workflow paragraph filled (scorecard table figure + interpretation)
+- §4.2 performance diagram paragraph filled (Roebber-style five-metric diagnostic)
+- Fig 7 IG decomposition bug fixed (negative-DSC bar placement)
 
 ### Still placeholder (`% [PLACEHOLDER]`)
 - §2 opening paragraph, §2.4 "Why Not Just Probabilities?" (3–4 paragraphs)
-- §3 opening paragraph, §3.3 "Why Naive Normalisation Erases Information" (key argument, 2–3 paragraphs)
 - §4 opening paragraph, ILS motivation paragraph
-- §5 opening paragraph, sample-size discussion, diagnostic workflow
+- §5 opening paragraph, sample-size discussion
 - §6 opening paragraph, meteorological scenario descriptions for A/B/C, interpretation paragraphs for scorecard table, bridge walkthrough computations
 - §7 opening paragraph, all four subsection bodies (DS connections, beyond severe weather, software, limitations)
 - §1 (introduction) — mostly placeholder with paper-outline paragraph done
-- Missing citations: Dubois 2006, Smets 1990, Shafer 1976, Roulston & Smith 2002, Lawson 2024
+- Missing citations: Dubois 2006, Smets 1990, Shafer 1976, Roulston & Smith 2002, Lawson 2024, Roebber 2009
 
 ## Related Work
 

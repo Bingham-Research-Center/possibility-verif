@@ -33,9 +33,9 @@ normalisation operations serve distinct purposes:
     preferences among outcomes.  Used for computing \Nc{}
     (Eq.~\ref{eq:cond_nec}) and the native scorecard
     (Section~\ref{sec:native_scorecard}).
-\item \textbf{Tripartite pignistic bridge} ($\pi \to$ probability
+\item \textbf{Possibility-to-probability bridge} ($\pi \to$ probability
     vector): Converts possibilities to probabilities with an explicit
-    ignorance outcome (Section~\ref{sec:tripartite_transform}).  Used
+    ignorance outcome (Section~\ref{sec:poss_prob_bridge}).  Used
     for information-gain verification.
 \end{enumerate}
 
@@ -156,6 +156,52 @@ Section~\ref{sec:three_component}:
 Aggregates $\overline{\alpha^*}$, $\overline{\eta}$,
 $\overline{\delta}$, $\overline{\ign}$, $\overline{\Nc^*}$ are reported
 with bootstrap confidence intervals.
+
+Figure~\ref{fig:performance_diagram} provides a diagnostic view of all
+five metrics simultaneously, inspired by the performance diagram of
+\citet{Roebber2009-MISSING}.  Each forecast--observation pair maps to a
+point whose position encodes depth-of-truth ($\alpha^*$, $y$-axis) and
+specificity ($1 - \eta$, $x$-axis); diagonal contour lines mark constant
+resolution gap $\delta = \alpha^* - \eta$.  Marker colour encodes
+ignorance $\ign$ and marker size encodes conditional necessity $\Nc^*$.
+
+The structural analogy with Roebber's diagram is deliberate.  His
+$x$-axis (success ratio) measures forecast precision; here, specificity
+$1 - \eta$ plays the same role---how focused was the distribution?  His
+$y$-axis (probability of detection) measures whether the forecast
+captured what happened; here, $\alpha^*$ asks the same question in
+possibility space.  His curved CSI contours measure net quality given
+both axes; here, straight $\delta$ contours serve the same purpose
+($\delta > 0$ means the system assigned more support to the truth than
+to the average category).  Where the diagrams diverge is that
+possibilistic forecasts carry two additional uncertainty dimensions---ignorance
+$\ign$ (colour) and conditional necessity $\Nc^*$ (marker size)---that
+have no analogue in deterministic verification.
+
+\textit{Reading the diagram at a glance:} the upper-right corner is
+ideal (sharp and correct); the lower-right is the worst failure mode
+(sharp and wrong).  Dark, large markers signal confident, dominant
+forecasts; light, small markers signal uncertain, hedged ones.  A
+cluster of light markers in the upper left---diffuse but correct---may
+indicate a system that captures the truth but lacks the sharpness to be
+operationally useful.
+
+\begin{figure*}[t]
+\centering
+\includegraphics[width=0.85\textwidth]{fig11_performance_diagram.pdf}
+\caption{Possibilistic performance diagram.  Each point represents a
+    synthetic forecast--observation pair.  \textbf{Position:}
+    specificity $1 - \eta$ ($x$) vs.\ depth-of-truth $\alpha^*$ ($y$).
+    Diagonal dashed lines are iso-$\delta$ contours (resolution gap);
+    $\delta = 0$ separates forecasts that assign more possibility to the
+    truth than to the average category (above) from those that do not
+    (below).  \textbf{Colour:} ignorance $\ign$ (darker $=$ more
+    confident).  \textbf{Size:} conditional necessity $\Nc^*$ (larger
+    $=$ truth more dominant).  Large, dark markers in the upper right
+    represent sharp, confident, correct forecasts; small, light markers
+    in the lower right represent sharp, ignorant, incorrect ones.}
+\label{fig:performance_diagram}
+\end{figure*}
 
 %----------------------------------------------------------
 \subsection{Interval Log Score}\label{sec:interval_log}
