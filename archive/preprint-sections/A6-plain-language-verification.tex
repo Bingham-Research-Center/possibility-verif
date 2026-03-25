@@ -1,0 +1,313 @@
+\RaggedRight
+
+\section{Plain-Language Verification Guide \textnormal{(working copy only)}}\label{app:plain_language}
+
+Reference document for working through the Appendix~\ref{app:information_theory} and \ref{app:verification_framework} mathematics. Covers every subsection of both appendices in meteorologist-friendly language.
+
+%----------------------------------------------------------
+\subsection{How Appendices C and E Divide the Work}\label{sec:ce_division}
+
+\begin{table}[htbp]
+\centering
+\small
+\caption{Division of verification labour between Appendices C and E.}
+\label{tab:ce_division}
+\begin{tabularx}{\columnwidth}{>{\raggedright\arraybackslash}p{0.14\columnwidth}>{\raggedright\arraybackslash}p{0.18\columnwidth}>{\raggedright\arraybackslash}p{0.22\columnwidth}X}
+\toprule
+Product & What it is & Verification & Familiar met analogue \\
+\midrule
+\textbf{1.\ Scalar percentile} & Defuzzified 50th-pctl number & Body text only (\S\ref{sec:results}) & RMSE, bias, $R^2$---standard deterministic verification \\
+\textbf{2.\ Probability-converted} & Tripartite bridge output ($n{+}1$ categories) & \textbf{Appendix~C} (bridge, IG, complementarity) & Log score / Brier decomposition---calibration + discrimination \\
+\textbf{3.\ Raw possibility} & Native subnormal $\pi$ & \textbf{Appendix~E} (all 6 subsections) & No standard met analogue---this is the novel contribution \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+The design is clean: \textbf{C owns Product~2, E owns Product~3.} They do not compete. The bridge in C.1 is a prerequisite for C's IG verification. E explicitly states it does not repeat the bridge or IG material.
+
+%----------------------------------------------------------
+\subsection{Appendix C: Probability Conversion and Information-Gain Verification}\label{sec:plain_c}
+
+\subsubsection{C.1---Tripartite Pignistic Bridge ($\pi \to$ probability)}\label{sec:plain_c1}
+
+\textbf{What it does:} Converts a subnormal possibility distribution into a probability vector that standard scores (log score, Brier, IG) can evaluate.
+
+\clyfar{} does not output probabilities---it outputs possibilities (which do not sum to 1). To use standard probabilistic scores, we must convert. The tripartite bridge does this in three steps:
+
+\begin{enumerate}[leftmargin=2em]
+\item \textbf{Reserve the ignorance:} If the model is 40\% uncertain ($\ign = 0.4$), set aside 40\% of the probability mass as a dedicated ``I don't know'' outcome.
+\item \textbf{Spread the rest proportionally:} The remaining 60\% is divided among the ozone categories in proportion to their possibility values.
+\item \textbf{Append the ignorance outcome:} The result is an $(n{+}1)$-category probability vector that sums to~1.
+\end{enumerate}
+
+\textbf{Why not just normalize?} Simple normalization (divide each $\pi$ by the sum) forces probabilities to sum to 1 regardless of model confidence. A model that is 90\% unsure looks identical to one that is 10\% unsure. The tripartite approach preserves the ignorance signal---uncertain forecasts are penalized by routing probability mass into a category that (by definition) is never the observed outcome.
+
+\textbf{When both methods agree:} When the distribution is normal ($\max(\pi) = 1$, $\ign = 0$), the ignorance outcome receives zero mass, and the tripartite bridge reduces to simple normalization. It is therefore a strict generalization.
+
+\textbf{Met analogue:} Converting ensemble spread into a calibrated probability forecast. The ``ignorance outcome'' is a built-in hedge that says ``the ensemble members are all low-confidence.''
+
+\subsubsection{C.2---Native Possibilistic Verification (Forward Pointer)}\label{sec:plain_c2}
+
+C.2 originally contained a brief sketch of two binary checks (possibility hit rate and necessity failure count) for Product~3 verification. Appendix~E formalized and superseded these checks with continuous scores. C.2 now simply points to E. See Section~\ref{sec:plain_e2} below for the substantive content.
+
+\subsubsection{C.3---Information Gain (IG)}\label{sec:plain_c3}
+
+\textbf{What it does:} After the bridge converts possibilities to probabilities, IG measures how much surprise the forecast removed compared to a baseline (climatology).
+
+``How many bits of surprise did the forecast remove compared to just guessing the long-term average?''
+
+The formula:
+\[
+\mathrm{IG} = D_{\mathrm{KL}}(\text{obs} \| \text{climo}) - D_{\mathrm{KL}}(\text{obs} \| \text{forecast})
+\]
+
+\begin{itemize}[leftmargin=2em]
+\item $D_{\mathrm{KL}}(\text{obs} \| \text{climo})$: how surprised you would be by the observation if you only knew climatology.
+\item $D_{\mathrm{KL}}(\text{obs} \| \text{forecast})$: how surprised you would be if you had \clyfar{}'s forecast.
+\item Positive $\mathrm{IG}$: \clyfar{} reduced your surprise $=$ forecast has value.
+\end{itemize}
+
+\textbf{Decomposition:} $\mathrm{IG} = \mathrm{UNC} - \mathrm{DSC} + \mathrm{REL}$ (all in bits).
+
+\begin{table}[htbp]
+\centering
+\small
+\caption{IG decomposition components.}
+\label{tab:ig_decomposition}
+\begin{tabularx}{\columnwidth}{l>{\raggedright\arraybackslash}p{0.22\columnwidth}lX}
+\toprule
+Component & What it measures & Good direction & Met analogue \\
+\midrule
+\textbf{UNC} & Entropy of base rate---how hard is this problem? & N/A (nature) & Same as in Brier decomposition \\
+\textbf{REL} & Are stated probabilities honest? & Lower is better & Reliability diagram---gap between forecast prob and observed freq \\
+\textbf{DSC} & Can you tell events apart? & Higher is better & Resolution in Brier decomposition---spread of conditional frequencies \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\textbf{Met analogue:} Meteorologists know $\mathrm{Brier} = \mathrm{REL} - \mathrm{RES} + \mathrm{UNC}$. The IG decomposition is the same idea but in logarithmic/information units (bits instead of probability-squared). The advantage: bits are additive and interpretable as ``information content.''
+
+\textbf{Naming note:} Some verification literature uses ``IGN'' (ignorance) for the log score. This manuscript uses ``IG'' to avoid collision with possibilistic ignorance $\ign$.
+
+\subsubsection{C.4---Complementarity of $\ign$ and IG}\label{sec:plain_c4}
+
+\textbf{What it does:} Explains why both $\ign$ (possibilistic ignorance) and IG (information gain) are needed---they measure different things.
+
+\begin{itemize}[leftmargin=2em]
+\item \textbf{$\ign$ asks:} ``How uncertain is the model?''---like ensemble spread. Derived from the raw FIS output before any probability conversion.
+\item \textbf{IG asks:} ``Was the forecast useful?''---like a skill score. Derived from the probability-converted forecast evaluated against observations.
+\end{itemize}
+
+Both are needed because:
+
+\begin{itemize}[leftmargin=2em]
+\item A \textbf{sharp wrong} forecast has low $\ign$ (model was confident) but negative IG (forecast made things worse than climatology).
+\item A \textbf{hedged correct} forecast has high $\ign$ (model admitted uncertainty) but positive IG (forecast still beat climatology, just not by much).
+\item A \textbf{sharp correct} forecast has low $\ign$ and high IG---the ideal.
+\item A \textbf{hedged wrong} forecast has high $\ign$ and negative IG---the model knew it didn't know, and it still got it wrong.
+\end{itemize}
+
+\textbf{Worked example (from the appendix):} $\pi = (0.2,\; 0.4,\; 0.6,\; 0.1)$ for four ozone categories. $\ign = 0.4$ (40\% unsure). After the bridge: $\mathbf{p} = (0.092,\; 0.185,\; 0.277,\; 0.046,\; 0.400)$ including the ignorance outcome. If ``elevated'' is observed: surprise $= -\log_2(0.277) = 1.85$~bits. Climatology would give $-\log_2(0.05) = 4.32$~bits. So $\mathrm{IG} = 4.32 - 1.85 = 2.47$~bits gained. The high $\ign$ correctly deflated $p(\text{elevated})$ from 0.462 (simple normalization) to 0.277, honestly reflecting partial uncertainty.
+
+%----------------------------------------------------------
+\subsection{Appendix E: Verification Framework for Subnormal Possibility Distributions}\label{sec:plain_e}
+
+\subsubsection{E.1---Normalization Protocol (Raw vs.\ Normalized)}\label{sec:plain_e1}
+
+\textbf{What it does:} Establishes which verification quantities use the raw subnormal distribution $\pi$ and which use the normalized form $\pinorm = \pi / \max(\pi)$.
+
+Some scores care about ``how confident is the model overall?'' (use raw, because subnormality carries that signal). Others care about ``among the things the model considers possible, what is the relative ranking?'' (use normalized, because you are comparing shape, not amplitude).
+
+\begin{table}[htbp]
+\centering
+\small
+\caption{Which quantities use raw vs.\ normalized distributions.}
+\label{tab:raw_norm_plain}
+\begin{tabular}{lll}
+\toprule
+Uses raw ($\pi$) & Uses normalized ($\pinorm$) & Uses both \\
+\midrule
+Ignorance $\ign$ & Depth-of-truth $\alpha^*$ & Lower bounds ($L$) \\
+Event possibility $\poss(A)$ & Nonspecificity $\eta$ & \\
+Upper bounds ($U$) & Conditional necessity $\Nc$ & \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\textbf{Why this matters:} Getting raw/norm wrong is the single most common mistake in possibilistic scoring. Computing $\Nc$ from raw values yields nonsense (it would be negative when $m < 0.5$). Computing ignorance from normalized values gives zero by definition. Table~\ref{tab:raw_norm} in Appendix~\ref{app:verification_framework} is the definitive cheat sheet.
+
+\textbf{Met analogue:} Loosely analogous to the distinction between ``ensemble mean error'' (uses raw ensemble output) vs.\ ``rank histogram'' (uses normalized rank position).
+
+\subsubsection{E.2---Native Possibility Scorecard (Five Numbers)}\label{sec:plain_e2}
+
+Five summary statistics for each forecast--observation pair:
+
+\paragraph{$\alpha^*$ (depth-of-truth).}
+\textit{Formula:} $\alpha^* = \pinorm(c_{\mathrm{obs}})$.
+
+``How much normalized possibility did the model assign to what actually happened?'' $\alpha^* = 1$: truth was the model's top pick (or tied). $\alpha^* = 0$: model said the truth was impossible. $\alpha^* = 0.5$: truth was half as plausible as the peak.
+
+\textit{Met analogue:} Like probability of detection (POD) for the winning bin, but continuous rather than binary.
+
+\paragraph{$\eta$ (nonspecificity).}
+\textit{Formula:} $\eta = (1/K) \sum_{c=1}^{K} \pinorm(c)$.
+
+``How spread out was the normalized distribution?'' $\eta = 1/K$ (e.g., 0.25 for 4 categories): perfectly sharp. $\eta = 1$: completely flat---no discrimination.
+
+\textit{Met analogue:} Like ensemble spread or sharpness. A tight ensemble (all members agree) has low $\eta$; a flat ensemble (members everywhere) has high $\eta$.
+
+\paragraph{$\delta$ (resolution gap).}
+\textit{Formula:} $\delta = \alpha^* - \eta$.
+
+``Did the model give more support to the truth than to an average category?'' $\delta > 0$: model discriminated. $\delta = 0$: no skill. $\delta < 0$: worse than random.
+
+\textit{Met analogue:} Like resolution in the Brier decomposition---ability to sort events from non-events.
+
+\paragraph{$\ign$ (ignorance).}
+\textit{Formula:} $\ign = 1 - \max(\pi)$ (same as Section~\ref{sec:poss_framework}).
+
+``How much did the model admit it didn't know?'' $\ign = 0$: fully confident. $\ign = 1$: complete ignorance (no rules fired). $\ign = 0.25$: model is 75\% engaged, 25\% uncertain.
+
+\textit{Met analogue:} Like ensemble spread, but model-intrinsic. High $\ign$ says ``conditions are outside my training''---analogous to when an ensemble shows no clustering.
+
+\paragraph{$\Nc^*$ (conditional necessity of truth).}
+\textit{Formula:} $\Nc^* = 1 - \max_{\omega \neq c_{\mathrm{obs}}} \pinorm(\omega)$.
+
+``Among scenarios the model covered, was the truth dominant enough to rule out alternatives?'' $\Nc^* > 0$: truth was the dominant category. $\Nc^* = 0$: at least one rival tied. $\Nc^* = 0.67$: strongest rival has only 0.33 possibility---model strongly favours truth.
+
+\textit{Met analogue:} A confidence flag. Not just ``did the model consider the truth plausible?'' (that is $\alpha^*$) but ``was the model sure enough to rule other things out?''
+
+\paragraph{Mapping to the three components.}
+\begin{itemize}[leftmargin=2em]
+\item \textbf{Possibility quality:} $\alpha^*$ and $\delta$ (shape of the distribution).
+\item \textbf{Ignorance signal:} $\ign$ (subnormality).
+\item \textbf{Necessity signal:} $\Nc^*$ (conditional dominance).
+\end{itemize}
+
+This mirrors the three-component framework from Section~\ref{sec:three_component}: $\poss$, $\ign$, $\Nc$.
+
+\subsubsection{E.3---Interval Log Score for Threshold Events}\label{sec:plain_e3}
+
+\textbf{What it does:} Extends the log score to imprecise forecasts that give a range $[L, U]$ instead of a single probability.
+
+Standard log score: ``You said 70\% chance of exceedance; it happened. Your penalty is $-\log_2(0.70) = 0.51$~bits.'' But \clyfar{} gives: ``Possibility of exceedance is $U = 0.75$ (upper bound); necessity-based lower bound is $L = 0.55$.'' The interval log score says:
+
+\begin{itemize}[leftmargin=2em]
+\item If the event \textbf{happened}: penalize by $-\log_2(U)$---how surprised were you, using the most generous bound?
+\item If the event \textbf{didn't happen}: penalize by $-\log_2(1 - L)$---how committed were you to an event that never materialized?
+\end{itemize}
+
+A small floor $\epsilon = 0.01$ caps the maximum penalty at ${\sim}6.64$~bits, avoiding infinite scores when $U = 0$ or $L = 1$.
+
+This is ``optimistic'' verification: it credits the forecast for the best-case interpretation within its stated interval. When $L = U$ (a point probability), it reduces exactly to the standard log score.
+
+\textbf{Why log score instead of Brier?} For rare events like ozone exceedances (${\sim}5\%$ base rate), the Brier score barely distinguishes a forecast of 0\% from 5\%. The log score's exponential penalty catches overconfident misses---exactly the failure mode that matters for NAAQS exceedance warnings.
+
+\textbf{Where $L$ and $U$ come from:}
+\begin{itemize}[leftmargin=2em]
+\item $U = \poss(A_T) = \max$ possibility among threshold categories (from raw $\pi$).
+\item $L = m \cdot \Nc(A_T) =$ subnormality times conditional necessity of the threshold event.
+\end{itemize}
+
+The width $U - L$ is the forecast's \textbf{ambiguity}: the gap between ``merely possible'' and ``essentially certain.'' A wide interval means the model cannot commit; a narrow interval means the three components all agree.
+
+\textbf{Properties:}
+\begin{itemize}[leftmargin=2em]
+\item $0 \leq L \leq U \leq 1$ always (by construction).
+\item Under normality ($m = 1$): $L = \nec(A_T)$, $U = \poss(A_T)$---classical possibility--necessity interval.
+\item Under extreme subnormality ($m \to 0$): $U \to 0$, so ILS for an observed event approaches $-\log_2(\epsilon) \approx 6.64$~bits (maximum penalty). $L \to 0$, so ILS for a non-event gives $-\log_2(1) = 0$~bits (no penalty). Ignorance is costly only when the event actually occurs.
+\end{itemize}
+
+\textit{Met analogue:} Log score for imprecise probability. Think: ``I'm between 55\% and 75\% confident in exceedance''---the log score rewards having a range that brackets reality, with steep penalties for confident misses of rare events.
+
+\subsubsection{E.4---Imprecise Ranked Logarithmic Score (IRLS)}\label{sec:plain_e4}
+
+\textbf{What it does:} Extends RPS to interval-valued cumulative forecasts using logarithmic penalties.
+
+The ranked probability score (RPS) works by comparing cumulative forecast probabilities against the cumulative observation indicator at each threshold. IRLS does the same, but each cumulative forecast value is an interval $[L_k, U_k]$ and the penalty is logarithmic rather than quadratic.
+
+\begin{itemize}[leftmargin=2em]
+\item $U_k = \max$ possibility up to category $k$ (grows as more categories are included).
+\item $L_k = m \cdot [1 - \max$ normalized possibility above category $k]$ (also grows).
+\item Same ``optimistic'' logarithmic penalty structure as ILS, applied at each threshold.
+\end{itemize}
+
+When $L_k = U_k$ for all $k$ (point probabilities), IRLS reduces to the standard ranked logarithmic score.
+
+\textbf{Current status:} Formally defined for completeness but deferred to the follow-on verification study. The pilot dataset (${\sim}90$ station-days) is too small for stable IRLS estimates across $K = 4$ ordered categories.
+
+\textit{Met analogue:} The logarithmic version of CRPS. Meteorologists know CRPS as the integral of Brier scores across all thresholds; IRLS is the integral of interval log scores across all thresholds.
+
+\subsubsection{E.5---Possibilistic Climatology}\label{sec:plain_e5}
+
+\textbf{What it does:} Defines a baseline ``no-skill'' possibility distribution, analogous to how probabilistic climatology serves as the baseline for the Brier skill score.
+
+To compute skill scores, a reference is needed. For Brier, the reference is ``just predict the long-term frequency.'' For possibilistic scores, we need a possibility-distribution version of climatology:
+
+\begin{itemize}[leftmargin=2em]
+\item \textbf{Continuous variables:} $\pi_{\mathrm{clim}}(z) = 1 - 2\,|F_{\mathrm{clim}}(z) - 0.5|$. Peaks at the climatological median ($\pi = 1$); falls symmetrically toward the tails. The $\alpha$-cut sets are central prediction intervals.
+\item \textbf{Categorical variables} ($K$ ordered bins): same formula using mid-ranks instead of continuous CDF values. The most common category gets highest possibility.
+\end{itemize}
+
+\textbf{Key convention:} Climatological ignorance is zero ($H_{\Pi,\mathrm{clim}} = 0$). Climatology is a reference distribution, not a live model---it always has something to say (even if uninformative). Any $\ign > 0$ from \clyfar{} therefore reflects genuine model uncertainty beyond the baseline.
+
+\textit{Met analogue:} Exactly like climatological probability for the Brier skill score, but constructed as a consonant (nested) possibility distribution from the CDF. The median is ``most possible''; the tails are ``least possible.''
+
+\subsubsection{E.6---Tripartite Value Demonstration}\label{sec:plain_e6}
+
+\textbf{What it does:} Defines three hypothesis tests demonstrating that each named component (possibility, ignorance, conditional necessity) independently contributes verification value.
+
+A reviewer might ask: ``Why do you need all three components? Perhaps ignorance is redundant once you have possibility and necessity.'' E.6 lays out three tests. Each isolates one component and asks whether it adds information the other two do not provide.
+
+\paragraph{Test 1: Possibility compatibility ($\alpha^*$, $\delta$).}
+\textit{Question:} ``Does the model point at the truth better than climatology or persistence?''
+
+\textit{How to test:} Compare \clyfar{}'s resolution gap ($\delta = \alpha^* - \eta$) against the same score for climatological and persistence baselines. If \clyfar{}'s $\delta$ is consistently higher, the possibility component has independent skill.
+
+\textit{Met analogue:} Comparing a model's Brier skill score against persistence---``Is your resolution better than a na\"ive forecast?''
+
+\paragraph{Test 2: Ignorance self-awareness ($\ign$).}
+\textit{Question:} ``When the model says it is uncertain, is it actually performing worse?''
+
+\textit{How to test:} Stratify forecasts by $\ign$ (low vs.\ high ignorance). Check whether mean $\delta$ is lower in high-ignorance cases. If yes, the model's self-reported uncertainty tracks actual forecast difficulty.
+
+\textit{Met analogue:} The \textbf{spread--skill relationship} in ensemble forecasting. Stratify by ensemble spread and check whether high-spread cases have higher error. E.6 asks the same question about $\ign$: is it an honest uncertainty signal, or just noise?
+
+\paragraph{Test 3: Conditional necessity reliability ($\Nc^*$).}
+\textit{Question:} ``When the model says it is sure, is it actually right more often?''
+
+\textit{How to test:} When $\Nc(c)$ exceeds a threshold $\tau$, check whether the conditional hit rate for category $c$ exceeds the base rate. If yes, high-necessity forecasts identify genuinely confident predictions---not just lucky ones.
+
+\textit{Met analogue:} \textbf{Reliability conditional on confidence.} Meteorologists check this when they ask ``when the ensemble gives ${>}80\%$ chance of rain, does it actually rain ${>}80\%$ of the time?'' E.6 asks: ``when \clyfar{} says $\Nc > \tau$, does the truth verify at a rate above climatology?''
+
+\paragraph{Sample-size note.}
+At pilot scales (${\sim}90$ station-days), these three tests are supplemented by 3--4 illustrative case studies showing how the full $(\poss,\; \ign,\; \Nc)$ triplet conveys information invisible to the defuzzified scalar alone. The case studies make the abstract scores tangible: ``here is a specific day where $\ign$ was high and the forecast was indeed poor'' or ``here is where $\Nc$ correctly flagged extreme ozone.''
+
+%----------------------------------------------------------
+\subsection{Why All Three Verification Lanes Are Needed}\label{sec:three_lanes}
+
+A single metric cannot capture full uncertainty quantification from a subnormal possibility distribution.
+
+\begin{table}[htbp]
+\centering
+\small
+\caption{Three verification lanes and their blind spots.}
+\label{tab:three_lanes}
+\begin{tabularx}{\columnwidth}{>{\raggedright\arraybackslash}p{0.18\columnwidth}XX}
+\toprule
+Lane & Answers the question & What it misses \\
+\midrule
+\textbf{Product~1} (RMSE, bias) & ``Was the point forecast close?'' & All uncertainty information---a perfect 50th-percentile says nothing about confidence. \\
+\textbf{Product~2} (IG via bridge) & ``Was the probabilistic forecast informative?'' & The bridge is lossy---it compresses the full possibility shape into $n{+}1$ probabilities. Subnormality becomes a single ignorance bin. \\
+\textbf{Product~3} (native scorecard) & ``Was the possibility distribution well-shaped, sharp, and honest?'' & No connection to probabilistic skill---a beautiful distribution might still give bad probabilities after conversion. \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+Together, the three lanes catch failures that any single lane would miss:
+
+\begin{itemize}[leftmargin=2em]
+\item A forecast with good RMSE (Lane~1) but flat possibility (Lane~3, high $\eta$) and poor IG (Lane~2) is a broken clock that happens to be right.
+\item A forecast with great IG (Lane~2) but high ignorance and low $\Nc^*$ (Lane~3) got lucky via the bridge---the raw model was hedging.
+\item A forecast with sharp possibility and high $\Nc^*$ (Lane~3) but poor IG (Lane~2) has a bridge problem---the conversion is distorting the signal.
+\end{itemize}

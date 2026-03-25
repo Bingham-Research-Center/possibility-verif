@@ -1,0 +1,142 @@
+\section{Possibility Theory Framework}\label{sec:poss_framework}
+
+This section presents the mathematical foundations of possibility theory as implemented in \clyfar{}, beginning with axiomatic definitions, discussing \textit{subnormal distributions} and \textit{ignorance} quantification, and introducing the three-component uncertainty framework---possibility, ignorance, and \textit{conditional necessity}---used for forecast communication.
+
+\subsection{Axioms and Definitions}\label{sec:poss_axioms}
+Let $\Omega$ denote the \textit{universe of discourse}---the complete set of mutually exclusive and collectively exhaustive outcomes for a variable of interest (e.g., ozone concentration categories). A \textit{possibility distribution} $\pi: \Omega \to [0,1]$ assigns to each outcome $\omega \in \Omega$ a degree of possibility $\pi(\omega)$ satisfying:
+
+\begin{axiomlist}
+\item \textbf{Something must be possible:} There exists at least one outcome $\omega^* \in \Omega$ such that $\pi(\omega^*) > 0$
+\item \textbf{Normalization (optional):} If $\max_{\omega \in \Omega} \pi(\omega) = 1$, the distribution is \textit{normal}; otherwise it is \textit{subnormal}. Classical possibility theory \citep{Dubois1988-nh} requires normalization: at least one outcome must be fully possible for necessity to be well-defined. \clyfar{} relaxes this requirement, retaining subnormal distributions when rules provide weak support for all outcomes (Section~\ref{sec:subnormal}).
+\end{axiomlist}
+
+From a possibility distribution $\pi$ that may or may not be normalized, two dual measures are defined for any event $A \subseteq \Omega$:
+
+\begin{align}
+\Pi(A) &= \max_{\omega \in A} \pi(\omega) \quad \text{(Possibility)} \label{eq:poss} \\
+N(A) &= 1 - \Pi(\neg A) = 1 - \max_{\omega \notin A} \pi(\omega) \quad \text{(Necessity)} \label{eq:nec}
+\end{align}
+
+\textbf{Interpretation:}
+\begin{itemize}[leftmargin=2em]
+\item $\Pi(A)=1$: Event $A$ is entirely plausible given current knowledge.
+\item $\Pi(A)=0$: Event $A$ is impossible (inconsistent with available evidence).
+\item $N(A)=1$: Event $A$ is certain (all alternatives are ruled out).
+\item $N(A)=0$: Event $A$ is not certain (at least one alternative remains plausible).
+\end{itemize}
+
+For any event $A$, $N(A) \leq \Pi(A)$ always holds \citep{Dubois1988-nh}. The interval $[N(A), \Pi(A)]$ brackets the range of probabilities $P(A)$ consistent with the available information: any probability distribution compatible with $\pi$ must satisfy $N(A) \leq P(A) \leq \Pi(A)$ \citep{Dubois2006-MISSING}. This property is captured by the quote ``What is probable must first be possible'' [Zadeh REF].
+
+\subsection{Subnormal Distributions and Ignorance}\label{sec:subnormal}
+
+Formal possibility theory [Dubois and Prade book REF] normalizes possibility distributions to ensure $\max \pi = 1$, enabling computation of necessity distribution $\nu$. However, normalization masks epistemic uncertainty when the rulebase provides weak support for all outcomes. Hence \clyfar{} does not normalize possibility distributions to enforce one event to be fully possible: if rules fail to fire strongly for any ozone category, the resulting distribution remains unnormalized, with $\max \pi < 1$.
+
+Define the (possibilistic) \textit{ignorance} measure \ign{} as residual possibility ``mass'' not covered in $\pi$:
+\begin{equation}
+H_\Pi = 1 - \max_{\omega \in \Omega} \pi(\omega) \label{eq:ignorance}
+\end{equation}
+
+\textbf{Interpretation:} \ign{} quantifies the fraction of plausibility unaccounted for by the model's knowledge. High ignorance ($H_\Pi \approx 1$) signals that inputs lie outside rule coverage or that conflicting rules produce weak activations (i.e., too many weak links breaking AND-chains). Low ignorance ($H_\Pi \approx 0$) indicates the model assigns high possibility to at least one outcome: an impossible event ($\Pi(\overline\omega) = 0$) can be ruled out due to known plausibility of a different outcome, rather than spurious confidence that stems from enforced normalization in classical possibility theory.
+
+Normalization also forces derived probability distributions to sum to unity, implying the model asserts specific probability values rather than admitting that probability mass may be unassigned. For \clyfar{}, this would mask the distinction between ``the model predicts moderate ozone'' and ``the model has insufficient information to rule out any category.'' This departure from classical possibility theory trades formal completeness for operational transparency, explicitly signalling when the system encounters conditions its designers did not anticipate.
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.7\columnwidth]{figures/possibility_initial.pdf}
+\caption{Subnormal possibility distribution example using Example~1 inputs (snow = 90\,mm, wind = 1.5\,m\,s$^{-1}$, MSLP = 103,400\,Pa, solar = 650\,W\,m$^{-2}$). Possibility values: $\pi = \{\text{bkg}: 0.0, \text{mod}: 0.2, \text{elev}: 0.25, \text{ext}: 0.75\}$, yielding ignorance $H_\Pi = 0.25$.}
+\label{fig:poss_subnormal}
+\end{figure}
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.7\columnwidth]{figures/possibility_necessity.pdf}
+\caption{\textbf{Possibility-necessity duality for Example~1.} Possibility $\Pi$ (upper bounds), conditional necessity $N_c$ (lower bounds), and ignorance $H_\Pi$ for the high-confidence extreme forecast. $N_c(\text{extreme}) = 0.67$ indicates strong conditional support; $H_\Pi = 0.25$ signals moderate residual ignorance.}
+\label{fig:poss_necessity}
+\end{figure}
+
+\textbf{Example 1 (high-confidence extreme forecast):} Consider inputs of snow = 90\,mm, wind = 1.5\,m\,s$^{-1}$, MSLP = 103,400\,Pa, solar = 650\,W\,m$^{-2}$. Fuzzification yields: snow sufficient = 1.0, wind calm = 1.0, MSLP high = 0.9, solar high = 0.75. Rule activations: R2 (extreme) = $\min(1.0, 0.9, 1.0, 0.75) = 0.75$; R3 (elevated) = 0.25; R6 (moderate) = 0.2; all others negligible. The resulting distribution is:
+\[
+\pi = \{\text{bkg}: 0.0,\; \text{mod}: 0.2,\; \text{elev}: 0.25,\; \text{ext}: 0.75\}
+\]
+with $H_\Pi = 1 - 0.75 = 0.25$ and $N_c(\text{extreme}) = 1 - 0.25/0.75 = 0.67$. Interpretation: extreme ozone is the most plausible outcome ($\Pi = 0.75$) with moderate ignorance ($H_\Pi = 0.25$); conditional necessity of 0.67 indicates that among scenarios the model covers, extreme ozone is the dominant category.
+
+\textbf{Example 2 (low-confidence ambiguous forecast):} Inputs of snow = 75\,mm, wind = 2.5\,m\,s$^{-1}$, MSLP = 102,000\,Pa, solar = 400\,W\,m$^{-2}$ yield partial membership in multiple categories. Rule activations: R1 (background) = 0.5, R6 (moderate) = 0.5, all others = 0.0. The resulting distribution is:
+\[
+\pi = \{\text{bkg}: 0.5,\; \text{mod}: 0.5,\; \text{elev}: 0.0,\; \text{ext}: 0.0\}
+\]
+with $H_\Pi = 1 - 0.5 = 0.5$ and $N_c(\text{bkg}) = N_c(\text{mod}) = 0.0$. Interpretation: background and moderate ozone are equally plausible ($\Pi = 0.5$ each), high ignorance ($H_\Pi = 0.5$) indicates conditions partially lie outside rule coverage, and neither outcome has conditional necessity.
+
+Blindly normalizing Example~2 would inflate $\pi(\text{bkg})$ and $\pi(\text{mod})$ to 1.0, hiding the fact that the model struggles with this meteorological scenario. Preserving subnormality makes these knowledge gaps explicit.
+
+\subsection{Three-Component Uncertainty}\label{sec:three_component}
+
+An analogue of ``classical'' necessity (requiring a normalized possibility distribution $\pi'$) supplements \poss{} and \ign{} for each ozone category $A$ by computing necessity after normalization of known outcomes. The three components are:
+
+\begin{enumerate}[leftmargin=2em]
+\item \textbf{Possibility, \poss{}$(A)$, $\pi$:} The raw (unnormalized) possibility of event $A$ from Equation~\eqref{eq:poss} denoting evidence-based plausibility.
+\item \textbf{Ignorance, \ign{}:} The global ignorance measure from Equation~\eqref{eq:ignorance}, indicating inherent deficiency of the model state in capturing the notional `true' possibility distribution.
+\item \textbf{Conditional Necessity, $N_c(A)$, $\nu_c$:} Certainty of event $A$ computed \textit{after} normalizing the distribution of known outcomes:
+\begin{equation}
+N_c(A) = 1 - \frac{\max_{\omega \notin A} \pi(\omega)}{\max_{\omega \in \Omega} \pi(\omega)} \label{eq:cond_nec}
+\end{equation}
+This measures certainty conditional on the model's covered scenarios.
+\end{enumerate}
+
+All three quantities derive from the raw possibility distribution $\pi$: \poss{} is the peak value for each category, \ign{} measures the global gap to normality, and \Nc{} is computed after renormalization. Though not statistically independent, they decompose the forecast signal into complementary facets of decision-relevant information.
+
+This framework bears structural resemblance to Dempster--Shafer theory's belief--plausibility intervals \citep{Shafer1976-MISSING}: \poss{} corresponds to plausibility (upper probability bound) and \Nc{} plays a role analogous to belief (lower bound). However, \ign{} has no direct Dempster--Shafer analogue, as it quantifies model coverage gaps rather than evidential conflict between sources.
+
+\textbf{Communication example (from Example~1):} ``Extreme ozone is the most plausible outcome ($\Pi = 0.75$) with moderate ignorance ($H_\Pi = 0.25$). Conditional necessity is 0.67: among scenarios the model covers, extreme ozone is the dominant category.'' This statement conveys:
+\begin{itemize}[leftmargin=2em]
+\item Extreme ozone is plausible but not guaranteed ($\Pi=0.75$).
+\item The model has moderate confidence in its assessment ($H_\Pi=0.25$).
+\item Among scenarios the model \textit{does} cover, extreme is the dominant outcome ($N_c=0.67$).
+\end{itemize}
+
+Section~\ref{sec:comm_forecasts} discusses how these measures are visualized via the \texttt{basinwx.com} graphical interface.
+
+% FIGURE PLACEHOLDER 2: Three-Component Uncertainty Visualization
+\begin{figure}[htbp]
+\centering
+\fbox{\parbox{0.9\columnwidth}{\centering\vspace{2em}\textbf{PLACEHOLDER: Three-Component Uncertainty Framework}\\\vspace{1em}
+\textbf{What to show:} Three-panel comparison using worked examples. (Panel A) Example~1 (high-confidence extreme): $\pi = \{\text{bkg}: 0.0, \text{mod}: 0.2, \text{elev}: 0.25, \text{ext}: 0.75\}$, $H_\Pi = 0.25$, $N_c(\text{ext}) = 0.67$. (Panel B) A medium-confidence case. (Panel C) Example~2 (low-confidence ambiguous): $\pi = \{\text{bkg}: 0.5, \text{mod}: 0.5, \text{elev}: 0.0, \text{ext}: 0.0\}$, $H_\Pi = 0.5$, $N_c = 0.0$. Visual cues: possibility bars (blue), ignorance gap (grey hatching at top), necessity lower bound (red line).\\
+\vspace{0.5em}
+\textbf{Why:} Section~\ref{sec:three_component} explains $\Pi$, $H_\Pi$, $N_c$ mathematically but lacks concrete visual comparison. Three panels show how same possibility value ($\Pi=0.7$) means different things depending on ignorance context---critical for stakeholder interpretation. Demonstrates why normalizing destroys information.\\
+\vspace{0.5em}
+\textbf{Complexity level:} Medium. Target audience: stakeholders/decision-makers needing to interpret forecasts. Annotate with plain-language interpretations: "High confidence: model strongly supports elevated" vs "Low confidence: model unsure, conditions outside typical scenarios."\\
+\vspace{0.5em}
+\textbf{References text:} Section~\ref{sec:three_component} Equations~\ref{eq:poss}--\ref{eq:cond_nec}, Example forecasts at lines 356--362.\\
+\vspace{0.5em}
+\textbf{Impact score:} \textbf{10/10} --- Essential explanatory figure. Three-component framework is Clyfar's key innovation; visual comparison makes abstract concept tangible. Will be cited by users trying to understand why "possibility 0.7" doesn't always mean same confidence level.\vspace{2em}}}
+\caption{\textbf{[PLACEHOLDER] Three-component uncertainty framework in practice.} Comparison of high-, moderate-, and low-confidence forecasts for elevated ozone category. Each panel shows possibility distribution (bars), ignorance measure (grey gap), and conditional necessity (lower bound). Demonstrates how same possibility value conveys different information depending on model confidence. \textit{To be generated by:} \texttt{clyfar/notebooks/run\_fis\_guide\_figs.py::make\_three\_component\_comparison()}.}
+\label{fig:three_component_viz}
+\end{figure}
+
+\subsection{Aggregation via Fuzzy Rules}\label{sec:fuzzy_aggregation}
+\clyfar{} generates possibility distributions through a Mamdani fuzzy inference system \citep{Mamdani1976-pp}. The process consists of three stages:
+
+\begin{enumerate}[leftmargin=2em]
+\item \textbf{Fuzzification:} Crisp meteorological inputs (e.g., wind speed $w = 1.8$ m\,s$^{-1}$) are converted to membership degrees in linguistic categories via a membership function $\mu$. For example:
+\begin{equation}
+\mu_{\text{calm}}(1.8) = 0.85, \quad \mu_{\text{breezy}}(1.8) = 0.15
+\end{equation}
+
+\item \textbf{Rule Evaluation:} Each rule $R_i$ maps antecedent combinations to consequent categories. The activation level $\alpha_i$ of rule $R_i$ is computed using the fuzzy AND operator (minimum):
+\begin{equation}
+\alpha_i = \min(\mu_{\text{ant}_1}, \mu_{\text{ant}_2}, \ldots, \mu_{\text{ant}_k}) \label{eq:rule_activation}
+\end{equation}
+For example, the rule ``IF wind is calm AND snow is sufficient THEN ozone is elevated'' activates at $\alpha = \min(0.85, 0.92) = 0.85$ if snow membership is 0.92. This can also be interpreted as ``there is a high degree of truth that ozone will be elevated''.
+
+\item \textbf{Aggregation:} Each activated rule clips the membership function of its consequent category at level $\alpha_i$. All clipped functions for a given category are combined using the OR operator (maximum). The activation, therefore, is limited solely by the largest membership (possibility) value in $[0,1]$. The aggregated membership curve---piecewise linear, as with the membership functions, yielding an asymmetric trapezium---for ozone category $C$ becomes:
+\begin{equation}
+\widehat{\mu_C}(o) = \max_{i: R_i \to C} \min(\alpha_i, \mu_C(o)) \label{eq:aggregation}
+\end{equation}
+where $o$ ranges over the ozone universe of discourse $\Omega$. The maximum of this curve yields the possibility: $\Pi(C) = \max_{o} \widehat{\mu_C}(o)$.
+\end{enumerate}
+
+The aggregated curves $\{\widehat{\mu_C}\}$ across all categories $C \in \Omega$ collectively define the possibility distribution $\pi$: the peak of each curve equals the possibility of that category, $\pi(C) = \Pi(C)$. This identification links the FIS computational machinery to the possibilistic framework of Section~\ref{sec:poss_axioms}.
+
+Critically, if no rules fire strongly for any category, all $\alpha_i$ remain low, producing a subnormal distribution that preserves an estimate of inherent model ignorance. This contrasts with probabilistic ensembles, which distribute probability mass across all outcomes even when discriminative power is limited, whereas subnormal possibility distributions leave residual plausibility unassigned, making knowledge gaps explicit.
+
+Defuzzification---the extraction of scalar ozone concentration estimates from possibility distributions---is detailed in Section~\ref{sec:system_overview} as part of the \clyfar{} operational pipeline.
+

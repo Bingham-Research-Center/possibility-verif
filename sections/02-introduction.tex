@@ -1,0 +1,77 @@
+% !TEX root = ../main.tex
+%----------------------------------------------------------
+% 02-introduction.tex — Section 1: Introduction
+%----------------------------------------------------------
+
+\section{Introduction}\label{sec:introduction}
+
+% [PLACEHOLDER: Opening paragraph — motivate why hazard forecasting needs
+%  richer uncertainty representations than point probabilities.  Connect to
+%  severe-weather context: SPC convective outlooks already use ordered
+%  categorical language (MRGL through HIGH) but current verification treats
+%  these as deterministic categorical forecasts.]
+
+% --- Why possibility theory matters for hazard verification ---
+
+% [PLACEHOLDER: 2–3 paragraphs.  Key points:
+%  - Probabilistic forecasts assume all uncertainty can be captured by a
+%    single number per outcome; possibility theory relaxes this.
+%  - Possibility distributions naturally arise from expert-rule systems,
+%    fuzzy inference, and imprecise-probability frameworks.
+%  - In severe-weather forecasting, a forecaster may wish to express that
+%    \spc{MDT} risk is "plausible but not certain" while admitting that
+%    the meteorological situation is poorly sampled — a statement that maps
+%    cleanly onto a subnormal possibility distribution but awkwardly onto
+%    a probability.]
+
+% --- The "ignorance erasure" problem ---
+
+% [PLACEHOLDER: 1–2 paragraphs.  Central argument:
+%  - Classical possibility theory (Dubois & Prade 1988) requires
+%    normalisation: max pi = 1.
+%  - Normalising a subnormal distribution destroys the ignorance signal,
+%    inflating confidence in forecasts the system cannot support.
+%  - This is analogous to forcing an ensemble whose members all have low
+%    confidence to produce a calibrated probability that sums to unity —
+%    the "ignorance" is absorbed into the distribution rather than flagged.
+%  - We call this "ignorance erasure" and argue it is the central obstacle
+%    to adopting possibilistic methods in operational verification.]
+
+% --- Brief literature review ---
+
+% [PLACEHOLDER: Possibility theory foundations.]
+% Cite: \citet{Dubois1988-nh}, Zadeh (1978), etc.
+
+% [PLACEHOLDER: Fuzzy logic in meteorology.]
+% Cite: relevant fuzzy-logic weather applications.
+
+% [PLACEHOLDER: Verification scoring rules.]
+% Cite: \citet{Roulston2002-eq}, \citet{Lawson2024-bu}, Brier (1950),
+% Murphy (1973), Gneiting & Raftery (2007).
+
+% [PLACEHOLDER: Imprecise probability and Dempster–Shafer.]
+% Cite: Shafer (1976), Smets (1990), Walley (1991).
+
+% [PLACEHOLDER: Gap statement — no existing framework unifies
+%  possibilistic verification with probabilistic scoring and native
+%  possibilistic metrics.]
+
+% --- Paper outline ---
+
+The remainder of this paper is organised as follows.
+Section~\ref{sec:poss_primer} introduces the mathematical foundations of
+possibility theory, emphasising subnormal distributions and the
+three-component uncertainty framework.
+Section~\ref{sec:pignistic_bridge} develops the tripartite pignistic
+bridge that converts possibilities to probabilities without erasing
+ignorance, and reviews the information-gain decomposition.
+Section~\ref{sec:native_verification} formalises native possibilistic
+verification: the five-number scorecard, interval log score, imprecise
+ranked logarithmic score, and possibilistic climatology.
+Section~\ref{sec:tripartite_value} establishes three hypothesis tests
+demonstrating that each uncertainty component (possibility, ignorance,
+conditional necessity) independently contributes verification value.
+Section~\ref{sec:worked_examples} walks through three worked examples
+using SPC convective outlook categories (\spc{MRGL} through \spc{HIGH}).
+Section~\ref{sec:discussion} discusses connections to Dempster--Shafer
+theory, applicability beyond severe weather, and future directions.

@@ -1,0 +1,54 @@
+\section{Probability Conversion and Information-Gain Verification}\label{app:information_theory}
+
+This appendix describes how \clyfar{}'s possibility-based forecasts are converted to probabilities and verified using the information-gain framework of \citet{Lawson2024-bu}. These methods evaluate Product~2 (probability-converted forecasts); native possibilistic verification of Product~3 is developed separately in Appendix~\ref{app:verification_framework}. All entropy calculations use base-2 logarithms, expressing information in bits.
+
+\subsection{Possibility-to-Probability Bridge}\label{sec:poss_prob_bridge}
+
+Applying probabilistic verification to \clyfar{} forecasts required converting possibility distributions to probabilities. The \textit{tripartite pignistic transformation} preserved the subnormality signal through three steps:
+\begin{enumerate}[leftmargin=2em]
+\item Reserve ignorance mass: $p_{\text{ign}} = H_\Pi = 1 - \max(\pi)$.
+\item Distribute the remaining $(1 - H_\Pi)$ proportionally across outcomes: $p_i = \pi_i \cdot (1 - H_\Pi) \,/\, \sum_j \pi_j$.
+\item Append $p_{\text{ign}}$ as an explicit ``ignorance outcome,'' yielding a probability distribution over $n+1$ categories that sums to unity.
+\end{enumerate}
+
+Simple normalization ($p_i = \pi_i / \sum_j \pi_j$) erases subnormality---probabilities always sum to one regardless of model confidence. This is equivalent to the pignistic transformation of \citet{Smets1990-MISSING}, which was designed for normal belief functions. The tripartite approach preserves the ignorance signal, ensuring that verification scores correctly penalize uncertain forecasts by routing probability mass into a non-observed outcome. For normal distributions ($\max \pi = 1$, $H_\Pi = 0$), both methods coincide.
+
+\subsection{Native Possibilistic Verification}\label{sec:poss_verification}
+
+Verification of the raw FIS output (Product~3: possibility distributions) without conversion to probabilities---including a five-number scorecard, interval log score, and possibilistic climatology baseline---is formalized in Appendix~\ref{app:verification_framework}.
+
+\subsection{Probabilistic Verification via Information Gain}\label{sec:ig_verification}
+
+After the tripartite bridge (Section~\ref{sec:poss_prob_bridge}) converted possibilities to probabilities, standard information-theoretic verification applied. Information gain measures the reduction in surprise from replacing one forecast with another \citep{Lawson2024-bu}:
+\begin{equation}
+\text{IG} = D_{\text{KL}}(o \,\|\, f_1) - D_{\text{KL}}(o \,\|\, f_2)
+\label{eq:ig}
+\end{equation}
+where $o$ is the observation, $f_1$ is the baseline (e.g., climatology), and $f_2$ is the \clyfar{} forecast. Positive IG indicates that \clyfar{} reduced surprise relative to the baseline. This framework, related to the logarithmic scoring rule of \citet{Roulston2002-eq}, is formalized as information gain in \citet{Lawson2024-bu}.
+
+Information gain decomposes diagnostically \citep[Eq.~14]{Lawson2024-bu}:
+\begin{equation}
+\text{IG}_{\text{decomp}} = \text{UNC} - \text{DSC} + \text{REL} \quad \text{(all in bits)}
+\label{eq:ig_decomp}
+\end{equation}
+where UNC is irreducible uncertainty (entropy of the base rate), REL is calibration error (lower is better), and DSC is discrimination (higher is better). This decomposition diagnosed whether \clyfar{}'s value arose from calibration or from discriminating between ozone regimes.
+
+To avoid naming collision with possibilistic ignorance $H_\Pi$, this manuscript uses ``information gain'' (IG) rather than the abbreviation IGN used in some verification literature.
+
+\subsection{Complementarity of $H_\Pi$ and IG}\label{sec:complementarity}
+
+Possibilistic ignorance $H_\Pi$ and information gain IG captured complementary dimensions of forecast quality:
+\begin{itemize}[leftmargin=2em]
+\item \textbf{$H_\Pi$ (possibilistic ignorance):} Measured rule support strength---did the model know what was going on? Derived from the subnormality of the raw FIS output (Eq.~\ref{eq:ignorance}).
+\item \textbf{IG (information gain):} Measured forecast value---did the forecast reduce surprise about what happened? Derived from the probability-converted forecast evaluated against observations.
+\end{itemize}
+
+\textbf{Worked example.} Suppose \clyfar{} outputs $\pi = (0.2,\, 0.4,\, 0.6,\, 0.1)$ for the four ozone categories (background, moderate, elevated, extreme). Then:
+\begin{itemize}[leftmargin=2em]
+\item $H_\Pi = 1 - 0.6 = 0.4$ (model is 40\% unsure).
+\item Tripartite bridge: $p_{\text{ign}} = 0.4$; $\sum_j \pi_j = 1.3$; remaining 0.6 distributed proportionally $\to$ $p = (0.092,\, 0.185,\, 0.277,\, 0.046,\, 0.400)$ including the ignorance outcome.
+\item If ``elevated'' is observed: self-entropy $= -\log_2(0.277) = 1.85$ bits of remaining surprise.
+\item Climatological baseline (e.g., $p_{\text{clim}}(\text{elevated}) = 0.05$): $-\log_2(0.05) = 4.32$ bits.
+\item $\text{IG} = 4.32 - 1.85 = 2.47$ bits gained by \clyfar{} over climatology.
+\end{itemize}
+High $H_\Pi$ (0.4) correctly inflated the ignorance outcome, reducing $p(\text{elevated})$ from what simple normalization would give ($0.6/1.3 = 0.462$) to 0.277. The verification score (1.85 bits) honestly reflected the model's partial uncertainty.

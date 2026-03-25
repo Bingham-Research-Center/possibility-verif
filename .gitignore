@@ -1,0 +1,54 @@
+# LaTeX auxiliary files
+*.aux
+*.bbl
+*.blg
+*.fdb_latexmk
+*.fls
+*.log
+*.out
+*.synctex.gz
+*.synctex(busy)
+*.toc
+*.nav
+*.snm
+*.vrb
+*.run.xml
+*.bcf
+*.lof
+*.lot
+*.idx
+*.ind
+*.ilg
+*.xdv
+
+# PDF output from compilation (don't track)
+main.pdf
+
+# Keep figure PDFs tracked
+!figures/*.pdf
+
+# OS junk
+.DS_Store
+Thumbs.db
+
+# Editor temps
+*.swp
+*.swo
+*~
+\#*\#
+.#*
+
+# Overleaf
+.texpadtmp/
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.egg-info/
+.eggs/
+*.egg
+dist/
+build/
+.venv/
+*.ipynb_checkpoints/

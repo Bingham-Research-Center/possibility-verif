@@ -1,0 +1,98 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% --------------------------------------------------------
+% Possibilistic Verification Manuscript
+% Based on Rho LaTeX Template v2.1.0
+%
+% Extracts and generalises the verification framework
+% from the Clyfar preprint (Appendices C, E, F) into a
+% standalone methods paper targeting JAS.
+% --------------------------------------------------------
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\documentclass[9.5pt,letter,twoside]{rho-class/rho}
+\input{preamble}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\setbool{rho-abstract}{true}
+\setbool{corres-info}{true}
+
+%----------------------------------------------------------
+% TITLE
+%----------------------------------------------------------
+
+\journalname{Submitted to Journal of the Atmospheric Sciences}
+\title{Possible, yes; ignorant, perhaps: a scorecard for possibilistic forecasts}
+
+%----------------------------------------------------------
+% AUTHORS AND AFFILIATIONS
+%----------------------------------------------------------
+
+\author[1,2]{John R.\ Lawson}
+
+%----------------------------------------------------------
+
+\affil[1]{Bingham Research Center, Utah State University, Vernal, Utah, United States of America}
+\affil[2]{Department of Mathematics and Statistics, Utah State University, Logan, Utah, United States of America}
+
+%----------------------------------------------------------
+% DATES
+%----------------------------------------------------------
+
+\dates{Draft date: \today}
+
+%----------------------------------------------------------
+% FOOTER INFORMATION
+%----------------------------------------------------------
+
+\leadauthor{John R.\ Lawson}
+\footinfo{Possibilistic forecast verification}
+\smalltitle{\LaTeX\ Preprint}
+\institution{Utah State University}
+\theday{\today\newline{}Submitted to J.\ Atmos.\ Sci.}
+
+%----------------------------------------------------------
+% ARTICLE INFORMATION
+%----------------------------------------------------------
+
+\corres{Correspondence to John R.\ Lawson}
+\email{john.lawson@usu.edu}
+
+\license{Rho LaTeX Class \ccLogo\ This document is licensed under Creative Commons CC BY 4.0. Template further modified by the author.}
+
+%----------------------------------------------------------
+% ABSTRACT
+%----------------------------------------------------------
+
+\input{sections/00-abstract}
+
+%----------------------------------------------------------
+
+\begin{document}
+    \maketitle
+    \thispagestyle{firststyle}
+    \setcounter{tocdepth}{2}
+    \tableofcontents
+
+%----------------------------------------------------------
+% BODY
+%----------------------------------------------------------
+
+\input{sections/01-significance}
+\input{sections/02-introduction}
+\input{sections/03-possibility-primer}
+\input{sections/04-pignistic-bridge}
+\input{sections/05-native-verification}
+\input{sections/06-tripartite-value}
+\input{sections/07-worked-examples}
+\input{sections/08-discussion}
+\input{sections/09-backmatter}
+
+%----------------------------------------------------------
+
+\bibliographystyle{ametsocV6}
+\bibliography{paperpile}
+
+%----------------------------------------------------------
+
+\end{document}

@@ -1,0 +1,106 @@
+% !TEX root = ../main.tex
+%----------------------------------------------------------
+% 09-backmatter.tex — Unnumbered sections: Acknowledgments,
+%   GenAI Statement, Data/Code Availability, Notation Table
+%----------------------------------------------------------
+
+%----------------------------------------------------------
+\section*{Acknowledgments}\label{sec:acknowledgments}
+
+% [PLACEHOLDER: Acknowledge funding sources, collaborators, reviewers,
+%  and computing resources.]
+
+%----------------------------------------------------------
+\section*{Generative AI Statement}\label{sec:genai_statement}
+
+Generative AI tools (Claude, Anthropic) were used to assist with
+manuscript preparation and code development.
+
+%----------------------------------------------------------
+\section*{Data and Code Availability}\label{sec:data_code}
+
+All code is available at
+\url{https://github.com/johnrobertlawson/possibility-verif}.
+
+% [PLACEHOLDER: Add specific version/release tag, DOI if archived on
+%  Zenodo, and any dataset references.]
+
+%----------------------------------------------------------
+\section*{Notation Reference}\label{sec:notation_reference}
+
+Table~\ref{tab:full_notation} collects all recurring symbols, their
+\LaTeX{} macros, mathematical meanings, and which form of the
+possibility distribution (raw $\pi$ or normalised $\pinorm$) each uses.
+
+\begin{table}[htbp]
+\centering
+\caption{Complete notation reference for possibilistic verification.}
+\label{tab:full_notation}
+\small
+\begin{tabularx}{\columnwidth}{llclX}
+\toprule
+Symbol & Macro & Form & Eq. & Meaning \\
+\midrule
+$\Omega$
+    & ---
+    & ---
+    & ---
+    & Universe of discourse (set of all outcomes) \\
+$\pi$
+    & ---
+    & raw
+    & ---
+    & Raw (possibly subnormal) possibility distribution \\
+$\pinorm$
+    & \verb|\pinorm|
+    & norm
+    & ---
+    & Normalised distribution: $\pinorm = \pi / m$ \\
+$m$
+    & ---
+    & raw
+    & ---
+    & Subnormality: $m = \max_{\omega} \pi(\omega)$ \\
+$\poss(A)$
+    & \verb|\poss|
+    & raw
+    & \ref{eq:poss}
+    & Possibility of event $A$: $\max_{\omega \in A} \pi(\omega)$ \\
+$\nec(A)$
+    & \verb|\nec|
+    & raw
+    & \ref{eq:nec}
+    & Necessity of event $A$: $1 - \poss(\neg A)$ \\
+$\Nc(A)$
+    & \verb|\Nc|
+    & norm
+    & \ref{eq:cond_nec}
+    & Conditional necessity: certainty given coverage \\
+$\ign$
+    & \verb|\ign|
+    & raw
+    & \ref{eq:ignorance}
+    & Possibilistic ignorance: $1 - m$ \\
+$\alpha^*$
+    & ---
+    & norm
+    & \ref{eq:alpha_star}
+    & Depth-of-truth: $\pinorm(c_{\mathrm{obs}})$ \\
+$\eta$
+    & ---
+    & norm
+    & \ref{eq:ns}
+    & Nonspecificity: $(1/K)\sum_c \pinorm(c)$ \\
+$\delta$
+    & ---
+    & norm
+    & \ref{eq:rg}
+    & Resolution gap: $\alpha^* - \eta$ \\
+$\Nc^*$
+    & ---
+    & norm
+    & \ref{eq:nc_star}
+    & Conditional necessity of truth: $\Nc(c_{\mathrm{obs}})$ \\
+\bottomrule
+\end{tabularx}
+\end{table}

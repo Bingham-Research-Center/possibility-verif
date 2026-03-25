@@ -1,0 +1,299 @@
+% !TEX root = ../main.tex
+%----------------------------------------------------------
+% 05-native-verification.tex — Section 4: Native Possibilistic Verification
+% MIGRATED from preprint A5-verification-framework.tex + A6 plain language
+% Removed: appendix framing, Product 3 language
+% Ozone categories → SPC categories
+% Inlined plain-language explanations from A6
+%----------------------------------------------------------
+
+\section{Native Possibilistic Verification}\label{sec:native_verification}
+
+% [PLACEHOLDER: Opening paragraph — motivate why native possibilistic
+%  verification is needed alongside the probabilistic lane.  The pignistic
+%  bridge (Section 3) is lossy: it compresses the full possibility shape
+%  into n+1 probabilities.  Native metrics evaluate the raw distribution
+%  directly.]
+
+All definitions use the notation of Section~\ref{sec:poss_primer}:
+$\pi$ denotes the raw (subnormal) possibility distribution,
+$m = \max_{\omega \in \Omega} \pi(\omega)$ is the subnormality, and
+$\ign = 1 - m$ is ignorance (Eq.~\ref{eq:ignorance}).
+
+%----------------------------------------------------------
+\subsection{Normalisation Protocol}\label{sec:norm_protocol}
+
+Some verification quantities require the raw distribution $\pi$ while
+others require the normalised form $\pinorm = \pi / m$.  Two
+normalisation operations serve distinct purposes:
+
+\begin{enumerate}[leftmargin=2em]
+\item \textbf{Shape normalisation} ($\pi \to \pinorm$): Rescales so
+    that $\max(\pinorm) = 1$, isolating the system's relative
+    preferences among outcomes.  Used for computing \Nc{}
+    (Eq.~\ref{eq:cond_nec}) and the native scorecard
+    (Section~\ref{sec:native_scorecard}).
+\item \textbf{Tripartite pignistic bridge} ($\pi \to$ probability
+    vector): Converts possibilities to probabilities with an explicit
+    ignorance outcome (Section~\ref{sec:tripartite_transform}).  Used
+    for information-gain verification.
+\end{enumerate}
+
+These are not alternatives: normalisation operates within the possibility
+space; the pignistic bridge converts to the probability space.
+
+Table~\ref{tab:raw_norm} specifies which form each quantity uses.
+
+\begin{table}[htbp]
+\centering
+\caption{Raw vs.\ normalised possibility assignments for verification
+    quantities.}
+\label{tab:raw_norm}
+\small
+\begin{tabularx}{\columnwidth}{%
+    >{\raggedright\arraybackslash}p{0.20\columnwidth}ccX}
+\toprule
+Quantity & Symbol & Uses & Reason \\
+\midrule
+Ignorance & $\ign$ & $\pi$ & Gap to normality \\
+Event possibility & $\poss(A_T)$ & $\pi$ & Upper plausibility bound \\
+Cumulative upper bound & $U_k$ & $\pi$ & For IRLS \\
+Depth-of-truth & $\alpha^*$ & $\pinorm$ & Shape quality \\
+Nonspecificity & $\eta$ & $\pinorm$ & Shape diffuseness \\
+Conditional necessity & $\Nc(A)$ & $\pinorm$ & Certainty given coverage \\
+Lower threshold bound & $L_t$ & Both & Coverage $\times$ certainty \\
+Cumulative lower bound & $L_k$ & Both & IRLS counterpart of $L_t$ \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\textbf{Why this matters:} Getting the raw/normalised distinction wrong
+is the single most common error in possibilistic scoring.  Computing
+\Nc{} from raw values yields nonsense (it would be negative when
+$m < 0.5$).  Computing ignorance from normalised values gives zero by
+definition.
+% [PLACEHOLDER: Add met analogue — loosely analogous to ensemble-mean
+%  error (raw) vs. rank histogram (normalised rank position).]
+
+%----------------------------------------------------------
+\subsection{Five-Number Scorecard}\label{sec:native_scorecard}
+
+Five summary statistics evaluate each forecast--observation pair, where
+$c_{\mathrm{obs}}$ denotes the observed SPC category and $K = |\Omega|$
+is the number of categories (here, $K = 5$).
+
+\paragraph{Depth-of-truth $\alpha^*$.}
+\begin{equation}
+\alpha^* = \pinorm(c_{\mathrm{obs}}) \label{eq:alpha_star}
+\end{equation}
+where $\alpha^* = 1$ when the truth coincides with the system's peak
+category and $\alpha^* = 0$ when the system assigns zero possibility to
+the observed outcome.
+
+\textit{Plain language:} ``How much normalised possibility did the system
+assign to what actually happened?''  Like probability of detection (POD)
+for the winning bin, but continuous rather than binary.
+
+\paragraph{Nonspecificity $\eta$.}
+Following \citet{Klir1995-va}, nonspecificity measures the diffuseness
+of the normalised shape:
+\begin{equation}
+\eta = \frac{1}{K} \sum_{c=1}^{K} \pinorm(c) \label{eq:ns}
+\end{equation}
+ranging from $1/K$ (sharp) to $1$ (uniform).
+
+\textit{Plain language:} ``How spread out was the normalised
+distribution?''  Like ensemble spread or sharpness.  A tight ensemble
+(all members agree) has low $\eta$; a flat ensemble (members everywhere)
+has high $\eta$.
+
+\paragraph{Resolution gap $\delta$.}
+\begin{equation}
+\delta = \alpha^* - \eta \label{eq:rg}
+\end{equation}
+Positive $\delta$ indicates the system assigned more possibility to the
+truth than to an average category.
+
+\textit{Plain language:} ``Did the system give more support to the truth
+than to an average category?''  Like resolution in the Brier
+decomposition---ability to sort events from non-events.
+
+\paragraph{Ignorance \ign{}.}
+\begin{equation}
+\ign = 1 - m = 1 - \max_{\omega \in \Omega} \pi(\omega)
+\end{equation}
+(same as Eq.~\ref{eq:ignorance}).
+
+\textit{Plain language:} ``How much did the system admit it didn't
+know?''  $\ign = 0$: fully confident.  $\ign = 1$: complete ignorance.
+Like ensemble spread, but model-intrinsic.
+
+\paragraph{Conditional necessity of truth $\Nc^*$.}
+\begin{equation}
+\Nc^* = \Nc(c_{\mathrm{obs}})
+    = 1 - \max_{\omega \neq c_{\mathrm{obs}}} \pinorm(\omega)
+\label{eq:nc_star}
+\end{equation}
+where $\Nc^* > 0$ only when the observed category dominates all
+alternatives in the normalised distribution.  This is a direct
+application of Eq.~\eqref{eq:cond_nec} evaluated at the observation.
+
+\textit{Plain language:} ``Among scenarios the system covered, was the
+truth dominant enough to rule out alternatives?''  A confidence flag:
+not just ``did the system consider the truth plausible?'' (that is
+$\alpha^*$) but ``was the system sure enough to rule other things out?''
+
+\paragraph{Mapping to the three components.}
+These five statistics map onto the three-component framework of
+Section~\ref{sec:three_component}:
+\begin{itemize}[leftmargin=2em]
+\item \textbf{Possibility quality:} $\alpha^*$ and $\delta$ (shape of
+    the distribution).
+\item \textbf{Ignorance signal:} $\ign$ (subnormality).
+\item \textbf{Necessity signal:} $\Nc^*$ (conditional dominance).
+\end{itemize}
+
+Aggregates $\overline{\alpha^*}$, $\overline{\eta}$,
+$\overline{\delta}$, $\overline{\ign}$, $\overline{\Nc^*}$ are reported
+with bootstrap confidence intervals.
+
+%----------------------------------------------------------
+\subsection{Interval Log Score}\label{sec:interval_log}
+
+For a threshold event $A_T \subseteq \Omega$ (e.g.,
+$A_T = \{\spc{ENH},\, \spc{MDT},\, \spc{HIGH}\}$ for significant
+severe weather), the possibilistic forecast produces an interval
+$[L, U]$ rather than a point probability.  The bounds derive from the
+three-component framework:
+
+\begin{align}
+U &= \poss(A_T) = \max_{\omega \in A_T} \pi(\omega)
+    \label{eq:U_bound} \\
+L &= m \cdot \Nc(A_T)
+   = m \cdot \bigl[1 - \max_{\omega \notin A_T} \pinorm(\omega)\bigr]
+    \label{eq:L_bound}
+\end{align}
+
+The \textit{interval log score} is:
+\begin{equation}
+\mathrm{ILS} = e \cdot \bigl[-\log_2\bigl(\max(U,\, \epsilon)\bigr)\bigr]
+    + (1 - e) \cdot \bigl[-\log_2\bigl(\max(1 - L,\, \epsilon)\bigr)\bigr]
+\label{eq:interval_log}
+\end{equation}
+where $e \in \{0, 1\}$ is the event indicator and $\epsilon$ is a small
+positive floor (herein $\epsilon = 0.01$, capping the maximum penalty at
+$-\log_2(0.01) \approx 6.64$~bits).  When $L = U = p$ (a point
+probability), ILS reduces to the standard log score.
+
+\textbf{Motivation.}
+% [PLACEHOLDER: Explain why logarithmic scoring is preferred over
+%  quadratic (Brier) for rare severe-weather events.  Brier barely
+%  distinguishes 0% from 5% for a rare event that occurs; the log score's
+%  exponential penalty catches overconfident misses.]
+
+\textbf{Three-component interpretation.}
+The forecast assigns possibility $\poss = U$ to the threshold event,
+conditional necessity $\Nc = L/m$, and ignorance $\ign = 1 - m$.  The
+interval $[L, U] = [m \cdot \Nc,\; \poss]$ brackets the event's
+plausibility; width $U - L$ reflects ambiguity between ``merely
+possible'' and ``essentially certain.''
+
+\textbf{Properties:}
+\begin{itemize}[leftmargin=2em]
+\item $0 \leq L \leq U \leq 1$ always holds.
+\item Under normality ($m = 1$): $L = \nec(A_T)$, $U = \poss(A_T)$.
+\item Under extreme subnormality ($m \to 0$): $U \to 0$, so ILS for an
+    observed event approaches $-\log_2(\epsilon)$ (maximum penalty);
+    $L \to 0$, so ILS for a non-event approaches $-\log_2(1) = 0$ (no
+    penalty).  This correctly distinguishes ``no information and the
+    event happened'' (costly) from ``no information and nothing
+    happened'' (costless).
+\end{itemize}
+
+\textbf{Worked example} (Example~1 from Section~\ref{sec:subnormal},
+$\pi = \bigl\{\spc{MRGL}: 0.0,\; \spc{SLGT}: 0.1,\; \spc{ENH}: 0.2,\;
+\spc{MDT}: 0.75,\; \spc{HIGH}: 0.15\bigr\}$, threshold
+$A_T = \{\spc{ENH},\, \spc{MDT},\, \spc{HIGH}\}$):
+\begin{itemize}[leftmargin=2em]
+\item $m = 0.75$;
+\item $U = \max(0.2,\, 0.75,\, 0.15) = 0.75$;
+\item $\pinorm = \{0.0,\; 0.133,\; 0.267,\; 1.0,\; 0.2\}$;
+\item $\Nc(A_T) = 1 - \max(0.0,\, 0.133) = 0.867$;
+\item $L = 0.75 \times 0.867 = 0.65$;
+\item $L \leq U$ confirmed ($0.65 \leq 0.75$).
+\item If the threshold event occurs:
+    $\mathrm{ILS} = -\log_2(0.75) = 0.42$~bits.
+\item If it does not:
+    $\mathrm{ILS} = -\log_2(1 - 0.65) = -\log_2(0.35) = 1.51$~bits.
+\end{itemize}
+
+%----------------------------------------------------------
+\subsection{Imprecise Ranked Logarithmic Score}\label{sec:irls}
+
+For $K$ ordered categories, the cumulative possibility and necessity
+bounds are:
+\begin{align}
+U_k &= \max_{i \leq k}\, \pi(i) \\
+L_k &= m \cdot \bigl[1 - \max_{i > k}\, \pinorm(i)\bigr]
+\end{align}
+with $\max$ over an empty set defined as $0$, so that $U_K = m$ and
+$L_K = m$.
+
+The \textit{imprecise ranked logarithmic score} is:
+\begin{equation}
+\mathrm{IRLS} = \frac{1}{K} \sum_{k=1}^{K}
+    \bigl[e_k \cdot S(U_k) + (1 - e_k) \cdot S(1 - L_k)\bigr]
+\label{eq:irls}
+\end{equation}
+where $S(p) = -\log_2(\max(p, \epsilon))$ and
+$e_k = \mathbf{1}\{c_{\mathrm{obs}} \leq k\}$.  When $L_k = U_k$ for
+all $k$, IRLS reduces to the standard ranked logarithmic score.
+
+\textbf{Properties:}
+\begin{itemize}[leftmargin=2em]
+\item $U_k$ is non-decreasing in $k$ (maximum over a growing set).
+\item $L_k$ is non-decreasing in $k$ (complement of a maximum over a
+    shrinking set).
+\item $L_k \leq U_k$ for all $k$.
+\end{itemize}
+
+% [PLACEHOLDER: Met analogue — IRLS is the logarithmic version of CRPS.
+%  Meteorologists know CRPS as the integral of Brier scores across all
+%  thresholds; IRLS is the integral of interval log scores across all
+%  thresholds.]
+
+\textbf{Note:} IRLS is formally defined here for completeness, but its
+detailed application is deferred to future work with a larger
+reforecast dataset.
+
+%----------------------------------------------------------
+\subsection{Possibilistic Climatology}\label{sec:poss_climatology}
+
+A possibilistic baseline analogous to probabilistic climatology is
+needed for skill scores.  The recommended construction derives
+\textit{consonant} possibility distributions from the climatological CDF.
+
+For continuous variables with climatological CDF $F_{\mathrm{clim}}(z)$:
+\begin{equation}
+\pi_{\mathrm{clim}}(z) = 1 - 2\,\bigl|F_{\mathrm{clim}}(z) - 0.5\bigr|
+\label{eq:poss_clim}
+\end{equation}
+This peaks at the climatological median ($\pi_{\mathrm{clim}} = 1$ where
+$F_{\mathrm{clim}} = 0.5$) and produces central nested $\alpha$-cut sets
+$S_{\mathrm{clim}}(\alpha) = [Q_{\mathrm{clim}}(\alpha/2),\;
+Q_{\mathrm{clim}}(1 - \alpha/2)]$.
+
+For $K$ ordered categories with smoothed climatological frequencies
+$p_k$, the \textit{categorical mid-rank method} is recommended: compute
+cumulative frequency $F_{k-1} = \sum_{j < k} p_j$, category mid-rank
+$u_k = F_{k-1} + 0.5\, p_k$, and define:
+\[
+\pi_{\mathrm{clim}}(k) = 1 - 2\,|u_k - 0.5|
+\]
+
+Climatological ignorance is zero by convention
+($H_{\Pi,\mathrm{clim}} = 0$): climatology is a reference distribution,
+not a live forecasting system.
+% [PLACEHOLDER: Brief paragraph explaining that any H_Pi > 0 from an
+%  operational system therefore reflects genuine model uncertainty beyond
+%  the baseline.]

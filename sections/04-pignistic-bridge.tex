@@ -1,0 +1,167 @@
+% !TEX root = ../main.tex
+%----------------------------------------------------------
+% 04-pignistic-bridge.tex — Section 3: Pignistic Bridge
+% MIGRATED from preprint A3-information-theory.tex
+% Removed: "Product 2"/"Product 3" framing, Clyfar-specific references
+% Ozone categories → SPC categories
+%----------------------------------------------------------
+
+\section{Pignistic Bridge}\label{sec:pignistic_bridge}
+
+% [PLACEHOLDER: Opening paragraph — motivate why converting possibilities
+%  to probabilities is needed.  Standard verification scores (log score,
+%  Brier, IG) require probabilities.  The bridge enables probabilistic
+%  verification of possibilistic forecasts without discarding the
+%  ignorance signal.]
+
+%----------------------------------------------------------
+\subsection{Tripartite Transformation}\label{sec:tripartite_transform}
+
+Applying probabilistic verification to possibilistic forecasts requires
+converting possibility distributions to probabilities.  The
+\textit{tripartite pignistic transformation} preserves the subnormality
+signal through three steps:
+
+\begin{enumerate}[leftmargin=2em]
+\item \textbf{Reserve ignorance mass:}
+    $p_{\mathrm{ign}} = \ign = 1 - \max(\pi)$.
+\item \textbf{Distribute the remaining $(1 - \ign)$ proportionally
+    across outcomes:}
+    \[
+    p_i = \frac{\pi_i \cdot (1 - \ign)}{\sum_j \pi_j}
+    \]
+\item \textbf{Append $p_{\mathrm{ign}}$ as an explicit ``ignorance
+    outcome,''} yielding a probability distribution over $n+1$
+    categories that sums to unity.
+\end{enumerate}
+
+Simple normalisation ($p_i = \pi_i / \sum_j \pi_j$) erases
+subnormality---probabilities always sum to one regardless of model
+confidence.  This is equivalent to the pignistic transformation of
+\citet{Smets1990-MISSING}, which was designed for normal belief
+functions.  The tripartite approach preserves the ignorance signal,
+ensuring that verification scores correctly penalise uncertain forecasts
+by routing probability mass into a non-observed outcome.  For normal
+distributions ($\max \pi = 1$, $\ign = 0$), both methods coincide.
+
+% [PLACEHOLDER: 1–2 sentences on the connection to transferable belief
+%  model (Smets & Kennes 1994) and why our extension to subnormal
+%  distributions is novel.]
+
+\textbf{Worked example.}
+Suppose a possibilistic convective outlook produces
+$\pi = \bigl\{\spc{MRGL}: 0.2,\; \spc{SLGT}: 0.4,\;
+\spc{ENH}: 0.6,\; \spc{MDT}: 0.1,\; \spc{HIGH}: 0.0\bigr\}$.
+Then:
+\begin{itemize}[leftmargin=2em]
+\item $\ign = 1 - 0.6 = 0.4$ (system is 40\% unsure).
+\item $\sum_j \pi_j = 1.3$; remaining $0.6$ distributed proportionally:
+\item $\mathbf{p} = (0.092,\; 0.185,\; 0.277,\; 0.046,\; 0.0,\;
+    \underbrace{0.400}_{\text{ign}})$ including the ignorance outcome.
+\item If \spc{ENH} is observed: self-entropy
+    $= -\log_2(0.277) = 1.85$~bits of remaining surprise.
+\item Climatological baseline (e.g.,
+    $p_{\mathrm{clim}}(\spc{ENH}) = 0.05$):
+    $-\log_2(0.05) = 4.32$~bits.
+\item $\mathrm{IG} = 4.32 - 1.85 = 2.47$ bits gained over climatology.
+\end{itemize}
+
+High \ign{} ($0.4$) correctly inflated the ignorance outcome, reducing
+$p(\spc{ENH})$ from what simple normalisation would give
+($0.6/1.3 = 0.462$) to $0.277$.  The verification score ($1.85$~bits)
+honestly reflects the system's partial uncertainty.
+
+%----------------------------------------------------------
+\subsection{Information-Gain Decomposition}\label{sec:ig_decomposition}
+
+% [PLACEHOLDER: Opening paragraph — briefly introduce the information-gain
+%  framework and its relationship to the logarithmic scoring rule.]
+
+After the tripartite bridge converts possibilities to probabilities,
+standard information-theoretic verification applies.  Information gain
+measures the reduction in surprise from replacing one forecast with
+another:
+\begin{equation}
+\mathrm{IG} = D_{\mathrm{KL}}(o \,\|\, f_1) - D_{\mathrm{KL}}(o \,\|\, f_2)
+\label{eq:ig}
+\end{equation}
+where $o$ is the observation, $f_1$ is the baseline (e.g., climatology),
+and $f_2$ is the possibilistic forecast (after bridge conversion).
+Positive IG indicates that the forecast reduced surprise relative to the
+baseline.
+% [PLACEHOLDER: Add Roulston & Smith (2002) and Lawson (2024) citations.]
+
+Information gain decomposes diagnostically:
+\begin{equation}
+\mathrm{IG}_{\mathrm{decomp}} = \mathrm{UNC} - \mathrm{DSC} + \mathrm{REL}
+\quad \text{(all in bits)}
+\label{eq:ig_decomp}
+\end{equation}
+where:
+\begin{itemize}[leftmargin=2em]
+\item \textbf{UNC} is irreducible uncertainty (entropy of the base rate).
+\item \textbf{REL} is calibration error (lower is better): are stated
+    probabilities honest?
+\item \textbf{DSC} is discrimination (higher is better): can the system
+    tell events apart?
+\end{itemize}
+
+This decomposition diagnoses whether a possibilistic forecast's value
+arises from calibration or from discriminating between severe-weather
+regimes.
+
+% [PLACEHOLDER: Brief paragraph connecting IG decomposition to familiar
+%  meteorological analogues — Brier decomposition, reliability diagrams.]
+
+To avoid naming collision with possibilistic ignorance $\ign$, this
+manuscript uses ``information gain'' (IG) rather than the abbreviation
+IGN used in some verification literature.
+
+%----------------------------------------------------------
+\subsection{Why Na\"ive Normalisation Erases Information}%
+\label{sec:naive_normalisation}
+
+% [PLACEHOLDER: This is the key conceptual argument of the paper.
+%  2–3 paragraphs arguing:
+%
+%  1. Simple normalisation (divide pi by sum) is the standard approach
+%     in the possibility-theory literature.  It forces probabilities to
+%     sum to 1 regardless of model confidence.
+%
+%  2. Consequences: a system that is 90% unsure looks identical to one
+%     that is 10% unsure after normalisation.  The ignorance signal is
+%     erased.  Verification scores cannot distinguish "sharp correct"
+%     from "hedged correct" forecasts.
+%
+%  3. The tripartite bridge avoids this by routing ignorance mass into
+%     an explicit (n+1)-th outcome.  Uncertain forecasts are penalised
+%     because probability mass sits in a category that is never the
+%     observed outcome.  The penalty is proportional to H_Pi — the
+%     more ignorant the system, the more mass is stranded.
+%
+%  4. Worked contrast: show the same pi evaluated under simple
+%     normalisation vs. tripartite bridge, demonstrating the difference
+%     in verification scores.]
+
+\textbf{Complementarity of \ign{} and IG.}
+Possibilistic ignorance $\ign$ and information gain IG capture
+complementary dimensions of forecast quality:
+\begin{itemize}[leftmargin=2em]
+\item \textbf{$\ign$ (possibilistic ignorance):} Measures the
+    forecasting system's support strength---did the system know what was
+    going on?  Derived from the subnormality of the raw output
+    (Eq.~\ref{eq:ignorance}).
+\item \textbf{IG (information gain):} Measures forecast value---did the
+    forecast reduce surprise about what happened?  Derived from the
+    probability-converted forecast evaluated against observations.
+\end{itemize}
+
+Both are needed because:
+\begin{itemize}[leftmargin=2em]
+\item A \textbf{sharp wrong} forecast has low \ign{} but negative IG.
+\item A \textbf{hedged correct} forecast has high \ign{} but positive IG.
+\item A \textbf{sharp correct} forecast has low \ign{} and high IG---the
+    ideal.
+\item A \textbf{hedged wrong} forecast has high \ign{} and negative
+    IG---the system knew it didn't know, and it still got it wrong.
+\end{itemize}

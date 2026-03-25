@@ -1,0 +1,164 @@
+% !TEX root = ../main.tex
+%----------------------------------------------------------
+% 07-worked-examples.tex — Section 6: Worked Examples
+% NEW content (figure-heavy) — structure with placeholders
+%----------------------------------------------------------
+
+\section{Worked Examples}\label{sec:worked_examples}
+
+% [PLACEHOLDER: Opening paragraph — this section walks through three
+%  complete scenarios using SPC convective outlook categories to
+%  demonstrate how all components of the verification framework interact.
+%  Each scenario is designed to highlight different strengths and
+%  weaknesses of the five-number scorecard, interval log score, and
+%  pignistic bridge.]
+
+%----------------------------------------------------------
+\subsection{Scenario Setup}\label{sec:scenario_setup}
+
+Three stylised possibilistic convective outlooks are defined, each
+representing a distinct forecasting situation.  All distributions are
+defined over $\Omega = \{\spc{MRGL},\, \spc{SLGT},\, \spc{ENH},\,
+\spc{MDT},\, \spc{HIGH}\}$ with $K = 5$.
+
+\paragraph{Scenario A: Sharp-correct \spc{MDT} forecast.}
+
+% [PLACEHOLDER: Describe the meteorological setup — a textbook severe
+%  weather day with strong instability, deep-layer shear, and a
+%  well-defined mesoscale forcing mechanism.  The system produces a
+%  confident, sharp forecast centered on \spc{MDT}.]
+
+\[
+\pi_A = \bigl\{\spc{MRGL}: 0.0,\; \spc{SLGT}: 0.05,\;
+    \spc{ENH}: 0.15,\; \spc{MDT}: 0.90,\; \spc{HIGH}: 0.10\bigr\}
+\]
+Observed outcome: $c_{\mathrm{obs}} = \spc{MDT}$.
+
+\paragraph{Scenario B: Hedged-correct \spc{ENH} forecast.}
+
+% [PLACEHOLDER: Describe the meteorological setup — a messy environment
+%  with competing signals: moderate instability but uncertain mesoscale
+%  trigger timing.  The system hedges across multiple categories.]
+
+\[
+\pi_B = \bigl\{\spc{MRGL}: 0.10,\; \spc{SLGT}: 0.40,\;
+    \spc{ENH}: 0.55,\; \spc{MDT}: 0.30,\; \spc{HIGH}: 0.0\bigr\}
+\]
+Observed outcome: $c_{\mathrm{obs}} = \spc{ENH}$.
+
+\paragraph{Scenario C: Sharp-wrong \spc{MRGL} forecast.}
+
+% [PLACEHOLDER: Describe the meteorological setup — a seemingly benign
+%  environment that produces an unexpected severe outbreak.  The system
+%  confidently predicts \spc{MRGL} but \spc{MDT} verifies.]
+
+\[
+\pi_C = \bigl\{\spc{MRGL}: 0.85,\; \spc{SLGT}: 0.10,\;
+    \spc{ENH}: 0.0,\; \spc{MDT}: 0.0,\; \spc{HIGH}: 0.0\bigr\}
+\]
+Observed outcome: $c_{\mathrm{obs}} = \spc{MDT}$.
+
+%----------------------------------------------------------
+\subsection{Filling the Gauge}\label{sec:filling_gauge}
+
+% [PLACEHOLDER: figure reference — three-panel figure showing the raw
+%  possibility distributions for Scenarios A, B, C as bar charts with
+%  the ignorance gap (grey hatching) and the observed category
+%  highlighted.  This is the "gauge" visualisation introduced in
+%  Section 2.]
+
+% [PLACEHOLDER: figure reference]
+% \begin{figure}[htbp]
+% \centering
+% \includegraphics[width=\columnwidth]{figures/gauge_three_scenarios.pdf}
+% \caption{Gauge visualisation of the three scenarios.  Bars show raw
+%     possibility values $\pi(\omega)$; grey hatching above the peak
+%     indicates ignorance $\ign$.  The observed category is highlighted
+%     with a red diamond.  (A)~Scenario~A: sharp-correct \spc{MDT}.
+%     (B)~Scenario~B: hedged-correct \spc{ENH}.  (C)~Scenario~C:
+%     sharp-wrong \spc{MRGL}.}
+% \label{fig:gauge_three}
+% \end{figure}
+
+% [PLACEHOLDER: 2–3 paragraphs walking the reader through each panel,
+%  pointing out how the visual differences map onto the five-number
+%  scorecard values computed in the next subsection.]
+
+%----------------------------------------------------------
+\subsection{Full Scorecard Comparison}\label{sec:scorecard_comparison}
+
+% [PLACEHOLDER: Compute all five scorecard numbers for each scenario.
+%  The following table provides the structure; values below are derived
+%  from the distributions defined in Section 6.1.]
+
+\begin{table}[htbp]
+\centering
+\caption{Five-number scorecard for the three worked scenarios.}
+\label{tab:scorecard_comparison}
+\small
+\begin{tabular}{lccc}
+\toprule
+Statistic & Scenario A & Scenario B & Scenario C \\
+    & (sharp-correct) & (hedged-correct) & (sharp-wrong) \\
+\midrule
+$m$ (subnormality)
+    & $0.90$ & $0.55$ & $0.85$ \\
+$\ign$ (ignorance)
+    & $0.10$ & $0.45$ & $0.15$ \\
+$\alpha^*$ (depth-of-truth)
+    & $1.00$ & $1.00$ & $0.00$ \\
+$\eta$ (nonspecificity)
+    & $0.267$ & $0.491$ & $0.224$ \\
+$\delta$ (resolution gap)
+    & $+0.733$ & $+0.509$ & $-0.224$ \\
+$\Nc^*$ (cond.\ necessity of truth)
+    & $0.833$ & $0.273$ & $0.00$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+% [PLACEHOLDER: 3–4 paragraphs interpreting the table:
+%  - Scenario A: ideal case.  High alpha*, high Nc*, low H_Pi, strongly
+%    positive delta.  The system knew what was happening and said so
+%    confidently.
+%  - Scenario B: honest hedging.  High alpha* (truth was the peak), but
+%    high H_Pi and moderate delta signal that the system was aware of its
+%    own uncertainty.  Nc* is low because alternatives were plausible.
+%  - Scenario C: confident miss.  alpha* = 0 (truth was assigned zero
+%    possibility), delta is negative (system pointed away from truth),
+%    and Nc* = 0.  Low H_Pi makes this worse — the system was confident
+%    and wrong.
+%  - Contrast B vs C: both have moderate H_Pi, but B gets positive delta
+%    while C gets negative delta.  The scorecard correctly distinguishes
+%    "honestly uncertain" from "confidently wrong."]
+
+%----------------------------------------------------------
+\subsection{Pignistic Bridge Walkthrough}\label{sec:bridge_walkthrough}
+
+% [PLACEHOLDER: figure reference — three-panel figure showing the
+%  tripartite pignistic bridge applied to each scenario: raw pi on the
+%  left, probability vector (with ignorance outcome) on the right,
+%  arrows showing the transformation.]
+
+% [PLACEHOLDER: figure reference]
+% \begin{figure}[htbp]
+% \centering
+% \includegraphics[width=\columnwidth]{figures/bridge_three_scenarios.pdf}
+% \caption{Tripartite pignistic bridge applied to the three scenarios.
+%     Left bars: raw possibility $\pi$.  Right bars: probability vector
+%     with explicit ignorance outcome (hatched).  Arrows show
+%     proportional redistribution.  (A)~Scenario~A.  (B)~Scenario~B.
+%     (C)~Scenario~C.}
+% \label{fig:bridge_three}
+% \end{figure}
+
+% [PLACEHOLDER: Compute the bridge probabilities for each scenario.
+%  Show the IG values relative to a climatological baseline.
+%  Demonstrate how Scenario B's high ignorance correctly deflates
+%  probabilities, while Scenario C's low ignorance fails to protect
+%  against the confident miss.]
+
+% [PLACEHOLDER: Compute interval log scores for a threshold event
+%  A_T = {ENH, MDT, HIGH} across all three scenarios.  Show how ILS
+%  rewards Scenario A, mildly penalises Scenario B, and severely
+%  penalises Scenario C.]

@@ -1,0 +1,74 @@
+% !TEX root = ../main.tex
+%----------------------------------------------------------
+% 08-discussion.tex — Section 7: Discussion and Future Work
+%----------------------------------------------------------
+
+\section{Discussion and Future Work}\label{sec:discussion}
+
+% [PLACEHOLDER: Opening paragraph — summarise the main contributions:
+%  five-number scorecard, tripartite pignistic bridge, interval log
+%  score, three verification lanes, and the tripartite value
+%  demonstration.]
+
+%----------------------------------------------------------
+\subsection{Connections to Dempster--Shafer Theory}%
+\label{sec:ds_connections}
+
+% [PLACEHOLDER: 2–3 paragraphs discussing:
+%  - Structural resemblance: Pi corresponds to plausibility (upper
+%    probability bound), Nc plays a role analogous to belief (lower
+%    bound).
+%  - Key difference: H_Pi quantifies model coverage gaps rather than
+%    evidential conflict between sources — it has no direct DS analogue.
+%  - The tripartite pignistic bridge generalises the pignistic
+%    transformation of Smets (1990) to subnormal distributions.
+%  - Potential for unifying possibilistic verification with
+%    belief-function verification (Denoeux 2008, etc.).
+%  - Cite: Shafer (1976), Smets & Kennes (1994), Denoeux (2008).]
+
+%----------------------------------------------------------
+\subsection{Applicability Beyond Severe Weather}%
+\label{sec:beyond_severe}
+
+% [PLACEHOLDER: 2–3 paragraphs discussing:
+%  - The framework is domain-agnostic: any system producing subnormal
+%    possibility distributions can be verified using this scorecard.
+%  - Potential applications: air quality (ozone, PM2.5 categories),
+%    wildfire risk, flood inundation categories, climate scenario
+%    classification.
+%  - The SPC category framing is a running example, not a limitation.
+%    The five-number scorecard applies to any finite universe of
+%    discourse Omega.
+%  - Extension to continuous variables via alpha-cut discretisation
+%    is straightforward.]
+
+%----------------------------------------------------------
+\subsection{Software Availability}\label{sec:software}
+
+% [PLACEHOLDER: 1–2 paragraphs describing:
+%  - The Python package implementing all verification metrics.
+%  - Repository location: https://github.com/johnrobertlawson/possibility-verif
+%  - Key modules: scorecard computation, pignistic bridge, interval log
+%    score, possibilistic climatology, visualisation tools.
+%  - Compatibility with existing verification packages (e.g., xarray,
+%    properscoring).]
+
+%----------------------------------------------------------
+\subsection{Limitations and Future Directions}%
+\label{sec:limitations}
+
+% [PLACEHOLDER: 2–3 paragraphs discussing:
+%  - The IRLS is defined but deferred to future work with larger
+%    reforecast datasets.
+%  - Sample-size requirements for the three hypothesis tests
+%    (Section 5.1) are not yet established.
+%  - The possibilistic climatology construction (Section 4.5) assumes
+%    a consonant (nested) reference distribution — this may not be
+%    appropriate for all applications.
+%  - The tripartite bridge assumes the ignorance outcome is never
+%    observed — this is a modelling choice that could be revisited
+%    for open-world applications where the true outcome may lie outside
+%    Omega.
+%  - Future directions: multivariate possibilistic verification,
+%    spatial possibilistic fields, real-time operational implementation,
+%    connection to conformal prediction.]

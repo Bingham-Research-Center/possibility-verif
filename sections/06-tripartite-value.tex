@@ -1,0 +1,135 @@
+% !TEX root = ../main.tex
+%----------------------------------------------------------
+% 06-tripartite-value.tex — Section 5: Three-Component Value
+% MIGRATED from preprint A5-verification-framework.tex §E.6
+%    + A6-plain-language-verification.tex three-lanes section
+% Removed: Clyfar-specific language, appendix framing
+% Ozone categories → SPC categories
+%----------------------------------------------------------
+
+\section{Three-Component Value}\label{sec:tripartite_value}
+
+% [PLACEHOLDER: Opening paragraph — a reviewer might ask "Why do you need
+%  all three components?  Perhaps ignorance is redundant once you have
+%  possibility and necessity."  This section lays out three hypothesis
+%  tests, each isolating one component and asking whether it adds
+%  information the other two do not provide.]
+
+%----------------------------------------------------------
+\subsection{Three Hypothesis Tests}\label{sec:three_tests}
+
+The five-number scorecard (Section~\ref{sec:native_scorecard}) can be
+used to demonstrate that each of the three named
+components---possibility, ignorance, and conditional necessity---independently
+contributes verification value.
+
+\paragraph{Test 1: Possibility compatibility ($\alpha^*$, $\delta$).}
+
+\textit{Question:} ``Does the system point at the truth better than
+climatology or persistence?''
+
+\textit{How to test:} Compare the forecasting system's resolution gap
+($\delta = \alpha^* - \eta$) against the same score for climatological
+and persistence baselines.  If the system's $\delta$ is consistently
+higher, the possibility component has independent skill.
+
+\textit{Met analogue:} Comparing a model's Brier skill score against
+persistence---``Is your resolution better than a na\"ive forecast?''
+
+% [PLACEHOLDER: Discuss expected behaviour for SPC outlooks — a system
+%  that consistently assigns higher possibility to the observed category
+%  than to the average category has positive resolution gap.]
+
+\paragraph{Test 2: Ignorance self-awareness (\ign{}).}
+
+\textit{Question:} ``When the system says it is uncertain, is it
+actually performing worse?''
+
+\textit{How to test:} Stratify forecasts by \ign{} (low vs.\ high
+ignorance).  Check whether mean $\delta$ is lower in high-ignorance
+cases.  If yes, the system's self-reported uncertainty tracks actual
+forecast difficulty.
+
+\textit{Met analogue:} The \textbf{spread--skill relationship} in
+ensemble forecasting.  Stratify by ensemble spread and check whether
+high-spread cases have higher error.  This test asks the same question
+about \ign{}: is it an honest uncertainty signal, or just noise?
+
+% [PLACEHOLDER: Discuss implications — if H_Pi does NOT track forecast
+%  difficulty, the subnormality signal is uninformative and normalisation
+%  is costless.  If it DOES track difficulty, normalisation destroys
+%  operationally valuable information.]
+
+\paragraph{Test 3: Conditional necessity reliability ($\Nc^*$).}
+
+\textit{Question:} ``When the system says it is sure, is it actually
+right more often?''
+
+\textit{How to test:} When $\Nc(c) > \tau$ for some threshold $\tau$,
+check whether the conditional hit rate for category $c$ exceeds the base
+rate.  If yes, high-necessity forecasts identify genuinely confident
+predictions---not just lucky ones.
+
+\textit{Met analogue:} \textbf{Reliability conditional on confidence.}
+Meteorologists check this when they ask ``when the ensemble gives
+${>}80\%$ chance of severe weather, does it actually verify
+${>}80\%$ of the time?''  This test asks: ``when the system says
+$\Nc > \tau$, does the truth verify at a rate above climatology?''
+
+% [PLACEHOLDER: Discuss sample-size requirements.  At pilot scales
+%  (~90 station-days), these tests are supplemented by illustrative case
+%  studies.  Recommend minimum sample sizes for each test.]
+
+%----------------------------------------------------------
+\subsection{Three Verification Lanes}\label{sec:three_lanes}
+
+A single metric cannot capture full uncertainty quantification from a
+subnormal possibility distribution.  Table~\ref{tab:three_lanes}
+summarises the three verification lanes and their respective blind spots.
+
+\begin{table}[htbp]
+\centering
+\small
+\caption{Three verification lanes and their blind spots.}
+\label{tab:three_lanes}
+\begin{tabularx}{\columnwidth}{%
+    >{\raggedright\arraybackslash}p{0.18\columnwidth}XX}
+\toprule
+Lane & Answers the question & What it misses \\
+\midrule
+\textbf{Deterministic} (RMSE, bias)
+    & ``Was the point forecast close?''
+    & All uncertainty information---a perfect point forecast says nothing
+        about confidence. \\
+\textbf{Probabilistic} (IG via bridge)
+    & ``Was the probabilistic forecast informative?''
+    & The bridge is lossy---it compresses the full possibility shape
+        into $n{+}1$ probabilities.  Subnormality becomes a single
+        ignorance bin. \\
+\textbf{Native possibilistic} (scorecard)
+    & ``Was the possibility distribution well-shaped, sharp, and
+        honest?''
+    & No connection to probabilistic skill---a well-shaped distribution
+        might still give poor probabilities after conversion. \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+Together, the three lanes catch failures that any single lane would miss:
+
+\begin{itemize}[leftmargin=2em]
+\item A forecast with good deterministic scores but flat possibility
+    (high $\eta$) and poor IG is a broken clock that happens to be
+    right.
+\item A forecast with great IG but high ignorance and low $\Nc^*$ got
+    lucky via the bridge---the raw system was hedging.
+\item A forecast with sharp possibility and high $\Nc^*$ but poor IG has
+    a bridge problem---the conversion is distorting the signal.
+\end{itemize}
+
+% [PLACEHOLDER: 1–2 paragraphs expanding on how a forecaster or
+%  verification analyst would use the three lanes in practice.  Suggest a
+%  diagnostic workflow: start with the deterministic lane for quick
+%  screening, move to the probabilistic lane for calibration assessment,
+%  then examine the native possibilistic lane for deeper insight into
+%  system behaviour.]

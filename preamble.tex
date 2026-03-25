@@ -1,0 +1,59 @@
+\usepackage[english]{babel}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% JRL PACKAGES    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Note: amsmath, booktabs, enumitem, xcolor, hyperref, lettrine
+% are already loaded by rho.cls - no need to load again
+
+\newtheorem{condition}{Condition}
+\usepackage{tikz}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{natbib}
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.17}
+\usepackage{tabularx}
+\usepackage{multirow}
+
+% Order-of-magnitude formatting
+\newcommand{\order}[1]{\textit{O}(#1)}
+
+% Custom drop cap initials (lettrine already loaded by rho.cls)
+\makeatletter
+\newcommand{\dropcapinitial}[1]{%
+    \let\firstletter\@empty
+    \renewcommand{\firstletter}{\expandafter\@car#1\@nil}%
+    \lettrine[lines=2,lraise=0,findent=2pt, nindent=0em]{{\dropcapfont{\firstletter}}}{\expandafter\@gobble#1}
+}
+\makeatother
+
+% Axiom list environment
+\newenvironment{axiomlist}
+    {\begin{list}{}{\setlength{\leftmargin}{0pt}\setlength{\itemsep}{6pt}\setlength{\parsep}{3pt}}}
+    {\end{list}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% POSSIBILISTIC NOTATION MACROS
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% Shared with preprint (text- and maths-aware)
+\DeclareRobustCommand{\nec}{\ensuremath{\mathrm{N}}}
+\DeclareRobustCommand{\Nc}{\ensuremath{\mathrm{N}_{\mathrm{c}}}}
+\DeclareRobustCommand{\poss}{\ensuremath{\Pi}}
+\DeclareRobustCommand{\ign}{\ensuremath{H_{\Pi}}}
+\DeclareRobustCommand{\pinorm}{\ensuremath{\pi'}}
+
+% New for this paper
+\newcommand{\spc}[1]{\textsc{#1}}   % SPC category names
+
+% Approx tilde
+\newcommand{\apx}{\textasciitilde}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% COLOUR THEME (purple/green for possibilistic verification)
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% See rhoenvs.sty for available theme colours and how to define more
+\colorthemePossVerifPurple
+\colorthemePossVerifGreen

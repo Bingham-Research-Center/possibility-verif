@@ -1,0 +1,12 @@
+name: poss-verif
+channels:
+  - conda-forge
+dependencies:
+  - python=3.12
+  - numpy
+  - matplotlib
+  - scipy
+  - pandas
+  - jupyter
+  - jupyterlab
+  - pillow
