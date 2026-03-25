@@ -15,9 +15,10 @@ from fig_upper_lower_bounds import main as fig5
 from fig_reliability_curves import main as fig6
 from fig_ig_decomposition import main as fig7
 from fig_verification_lanes import main as fig8
+from fig_ffion_advisory import main as fig9
 
 if __name__ == "__main__":
-    for i, fig_func in enumerate([fig1, fig2, fig3, fig4, fig5, fig6, fig7, fig8], 1):
+    for i, fig_func in enumerate([fig1, fig2, fig3, fig4, fig5, fig6, fig7, fig8, fig9], 1):
         print(f"Generating Figure {i}...")
         fig_func()
     print("All figures generated.")
