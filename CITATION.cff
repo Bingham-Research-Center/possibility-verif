@@ -7,7 +7,7 @@ authors:
     given-names: John Robert
     orcid: "https://orcid.org/0000-0003-3325-3891"
     affiliation: "Utah State University"
-repository-code: "https://github.com/johnrobertlawson/possibility-verif"
+repository-code: "https://github.com/bingham-research-center/possibility-verif"
 license: CC-BY-4.0
 keywords:
   - possibility theory
