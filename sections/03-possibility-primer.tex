@@ -246,49 +246,27 @@ this paper.
 
 \begin{table}[htbp]
 \centering
-\caption{Notation reference for possibilistic verification.}
+\caption{Notation reference for possibilistic verification.  ``Form''
+    indicates whether the quantity uses the raw ($\pi$) or normalised
+    ($\pinorm$) distribution.}
 \label{tab:notation}
 \small
-\begin{tabularx}{\columnwidth}{llX}
+\begin{tabularx}{\columnwidth}{lclX}
 \toprule
-Symbol & Macro & Meaning \\
+Symbol & Form & Eq. & Meaning \\
 \midrule
-$\Omega$
-    & ---
-    & Universe of discourse (set of all outcomes) \\
-$\pi$
-    & ---
-    & Raw (possibly subnormal) possibility distribution \\
-$\pinorm$
-    & \verb|\pinorm|
-    & Normalised possibility distribution ($\pinorm = \pi / m$) \\
-$m$
-    & ---
-    & Subnormality: $m = \max_{\omega \in \Omega} \pi(\omega)$ \\
-$\poss(A)$
-    & \verb|\poss|
-    & Possibility of event $A$ (Eq.~\ref{eq:poss}) \\
-$\nec(A)$
-    & \verb|\nec|
-    & Necessity of event $A$ (Eq.~\ref{eq:nec}) \\
-$\Nc(A)$
-    & \verb|\Nc|
-    & Conditional necessity of $A$ (Eq.~\ref{eq:cond_nec}) \\
-$\ign$
-    & \verb|\ign|
-    & Possibilistic ignorance (Eq.~\ref{eq:ignorance}) \\
-$\alpha^*$
-    & ---
-    & Depth-of-truth: $\pinorm(c_{\mathrm{obs}})$ (Eq.~\ref{eq:alpha_star}) \\
-$\eta$
-    & ---
-    & Nonspecificity (Eq.~\ref{eq:ns}) \\
-$\delta$
-    & ---
-    & Resolution gap: $\alpha^* - \eta$ (Eq.~\ref{eq:rg}) \\
-$\Nc^*$
-    & ---
-    & Conditional necessity of truth (Eq.~\ref{eq:nc_star}) \\
+$\Omega$ & --- & --- & Universe of discourse \\
+$\pi$ & raw & --- & Raw (possibly subnormal) distribution \\
+$\pinorm$ & norm & --- & Normalised distribution: $\pi / m$ \\
+$m$ & raw & --- & Subnormality: $\max_{\omega} \pi(\omega)$ \\
+$\poss(A)$ & raw & \ref{eq:poss} & Possibility of event $A$ \\
+$\nec(A)$ & raw & \ref{eq:nec} & Necessity of event $A$ \\
+$\Nc(A)$ & norm & \ref{eq:cond_nec} & Conditional necessity of $A$ \\
+$\ign$ & raw & \ref{eq:ignorance} & Possibilistic ignorance: $1 - m$ \\
+$\alpha^*$ & norm & \ref{eq:alpha_star} & Depth-of-truth: $\pinorm(c_{\mathrm{obs}})$ \\
+$\eta$ & norm & \ref{eq:ns} & Nonspecificity: $(1/K)\sum_c \pinorm(c)$ \\
+$\delta$ & norm & \ref{eq:rg} & Resolution gap: $\alpha^* - \eta$ \\
+$\Nc^*$ & norm & \ref{eq:nc_star} & Cond.\ necessity of truth \\
 \bottomrule
 \end{tabularx}
 \end{table}
