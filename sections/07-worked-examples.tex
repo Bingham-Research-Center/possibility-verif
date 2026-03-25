@@ -29,8 +29,13 @@ defined over $\Omega = \{\spc{MRGL},\, \spc{SLGT},\, \spc{ENH},\,
 %  confident, sharp forecast centered on \spc{MDT}.]
 
 \[
-\pi_A = \bigl\{\spc{MRGL}: 0.0,\; \spc{SLGT}: 0.05,\;
-    \spc{ENH}: 0.15,\; \spc{MDT}: 0.90,\; \spc{HIGH}: 0.10\bigr\}
+\pi_A(\omega) = \begin{cases}
+0.00 & \omega = \spc{MRGL} \\
+0.05 & \omega = \spc{SLGT} \\
+0.15 & \omega = \spc{ENH}  \\
+0.90 & \omega = \spc{MDT}  \\
+0.10 & \omega = \spc{HIGH}
+\end{cases}
 \]
 Observed outcome: $c_{\mathrm{obs}} = \spc{MDT}$.
 
@@ -41,8 +46,13 @@ Observed outcome: $c_{\mathrm{obs}} = \spc{MDT}$.
 %  trigger timing.  The system hedges across multiple categories.]
 
 \[
-\pi_B = \bigl\{\spc{MRGL}: 0.10,\; \spc{SLGT}: 0.40,\;
-    \spc{ENH}: 0.55,\; \spc{MDT}: 0.30,\; \spc{HIGH}: 0.0\bigr\}
+\pi_B(\omega) = \begin{cases}
+0.10 & \omega = \spc{MRGL} \\
+0.40 & \omega = \spc{SLGT} \\
+0.55 & \omega = \spc{ENH}  \\
+0.30 & \omega = \spc{MDT}  \\
+0.00 & \omega = \spc{HIGH}
+\end{cases}
 \]
 Observed outcome: $c_{\mathrm{obs}} = \spc{ENH}$.
 
@@ -53,43 +63,53 @@ Observed outcome: $c_{\mathrm{obs}} = \spc{ENH}$.
 %  confidently predicts \spc{MRGL} but \spc{MDT} verifies.]
 
 \[
-\pi_C = \bigl\{\spc{MRGL}: 0.85,\; \spc{SLGT}: 0.10,\;
-    \spc{ENH}: 0.0,\; \spc{MDT}: 0.0,\; \spc{HIGH}: 0.0\bigr\}
+\pi_C(\omega) = \begin{cases}
+0.85 & \omega = \spc{MRGL} \\
+0.10 & \omega = \spc{SLGT} \\
+0.00 & \omega = \spc{ENH}  \\
+0.00 & \omega = \spc{MDT}  \\
+0.00 & \omega = \spc{HIGH}
+\end{cases}
 \]
 Observed outcome: $c_{\mathrm{obs}} = \spc{MDT}$.
 
 %----------------------------------------------------------
 \subsection{Filling the Gauge}\label{sec:filling_gauge}
 
-% [PLACEHOLDER: figure reference — three-panel figure showing the raw
-%  possibility distributions for Scenarios A, B, C as bar charts with
-%  the ignorance gap (grey hatching) and the observed category
-%  highlighted.  This is the "gauge" visualisation introduced in
-%  Section 2.]
+% [PLACEHOLDER: 1–2 paragraphs introducing the gauge visualisation — each
+%  SPC category is a horizontal bar whose fill level represents possibility.
+%  The gap between the tallest bar and 1.0 is ignorance.  The observed
+%  category is highlighted.]
 
-% [PLACEHOLDER: figure reference]
-% \begin{figure}[htbp]
-% \centering
-% \includegraphics[width=\columnwidth]{figures/gauge_three_scenarios.pdf}
-% \caption{Gauge visualisation of the three scenarios.  Bars show raw
-%     possibility values $\pi(\omega)$; grey hatching above the peak
-%     indicates ignorance $\ign$.  The observed category is highlighted
-%     with a red diamond.  (A)~Scenario~A: sharp-correct \spc{MDT}.
-%     (B)~Scenario~B: hedged-correct \spc{ENH}.  (C)~Scenario~C:
-%     sharp-wrong \spc{MRGL}.}
-% \label{fig:gauge_three}
-% \end{figure}
+Figure~\ref{fig:filling_gauge} shows the gauge visualisation for
+Scenario~A.  The horizontal bars are filled to the raw possibility
+level; the gap from $\Pi_{\max}$ to $1.0$ visually encodes the
+ignorance $\ign$.  The observed category (\spc{MDT}) is highlighted
+in green.
 
-% [PLACEHOLDER: 2–3 paragraphs walking the reader through each panel,
-%  pointing out how the visual differences map onto the five-number
-%  scorecard values computed in the next subsection.]
+\begin{figure}[t]
+\centering
+\includegraphics[width=\columnwidth]{fig3_filling_gauge.pdf}
+\caption{Gauge visualisation for Scenario~A (sharp-correct \spc{MDT}).
+    Each horizontal bar represents an SPC category, filled to its raw
+    possibility value $\pi(\omega)$.  The vertical dashed line marks
+    $\Pi_{\max} = 0.90$; the gap to $1.0$ is ignorance $\ign = 0.10$.
+    The observed category (\spc{MDT}, green) dominates the distribution,
+    confirming high conditional necessity.}
+\label{fig:filling_gauge}
+\end{figure}
+
+% [PLACEHOLDER: 2–3 paragraphs walking the reader through how gauge
+%  visualisations for Scenarios B and C would differ — B shows multiple
+%  bars of similar height (hedging), C shows the dominant bar pointing at
+%  the wrong category.]
 
 %----------------------------------------------------------
 \subsection{Full Scorecard Comparison}\label{sec:scorecard_comparison}
 
-% [PLACEHOLDER: Compute all five scorecard numbers for each scenario.
-%  The following table provides the structure; values below are derived
-%  from the distributions defined in Section 6.1.]
+Table~\ref{tab:scorecard_comparison} collects the five-number scorecard
+for all three scenarios.  Figure~\ref{fig:three_scenario} provides a
+visual comparison, with scorecard values printed below each panel.
 
 \begin{table}[htbp]
 \centering
@@ -117,6 +137,25 @@ $\Nc^*$ (cond.\ necessity of truth)
 \end{tabular}
 \end{table}
 
+\begin{figure*}[t]
+\centering
+\includegraphics[width=0.90\textwidth]{fig2_three_scenario.pdf}
+\caption{Three-scenario comparison.  Each panel shows the raw possibility
+    distribution $\pi(\omega)$ as bar charts; the observed category is
+    highlighted in green, others in purple.  The five-number scorecard
+    values are printed below each panel.  \textbf{(a)}~Scenario~A:
+    sharp-correct \spc{MDT}---high $\alpha^*$, high $\Nc^*$, positive
+    $\delta$.  \textbf{(b)}~Scenario~B: hedged-correct \spc{ENH}---high
+    $\alpha^*$ but diffuse shape ($\eta$) and low $\Nc^*$.
+    \textbf{(c)}~Scenario~C: sharp-wrong
+    \spc{MRGL}---$\alpha^* = 0$ (truth assigned zero possibility) and
+    negative $\delta$.  Note that the scenarios depicted use
+    distributions from the Python figure scripts; see
+    Table~\ref{tab:scorecard_comparison} for the manuscript's canonical
+    scenario values.}
+\label{fig:three_scenario}
+\end{figure*}
+
 % [PLACEHOLDER: 3–4 paragraphs interpreting the table:
 %  - Scenario A: ideal case.  High alpha*, high Nc*, low H_Pi, strongly
 %    positive delta.  The system knew what was happening and said so
@@ -135,28 +174,12 @@ $\Nc^*$ (cond.\ necessity of truth)
 %----------------------------------------------------------
 \subsection{Pignistic Bridge Walkthrough}\label{sec:bridge_walkthrough}
 
-% [PLACEHOLDER: figure reference — three-panel figure showing the
-%  tripartite pignistic bridge applied to each scenario: raw pi on the
-%  left, probability vector (with ignorance outcome) on the right,
-%  arrows showing the transformation.]
-
-% [PLACEHOLDER: figure reference]
-% \begin{figure}[htbp]
-% \centering
-% \includegraphics[width=\columnwidth]{figures/bridge_three_scenarios.pdf}
-% \caption{Tripartite pignistic bridge applied to the three scenarios.
-%     Left bars: raw possibility $\pi$.  Right bars: probability vector
-%     with explicit ignorance outcome (hatched).  Arrows show
-%     proportional redistribution.  (A)~Scenario~A.  (B)~Scenario~B.
-%     (C)~Scenario~C.}
-% \label{fig:bridge_three}
-% \end{figure}
-
-% [PLACEHOLDER: Compute the bridge probabilities for each scenario.
-%  Show the IG values relative to a climatological baseline.
-%  Demonstrate how Scenario B's high ignorance correctly deflates
-%  probabilities, while Scenario C's low ignorance fails to protect
-%  against the confident miss.]
+% [PLACEHOLDER: Apply the tripartite pignistic bridge to each scenario.
+%  Show the probability vectors (with ignorance outcome) and compute IG
+%  values relative to a climatological baseline.  Demonstrate how
+%  Scenario B's high ignorance correctly deflates probabilities, while
+%  Scenario C's low ignorance fails to protect against the confident
+%  miss.]
 
 % [PLACEHOLDER: Compute interval log scores for a threshold event
 %  A_T = {ENH, MDT, HIGH} across all three scenarios.  Show how ILS

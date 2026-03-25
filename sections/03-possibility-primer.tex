@@ -91,6 +91,21 @@ outcome---an impossible event ($\Pi(\overline\omega) = 0$) can be ruled
 out due to known plausibility of a different outcome, rather than
 spurious confidence that stems from enforced normalisation.
 
+Figure~\ref{fig:poss_anatomy} illustrates a subnormal distribution
+annotated with $\Pi_{\max}$, \ign{}, and \Nc{} for the peak category.
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=\columnwidth]{fig1_possibility_anatomy.pdf}
+\caption{Anatomy of a subnormal possibility distribution over SPC
+    categories.  Purple bars show raw possibility $\pi(\omega)$.  The
+    dashed line marks $\Pi_{\max} = \max(\pi)$; the gap from
+    $\Pi_{\max}$ to $1.0$ is the ignorance $\ign$
+    (Eq.~\ref{eq:ignorance}).  Conditional necessity \Nc{} for the peak
+    category is annotated.}
+\label{fig:poss_anatomy}
+\end{figure}
+
 % [PLACEHOLDER: Paragraph connecting ignorance to the normalisation
 %  problem.  Normalising forces derived probability distributions to sum
 %  to unity, masking the distinction between "the system predicts
@@ -103,8 +118,13 @@ spurious confidence that stems from enforced normalisation.
 %  severe-weather setup with strong instability, shear, and moisture.]
 The resulting possibility distribution is:
 \[
-\pi = \bigl\{\spc{MRGL}: 0.0,\; \spc{SLGT}: 0.1,\;
-    \spc{ENH}: 0.2,\; \spc{MDT}: 0.75,\; \spc{HIGH}: 0.15\bigr\}
+\pi(\omega) = \begin{cases}
+0.00 & \omega = \spc{MRGL} \\
+0.10 & \omega = \spc{SLGT} \\
+0.20 & \omega = \spc{ENH}  \\
+0.75 & \omega = \spc{MDT}  \\
+0.15 & \omega = \spc{HIGH}
+\end{cases}
 \]
 with $\ign = 1 - 0.75 = 0.25$ and
 $\Nc(\spc{MDT}) = 1 - 0.2/0.75 = 0.73$.  Interpretation: \spc{MDT}
@@ -118,8 +138,13 @@ scenarios the system covers, \spc{MDT} is the dominant category.
 %  thresholds.]
 The resulting possibility distribution is:
 \[
-\pi = \bigl\{\spc{MRGL}: 0.5,\; \spc{SLGT}: 0.5,\;
-    \spc{ENH}: 0.0,\; \spc{MDT}: 0.0,\; \spc{HIGH}: 0.0\bigr\}
+\pi(\omega) = \begin{cases}
+0.50 & \omega = \spc{MRGL} \\
+0.50 & \omega = \spc{SLGT} \\
+0.00 & \omega = \spc{ENH}  \\
+0.00 & \omega = \spc{MDT}  \\
+0.00 & \omega = \spc{HIGH}
+\end{cases}
 \]
 with $\ign = 1 - 0.5 = 0.5$ and
 $\Nc(\spc{MRGL}) = \Nc(\spc{SLGT}) = 0.0$.  Interpretation:
@@ -132,6 +157,12 @@ Blindly normalising Example~2 would inflate $\pi(\spc{MRGL})$ and
 $\pi(\spc{SLGT})$ to 1.0, hiding the fact that the forecasting system
 struggles with this meteorological scenario.  Preserving subnormality
 makes these knowledge gaps explicit.
+
+\smallskip\noindent\textit{Notation convention.}  Henceforth,
+distributions are written as ordered tuples
+$(\spc{MRGL},\, \spc{SLGT},\, \spc{ENH},\, \spc{MDT},\, \spc{HIGH})$
+when context is clear:\ e.g., Example~1 is
+$\pi = (0,\, 0.1,\, 0.2,\, 0.75,\, 0.15)$.
 
 %----------------------------------------------------------
 \subsection{Three-Component Uncertainty}\label{sec:three_component}

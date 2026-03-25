@@ -211,8 +211,7 @@ possible'' and ``essentially certain.''
 \end{itemize}
 
 \textbf{Worked example} (Example~1 from Section~\ref{sec:subnormal},
-$\pi = \bigl\{\spc{MRGL}: 0.0,\; \spc{SLGT}: 0.1,\; \spc{ENH}: 0.2,\;
-\spc{MDT}: 0.75,\; \spc{HIGH}: 0.15\bigr\}$, threshold
+$\pi = (0,\, 0.1,\, 0.2,\, 0.75,\, 0.15)$, threshold
 $A_T = \{\spc{ENH},\, \spc{MDT},\, \spc{HIGH}\}$):
 \begin{itemize}[leftmargin=2em]
 \item $m = 0.75$;
@@ -226,6 +225,25 @@ $A_T = \{\spc{ENH},\, \spc{MDT},\, \spc{HIGH}\}$):
 \item If it does not:
     $\mathrm{ILS} = -\log_2(1 - 0.65) = -\log_2(0.35) = 1.51$~bits.
 \end{itemize}
+
+Figure~\ref{fig:upper_lower} shows the interval $[L, U]$ for several
+forecast scenarios applied to the threshold event
+$A_T = \{\spc{ENH},\, \spc{MDT},\, \spc{HIGH}\}$, illustrating how
+sharp forecasts produce narrow intervals while hedged or ignorant
+forecasts produce wide ones.
+
+\begin{figure*}[t]
+\centering
+\includegraphics[width=0.75\textwidth]{fig5_upper_lower_bounds.pdf}
+\caption{Upper and lower probability bounds for the threshold event
+    $A_T = \{\spc{ENH},\, \spc{MDT},\, \spc{HIGH}\}$ across three
+    forecast scenarios.  Each horizontal band shows the interval
+    $[L, U]$ (Eqs.~\ref{eq:L_bound}--\ref{eq:U_bound}) on a $[0,1]$
+    number line.  Narrow intervals indicate high conditional necessity;
+    wide intervals indicate ambiguity between ``merely possible'' and
+    ``essentially certain.''}
+\label{fig:upper_lower}
+\end{figure*}
 
 %----------------------------------------------------------
 \subsection{Imprecise Ranked Logarithmic Score}\label{sec:irls}

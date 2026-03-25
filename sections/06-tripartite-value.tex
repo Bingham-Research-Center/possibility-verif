@@ -76,6 +76,24 @@ ${>}80\%$ chance of severe weather, does it actually verify
 ${>}80\%$ of the time?''  This test asks: ``when the system says
 $\Nc > \tau$, does the truth verify at a rate above climatology?''
 
+Figure~\ref{fig:reliability} illustrates Test~3: conditional hit rate
+as a function of the \Nc{} threshold, plotted against the climatological
+base rate.  A curve above the base-rate line confirms that high-necessity
+forecasts identify genuinely confident predictions.
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=\columnwidth]{fig6_reliability_curves.pdf}
+\caption{Reliability of conditional necessity.  The purple curve shows
+    the conditional hit rate for the observed category as a function of
+    the $\Nc$ threshold $\tau$.  The horizontal dashed line marks the
+    climatological base rate ($1/K = 0.20$ for $K = 5$ categories).
+    When the curve lies above the base rate, high-$\Nc$ forecasts verify
+    better than climatology---confirming that conditional necessity is an
+    informative confidence signal.}
+\label{fig:reliability}
+\end{figure}
+
 % [PLACEHOLDER: Discuss sample-size requirements.  At pilot scales
 %  (~90 station-days), these tests are supplemented by illustrative case
 %  studies.  Recommend minimum sample sizes for each test.]
@@ -126,6 +144,25 @@ Together, the three lanes catch failures that any single lane would miss:
 \item A forecast with sharp possibility and high $\Nc^*$ but poor IG has
     a bridge problem---the conversion is distorting the signal.
 \end{itemize}
+
+Figure~\ref{fig:three_lanes_schematic} provides a visual summary of the
+three lanes, showing how the raw possibility distribution feeds into each
+verification pathway.
+
+\begin{figure*}[t]
+\centering
+\includegraphics[width=0.80\textwidth]{fig8_verification_lanes.pdf}
+\caption{Three-lane verification schematic.  A subnormal possibility
+    distribution feeds three parallel verification pathways:
+    \textbf{Lane~1} (deterministic) evaluates the defuzzified point
+    forecast via RMSE and bias; \textbf{Lane~2} (probabilistic) applies
+    the tripartite pignistic bridge and evaluates information gain;
+    \textbf{Lane~3} (native possibilistic, highlighted in purple)
+    evaluates the raw distribution via the five-number scorecard and
+    interval log score.  Each lane diagnoses failure modes invisible to
+    the others (Table~\ref{tab:three_lanes}).}
+\label{fig:three_lanes_schematic}
+\end{figure*}
 
 % [PLACEHOLDER: 1–2 paragraphs expanding on how a forecaster or
 %  verification analyst would use the three lanes in practice.  Suggest a
