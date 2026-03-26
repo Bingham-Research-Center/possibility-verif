@@ -1,6 +1,18 @@
 """Shared style constants and matplotlib configuration for possibilistic verification figures."""
 import matplotlib as mpl
 import matplotlib.pyplot as plt
+import matplotlib.font_manager as fm
+import os as _os_font
+
+# Register bundled TeX Gyre Heros fonts (Helvetica-metric-compatible, GUST License)
+_FONT_DIR = _os_font.path.join(
+    _os_font.path.dirname(_os_font.path.dirname(_os_font.path.abspath(__file__))),
+    "fonts", "texgyreheros",
+)
+if _os_font.path.isdir(_FONT_DIR):
+    for _f in _os_font.listdir(_FONT_DIR):
+        if _f.endswith(".otf"):
+            fm.fontManager.addfont(_os_font.path.join(_FONT_DIR, _f))
 
 # Colour palette
 PURPLE = "#7B1FA2"
@@ -23,7 +35,7 @@ def apply_style():
     """Apply shared matplotlib rcParams."""
     plt.rcParams.update({
         "font.family": "sans-serif",
-        "font.sans-serif": ["Helvetica", "Arial", "TeX Gyre Heros", "DejaVu Sans"],
+        "font.sans-serif": ["TeX Gyre Heros", "Helvetica", "Arial", "DejaVu Sans"],
         "font.size": 10,
         "axes.facecolor": LIGHT_GREY,
         "axes.edgecolor": MID_GREY,
