@@ -37,16 +37,18 @@ def hpi_cmap():
 
 
 def hpi_green_cmap():
-    """H_Pi in green: dark green (confident) → pale green (uncertain)."""
+    """H_Pi in green: dark green (confident) → medium-light green (uncertain).
+    Stops before white so uncertain dots remain visibly green."""
     return LinearSegmentedColormap.from_list("hpi_green", [
-        "#1B5E20", GREEN, "#A5D6A7", "#E8F5E9",
+        "#1B5E20", GREEN, "#81C784",
     ], N=256)
 
 
 def count_cmap():
-    """Count: pale lavender (few) → very dark purple (many)."""
+    """Count: medium purple (few) → very dark purple (many).
+    No near-white shades so sparse bins remain visible."""
     return LinearSegmentedColormap.from_list("cnt2", [
-        "#F3E5F5", "#CE93D8", PURPLE, "#4A0072",
+        "#CE93D8", PURPLE, "#4A0072",
     ], N=256)
 
 
@@ -218,8 +220,12 @@ def draw_traj_spec_alpha(ax, means, color=GREEN, gcmap=None, gnorm=None):
     _traj_labels(ax, cats, xs, ys, ns, color)
 
 
-def draw_traj_commit(ax, means, color=GREEN, fontsize=6.5):
-    """GREEN trajectory on (pimax, delta) axes."""
+def draw_traj_commit(ax, means, color=GREEN, fontsize=6.5,
+                     gcmap=None, gnorm=None):
+    """GREEN trajectory on (pimax, delta) axes.
+
+    If gcmap/gnorm are provided, dots are shaded by mean H_Pi.
+    """
     cats = [c for c in SPC_CATEGORIES if c in means]
     xs = [means[c]['pimax'] for c in cats]
     ys = [means[c]['delta'] for c in cats]
@@ -233,8 +239,16 @@ def draw_traj_commit(ax, means, color=GREEN, fontsize=6.5):
     s_min, s_max = 60, 350
     mx = max(ns)
     sizes = [s_min + (s_max - s_min) * (n / mx) for n in ns]
-    ax.scatter(xs, ys, s=sizes, fc=color, ec="white", lw=2.0, zorder=6)
-    ax.scatter(xs, ys, s=sizes, fc=color, ec=DARK_GREY, lw=0.8, zorder=7)
+
+    if gcmap is not None and gnorm is not None:
+        hs = [means[c]['hpi'] for c in cats]
+        ax.scatter(xs, ys, s=sizes, c=hs, cmap=gcmap, norm=gnorm,
+                   ec="white", lw=2.0, zorder=6)
+        ax.scatter(xs, ys, s=sizes, c=hs, cmap=gcmap, norm=gnorm,
+                   ec=DARK_GREY, lw=0.8, zorder=7)
+    else:
+        ax.scatter(xs, ys, s=sizes, fc=color, ec="white", lw=2.0, zorder=6)
+        ax.scatter(xs, ys, s=sizes, fc=color, ec=DARK_GREY, lw=0.8, zorder=7)
 
     _traj_labels(ax, cats, xs, ys, ns, color, fontsize=fontsize)
 
@@ -316,9 +330,12 @@ def v3b(data, ap, spec, anchors):
 
 def v4b(data, ap, spec, anchors):
     """V4b: commitment-discrimination + trajectory (all days)."""
+    from matplotlib.colors import LogNorm
+
     fig, ax = plt.subplots(figsize=(5.8, 7.0))
     cm = count_cmap()
-    cm.set_under("#E8E0F0")  # distinct pale shade for bins with count < 5
+    gcm = hpi_green_cmap()
+    gnm = Normalize(0.0, 0.55)
     means = cat_means(data, spec)
 
     pi_max = 1.0 - data['H_Pi']
@@ -326,8 +343,7 @@ def v4b(data, ap, spec, anchors):
 
     hb = ax.hexbin(pi_max, delta, gridsize=12, cmap=cm,
                    edgecolors="white", linewidths=0.4, mincnt=1, zorder=2)
-    # Clamp: bins with count < 5 get the set_under colour
-    hb.set_clim(vmin=5)
+    hb.set_norm(LogNorm(vmin=1, vmax=hb.get_array().max()))
 
     draw_delta0_horiz(ax)
 
@@ -338,12 +354,12 @@ def v4b(data, ap, spec, anchors):
     ax.text(0.85, -0.30, "Overconfident\n& wrong", **kw)
     ax.text(0.15, -0.30, "Uninformative", **kw)
 
-    draw_traj_commit(ax, means)
+    draw_traj_commit(ax, means, gcmap=gcm, gnorm=gnm)
     draw_anchors_commit(ax, anchors)
     draw_compass(ax, 0.95, 0.72, "better")
 
-    cb = fig.colorbar(hb, ax=ax, shrink=0.55, pad=0.02, extend='min')
-    cb.set_label("Count per bin", fontsize=8)
+    cb = fig.colorbar(hb, ax=ax, shrink=0.55, pad=0.02)
+    cb.set_label("Count per bin (log scale)", fontsize=8)
     cb.ax.tick_params(labelsize=7)
 
     ax.set_xlim(-0.02, 1.02)
