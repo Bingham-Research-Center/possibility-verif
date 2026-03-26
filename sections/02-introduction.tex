@@ -39,18 +39,10 @@ possibilistic forecasts.  This paper fills that gap.
 
 % --- Why possibility theory matters for hazard verification ---
 
-A probabilistic forecast captures one dimension of uncertainty: given
-sufficient evidence, each outcome receives a precise weight.  A
-possibility distribution captures something richer.  For any event~$A$,
-the interval $[\nec(A),\, \poss(A)]$ brackets the range of
-probabilities consistent with the available evidence
-\citep{Dubois2006-MISSING}.  When evidence is abundant, the interval
-collapses and possibility reduces to a point probability; when evidence
-is scarce, the interval widens, faithfully representing the forecaster's
-epistemic state.  This bracketing property makes possibility theory a
-strict generalization of probability rather than a competing paradigm.
-
-Possibility distributions arise naturally in several operational
+Possibility theory generalizes probability: the interval
+$[\nec(A),\, \poss(A)]$ brackets the range of consistent probabilities,
+collapsing to a point when evidence is complete
+(Section~\ref{sec:poss_axioms}).  Possibility distributions arise naturally in several operational
 settings.  Expert-rule systems and fuzzy inference engines produce
 membership functions that are possibility distributions by construction
 \citep{Klir1995-va}.  Imprecise-probability frameworks generate upper
@@ -64,41 +56,15 @@ $\pi(\spc{MDT}) = 0.7$ says ``\spc{MDT} is fairly compatible with
 available evidence''; it does not say ``the long-run frequency of
 \spc{MDT} events is 70\%.''
 
-The distinction becomes sharpest for subnormal distributions, where the
-maximum possibility value falls below unity: $\max_\omega \pi(\omega) <
-1$.  A subnormal distribution encodes a signal that probabilistic
-forecasts cannot represent: the system does not fully endorse any
-outcome.  This possibilistic ignorance, denoted $\ign = 1 - \max(\pi)$,
-quantifies the gap between the system's best-supported outcome and full
-endorsement.  Probabilistic frameworks have no direct counterpart---an
-ensemble that assigns low probability to every member still produces a
-distribution that sums to one, absorbing the uncertainty into the
-shape of the distribution rather than flagging it as a distinct signal.
-
-% --- The "ignorance erasure" problem ---
-
-Classical possibility theory requires normalization: at least one
-outcome must receive $\pi(\omega) = 1$ for the necessity measure to
-be well-defined \citep{Dubois1988-nh}.  In a verification context,
-normalizing a subnormal distribution---rescaling so that $\max(\pi) =
-1$---destroys precisely the ignorance signal that distinguishes a
-confident forecast from a tentative one.  A system that produces
-$\pi = (0.05,\, 0.2,\, 0.4,\, 0.6,\, 0.1,\, 0.0)$, indicating 40\% ignorance,
-becomes indistinguishable after normalization from a system that
-confidently assigns $\pi = (0.08,\, 0.33,\, 0.67,\, 1.0,\, 0.17,\, 0.0)$.
-Both carry the same shape, but the first system was honestly reporting
-that it lacked evidence.
-
-This pattern is analogous to a familiar problem in ensemble
-verification.  When all ensemble members cluster in a low-probability
-region, post-processing must still produce calibrated probabilities that
-sum to unity; the ensemble's collective uncertainty is absorbed into the
-distribution rather than flagged.  We call this \textit{ignorance
-erasure}: the systematic destruction of subnormality information through
-normalization or probability conversion.  Ignorance erasure is, we
-argue, the central obstacle to adopting possibilistic methods in
-operational verification, because it conflates ``the system thinks
-\spc{ENH} is most likely'' with ``the system is confident.''
+For subnormal distributions ($\max_\omega \pi(\omega) < 1$), the
+possibilistic ignorance $\ign = 1 - \max(\pi)$ quantifies the gap
+between the system's best-supported outcome and full endorsement---a
+signal that probability, which must sum to unity, cannot represent.
+Normalizing a subnormal distribution to $\max(\pi) = 1$ erases this
+signal, a problem we call \textit{ignorance erasure}: it conflates ``the
+system thinks \spc{ENH} is most likely'' with ``the system is
+confident'' (Section~\ref{sec:naive_normalization} develops this
+contrast in detail).
 
 % --- Brief literature review ---
 
@@ -121,17 +87,19 @@ atmospheric forecasts, separating overall skill into uncertainty,
 discrimination, and reliability components.  These tools are well suited
 to probability vectors but cannot be applied directly to possibility
 distributions, which violate the additivity axiom.
+The broader meteorological verification literature---including
+\citet{Murphy1993-MISSING}, \citet{Jolliffe2012-MISSING}, and
+\citet{Wilks2011-MISSING}---provides the conceptual vocabulary
+(reliability, resolution, discrimination) that we adapt below.
 
-The Dempster--Shafer theory of evidence \citep{Shafer1976-MISSING}
-provides an adjacent framework in which belief and plausibility functions
-generalize probability.  \citet{Smets1990-MISSING} introduced the
-pignistic transformation---from the Latin \textit{pignus}, a wager---to
-convert belief functions into decision-ready probabilities.  The theory
-of imprecise probabilities \citep{Walley1991-MISSING} further develops
-the idea of interval-valued uncertainty representations.  All three frameworks share
-the intuition that a single probability may not adequately represent an
-agent's epistemic state, but none provides a verification methodology
-tailored to subnormal possibility distributions.
+Adjacent frameworks---Dempster--Shafer evidence theory
+\citep{Shafer1976-MISSING}, the pignistic transformation
+\citep{Smets1990-MISSING}, and imprecise probabilities
+\citep{Walley1991-MISSING}---share the intuition that a single
+probability may not capture an agent's epistemic state, but none
+provides a verification methodology for subnormal possibility
+distributions (Section~\ref{sec:ds_connections} develops these
+connections).
 
 Despite the growing use of possibility-like representations in
 expert systems, fuzzy inference, and imprecise-probability applications,
@@ -155,8 +123,9 @@ Section~\ref{sec:pignistic_bridge} develops the possibility-to-probability
 bridge that converts possibilities to probabilities without erasing
 ignorance, and reviews the information-gain decomposition.
 Section~\ref{sec:native_verification} formalizes native possibilistic
-verification: the five-number scorecard, interval log score, imprecise
-ranked logarithmic score, and possibilistic climatology.
+verification: the five-number scorecard and interval log score.
+Appendix~\ref{sec:appendix_alt} develops the imprecise ranked
+logarithmic score and possibilistic climatology.
 Section~\ref{sec:tripartite_value} establishes three hypothesis tests
 demonstrating that each uncertainty component (possibility, ignorance,
 conditional necessity) independently contributes verification value.
