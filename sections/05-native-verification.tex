@@ -194,17 +194,21 @@ operationally useful.
 \begin{figure*}[t]
 \centering
 \includegraphics[width=0.85\textwidth]{fig11_performance_diagram.png}
-\caption{Possibilistic performance diagram.  Each point represents a
-    synthetic forecast--observation pair.  \textbf{Position:}
+\caption{Possibilistic performance diagram for a five-year synthetic
+    reforecast ($n = 1{,}825$ days) with SPC-like base rates.  Circles
+    show common-category days (\spc{MRGL}--\spc{ENH}); diamonds
+    highlight rare-event days (\spc{MDT}: 144, \spc{HIGH}: 41).
+    Stars mark the three worked scenarios from
+    Section~\ref{sec:worked_examples}.  \textbf{Position:}
     specificity $1 - \eta$ ($x$) vs.\ depth-of-truth $\alpha^*$ ($y$).
-    Diagonal dashed lines are iso-$\delta$ contours (resolution gap);
-    $\delta = 0$ separates forecasts that assign more possibility to the
-    truth than to the average category (above) from those that do not
-    (below).  \textbf{Colour:} ignorance $\ign$ (darker $=$ more
-    confident).  \textbf{Size:} conditional necessity $\Nc^*$ (larger
-    $=$ truth more dominant).  Large, dark markers in the upper right
-    represent sharp, confident, correct forecasts; small, light markers
-    in the lower right represent sharp, ignorant, incorrect ones.}
+    The dashed $\delta = 0$ contour separates forecasts that assign more
+    possibility to the truth than to the average category (above) from
+    those that do not (below).  \textbf{Colour:} ignorance $\ign$
+    (darker $=$ more confident).  \textbf{Size:} conditional necessity
+    $\Nc^*$ (larger $=$ truth more dominant).  The dense dark cluster at
+    upper right represents confident correct forecasts on common events;
+    scattered pale diamonds trace the rare-event population, which carries
+    higher ignorance and is harder to forecast correctly.}
 \label{fig:performance_diagram}
 \end{figure*}
 
