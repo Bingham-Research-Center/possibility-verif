@@ -245,83 +245,59 @@ operational forecasters need when tuning a possibilistic system.
 We now apply the possibility-to-probability bridge
 (Section~\ref{sec:poss_prob_bridge}) to each scenario, then compute
 information gain relative to a uniform climatological baseline
-$p_{\mathrm{clim}} = (1/6,\ldots,1/6) \approx 0.167$ per category over
-the six SPC categories.  Recall the bridge steps: reserve ignorance mass
-$p_{\mathrm{ign}} = \ign = 1 - m$; distribute the remaining $1 - \ign$
-proportionally across outcomes via $p_i = \pi_i (1 - \ign) / \sum_j
-\pi_j$; append the ignorance outcome.
+$p_{\mathrm{clim}} = 1/6 \approx 0.167$ per category
+(surprise $= \log_2 6 = 2.585$~bits).
+The bridge reserves $p_{\mathrm{ign}} = \ign$, distributes
+the remaining $m$ proportionally via
+$p_i = \pi_i \cdot m / \sum_j \pi_j$,
+and appends the ignorance outcome.
+Table~\ref{tab:bridge_ils} collects the results; the key pattern is
+readable column by column.
 
-\begin{itemize}[leftmargin=2em]
-\item \textbf{Scenario~A:} $\ign = 0.10$, $\sum \pi = 1.20$.  The
-    bridge yields $\mathbf{p}_A = (0.000,\, 0.000,\, 0.038,\, 0.113,\,
-    0.675,\, 0.075,\, \underbrace{0.100}_{\text{ign}})$.  Since \spc{MDT}
-    is observed, $-\!\log_2(0.675) = 0.567$~bits.  Climatological surprise
-    is $-\!\log_2(1/6) = 2.585$~bits, giving
-    $\mathrm{IG}_A = 2.585 - 0.567 = +2.018$~bits.
-\item \textbf{Scenario~B:} $\ign = 0.45$, $\sum \pi = 1.45$.  The
-    bridge yields $\mathbf{p}_B = (0.038,\, 0.038,\, 0.152,\, 0.209,\,
-    0.114,\, 0.000,\, \underbrace{0.450}_{\text{ign}})$.  Since \spc{ENH}
-    is observed, $-\!\log_2(0.209) = 2.258$~bits, giving
-    $\mathrm{IG}_B = 2.585 - 2.258 = +0.327$~bits.
-\item \textbf{Scenario~C:} $\ign = 0.15$, $\sum \pi = 1.00$.  The
-    bridge yields $\mathbf{p}_C = (0.722,\, 0.085,\, 0.042,\, 0.000,\,
-    0.000,\, 0.000,\, \underbrace{0.150}_{\text{ign}})$.  Since \spc{MDT}
-    is observed, $p(\spc{MDT}) = 0.00$; using $\varepsilon = 0.01$ to
-    regularize, $-\!\log_2(0.01) = 6.644$~bits, giving
-    $\mathrm{IG}_C = 2.585 - 6.644 = -4.059$~bits.
-\end{itemize}
+\begin{table}[htbp]
+\centering
+\caption{Bridge conversion, information gain, and interval log score
+    for the three worked scenarios.  \textbf{Top:} bridge probabilities and
+    IG relative to uniform climatology ($\log_2 6 = 2.585$~bits).
+    \textbf{Bottom:} ILS for the threshold event
+    $A_T = \{\spc{ENH},\, \spc{MDT},\, \spc{HIGH}\}$.
+    Asterisk ($^*$) denotes $\varepsilon$-floored values.}
+\label{tab:bridge_ils}
+\footnotesize
+\setlength{\tabcolsep}{4pt}
+\begin{tabular}{lccc}
+\toprule
+ & \textbf{A} (sharp- & \textbf{B} (hedged- & \textbf{C} (sharp- \\
+ & correct) & correct) & wrong) \\
+\midrule
+\multicolumn{4}{l}{\textit{Bridge conversion}} \\[2pt]
+$\ign$ & $0.10$ & $0.45$ & $0.15$ \\
+$\sum \pi$ & $1.20$ & $1.45$ & $1.00$ \\
+$p(c_{\mathrm{obs}})$ & $0.675$ & $0.209$ & $0.000^*$ \\
+Surprise (bits) & $0.567$ & $2.258$ & $6.644^*$ \\
+\textbf{IG (bits)} & $\mathbf{+2.018}$ & $\mathbf{+0.327}$ & $\mathbf{-4.059}$ \\[4pt]
+\multicolumn{4}{l}{\textit{ILS\/ for
+    $A_T = \{$\spc{ENH}$,\,$\spc{MDT}$,\,$\spc{HIGH}$\}$}} \\[2pt]
+$U = \poss(A_T)$ & $0.90$ & $0.55$ & $0.00^*$ \\
+$\Nc(A_T)$ & $0.944$ & $0.273$ & --- \\
+$L = m \cdot \Nc$ & $0.850$ & $0.150$ & $0.000$ \\
+$[L,\, U]$ & $[0.85,\, 0.90]$ & $[0.15,\, 0.55]$ & $[0,\, 0]$ \\
+\textbf{ILS (bits)} & $\mathbf{0.152}$ & $\mathbf{0.862}$ & $\mathbf{6.644}^*$ \\
+\bottomrule
+\end{tabular}
+\end{table}
 
-The three IG values span a wide range and align with the scorecard
-diagnostics.  Scenario~A's $+2.018$~bits reflects genuine skill: the
-bridge concentrated probability on the correct outcome, and low ignorance
-meant little mass was diverted to the ignorance bin.  Scenario~B's
-$+0.327$~bits is positive but modest---the high $\ign = 0.45$ correctly
-deflated $p(\spc{ENH})$ from what simple normalization would have
-produced ($0.55 / 1.45 = 0.379$) down to $0.209$, honestly reflecting
-the system's uncertainty.  Scenario~C incurs a catastrophic
-$-4.059$~bits because the bridge assigned zero probability to the
-observed outcome; even with the $\varepsilon$ floor, the logarithmic
-penalty is severe.  Crucially, the low ignorance in Scenario~C
-($\ign = 0.15$) provides almost no cushion: the system left itself no
-escape route for an outcome it had ruled out.
-
-Finally, we compute the interval log score (ILS) for the threshold
-event $A_T = \{\spc{ENH},\, \spc{MDT},\, \spc{HIGH}\}$ across all three
-scenarios.  For each forecast, the upper bound is $U = \max_{\omega \in
-A_T} \pi(\omega)$; the shape-normalized distribution $\pinorm = \pi / m$
-is used to compute conditional necessity via $\Nc(A_T) = 1 -
-\max_{\omega \notin A_T} \pinorm(\omega)$; and the lower bound is $L = m
-\cdot \Nc(A_T)$.  When the event occurs, the ILS penalty is
-$-\!\log_2(U)$.
-
-\begin{itemize}[leftmargin=2em]
-\item \textbf{Scenario~A:} $U = \max(0.15, 0.90, 0.10) = 0.90$.
-    Shape-normalizing gives $\pinorm = (0.000,\, 0.000,\, 0.056,\,
-    0.167,\, 1.000,\, 0.111)$; $\max_{\omega \notin A_T} \pinorm =
-    \max(0.000,\, 0.000,\, 0.056) = 0.056$, so $\Nc(A_T) = 0.944$ and
-    $L = 0.90 \times 0.944 = 0.850$.  Event occurs (\spc{MDT}
-    $\in A_T$): $\mathrm{ILS}_A = -\!\log_2(0.90) = 0.152$~bits.
-\item \textbf{Scenario~B:} $U = \max(0.55, 0.30, 0.00) = 0.55$.
-    Shape-normalizing gives $\pinorm = (0.182,\, 0.182,\, 0.727,\,
-    1.000,\, 0.545,\, 0.000)$; $\max_{\omega \notin A_T} \pinorm =
-    \max(0.182,\, 0.182,\, 0.727) = 0.727$, so $\Nc(A_T) = 0.273$ and
-    $L = 0.55 \times 0.273 = 0.150$.  Event occurs (\spc{ENH}
-    $\in A_T$): $\mathrm{ILS}_B = -\!\log_2(0.55) = 0.862$~bits.
-\item \textbf{Scenario~C:} $U = \max(0.00, 0.00, 0.00) = 0.00$.
-    Using $\varepsilon = 0.01$, the event occurs (\spc{MDT} $\in A_T$):
-    $\mathrm{ILS}_C = -\!\log_2(0.01) = 6.644$~bits---maximum penalty.
-\end{itemize}
-
-The ILS results mirror and reinforce the bridge-based IG analysis.
-Scenario~A earns the lightest penalty ($0.152$~bits) because the
-system placed high possibility on the threshold event with tight
-$[L, U] = [0.850,\, 0.900]$ bounds.  Scenario~B receives a moderate
-penalty ($0.862$~bits): the system considered the event plausible
-($U = 0.55$) but hedged substantially, yielding wide bounds
-$[0.150,\, 0.550]$ that honestly reflect its ambivalence.  Scenario~C
-incurs the maximum penalty ($6.644$~bits) because the system assigned
-zero raw possibility to every category in $A_T$---the event was
-declared impossible.  Taken together, the IG and ILS analyses confirm
-that the scorecard diagnostics are not merely descriptive: they
-translate directly into probabilistic and possibilistic skill
-penalties that would drive appropriate system improvement.
+The three scenarios trace a clear arc from skill to catastrophe.
+Scenario~A's bridge concentrates probability on the correct outcome
+($p = 0.675$); low ignorance means little mass is stranded in the
+ignorance bin, yielding $\mathrm{IG} = +2.018$~bits and a tight
+ILS interval $[0.85,\, 0.90]$.
+Scenario~B is positive but modest ($\mathrm{IG} = +0.327$~bits): the
+high $\ign = 0.45$ correctly deflates $p(\spc{ENH})$ from the
+simple-normalization value of $0.55/1.45 = 0.379$ down to $0.209$,
+honestly reflecting the system's uncertainty; the wide ILS interval
+$[0.15,\, 0.55]$ confirms the ambivalence.
+Scenario~C incurs catastrophic penalties on both scores because the
+bridge assigns zero probability to the observed outcome.  Crucially,
+low ignorance ($\ign = 0.15$) provides almost no cushion: the system
+left itself no escape route for an outcome it had ruled out.
