@@ -7,16 +7,16 @@
 \section{Worked Examples}\label{sec:worked_examples}
 
 The preceding sections developed three verification lanes---the native
-scorecard, the possibility-to-probability bridge with information gain,
-and the interval log score---in the abstract.  This section applies all
-three to a concrete trio of stylized convective outlook scenarios.  Each
-scenario is designed to isolate a different diagnostic situation: a sharp
-forecast that verifies correctly, a hedged forecast that also verifies
-correctly, and a sharp forecast that misses badly.  Walking through the
-full scorecard, gauge visualization, bridge computation, and ILS
-calculation for each case demonstrates how the metrics complement one
-another and how subnormality propagates through every stage of the
-framework.
+scorecard with exceedance bounds, the possibility-to-probability bridge
+with information gain, and three diagnostic hypothesis tests---in the
+abstract.  This section applies them to a concrete trio of stylized
+convective outlook scenarios.  Each scenario is designed to isolate a
+different diagnostic situation: a sharp forecast that verifies correctly,
+a hedged forecast that also verifies correctly, and a sharp forecast
+that misses badly.  Walking through the full scorecard, gauge
+visualization, and bridge computation for each case demonstrates how the
+metrics complement one another and how subnormality propagates through
+every stage of the framework.
 
 %----------------------------------------------------------
 \subsection{Scenario Setup}\label{sec:scenario_setup}
@@ -255,11 +255,9 @@ readable column by column.
 
 \begin{table}[htbp]
 \centering
-\caption{Bridge conversion, information gain, and interval log score
-    for the three worked scenarios.  \textbf{Top:} bridge probabilities and
-    IG relative to a uniform baseline ($\log_2 6 = 2.585$~bits).
-    \textbf{Bottom:} ILS for the threshold event
-    $A_T = \{\spc{ENH},\, \spc{MDT},\, \spc{HIGH}\}$.
+\caption{Bridge conversion and information gain for the three worked
+    scenarios, relative to a uniform baseline
+    ($\log_2 6 = 2.585$~bits).
     Asterisk ($^*$) denotes $\varepsilon$-floored values.}
 \label{tab:bridge_ils}
 \footnotesize
@@ -269,19 +267,11 @@ readable column by column.
  & \textbf{A} (sharp- & \textbf{B} (hedged- & \textbf{C} (sharp- \\
  & correct) & correct) & wrong) \\
 \midrule
-\multicolumn{4}{l}{\textit{Bridge conversion}} \\[2pt]
 $\ign$ & $0.10$ & $0.45$ & $0.15$ \\
 $\sum \pi$ & $1.20$ & $1.45$ & $1.00$ \\
 $p(c_{\mathrm{obs}})$ & $0.675$ & $0.209$ & $0.000^*$ \\
 Surprise (bits) & $0.567$ & $2.258$ & $6.644^*$ \\
-\textbf{IG (bits)} & $\mathbf{+2.018}$ & $\mathbf{+0.327}$ & $\mathbf{-4.059}$ \\[4pt]
-\multicolumn{4}{l}{\textit{ILS\/ for
-    $A_T = \{$\spc{ENH}$,\,$\spc{MDT}$,\,$\spc{HIGH}$\}$}} \\[2pt]
-$U = \poss(A_T)$ & $0.90$ & $0.55$ & $0.00^*$ \\
-$\Nc(A_T)$ & $0.944$ & $0.273$ & --- \\
-$L = m \cdot \Nc$ & $0.850$ & $0.150$ & $0.000$ \\
-$[L,\, U]$ & $[0.85,\, 0.90]$ & $[0.15,\, 0.55]$ & $[0,\, 0]$ \\
-\textbf{ILS (bits)} & $\mathbf{0.152}$ & $\mathbf{0.862}$ & $\mathbf{6.644}^*$ \\
+\textbf{IG (bits)} & $\mathbf{+2.018}$ & $\mathbf{+0.327}$ & $\mathbf{-4.059}$ \\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -289,14 +279,13 @@ $[L,\, U]$ & $[0.85,\, 0.90]$ & $[0.15,\, 0.55]$ & $[0,\, 0]$ \\
 The three scenarios trace a clear arc from skill to catastrophe.
 Scenario~A's bridge concentrates probability on the correct outcome
 ($p = 0.675$); low ignorance means little mass is stranded in the
-ignorance bin, yielding $\mathrm{IG} = +2.018$~bits and a tight
-ILS interval $[0.85,\, 0.90]$.
+ignorance bin, yielding $\mathrm{IG} = +2.018$~bits---strong
+skill relative to climatology.
 Scenario~B is positive but modest ($\mathrm{IG} = +0.327$~bits): the
 high $\ign = 0.45$ correctly deflates $p(\spc{ENH})$ from the
 simple-normalization value of $0.55/1.45 = 0.379$ down to $0.209$,
-honestly reflecting the system's uncertainty; the wide ILS interval
-$[0.15,\, 0.55]$ confirms the ambivalence.
-Scenario~C incurs catastrophic penalties on both scores because the
-bridge assigns zero probability to the observed outcome.  Crucially,
-low ignorance ($\ign = 0.15$) provides almost no cushion: the system
-left itself no escape route for an outcome it had ruled out.
+honestly reflecting the system's uncertainty.
+Scenario~C incurs a catastrophic penalty because the bridge assigns
+zero probability to the observed outcome.  Crucially, low ignorance
+($\ign = 0.15$) provides almost no cushion: the system left itself no
+escape route for an outcome it had ruled out.

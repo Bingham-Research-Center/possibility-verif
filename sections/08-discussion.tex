@@ -13,10 +13,10 @@ converting it to a probability.  Supporting this scorecard are a
 possibility-to-probability bridge
 (Section~\ref{sec:poss_prob_bridge}) that preserves the ignorance
 signal as an explicit outcome rather than erasing it through
-normalization, an interval log score
-(Section~\ref{sec:interval_log}) that extends logarithmic
-verification to the interval-valued forecasts produced by the
-$[\Nc,\,\poss]$ bounds, and three complementary verification lanes
+normalization, exceedance bounds
+(Section~\ref{sec:exceedance_bounds}) that answer
+probability-of-exceedance questions directly from the
+$[\Nc,\,\poss]$ interval, and three complementary verification lanes
 (Section~\ref{sec:three_lanes}) that together cover
 deterministic, probabilistic, and native possibilistic evaluation.
 Worked examples in Section~\ref{sec:worked_examples} demonstrated
@@ -43,7 +43,7 @@ $[\Nc(A),\,\poss(A)]$ used throughout this paper is therefore
 structurally equivalent to the DS interval
 $[\mathrm{Bel}(A),\,\mathrm{Pl}(A)]$, and the verification metrics
 defined in Sections~\ref{sec:native_verification}
-and~\ref{sec:interval_log} can be read as special cases of
+and~\ref{sec:exceedance_bounds} can be read as special cases of
 interval-probability verification.
 
 A key difference concerns the nature of the residual uncertainty.
@@ -68,7 +68,7 @@ belief-function forecasts by replacing $\poss$ and $\Nc$ with
 $\mathrm{Pl}$ and $\mathrm{Bel}$ throughout.  The five-number
 scorecard generalizes naturally: $\alpha^{*}$ becomes the plausibility
 of the observed outcome, $\eta$ measures the diffuseness of the
-plausibility function, and the interval log score applies without
+plausibility function, and the exceedance bounds apply without
 modification to $[\mathrm{Bel},\,\mathrm{Pl}]$ intervals.  We note
 this connection as a direction for future work, as a full treatment
 would require addressing the richer combinatorial structure of general
@@ -81,7 +81,7 @@ mass functions.
 The verification framework is domain-agnostic: any system that
 produces subnormal possibility distributions over a finite universe of
 discourse $\Omega$ can be evaluated using the five-number scorecard,
-the possibility-to-probability bridge, and the interval log score
+the possibility-to-probability bridge, and the exceedance bounds
 without modification.  The SPC convective outlook categories
 (\spc{NONE} through \spc{HIGH}) served as an illustrative running
 example, but the same machinery applies directly to air-quality
@@ -97,7 +97,7 @@ $\alpha$-cut discretization.  The continuous possibility distribution
 is sliced at a set of threshold levels $\alpha_1 > \alpha_2 > \cdots
 > \alpha_k$; each slice defines a nested categorical event (the set of
 outcomes with $\pi(\omega) \geq \alpha_i$) for which the scorecard and
-interval log score apply.  For spatial fields, pointwise application
+exceedance bounds apply.  For spatial fields, pointwise application
 of the scorecard at each grid cell produces spatially resolved
 verification maps, while aggregation across grid points yields
 domain-averaged skill metrics analogous to those used in conventional
@@ -237,7 +237,7 @@ Python.  The accompanying code is publicly available at
 Key modules implement the five-number scorecard
 (\texttt{compute\_scorecard}), bridge conversion from possibility
 distributions to $(n{+}1)$-category probability vectors, and the
-interval log score.  The
+exceedance bounds.  The
 implementation operates on NumPy arrays and can interface with xarray
 datasets for gridded verification workflows.
 
@@ -250,16 +250,15 @@ three reliability hypothesis tests
 (Section~\ref{sec:three_tests}) have not been established; at pilot
 scales (${\sim}100$ cases), these tests should be supplemented with
 illustrative case studies and bootstrap confidence intervals to guard
-against small-sample artifacts.  The interval log score and scorecard
-are demonstrated here without a possibilistic skill score, because
-defining a principled possibilistic climatology---the baseline needed
-for skill---remains an open problem.  A consonant (nested) reference
-distribution derived from observed category frequencies is one
-candidate, but it may not suit applications with multimodal
-climatologies where the nested-set assumption breaks down.
-Construction of such baselines, together with an imprecise ranked
-logarithmic score that integrates the ILS across all category
-boundaries, is deferred to future work.
+against small-sample artifacts.  The scorecard and exceedance bounds are demonstrated here without a
+possibilistic skill score, because defining a principled possibilistic
+climatology---the baseline needed for skill---remains an open problem.
+A consonant (nested) reference distribution derived from observed
+category frequencies is one candidate, but it may not suit applications
+with multimodal climatologies where the nested-set assumption breaks
+down.  Formal interval-valued scoring rules for the $[L, U]$ bounds,
+and construction of possibilistic baselines, are deferred to future
+work.
 
 The possibility-to-probability bridge assumes that the ignorance
 outcome is never observed: the true category is always one of the
