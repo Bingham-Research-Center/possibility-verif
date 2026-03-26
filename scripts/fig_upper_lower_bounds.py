@@ -80,11 +80,15 @@ def main():
         ax.plot(L, y, "o", color=PURPLE, markersize=7, zorder=3)
         ax.plot(U, y, "o", color=PURPLE, markersize=7, zorder=3)
 
-        # Numeric labels
-        ax.text(L, y + 0.25, f"L={L:.3f}", ha="center", va="bottom",
-                fontsize=8, color=DARK_GREY)
-        ax.text(U, y + 0.25, f"U={U:.3f}", ha="center", va="bottom",
-                fontsize=8, color=DARK_GREY)
+        # Numeric labels (merge when L ≈ U to avoid overlap)
+        if abs(U - L) < 0.01:
+            ax.text(L, y + 0.25, f"L=U={L:.2f}", ha="center", va="bottom",
+                    fontsize=8, color=DARK_GREY)
+        else:
+            ax.text(L, y + 0.25, f"L={L:.3f}", ha="center", va="bottom",
+                    fontsize=8, color=DARK_GREY)
+            ax.text(U, y + 0.25, f"U={U:.3f}", ha="center", va="bottom",
+                    fontsize=8, color=DARK_GREY)
 
     ax.set_yticks(y_positions)
     ax.set_yticklabels(labels, fontsize=9)

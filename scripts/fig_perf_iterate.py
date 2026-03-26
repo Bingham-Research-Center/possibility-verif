@@ -292,8 +292,11 @@ def v3b(data, ap, spec, anchors):
     draw_hyperbolas(ax)
     draw_delta0_diag(ax)
 
+    # gridsize=(nx, ny): matplotlib's default ny=int(nx/sqrt(3)) rounds
+    # DOWN, producing hexagons ~16% too tall.  (12, 7) gives <1% error.
     ax.hexbin(spec, ap, C=data['H_Pi'],
-              reduce_C_function=np.mean, gridsize=12, cmap=cm,
+              reduce_C_function=np.mean, gridsize=(12, 7), cmap=cm,
+              extent=(-0.02, 1.04, -0.02, 1.04),
               edgecolors="white", linewidths=0.4, mincnt=1,
               alpha=0.65, zorder=1)
 
@@ -378,7 +381,9 @@ def v4b(data, ap, spec, anchors):
     ax.set_ylim(-0.45, 0.85)
     ax.set_aspect('equal')
 
-    hb = ax.hexbin(pi_max, delta, gridsize=12, cmap=cm,
+    # gridsize=(11, 8): gives <1% hex distortion for this aspect ratio.
+    hb = ax.hexbin(pi_max, delta, gridsize=(11, 8), cmap=cm,
+                   extent=(-0.02, 1.02, -0.45, 0.85),
                    edgecolors="white", linewidths=0.4, mincnt=1, zorder=2)
     hb.set_norm(LogNorm(vmin=1, vmax=hb.get_array().max()))
 
