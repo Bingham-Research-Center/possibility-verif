@@ -250,15 +250,13 @@ def v3b(data, ap, spec, anchors):
     gcm = hpi_green_cmap()
     means = cat_means(data, spec)
 
-    # Gridspec: main axes (square) + thin dual-colorbar strip
+    # Manual positioning: guaranteed square axes box (3" × 3")
     fig = plt.figure(figsize=(5.0, 4.5))
-    gs = fig.add_gridspec(1, 2, width_ratios=[1, 0.04], wspace=0.12)
-    ax = fig.add_subplot(gs[0, 0])
-    cax = fig.add_subplot(gs[0, 1])
+    ax = fig.add_axes([0.13, 0.12, 0.60, 0.60 * 5.0 / 4.5])
+    cax = fig.add_axes([0.79, 0.36, 0.025, 0.24])
 
     ax.set_xlim(-0.02, 1.04)
     ax.set_ylim(-0.02, 1.04)
-    ax.set_box_aspect(1)  # Force square axes box
 
     draw_hyperbolas(ax)
     draw_delta0_diag(ax)
@@ -270,7 +268,15 @@ def v3b(data, ap, spec, anchors):
 
     draw_traj_spec_alpha(ax, means, gcmap=gcm, gnorm=nm)
     draw_anchors_spec_alpha(ax, anchors)
-    draw_compass(ax, 0.97, 0.97, "sharp +\ntruthful")
+
+    # Compass: black, italic, bigger arrow, clear of data
+    ax.annotate("", xy=(0.99, 1.00), xytext=(0.84, 0.85),
+                arrowprops=dict(arrowstyle="->,head_width=0.4,head_length=0.3",
+                                color=DARK_GREY, lw=2.0),
+                zorder=10)
+    ax.text(0.91, 1.02, "sharp + truthful", fontsize=7.5,
+            fontstyle="italic", color=DARK_GREY, ha="center", va="bottom",
+            zorder=10)
 
     # Dual colorbar: purple | green touching, shared label
     gradient = np.linspace(nm.vmin, nm.vmax, 256)
@@ -282,8 +288,8 @@ def v3b(data, ap, spec, anchors):
     cax.set_xticks([])
     cax.yaxis.tick_right()
     cax.yaxis.set_label_position("right")
-    cax.set_ylabel(r"Mean $H_\Pi$  (dark = confident)", fontsize=8)
-    cax.tick_params(labelsize=7)
+    cax.set_ylabel(r"Mean $H_\Pi$" + "\n(dark = confident)", fontsize=7)
+    cax.tick_params(labelsize=6)
 
     h_t = mlines.Line2D([], [], marker="o", ls="-", color=GREEN, lw=2,
                         mfc=GREEN, mec=DARK_GREY, ms=6,
@@ -301,7 +307,6 @@ def v3b(data, ap, spec, anchors):
                   fontsize=9)
     ax.set_ylabel(r"Depth-of-truth  $\alpha^*$  (more truthful $\rightarrow$)",
                   fontsize=9)
-    fig.tight_layout()
     save_fig(fig, "perf_hexbin_trajectory")
 
 
