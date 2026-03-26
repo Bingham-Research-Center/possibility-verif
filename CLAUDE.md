@@ -60,7 +60,7 @@ Standalone methods paper: "Possible, yes; ignorant, perhaps: a scorecard for pos
 | `verification_lanes` | `fig_verification_lanes.py` | §5.2 | Three-lane flowchart schematic |
 | `ffion_advisory` | `fig_ffion_advisory.py` | §7.3 | JSON → LLM advisory mock-up |
 | `scorecard_table` | `fig_scorecard_table.py` | §5.2 | ECMWF-style scorecard with triangles |
-| `performance_diagram` | `fig_perf_iterate.py` | §4.2 | Hexbin + green trajectory shape-quality diagram |
+| `perf_hexbin_trajectory` | `fig_perf_iterate.py` | §4.2 | Hexbin + green trajectory shape-quality diagram |
 | `commitment_diagram` | `fig_perf_iterate.py` | §4.2 | Commitment × discrimination diagnostic |
 | `severity_matrix` | `fig_severity_matrix.py` | §7.4 | Severity-confidence matrix |
 

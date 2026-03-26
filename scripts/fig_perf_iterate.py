@@ -266,7 +266,7 @@ def v3b(data, ap, spec, anchors):
                   fontsize=9)
     ax.set_ylabel(r"Depth-of-truth  $\alpha^*$  (more truthful $\rightarrow$)",
                   fontsize=9)
-    save_fig(fig, "performance_diagram")
+    save_fig(fig, "perf_hexbin_trajectory")
 
 
 # ------------------------------------------------------------------ #
