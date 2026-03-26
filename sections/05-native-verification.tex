@@ -50,25 +50,28 @@ Table~\ref{tab:raw_norm} specifies which form each quantity uses.
 
 \begin{table}[htbp]
 \centering
-\caption{Raw vs.\ normalized possibility assignments for verification
-    quantities.}
+\caption{Raw vs.\ normalized form used by each verification quantity.}
 \label{tab:raw_norm}
 \small
-\begin{tabularx}{\columnwidth}{%
-    >{\raggedright\arraybackslash}p{0.20\columnwidth}ccX}
+\renewcommand{\arraystretch}{1.15}
+\begin{tabular}{@{}llcl@{}}
 \toprule
-Quantity & Symbol & Uses & Reason \\
+Quantity & Symbol & Form & Reason \\
 \midrule
-Ignorance & $\ign$ & $\pi$ & Gap to normality \\
-Event possibility & $\poss(A_T)$ & $\pi$ & Upper plausibility bound \\
-Cumulative upper bound & $U_k$ & $\pi$ & For IRLS \\
-Depth-of-truth & $\alpha^*$ & $\pinorm$ & Shape quality \\
-Nonspecificity & $\eta$ & $\pinorm$ & Shape diffuseness \\
-Conditional necessity & $\Nc(A)$ & $\pinorm$ & Certainty given coverage \\
-Lower threshold bound & $L_t$ & Both & Coverage $\times$ certainty \\
-Cumulative lower bound & $L_k$ & Both & IRLS counterpart of $L_t$ \\
+\multicolumn{4}{@{}l}{\textit{Raw $(\pi)$}} \\[2pt]
+\quad Ignorance              & $\ign$      & $\pi$    & Gap to normality \\
+\quad Event possibility      & $\poss(A_T)$& $\pi$    & Upper bound \\
+\quad Cumulative upper bound & $U_k$       & $\pi$    & For IRLS \\[4pt]
+\multicolumn{4}{@{}l}{\textit{Normalized $(\pinorm)$}} \\[2pt]
+\quad Depth-of-truth         & $\alpha^*$  & $\pinorm$ & Shape quality \\
+\quad Nonspecificity          & $\eta$      & $\pinorm$ & Shape diffuseness \\
+\quad Conditional necessity   & $\Nc(A)$    & $\pinorm$ & Certainty given coverage \\[4pt]
+\multicolumn{4}{@{}l}{\textit{Both}} \\[2pt]
+\quad Lower threshold bound  & $L_t$       & Both     & Coverage $\times$ certainty \\
+\quad Cumulative lower bound & $L_k$       & Both     & IRLS counterpart \\
 \bottomrule
-\end{tabularx}
+\end{tabular}
+\renewcommand{\arraystretch}{1.0}
 \end{table}
 
 \textbf{Why this matters:} Getting the raw/normalized distinction wrong
@@ -146,21 +149,27 @@ where $\Nc^* > 0$ only when the observed category dominates all
 alternatives in the normalized distribution.  This is a direct
 application of Eq.~\eqref{eq:cond_nec} evaluated at the observation.
 
-\begin{rationaleenv}{Plain-language glosses}
-\begin{itemize}[leftmargin=1em, itemsep=2pt]
-\item $\alpha^*$: ``How much normalized possibility did the system
-    assign to what actually happened?'' Like POD for the winning bin,
-    but continuous.
-\item $\eta$: ``How spread out was the normalized distribution?'' Like
-    ensemble spread or sharpness.
-\item $\delta$: ``Did the system give more support to the truth than to
-    an average category?'' Like resolution in the Brier decomposition.
-\item $\ign$: ``How much did the system admit it didn't know?''
-    $\ign = 0$: fully confident.  $\ign = 1$: complete ignorance.
-\item $\Nc^*$: ``Among scenarios the system covered, was the truth
-    dominant enough to rule out alternatives?'' A confidence flag.
-\end{itemize}
-\end{rationaleenv}
+\medskip
+\noindent\textbf{\textsf{\color{rationalecolor}Plain-language glosses}}
+\smallskip
+
+\noindent
+\renewcommand{\arraystretch}{1.25}
+\begin{tabularx}{\columnwidth}{%
+    >{\columncolor{rationalecolor!10}}c X}
+$\alpha^*$ & How much normalized possibility did the system assign to
+    what actually happened?  Like POD for the winning bin, but
+    continuous. \\
+$\eta$ & How spread out was the normalized distribution?  Like ensemble
+    spread or sharpness. \\
+$\delta$ & Did the system give more support to the truth than to an
+    average category?  Like resolution in the Brier decomposition. \\
+$\ign$ & How much did the system admit it didn't know?
+    $\ign = 0$: fully confident; $\ign = 1$: complete ignorance. \\
+$\Nc^*$ & Among scenarios the system covered, was the truth dominant
+    enough to rule out alternatives?  A confidence flag. \\
+\end{tabularx}
+\renewcommand{\arraystretch}{1.0}
 
 Aggregates $\overline{\alpha^*}$, $\overline{\eta}$,
 $\overline{\delta}$, $\overline{\ign}$, $\overline{\Nc^*}$ are reported
@@ -212,22 +221,23 @@ separately for null (\spc{NONE}) and eventful (\spc{SLGT}$+$) subsets.
 \begin{figure*}[!t]
 \centering
 \includegraphics[width=\textwidth]{performance_diagram.png}
-\caption{Possibilistic performance diagram for a five-year synthetic
-    reforecast with SPC-like base rates (slightly smoothed to reduce
-    null-day dominance; \spc{NONE}~60\%, \spc{MRGL}~18\%, \spc{SLGT}~12\%,
-    \spc{ENH}~6\%, \spc{MDT}~3.2\%, \spc{HIGH}~0.8\%).
-    \textbf{(a)}~All days ($n = 1{,}825$): the dense dark cluster at
-    upper right is dominated by trivially correct \spc{NONE} forecasts
-    that inflate aggregate metrics.
-    \textbf{(b)}~Severe days only (\spc{SLGT}$+$, $n \approx 419$): with
-    null cases removed, the rare-event population (\spc{MDT}: ${\sim}56$,
-    \spc{HIGH}: ${\sim}18$, shown as diamonds) is exposed and the ignorance
-    gradient becomes visible.  Stars mark the three worked scenarios from
-    Section~\ref{sec:worked_examples}.  \textbf{Position:} specificity
-    $1 - \eta$ ($x$) vs.\ depth-of-truth $\alpha^*$ ($y$); diagonal
-    dashed line is $\delta = 0$.  \textbf{Colour:} ignorance $\ign$
-    (darker $=$ more confident).  \textbf{Size:} conditional necessity
-    $\Nc^*$ (larger $=$ truth more dominant).}
+\caption{Possibilistic performance diagram for a two-year synthetic
+    reforecast with SPC-like base rates (\spc{NONE}~60\%,
+    \spc{MRGL}~18\%, \spc{SLGT}~12\%, \spc{ENH}~6\%, \spc{MDT}~3.2\%,
+    \spc{HIGH}~0.8\%).
+    \textbf{(a)}~All days ($n = 730$): the shaded ellipse at upper right
+    summarizes trivially correct \spc{NONE} forecasts that inflate
+    aggregate metrics.
+    \textbf{(b)}~Severe days only (\spc{SLGT}$+$): with null cases
+    removed, the rare-event population (diamonds) is exposed and the
+    ignorance gradient becomes visible.  Stars mark the three worked
+    scenarios from Section~\ref{sec:worked_examples}; green edges denote
+    verified forecasts, red edges denote misses.
+    \textbf{Position:} specificity $1 - \eta$ ($x$) vs.\
+    depth-of-truth $\alpha^*$ ($y$); diagonal dashed line is
+    $\delta = 0$.  \textbf{Colour:} ignorance $\ign$ (darker $=$ more
+    confident).  \textbf{Size:} conditional necessity $\Nc^*$ (larger
+    $=$ truth more dominant).}
 \label{fig:performance_diagram}
 \end{figure*}
 

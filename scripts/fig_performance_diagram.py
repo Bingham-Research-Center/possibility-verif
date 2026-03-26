@@ -78,8 +78,8 @@ def scorecard_from_data(pi_array, obs_categories, K=SPC_N):
                 H_Pi=H_Pi, Nc_star=Nc_star, obs_idx=obs_idx)
 
 
-def generate_reforecast(n_years=5, K=SPC_N, seed=42):
-    """Generate a five-year synthetic possibilistic reforecast.
+def generate_reforecast(n_years=2, K=SPC_N, seed=42):
+    """Generate a two-year synthetic possibilistic reforecast.
 
     The synthetic model has physically motivated behaviour:
       - SPC-like base rates (slightly smoothed to reduce null-day dominance):
@@ -87,6 +87,7 @@ def generate_reforecast(n_years=5, K=SPC_N, seed=42):
       - Category-dependent accuracy: 82 % correct peak for NONE, 18 % for HIGH
       - Category-dependent ignorance: H_Pi ~ 0.06 for NONE, ~ 0.52 for HIGH
       - Near-miss errors: wrong forecasts tend to be +/- 1 category
+      - Extra spread noise for visual separation on the diagram
 
     Returns
     -------
@@ -102,11 +103,12 @@ def generate_reforecast(n_years=5, K=SPC_N, seed=42):
     obs_categories = [SPC_CATEGORIES[i] for i in obs_idx]
 
     # --- Category-dependent model parameters ---
+    # Wider spread & ignorance sigmas to scatter points more on the diagram
     correct_prob = np.array([0.82, 0.78, 0.65, 0.48, 0.32, 0.18])
     h_mu = np.array([0.06, 0.08, 0.15, 0.25, 0.38, 0.52])
-    h_sig = np.array([0.04, 0.05, 0.08, 0.10, 0.12, 0.12])
-    s_mu = np.array([3.0, 2.8, 2.2, 1.6, 1.2, 0.8])
-    s_sig = np.array([0.6, 0.6, 0.5, 0.5, 0.4, 0.3])
+    h_sig = np.array([0.06, 0.07, 0.12, 0.14, 0.16, 0.15])
+    s_mu = np.array([2.6, 2.4, 1.8, 1.3, 1.0, 0.7])
+    s_sig = np.array([0.9, 0.9, 0.8, 0.7, 0.6, 0.5])
 
     pi_array = np.empty((n_days, K))
 
@@ -122,7 +124,7 @@ def generate_reforecast(n_years=5, K=SPC_N, seed=42):
         spread = max(0.3, rng.normal(s_mu[oi], s_sig[oi]))
         dists = np.abs(np.arange(K) - peak).astype(float)
         pi = np.exp(-spread * dists)
-        pi += rng.uniform(0, 0.02, K)
+        pi += rng.uniform(0, 0.03, K)
 
         h = np.clip(rng.normal(h_mu[oi], h_sig[oi]), 0.02, 0.85)
         pi = pi / pi.max() * (1.0 - h)
