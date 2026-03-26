@@ -21,6 +21,7 @@ Clyfar verification.
 import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.lines as mlines
+from matplotlib.patches import Ellipse
 from matplotlib.colors import Normalize, LinearSegmentedColormap
 
 from style import (
@@ -138,6 +139,8 @@ def generate_reforecast(n_years=5, K=SPC_N, seed=42):
 # Panel-drawing helper                                                #
 # ------------------------------------------------------------------ #
 
+_MISS_RED = "#C0392B"
+
 def _draw_panel(ax, spec, alpha, sizes, hpi, obs_idx,
                 cmap, norm, s_min, anchors,
                 show_anchor_labels=False, title=""):
@@ -158,18 +161,23 @@ def _draw_panel(ax, spec, alpha, sizes, hpi, obs_idx,
             ha="center", va="center")
 
     # ---- Scatter ---- #
-    # Separate null (NONE) days from eventful days so the two panels
-    # are visually distinguishable: null days appear as small grey
-    # squares in the all-days panel but are absent from the SLGT+ panel.
     _NONE_IDX = SPC_CATEGORIES.index("NONE")
     null = obs_idx == _NONE_IDX
     eventful = ~null
 
-    # Layer 1: null days — grey squares (visible only in panel a)
+    # Layer 1: null days — shaded ellipse summary (visible only in panel a)
     if null.any():
-        ax.scatter(spec[null], alpha[null], s=22, color="#D0D0D0",
-                   edgecolors="#AAAAAA", linewidths=0.3, alpha=0.45,
-                   marker="s", zorder=1, rasterized=True)
+        n_none = null.sum()
+        cx = spec[null].mean()
+        cy = alpha[null].mean()
+        wx = max(spec[null].std() * 4, 0.04)  # 2-sigma width
+        wy = max(alpha[null].std() * 4, 0.04)
+        ell = Ellipse((cx, cy), wx, wy, facecolor="#D0D0D0", alpha=0.35,
+                       edgecolor="#AAAAAA", linewidth=0.8, zorder=1)
+        ax.add_patch(ell)
+        ax.text(cx, cy, f"$n = {n_none:,}$\nNONE obs", fontsize=6,
+                ha="center", va="center", color=MID_GREY,
+                fontweight="bold", zorder=2)
 
     # Layer 2: eventful days — colored circles
     sc_main = ax.scatter(spec[eventful], alpha[eventful],
@@ -190,10 +198,11 @@ def _draw_panel(ax, spec, alpha, sizes, hpi, obs_idx,
         "B": (-0.20, -0.16),
         "C": (-0.20, 0.14),
     }
-    for letter, desc, card in anchors:
+    for letter, desc, card, verified in anchors:
         sx, sy = 1 - card['eta'], card['alpha_star']
+        edge_color = GREEN if verified else _MISS_RED
         ax.scatter(sx, sy, s=280, c=[card['H_Pi']], cmap=cmap, norm=norm,
-                   edgecolors="white", linewidths=2.0, alpha=1.0,
+                   edgecolors=edge_color, linewidths=2.0, alpha=1.0,
                    marker="*", zorder=6)
         if show_anchor_labels:
             ox, oy = anchor_offsets[letter]
@@ -239,8 +248,8 @@ def main():
     alpha_plot = data['alpha_star'].copy()
     alpha_plot[at_top] -= rng_j.uniform(0.0, 0.04, at_top.sum())
 
-    # Sizes
-    s_min, s_max = 10, 120
+    # Sizes (scaled for smaller figsize)
+    s_min, s_max = 8, 80
     sizes = s_min + (s_max - s_min) * data['Nc_star']
 
     # Colormap and norm (shared)
@@ -248,17 +257,17 @@ def main():
         "hpi", [PURPLE, "#C9A5E0", "#F0E4F7"], N=256)
     norm = Normalize(vmin=0.0, vmax=0.65)
 
-    # §6 anchor scenarios
+    # §6 anchor scenarios (with verified flag for edge colour)
     anchor_meta = [
-        ("Sharp-Correct",  "A", "Sharp, confident\n(MDT obs)"),
-        ("Hedged-Correct", "B", "Hedged, uncertain\n(ENH obs)"),
-        ("Sharp-Wrong",    "C", "Sharp, wrong\n(MDT obs)"),
+        ("Sharp-Correct",  "A", "Sharp, confident\n(MDT obs)",  True),
+        ("Hedged-Correct", "B", "Hedged, uncertain\n(ENH obs)", True),
+        ("Sharp-Wrong",    "C", "Sharp, wrong\n(MDT obs)",      False),
     ]
     anchors = []
-    for name, letter, desc in anchor_meta:
+    for name, letter, desc, verified in anchor_meta:
         sc = SCENARIOS[name]
         card = compute_scorecard(sc['pi'], sc['obs'])
-        anchors.append((letter, desc, card))
+        anchors.append((letter, desc, card, verified))
 
     # ---- Subset: SLGT+ ---- #
     _SLGT_IDX = SPC_CATEGORIES.index("SLGT")
@@ -267,8 +276,8 @@ def main():
 
     # ---- Figure ---- #
     fig, (ax_l, ax_r) = plt.subplots(
-        1, 2, figsize=(13.5, 5.5), sharey=True,
-        gridspec_kw={"wspace": 0.08, "right": 0.88})
+        1, 2, figsize=(7.5, 3.5), sharey=True,
+        gridspec_kw={"wspace": 0.12, "right": 0.88})
 
     # Left: all days
     _draw_panel(ax_l, specificity, alpha_plot, sizes, data['H_Pi'],
@@ -277,22 +286,6 @@ def main():
                 title=f"(a)  All days  ($n = {n_all:,}$)")
     ax_l.set_xlabel(r"Specificity  $1 - \eta$  (higher = sharper)", fontsize=9)
     ax_l.set_ylabel(r"Depth-of-truth  $\alpha^*$  (higher = better)", fontsize=9)
-
-    # Annotate the NONE cluster so the panel difference is unmissable
-    _NONE_IDX = SPC_CATEGORIES.index("NONE")
-    none_mask = data['obs_idx'] == _NONE_IDX
-    none_spec = specificity[none_mask].mean()
-    none_alpha = alpha_plot[none_mask].mean()
-    n_none = none_mask.sum()
-    ax_l.annotate(
-        f"NONE obs\n($n = {n_none:,}$)",
-        xy=(none_spec, none_alpha),
-        xytext=(0.45, 0.92),
-        fontsize=6.5, fontweight="bold", color=MID_GREY,
-        arrowprops=dict(arrowstyle="->", color=MID_GREY, lw=0.8),
-        bbox=dict(boxstyle="round,pad=0.25", facecolor="white",
-                  edgecolor=MID_GREY, alpha=0.9),
-        zorder=7)
 
     # Right: SLGT+ only
     sc = _draw_panel(
@@ -325,10 +318,20 @@ def main():
                       markeredgecolor=DARK_GREY,
                       label="MDT / HIGH obs"))
     leg_handles.append(
-        mlines.Line2D([], [], marker="s", linestyle="None",
-                      markersize=3.5, markerfacecolor="#C0C0C0",
-                      markeredgecolor=MID_GREY,
-                      label="NONE obs (panel a only)"))
+        mlines.Line2D([], [], marker="o", linestyle="None",
+                      markersize=5, markerfacecolor="#D0D0D0",
+                      markeredgecolor="#AAAAAA", alpha=0.5,
+                      label="NONE cluster (panel a)"))
+    leg_handles.append(
+        mlines.Line2D([], [], marker="*", linestyle="None",
+                      markersize=7, markerfacecolor=MID_GREY,
+                      markeredgecolor=GREEN, markeredgewidth=1.2,
+                      label="Anchor (verified)"))
+    leg_handles.append(
+        mlines.Line2D([], [], marker="*", linestyle="None",
+                      markersize=7, markerfacecolor=MID_GREY,
+                      markeredgecolor=_MISS_RED, markeredgewidth=1.2,
+                      label="Anchor (miss)"))
     ax_l.legend(handles=leg_handles, loc="lower left", fontsize=6.5,
                 frameon=True, fancybox=False, edgecolor=MID_GREY,
                 title="Marker encoding", title_fontsize=7,
@@ -340,7 +343,7 @@ def main():
     print(f"  All: n={n_all}  |  SLGT+: n={n_sev}  "
           f"|  MDT: {n_mdt}  HIGH: {n_high}")
 
-    save_fig(fig, "fig11_performance_diagram")
+    save_fig(fig, "performance_diagram")
 
 
 if __name__ == "__main__":
