@@ -175,6 +175,24 @@ Aggregates $\overline{\alpha^*}$, $\overline{\eta}$,
 $\overline{\delta}$, $\overline{\ign}$, $\overline{\Nc^*}$ are reported
 with bootstrap confidence intervals.
 
+\begin{figure}[t]
+\centering
+\includegraphics[width=\columnwidth]{perf_hexbin_trajectory.png}
+\caption{Possibilistic performance diagram for a two-year synthetic
+    reforecast.
+    \textbf{Hex bins:} colour is mean $\ign$ (dark purple = confident).
+    \textbf{Contours:} joint skill $S = \alpha^* \times (1 - \eta)$.
+    \textbf{Dashed diagonal:} $\delta = 0$ break-even.
+    \textbf{Green line:} category-conditional means from \spc{NONE}
+    (easy, upper right) to \spc{HIGH} (rare, lower left); dot
+    size $\propto$ sample count; shade encodes $\ign$ (dark green
+    = confident), paralleling the purple hex bins.
+    \textbf{Stars:} worked scenarios from
+    Section~\ref{sec:worked_examples} (green edge = hit, red = miss).
+    The upper-right corner is the perfect-forecast region.}
+\label{fig:performance_diagram}
+\end{figure}
+
 Figure~\ref{fig:performance_diagram} provides a diagnostic view of the
 five scorecard metrics, inspired by \citet{Roebber2009-rv}.  Hexagonal
 bins aggregate forecast--observation pairs by specificity $1 - \eta$
@@ -200,23 +218,6 @@ $\delta = 0$ diagonal, the forecast discriminated; below it, the truth
 received less support than the categorical average.  The trajectory's
 slope reveals where skill degrades fastest---a steep drop between
 adjacent categories signals the system's breaking point.
-
-\begin{figure}[t]
-\centering
-\includegraphics[width=\columnwidth]{perf_hexbin_trajectory.png}
-\caption{Possibilistic performance diagram for a two-year synthetic
-    reforecast.
-    \textbf{Hex bins:} colour is mean $\ign$ (dark = confident).
-    \textbf{Contours:} joint skill $S = \alpha^* \times (1 - \eta)$.
-    \textbf{Dashed diagonal:} $\delta = 0$ break-even.
-    \textbf{Green line:} category-conditional means from \spc{NONE}
-    (easy, upper right) to \spc{HIGH} (rare, lower left); dot
-    size $\propto$ sample count.
-    \textbf{Stars:} worked scenarios from
-    Section~\ref{sec:worked_examples} (green edge = hit, red = miss).
-    The upper-right corner is the perfect-forecast region.}
-\label{fig:performance_diagram}
-\end{figure}
 
 Both axes of Figure~\ref{fig:performance_diagram} operate on the
 normalised shape $\pi'$: two forecasts with identical shapes but

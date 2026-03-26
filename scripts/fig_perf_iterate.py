@@ -245,13 +245,12 @@ def draw_traj_commit(ax, means, color=GREEN, fontsize=6.5):
 
 def v3b(data, ap, spec, anchors):
     """V3b: green trajectory + enhanced hexbin (all days)."""
-    fig, ax = plt.subplots(figsize=(5.0, 4.5), constrained_layout=True)
+    fig, ax = plt.subplots(figsize=(5.5, 4.5))
     cm = hpi_cmap()
     nm = Normalize(0.0, 0.55)
     gcm = hpi_green_cmap()
     means = cat_means(data, spec)
 
-    # Set equal ranges BEFORE hexbin so hex grid is regular
     ax.set_xlim(-0.02, 1.04)
     ax.set_ylim(-0.02, 1.04)
 
@@ -267,9 +266,15 @@ def v3b(data, ap, spec, anchors):
     draw_anchors_spec_alpha(ax, anchors)
     draw_compass(ax, 0.97, 0.97, "sharp +\ntruthful")
 
-    cb = fig.colorbar(hb, ax=ax, shrink=0.65, pad=0.02)
-    cb.set_label(r"Mean $H_\Pi$  (dark = confident)", fontsize=8)
-    cb.ax.tick_params(labelsize=7)
+    # Dual colorbar: purple (hexbin) + green (trajectory), same H_Pi scale
+    cb_p = fig.colorbar(hb, ax=ax, shrink=0.65, pad=0.02)
+    cb_p.ax.tick_params(labelsize=7)
+    cb_p.set_label("")
+    sm_g = plt.cm.ScalarMappable(cmap=gcm, norm=nm)
+    sm_g.set_array([])
+    cb_g = fig.colorbar(sm_g, ax=ax, shrink=0.65, pad=0.02)
+    cb_g.set_label(r"Mean $H_\Pi$  (dark = confident)", fontsize=8)
+    cb_g.ax.set_yticklabels([])
 
     h_t = mlines.Line2D([], [], marker="o", ls="-", color=GREEN, lw=2,
                         mfc=GREEN, mec=DARK_GREY, ms=6,
@@ -283,10 +288,12 @@ def v3b(data, ap, spec, anchors):
     ax.legend(handles=[h_t, h_v, h_m], loc="lower left", fontsize=7,
               frameon=True, fancybox=False, edgecolor=MID_GREY)
 
+    ax.set_aspect('equal', adjustable='box')
     ax.set_xlabel(r"Specificity  $1\!-\!\eta$  (sharper $\rightarrow$)",
                   fontsize=9)
     ax.set_ylabel(r"Depth-of-truth  $\alpha^*$  (more truthful $\rightarrow$)",
                   fontsize=9)
+    fig.tight_layout()
     save_fig(fig, "perf_hexbin_trajectory")
 
 
