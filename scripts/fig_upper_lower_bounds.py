@@ -2,8 +2,9 @@
 
 For each of the three scenarios, shows the interval [L, U] on a [0, 1]
 number line for the threshold event A_T = {ENH, MDT, HIGH}.
-L and U are derived from the possibility distribution via the
-tripartite bridge.
+L and U are the possibilistic bounds from Eqs 11-12:
+  U = Pi(A_T) = max_{w in A_T} pi(w)
+  L = m * N_c(A_T) = m * [1 - max_{w not in A_T} pi'(w)]
 """
 import numpy as np
 import matplotlib.pyplot as plt
@@ -14,41 +15,40 @@ from style import (
     PURPLE, GREEN, LIGHT_GREY, DARK_GREY, MID_GREY,
     SPC_CATEGORIES, SPC_N,
 )
+from fig_three_scenario import SCENARIOS
 
-
-# Three scenarios (same as fig_three_scenario)
-SCENARIOS = {
-    "Sharp-Correct": np.array([0.00, 0.05, 0.10, 0.15, 0.90, 0.05]),
-    "Hedged-Correct": np.array([0.10, 0.30, 0.45, 0.50, 0.55, 0.10]),
-    "Sharp-Wrong":    np.array([0.85, 0.10, 0.05, 0.02, 0.01, 0.00]),
-}
 
 # Threshold event: categories at ENH or higher
 EVENT_CATS = {"ENH", "MDT", "HIGH"}
 
 
 def bounds_from_possibility(pi, event_indices):
-    """Compute [L, U] bounds for threshold event A_T.
+    """Compute possibilistic [L, U] bounds for threshold event A_T.
 
-    Using the tripartite bridge:
-      - pi_max = max(pi);  H_Pi = 1 - pi_max;  S = sum(pi)
-      - p_i = pi_i * pi_max / S   for each i
-      - p_ign = H_Pi
+    Implements Eqs 11-12:
+      U = Pi(A_T) = max_{w in A_T} pi(w)
+      L = pi_max * N_c(A_T) = pi_max * [1 - max_{w not in A_T} pi'(w)]
 
-    Then:
-      L = sum of p_i for i in A_T   (lower bound: ignorance counts against)
-      U = L + p_ign                   (upper bound: ignorance could all belong to A_T)
+    where pi' = pi / pi_max is the shape-normalised distribution.
 
     Returns (L, U).
     """
     pi = np.asarray(pi, dtype=float)
     pi_max = pi.max()
-    h_pi = 1.0 - pi_max
-    S = pi.sum()
-    p_cats = pi * pi_max / S
 
-    L = p_cats[event_indices].sum()
-    U = L + h_pi
+    # Upper bound: possibility of the event
+    U = pi[event_indices].max()
+
+    # Lower bound: commitment * conditional necessity
+    complement = np.ones(len(pi), dtype=bool)
+    complement[event_indices] = False
+    if complement.any():
+        pi_prime = pi / pi_max
+        max_complement = pi_prime[complement].max()
+    else:
+        max_complement = 0.0
+    L = pi_max * (1.0 - max_complement)
+
     return float(L), float(U)
 
 
@@ -64,9 +64,9 @@ def main():
 
     y_positions = np.arange(n)[::-1]  # top-to-bottom
 
-    for i, (label, pi) in enumerate(SCENARIOS.items()):
+    for i, (label, scenario) in enumerate(SCENARIOS.items()):
         y = y_positions[i]
-        L, U = bounds_from_possibility(pi, event_idx)
+        L, U = bounds_from_possibility(scenario['pi'], event_idx)
 
         # Full [0, 1] track
         ax.plot([0, 1], [y, y], color="#D0D0D0", linewidth=6, solid_capstyle="round",

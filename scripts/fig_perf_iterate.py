@@ -287,6 +287,7 @@ def v3b(data, ap, spec, anchors):
 
     ax.set_xlim(-0.02, 1.04)
     ax.set_ylim(-0.02, 1.04)
+    ax.set_aspect('equal')
 
     draw_hyperbolas(ax)
     draw_delta0_diag(ax)
@@ -354,9 +355,10 @@ def v3b(data, ap, spec, anchors):
 
 def v4b(data, ap, spec, anchors):
     """V4b: commitment-discrimination + trajectory (all days)."""
+    from style import FIG_DIR, FIG_FORMAT, DPI
     from matplotlib.colors import LogNorm
+    import os
 
-    fig, ax = plt.subplots(figsize=(5.8, 7.0))
     cm = count_cmap()
     gcm = hpi_green_cmap()
     gnm = Normalize(0.0, 0.55)
@@ -364,6 +366,17 @@ def v4b(data, ap, spec, anchors):
 
     pi_max = 1.0 - data['H_Pi']
     delta = data['delta']
+
+    # Manual axes sizing: x_range = 1.04, y_range = 1.30
+    # Axes height = 3.0 * (1.30 / 1.04) = 3.75 inches
+    ax_w, ax_h = 3.0, 3.0 * (1.30 / 1.04)
+    fig = plt.figure(figsize=(4.1, ax_h + 0.9))
+    ax = fig.add_axes([0.17, 0.11, ax_w / 4.1, ax_h / (ax_h + 0.9)])
+    cax = fig.add_axes([0.91, 0.30, 0.025, 0.35])
+
+    ax.set_xlim(-0.02, 1.02)
+    ax.set_ylim(-0.45, 0.85)
+    ax.set_aspect('equal')
 
     hb = ax.hexbin(pi_max, delta, gridsize=12, cmap=cm,
                    edgecolors="white", linewidths=0.4, mincnt=1, zorder=2)
@@ -382,21 +395,27 @@ def v4b(data, ap, spec, anchors):
     draw_anchors_commit(ax, anchors)
     draw_compass(ax, 0.95, 0.72, "better")
 
-    cb = fig.colorbar(hb, ax=ax, shrink=0.55, pad=0.02)
+    # Manual colorbar
+    from matplotlib.colorbar import ColorbarBase
+    cb = plt.colorbar(hb, cax=cax)
     cb.set_label("Count per bin (log scale)", fontsize=8)
     cb.ax.tick_params(labelsize=7)
 
-    ax.set_xlim(-0.02, 1.02)
-    ax.set_ylim(-0.45, 0.85)
-    ax.set_aspect('equal', adjustable='box')
     ax.set_xlabel(
         r"Commitment  $\pi_{\max} = 1 - H_\Pi$"
         r"  (more committed $\rightarrow$)", fontsize=9)
     ax.set_ylabel(
         r"Discrimination  $\delta = \alpha^* - \eta$"
         r"  ($\rightarrow$ better)", fontsize=9)
-    fig.tight_layout()
-    save_fig(fig, "commitment_diagram")
+
+    # Save WITHOUT bbox_inches='tight' to preserve aspect ratio
+    path = os.path.join(FIG_DIR, f"commitment_diagram.{FIG_FORMAT}")
+    os.makedirs(FIG_DIR, exist_ok=True)
+    with plt.rc_context({'savefig.bbox': 'standard'}):
+        fig.savefig(path, facecolor="white", transparent=False,
+                    dpi=DPI, pad_inches=0)
+    plt.close(fig)
+    print(f"Saved: {path}")
 
 
 # ------------------------------------------------------------------ #

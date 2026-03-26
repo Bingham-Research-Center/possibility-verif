@@ -20,7 +20,7 @@ def main():
     apply_style()
 
     # Subnormal possibility distribution
-    pi = np.array([0.05, 0.10, 0.25, 0.70, 0.45, 0.05])
+    pi = np.array([0.05, 0.00, 0.10, 0.20, 0.75, 0.15])
     pi_max = pi.max()
     peak_idx = int(np.argmax(pi))
     h_pi = 1.0 - pi_max
