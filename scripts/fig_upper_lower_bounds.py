@@ -80,9 +80,14 @@ def main():
         ax.plot(L, y, "o", color=PURPLE, markersize=7, zorder=3)
         ax.plot(U, y, "o", color=PURPLE, markersize=7, zorder=3)
 
-        # Numeric labels (merge when L ≈ U to avoid overlap)
+        # Numeric labels: stagger above/below when close, merge when degenerate
         if abs(U - L) < 0.01:
             ax.text(L, y + 0.25, f"L=U={L:.2f}", ha="center", va="bottom",
+                    fontsize=8, color=DARK_GREY)
+        elif (U - L) < 0.12:
+            ax.text(L, y - 0.25, f"L={L:.3f}", ha="center", va="top",
+                    fontsize=8, color=DARK_GREY)
+            ax.text(U, y + 0.25, f"U={U:.3f}", ha="center", va="bottom",
                     fontsize=8, color=DARK_GREY)
         else:
             ax.text(L, y + 0.25, f"L={L:.3f}", ha="center", va="bottom",

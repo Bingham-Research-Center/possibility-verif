@@ -336,22 +336,25 @@ L &= 0.75 \times 0.867 = 0.65 \quad (L \leq U \;\checkmark) \\
   &= -\log_2(1 - 0.65) = -\log_2(0.35) = 1.51\;\text{bits}
 \end{align*}
 
-Figure~\ref{fig:upper_lower} shows the interval $[L, U]$ for several
-forecast scenarios applied to the threshold event
-$A_T = \{\spc{ENH},\, \spc{MDT},\, \spc{HIGH}\}$, illustrating how
-sharp forecasts produce narrow intervals while hedged or ignorant
-forecasts produce wide ones.
+Figure~\ref{fig:upper_lower} applies the same computation to the three
+worked scenarios of Section~\ref{sec:worked_examples} (Scenarios A--C),
+showing each $[L, U]$ interval on a $[0,1]$ number line for
+$A_T = \{\spc{ENH},\, \spc{MDT},\, \spc{HIGH}\}$.  Sharp forecasts
+produce narrow intervals; hedged or ignorant forecasts produce wide
+ones.
 
 \begin{figure*}[b]
 \centering
 \includegraphics[width=0.75\textwidth]{upper_lower_bounds.png}
-\caption{Upper and lower probability bounds for the threshold event
-    $A_T = \{\spc{ENH},\, \spc{MDT},\, \spc{HIGH}\}$ across three
-    forecast scenarios.  Each horizontal band shows the interval
-    $[L, U]$ (Eqs.~\ref{eq:L_bound}--\ref{eq:U_bound}) on a $[0,1]$
-    number line.  Narrow intervals indicate high conditional necessity;
-    wide intervals indicate ambiguity between ``merely possible'' and
-    ``essentially certain.''}
+\caption{Upper and lower probability bounds
+    (Eqs.~\ref{eq:U_bound}--\ref{eq:L_bound}) for
+    $A_T = \{\spc{ENH},\, \spc{MDT},\, \spc{HIGH}\}$ applied to
+    Scenarios A--C (Section~\ref{sec:worked_examples}).  Each horizontal
+    band shows $[L, U]$ on a $[0,1]$ number line.  Scenario~A's narrow
+    interval reflects high commitment and conditional necessity;
+    Scenario~B's wide interval reflects hedging; Scenario~C collapses to
+    a point at zero because the system assigned zero possibility to every
+    category in $A_T$.}
 \label{fig:upper_lower}
 \end{figure*}
 
