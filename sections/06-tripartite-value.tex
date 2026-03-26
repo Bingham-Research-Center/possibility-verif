@@ -93,7 +93,7 @@ forecasts identify genuinely confident predictions.
 
 \begin{figure}[t]
 \centering
-\includegraphics[width=\columnwidth]{fig6_reliability_curves.png}
+\includegraphics[width=\columnwidth]{reliability_curves.png}
 \caption{Reliability of conditional necessity.  The purple curve shows
     the conditional hit rate for the observed category as a function of
     the $\Nc$ threshold $\tau$.  The horizontal dashed line marks the
@@ -167,9 +167,9 @@ Figure~\ref{fig:three_lanes_schematic} provides a visual summary of the
 three lanes, showing how the raw possibility distribution feeds into each
 verification pathway.
 
-\begin{figure*}[t]
+\begin{figure*}[!t]
 \centering
-\includegraphics[width=0.80\textwidth]{fig8_verification_lanes.png}
+\includegraphics[width=0.80\textwidth]{verification_lanes.png}
 \caption{Three-lane verification schematic.  A subnormal possibility
     distribution feeds three parallel verification pathways:
     \textbf{Lane~1} (deterministic) evaluates the defuzzified point
@@ -200,9 +200,9 @@ pushed discrimination further at the cost of slight reliability
 degradation---a trade-off the three-lane view makes immediately visible
 but that no single metric could reveal.
 
-\begin{figure*}[t]
+\begin{figure*}[b]
 \centering
-\includegraphics[width=0.80\textwidth]{fig10_scorecard_table.png}
+\includegraphics[width=0.80\textwidth]{scorecard_table.png}
 \caption{Verification scorecard for a hypothetical possibilistic
     forecasting system across three development versions, each compared
     to a v1.0 baseline.  Rows are grouped into three verification lanes:
@@ -218,3 +218,5 @@ but that no single metric could reveal.
     but the probabilistic lane may absorb.}
 \label{fig:scorecard_table}
 \end{figure*}
+
+\FloatBarrier

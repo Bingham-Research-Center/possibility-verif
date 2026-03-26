@@ -141,7 +141,7 @@ def main():
         color=MID_GREY, family="sans-serif", style="italic",
     )
 
-    save_fig(fig, "fig9_ffion_advisory")
+    save_fig(fig, "ffion_advisory")
 
 
 if __name__ == "__main__":

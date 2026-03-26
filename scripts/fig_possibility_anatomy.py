@@ -77,7 +77,7 @@ def main():
     ax.axhline(1.0, linestyle=":", linewidth=0.6, color=MID_GREY, zorder=1)
 
     fig.tight_layout()
-    save_fig(fig, "fig1_possibility_anatomy")
+    save_fig(fig, "possibility_anatomy")
 
 
 if __name__ == "__main__":

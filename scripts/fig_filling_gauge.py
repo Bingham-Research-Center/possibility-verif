@@ -80,7 +80,7 @@ def main():
               frameon=True, fancybox=False, edgecolor=MID_GREY)
 
     fig.tight_layout()
-    save_fig(fig, "fig3_filling_gauge")
+    save_fig(fig, "filling_gauge")
 
 
 if __name__ == "__main__":

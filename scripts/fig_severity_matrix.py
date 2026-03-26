@@ -111,7 +111,7 @@ def main():
 
     ax.set_facecolor("white")
     fig.tight_layout()
-    save_fig(fig, "fig12_severity_matrix")
+    save_fig(fig, "severity_matrix")
 
 
 if __name__ == "__main__":

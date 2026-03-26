@@ -86,8 +86,32 @@ the normalized rank position of the observation within the ensemble).
 Five summary statistics evaluate each forecast--observation pair, where
 $c_{\mathrm{obs}}$ denotes the observed SPC category and $K = |\Omega|$
 is the number of categories (here, $K = 6$).
+Table~\ref{tab:scorecard_defs} lists the definitions; the equations
+are given below.
 
-\paragraph{Depth-of-truth $\alpha^*$.}
+\begin{table}[htbp]
+\centering
+\caption{Five-number scorecard definitions.}
+\label{tab:scorecard_defs}
+\small
+\begin{tabular}{clcl}
+\toprule
+Symbol & Name & Component & Eq.\ \\
+\midrule
+$\alpha^*$ & Depth-of-truth & Possibility
+    & \eqref{eq:alpha_star} \\
+$\eta$ & Nonspecificity & Possibility
+    & \eqref{eq:ns} \\
+$\delta$ & Resolution gap & Possibility
+    & \eqref{eq:rg} \\
+$\ign$ & Ignorance & Ignorance
+    & \eqref{eq:ignorance} \\
+$\Nc^*$ & Cond.\ necessity of truth & Necessity
+    & \eqref{eq:nc_star} \\
+\bottomrule
+\end{tabular}
+\end{table}
+
 \begin{equation}
 \alpha^* = \pinorm(c_{\mathrm{obs}}) \label{eq:alpha_star}
 \end{equation}
@@ -95,11 +119,6 @@ where $\alpha^* = 1$ when the truth coincides with the system's peak
 category and $\alpha^* = 0$ when the system assigns zero possibility to
 the observed outcome.
 
-\textit{Plain language:} ``How much normalized possibility did the system
-assign to what actually happened?''  Like probability of detection (POD)
-for the winning bin, but continuous rather than binary.
-
-\paragraph{Nonspecificity $\eta$.}
 Following \citet{Klir1995-va}, nonspecificity measures the diffuseness
 of the normalized shape:
 \begin{equation}
@@ -107,33 +126,17 @@ of the normalized shape:
 \end{equation}
 ranging from $1/K$ (sharp) to $1$ (uniform).
 
-\textit{Plain language:} ``How spread out was the normalized
-distribution?''  Like ensemble spread or sharpness.  A tight ensemble
-(all members agree) has low $\eta$; a flat ensemble (members everywhere)
-has high $\eta$.
-
-\paragraph{Resolution gap $\delta$.}
 \begin{equation}
 \delta = \alpha^* - \eta \label{eq:rg}
 \end{equation}
 Positive $\delta$ indicates the system assigned more possibility to the
 truth than to an average category.
 
-\textit{Plain language:} ``Did the system give more support to the truth
-than to an average category?''  Like resolution in the Brier
-decomposition---ability to sort events from non-events.
-
-\paragraph{Ignorance \ign{}.}
 \begin{equation}
 \ign = 1 - m = 1 - \max_{\omega \in \Omega} \pi(\omega)
 \end{equation}
 (same as Eq.~\ref{eq:ignorance}).
 
-\textit{Plain language:} ``How much did the system admit it didn't
-know?''  $\ign = 0$: fully confident.  $\ign = 1$: complete ignorance.
-Like ensemble spread, but model-intrinsic.
-
-\paragraph{Conditional necessity of truth $\Nc^*$.}
 \begin{equation}
 \Nc^* = \Nc(c_{\mathrm{obs}})
     = 1 - \max_{\omega \neq c_{\mathrm{obs}}} \pinorm(\omega)
@@ -143,20 +146,21 @@ where $\Nc^* > 0$ only when the observed category dominates all
 alternatives in the normalized distribution.  This is a direct
 application of Eq.~\eqref{eq:cond_nec} evaluated at the observation.
 
-\textit{Plain language:} ``Among scenarios the system covered, was the
-truth dominant enough to rule out alternatives?''  A confidence flag:
-not just ``did the system consider the truth plausible?'' (that is
-$\alpha^*$) but ``was the system sure enough to rule other things out?''
-
-\paragraph{Mapping to the three components.}
-These five statistics map onto the three-component framework of
-Section~\ref{sec:three_component}:
-\begin{itemize}[leftmargin=2em]
-\item \textbf{Possibility quality:} $\alpha^*$ and $\delta$ (shape of
-    the distribution).
-\item \textbf{Ignorance signal:} $\ign$ (subnormality).
-\item \textbf{Necessity signal:} $\Nc^*$ (conditional dominance).
+\begin{rationaleenv}{Plain-language glosses}
+\begin{itemize}[leftmargin=1em, itemsep=2pt]
+\item $\alpha^*$: ``How much normalized possibility did the system
+    assign to what actually happened?'' Like POD for the winning bin,
+    but continuous.
+\item $\eta$: ``How spread out was the normalized distribution?'' Like
+    ensemble spread or sharpness.
+\item $\delta$: ``Did the system give more support to the truth than to
+    an average category?'' Like resolution in the Brier decomposition.
+\item $\ign$: ``How much did the system admit it didn't know?''
+    $\ign = 0$: fully confident.  $\ign = 1$: complete ignorance.
+\item $\Nc^*$: ``Among scenarios the system covered, was the truth
+    dominant enough to rule out alternatives?'' A confidence flag.
 \end{itemize}
+\end{rationaleenv}
 
 Aggregates $\overline{\alpha^*}$, $\overline{\eta}$,
 $\overline{\delta}$, $\overline{\ign}$, $\overline{\Nc^*}$ are reported
@@ -205,9 +209,9 @@ rare-event population where ignorance and near-miss structures dominate.
 For operational dashboards, we recommend reporting scorecard aggregates
 separately for null (\spc{NONE}) and eventful (\spc{SLGT}$+$) subsets.
 
-\begin{figure*}[t]
+\begin{figure*}[!t]
 \centering
-\includegraphics[width=\textwidth]{fig11_performance_diagram.png}
+\includegraphics[width=\textwidth]{performance_diagram.png}
 \caption{Possibilistic performance diagram for a five-year synthetic
     reforecast with SPC-like base rates (slightly smoothed to reduce
     null-day dominance; \spc{NONE}~60\%, \spc{MRGL}~18\%, \spc{SLGT}~12\%,
@@ -226,6 +230,8 @@ separately for null (\spc{NONE}) and eventful (\spc{SLGT}$+$) subsets.
     $\Nc^*$ (larger $=$ truth more dominant).}
 \label{fig:performance_diagram}
 \end{figure*}
+
+\FloatBarrier
 
 %----------------------------------------------------------
 \subsection{Interval Log Score}\label{sec:interval_log}
@@ -288,20 +294,18 @@ possible'' and ``essentially certain.''
 The ILS uses optimistic verification: when the event occurs, the penalty is $-\log_2(U)$, crediting the upper (most generous) bound rather than a point probability.  This means a forecaster can reduce the penalty by widening the interval---assigning higher possibility to more outcomes---without improving the forecast's sharpness.  The width penalty enters implicitly through $\ign$: widening the distribution increases subnormality, which the native scorecard's ignorance metric penalizes.  The ILS is therefore not strictly proper in the classical sense, but the companion $\ign$ metric partially mitigates gaming by exposing the cost of artificial interval inflation.
 
 \textbf{Worked example} (Example~1 from Section~\ref{sec:subnormal},
-$\pi = (0.05,\, 0,\, 0.1,\, 0.2,\, 0.75,\, 0.15)$, threshold
-$A_T = \{\spc{ENH},\, \spc{MDT},\, \spc{HIGH}\}$):
-\begin{itemize}[leftmargin=2em]
-\item $m = 0.75$;
-\item $U = \max(0.2,\, 0.75,\, 0.15) = 0.75$;
-\item $\pinorm = \{0.067,\; 0.0,\; 0.133,\; 0.267,\; 1.0,\; 0.2\}$;
-\item $\Nc(A_T) = 1 - \max(0.067,\, 0.0,\, 0.133) = 0.867$;
-\item $L = 0.75 \times 0.867 = 0.65$;
-\item $L \leq U$ confirmed ($0.65 \leq 0.75$).
-\item If the threshold event occurs:
-    $\mathrm{ILS} = -\log_2(0.75) = 0.42$~bits.
-\item If it does not:
-    $\mathrm{ILS} = -\log_2(1 - 0.65) = -\log_2(0.35) = 1.51$~bits.
-\end{itemize}
+$\pi = (0.05,\, 0,\, 0.1,\allowbreak\, 0.2,\, 0.75,\, 0.15)$, threshold
+$A_T = \{\spc{ENH},\allowbreak\, \spc{MDT},\, \spc{HIGH}\}$):
+\begin{align*}
+m &= 0.75 \\
+U &= \max(0.2,\, 0.75,\, 0.15) = 0.75 \\
+\pinorm &= (0.067,\; 0.0,\; 0.133,\; 0.267,\; 1.0,\; 0.2) \\
+\Nc(A_T) &= 1 - \max(0.067,\, 0.0,\, 0.133) = 0.867 \\
+L &= 0.75 \times 0.867 = 0.65 \quad (L \leq U \;\checkmark) \\
+\mathrm{ILS}_{\text{event}} &= -\log_2(0.75) = 0.42\;\text{bits} \\
+\mathrm{ILS}_{\text{non-event}}
+  &= -\log_2(1 - 0.65) = -\log_2(0.35) = 1.51\;\text{bits}
+\end{align*}
 
 Figure~\ref{fig:upper_lower} shows the interval $[L, U]$ for several
 forecast scenarios applied to the threshold event
@@ -309,9 +313,9 @@ $A_T = \{\spc{ENH},\, \spc{MDT},\, \spc{HIGH}\}$, illustrating how
 sharp forecasts produce narrow intervals while hedged or ignorant
 forecasts produce wide ones.
 
-\begin{figure*}[t]
+\begin{figure*}[b]
 \centering
-\includegraphics[width=0.75\textwidth]{fig5_upper_lower_bounds.png}
+\includegraphics[width=0.75\textwidth]{upper_lower_bounds.png}
 \caption{Upper and lower probability bounds for the threshold event
     $A_T = \{\spc{ENH},\, \spc{MDT},\, \spc{HIGH}\}$ across three
     forecast scenarios.  Each horizontal band shows the interval
@@ -322,68 +326,10 @@ forecasts produce wide ones.
 \label{fig:upper_lower}
 \end{figure*}
 
-%----------------------------------------------------------
-\subsection{Imprecise Ranked Logarithmic Score}\label{sec:irls}
+Two additional tools---the imprecise ranked logarithmic score (IRLS)
+and possibilistic climatology---are developed in
+Appendix~\ref{sec:appendix_alt}.  IRLS integrates the ILS across all
+category boundaries; possibilistic climatology provides the consonant
+baseline needed for skill scores.
 
-For $K$ ordered categories, the cumulative possibility and necessity
-bounds are:
-\begin{align}
-U_k &= \max_{i \leq k}\, \pi(i) \\
-L_k &= m \cdot \bigl[1 - \max_{i > k}\, \pinorm(i)\bigr]
-\end{align}
-with $\max$ over an empty set defined as $0$, so that $U_K = m$ and
-$L_K = m$.
-
-The \textit{imprecise ranked logarithmic score} is:
-\begin{equation}
-\mathrm{IRLS} = \frac{1}{K} \sum_{k=1}^{K}
-    \bigl[e_k \cdot S(U_k) + (1 - e_k) \cdot S(1 - L_k)\bigr]
-\label{eq:irls}
-\end{equation}
-where $S(p) = -\log_2(\max(p, \epsilon))$ and
-$e_k = \mathbf{1}\{c_{\mathrm{obs}} \leq k\}$.  When $L_k = U_k$ for
-all $k$, IRLS reduces to the standard ranked logarithmic score.
-
-\textbf{Properties:}
-\begin{itemize}[leftmargin=2em]
-\item $U_k$ is non-decreasing in $k$ (maximum over a growing set).
-\item $L_k$ is non-decreasing in $k$ (complement of a maximum over a
-    shrinking set).
-\item $L_k \leq U_k$ for all $k$.
-\end{itemize}
-
-The IRLS bears the same relationship to ILS that CRPS bears to the Brier score: it integrates the threshold-specific score across all category boundaries, producing a single summary measure that rewards both sharpness and calibration across the full distribution rather than at a single threshold.
-
-\textbf{Note:} IRLS is formally defined here for completeness, but its
-detailed application is deferred to future work with a larger
-reforecast dataset.
-
-%----------------------------------------------------------
-\subsection{Possibilistic Climatology}\label{sec:poss_climatology}
-
-A possibilistic baseline analogous to probabilistic climatology is
-needed for skill scores.  The recommended construction derives
-\textit{consonant} possibility distributions from the climatological CDF.
-
-For continuous variables with climatological CDF $F_{\mathrm{clim}}(z)$:
-\begin{equation}
-\pi_{\mathrm{clim}}(z) = 1 - 2\,\bigl|F_{\mathrm{clim}}(z) - 0.5\bigr|
-\label{eq:poss_clim}
-\end{equation}
-This peaks at the climatological median ($\pi_{\mathrm{clim}} = 1$ where
-$F_{\mathrm{clim}} = 0.5$) and produces central nested $\alpha$-cut sets
-$S_{\mathrm{clim}}(\alpha) = [Q_{\mathrm{clim}}(\alpha/2),\;
-Q_{\mathrm{clim}}(1 - \alpha/2)]$.
-
-For $K$ ordered categories with smoothed climatological frequencies
-$p_k$, the \textit{categorical mid-rank method} is recommended: compute
-cumulative frequency $F_{k-1} = \sum_{j < k} p_j$, category mid-rank
-$u_k = F_{k-1} + 0.5\, p_k$, and define:
-\[
-\pi_{\mathrm{clim}}(k) = 1 - 2\,|u_k - 0.5|
-\]
-
-Climatological ignorance is zero by convention
-($H_{\Pi,\mathrm{clim}} = 0$): climatology is a reference distribution,
-not a live forecasting system.
-The consonant construction is the least-committed possibility distribution consistent with a given CDF: its nested $\alpha$-cuts are central intervals that encode no shape preference beyond what the cumulative frequencies imply.  For applications with multimodal climatologies or strongly asymmetric base rates, alternative constructions (e.g., non-nested random sets) may be more appropriate; the choice of climatological reference should be justified on physical grounds.  Any $\ign > 0$ from an operational system therefore reflects genuine model uncertainty beyond this baseline---the system's admitted ignorance is measured relative to a reference that, by convention, claims complete knowledge.
+\FloatBarrier

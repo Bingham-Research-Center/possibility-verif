@@ -136,7 +136,7 @@ def main():
                connectionstyle="arc3,rad=0.0")
 
     fig.tight_layout()
-    save_fig(fig, "fig8_verification_lanes")
+    save_fig(fig, "verification_lanes")
 
 
 if __name__ == "__main__":

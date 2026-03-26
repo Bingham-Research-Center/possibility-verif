@@ -123,7 +123,7 @@ def main():
 
     fig.subplots_adjust(left=0.08, right=0.96, bottom=0.12, top=0.92,
                         wspace=0.40)
-    save_fig(fig, "fig4_pignistic_bridge")
+    save_fig(fig, "pignistic_bridge")
 
 
 if __name__ == "__main__":

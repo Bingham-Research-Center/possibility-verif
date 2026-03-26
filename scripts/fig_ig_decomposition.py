@@ -130,7 +130,7 @@ def main():
     )
 
     fig.tight_layout()
-    save_fig(fig, "fig7_ig_decomposition")
+    save_fig(fig, "ig_decomposition")
 
 
 if __name__ == "__main__":

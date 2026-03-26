@@ -124,7 +124,7 @@ def main():
     axes[0].set_ylabel(r"Possibility $\pi(\omega)$")
 
     fig.tight_layout(rect=[0, 0.08, 1, 1])
-    save_fig(fig, "fig2_three_scenario")
+    save_fig(fig, "three_scenario")
 
 
 if __name__ == "__main__":

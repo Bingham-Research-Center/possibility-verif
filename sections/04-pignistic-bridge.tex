@@ -55,21 +55,19 @@ This extension to subnormal distributions generalizes the pignistic transformati
 \textbf{Worked example.}
 Suppose a possibilistic convective outlook produces
 $\pi = (0.05,\; 0.2,\; 0.4,\; 0.6,\; 0.1,\; 0.0)$.
-Then:
-\begin{itemize}[leftmargin=2em]
-\item $\ign = 1 - 0.6 = 0.4$ (system is 40\% unsure).
-\item $\sum_j \pi_j = 1.35$; remaining $0.6$ distributed
-    proportionally:
-\item $\mathbf{p} = (0.022,\; 0.089,\; 0.178,\; 0.267,\; 0.044,\;
-    0.0,\; \underbrace{0.400}_{\text{ign}})$.
-\item If \spc{ENH} is observed: self-entropy
-    $= -\log_2(0.267) = 1.91$~bits.
-\item Climatological baseline (e.g.,
-    $p_{\mathrm{clim}}(\spc{ENH}) = 0.05$):
-    $-\log_2(0.05) = 4.32$~bits.
-\item $\mathrm{IG} = 4.32 - 1.91 = 2.41$ bits gained over
-    climatology.
-\end{itemize}
+\begin{align*}
+\textit{Input:}\quad
+  & \ign = 1 - 0.6 = 0.4 \;\;(\text{40\% unsure}),
+    \quad \textstyle\sum_j \pi_j = 1.35 \\
+\textit{Bridge:}\quad
+  & \mathbf{p} = (0.022,\; 0.089,\; 0.178,\; 0.267,\;
+    0.044,\; 0.0,\; \underbrace{0.400}_{\text{ign}}) \\
+\textit{Score:}\quad
+  & \text{If \spc{ENH} obs: } {-}\log_2(0.267) = 1.91\;\text{bits};
+    \quad p_{\mathrm{clim}}(\spc{ENH}) = 0.05 \Rightarrow 4.32\;\text{bits} \\
+\textit{IG:}\quad
+  & 4.32 - 1.91 = 2.41\;\text{bits gained over climatology}
+\end{align*}
 
 High \ign{} ($0.4$) correctly inflated the ignorance outcome, reducing
 $p(\spc{ENH})$ from what simple normalization would give
@@ -77,9 +75,9 @@ $p(\spc{ENH})$ from what simple normalization would give
 honestly reflects the system's partial uncertainty.
 Figure~\ref{fig:pignistic_bridge} visualizes this transformation.
 
-\begin{figure*}[t]
+\begin{figure*}[!t]
 \centering
-\includegraphics[width=0.85\textwidth]{fig4_pignistic_bridge.png}
+\includegraphics[width=0.85\textwidth]{pignistic_bridge.png}
 \caption{Possibility-to-probability bridge applied to a subnormal possibility
     distribution.  \textbf{Left:} raw possibility values $\pi(\omega)$
     for six SPC categories.  \textbf{Right:} resulting $(n{+}1)$-category
@@ -137,9 +135,9 @@ several forecast scenarios with net IG annotated.
 
 The IG decomposition is the logarithmic counterpart of the Brier score's familiar three-component breakdown ($\mathrm{BS} = \mathrm{REL} - \mathrm{RES} + \mathrm{UNC}$).  Where the Brier decomposition measures skill in probability-squared units, the IG decomposition measures it in bits---additive, interpretable information units.  A reliability diagram plots observed frequency against forecast probability; the REL term in Eq.~\eqref{eq:ig_decomp} is its scalar summary.  Similarly, the DSC term summarizes the spread of conditional outcome distributions that a reliability diagram visualizes as deviations from the diagonal.
 
-\begin{figure*}[t]
+\begin{figure*}[!b]
 \centering
-\includegraphics[width=0.75\textwidth]{fig7_ig_decomposition.png}
+\includegraphics[width=0.75\textwidth]{ig_decomposition.png}
 \caption{Information-gain decomposition for five forecast scenarios.
     Bars show net $\mathrm{IG} = \mathrm{DSC} - \mathrm{REL}$ (bits),
     with the zero baseline representing climatological performance.
@@ -179,17 +177,25 @@ of the converted forecast in proportion to $\ign$.  The more ignorant
 the system, the more mass is stranded, and the larger the penalty.
 
 \textbf{Worked contrast.}
-Using $\pi = (0.05,\, 0.2,\, 0.4,\, 0.6,\, 0.1,\, 0.0)$ from the worked
-example in Section~\ref{sec:poss_prob_bridge}:
-\begin{itemize}[leftmargin=2em]
-\item Simple normalization: $p(\spc{ENH}) = 0.6 / 1.35 = 0.444$.
-\item Bridge: $p(\spc{ENH}) = 0.267$, $p_{\mathrm{ign}} = 0.400$.
-\item If \spc{ENH} is observed: self-entropy $= -\log_2(0.444) = 1.17$~bits
-    (simple) vs.\ $-\log_2(0.267) = 1.91$~bits (bridge).
-\item The $0.74$-bit gap is the verification cost of ignoring the
-    system's admitted uncertainty.  Simple normalization rewards the
-    system for confidence it never claimed.
-\end{itemize}
+Using $\pi = (0.05,\, 0.2,\, 0.4,\allowbreak\, 0.6,\, 0.1,\, 0.0)$
+from Section~\ref{sec:poss_prob_bridge}:
+
+\begin{center}
+\small
+\begin{tabular}{lcc}
+\toprule
+ & Simple norm.\ & Bridge \\
+\midrule
+$p(\spc{ENH})$ & $0.6/1.35 = 0.444$ & $0.267$ \\
+$p_{\mathrm{ign}}$ & --- & $0.400$ \\
+Self-entropy (bits) & $-\log_2(0.444) = 1.17$ & $-\log_2(0.267) = 1.91$ \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\noindent The $0.74$-bit gap is the verification cost of ignoring the
+system's admitted uncertainty.  Simple normalization rewards the system
+for confidence it never claimed.
 
 \textbf{Complementarity of \ign{} and IG.}
 Possibilistic ignorance $\ign$ and information gain IG capture
@@ -213,3 +219,5 @@ Both are needed because:
 \item A \textbf{hedged wrong} forecast has high \ign{} and negative
     IG---the system knew it didn't know, and it still got it wrong.
 \end{itemize}
+
+\FloatBarrier

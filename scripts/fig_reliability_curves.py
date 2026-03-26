@@ -77,7 +77,7 @@ def main():
               edgecolor=MID_GREY)
 
     fig.tight_layout()
-    save_fig(fig, "fig6_reliability_curves")
+    save_fig(fig, "reliability_curves")
 
 
 if __name__ == "__main__":

@@ -171,7 +171,7 @@ def main():
               handletextpad=0.3, columnspacing=1.0)
 
     fig.tight_layout(rect=[0.28, 0.09, 1.0, 0.97])
-    save_fig(fig, "fig10_scorecard_table")
+    save_fig(fig, "scorecard_table")
 
 
 if __name__ == "__main__":

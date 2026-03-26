@@ -98,7 +98,7 @@ def main():
     ax.axvline(1, linestyle=":", linewidth=0.5, color=MID_GREY)
 
     fig.tight_layout()
-    save_fig(fig, "fig5_upper_lower_bounds")
+    save_fig(fig, "upper_lower_bounds")
 
 
 if __name__ == "__main__":
