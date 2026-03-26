@@ -267,6 +267,14 @@ taxonomy---the framework would need modification to allow the ignorance
 outcome to verify as ``correct'' under certain conditions, effectively
 treating $\ign$ as a legitimate forecast of novelty.
 
+The five scorecard metrics are permutation-invariant: they treat
+$\Omega$ as an unordered set.  This is natural when categories are
+genuinely nominal (e.g., precipitation type), but practitioners working
+with ordinal schemes---or discretized continuous variables---may want a
+distance-sensitive penalty that distinguishes a one-step miss from a
+far miss.  Extending the framework with an inter-category cost matrix
+is straightforward but beyond our present scope.
+
 Several directions for future work follow naturally.  First,
 multivariate possibilistic verification for correlated hazards (e.g.,
 simultaneous wind and hail occurrence) would require joint possibility
