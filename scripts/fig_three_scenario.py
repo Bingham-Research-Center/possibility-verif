@@ -78,7 +78,7 @@ def compute_scorecard(pi, obs_category):
 def main():
     apply_style()
 
-    fig, axes = plt.subplots(1, 3, figsize=(12.0, 4.5), sharey=True)
+    fig, axes = plt.subplots(1, 3, figsize=(12.0, 4.0), sharey=True)
     x = np.arange(SPC_N)
     bar_width = 0.55
 
@@ -104,26 +104,27 @@ def main():
         # Compute scorecard
         sc = compute_scorecard(pi, obs)
 
-        # Build scorecard text
-        lines = (
-            r"$\alpha^*$" + f" = {sc['alpha_star']:.3f}\n"
-            r"$\eta$" + f" = {sc['eta']:.3f}\n"
-            r"$\delta$" + f" = {sc['delta']:.3f}\n"
-            r"$H_\Pi$" + f" = {sc['H_Pi']:.3f}\n"
-            r"$N_c^*$" + f" = {sc['Nc_star']:.3f}"
-        )
+        # Horizontal scorecard strip below x-axis
+        labels = [r"$\alpha^*$", r"$\eta$", r"$\delta$",
+                  r"$H_\Pi$", r"$N_c^*$"]
+        vals = [sc['alpha_star'], sc['eta'], sc['delta'],
+                sc['H_Pi'], sc['Nc_star']]
+        parts = [f"{lb}={v:+.2f}" if k == "delta"
+                 else f"{lb}={v:.2f}"
+                 for lb, v, k in zip(labels, vals,
+                     ['alpha_star', 'eta', 'delta', 'H_Pi', 'Nc_star'])]
+        strip = "   ".join(parts)
 
         ax.text(
-            0.50, -0.22, lines, transform=ax.transAxes,
-            fontsize=8, va="top", ha="center",
-            bbox=dict(boxstyle="round,pad=0.4", facecolor="white",
-                      edgecolor=MID_GREY, linewidth=0.6),
-            family="monospace",
+            0.50, -0.14, strip, transform=ax.transAxes,
+            fontsize=7, va="top", ha="center",
+            bbox=dict(boxstyle="round,pad=0.35", facecolor=LIGHT_GREY,
+                      edgecolor=MID_GREY, linewidth=0.5),
         )
 
     axes[0].set_ylabel(r"Possibility $\pi(\omega)$")
 
-    fig.tight_layout(rect=[0, 0.08, 1, 1])
+    fig.tight_layout(rect=[0, 0.05, 1, 1])
     save_fig(fig, "three_scenario")
 
 
