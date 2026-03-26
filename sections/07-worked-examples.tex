@@ -239,9 +239,13 @@ operational forecasters need when tuning a possibilistic system.
 
 We now apply the possibility-to-probability bridge
 (Section~\ref{sec:poss_prob_bridge}) to each scenario, then compute
-information gain relative to a uniform climatological baseline
+information gain relative to a uniform baseline
 $p_{\mathrm{clim}} = 1/6 \approx 0.167$ per category
-(surprise $= \log_2 6 = 2.585$~bits).
+(surprise $= \log_2 6 = 2.585$~bits).  A uniform baseline is used
+here for algebraic transparency; in practice, empirical category
+frequencies would provide a more appropriate reference, since rare
+categories such as \spc{HIGH} occur far less often than $1/K$ and
+common categories such as \spc{NONE} far more often.
 The bridge reserves $p_{\mathrm{ign}} = \ign$, distributes
 the remaining $m$ proportionally via
 $p_i = \pi_i \cdot m / \sum_j \pi_j$,
@@ -253,7 +257,7 @@ readable column by column.
 \centering
 \caption{Bridge conversion, information gain, and interval log score
     for the three worked scenarios.  \textbf{Top:} bridge probabilities and
-    IG relative to uniform climatology ($\log_2 6 = 2.585$~bits).
+    IG relative to a uniform baseline ($\log_2 6 = 2.585$~bits).
     \textbf{Bottom:} ILS for the threshold event
     $A_T = \{\spc{ENH},\, \spc{MDT},\, \spc{HIGH}\}$.
     Asterisk ($^*$) denotes $\varepsilon$-floored values.}

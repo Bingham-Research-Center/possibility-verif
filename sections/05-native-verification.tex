@@ -79,14 +79,16 @@ Quantity & Symbol & Form & Reason \\
 \multicolumn{4}{@{}l}{\textit{Raw $(\pi)$}} \\[2pt]
 \quad Ignorance              & $\ign$      & $\pi$    & Gap to normality \\
 \quad Event possibility      & $\poss(A_T)$& $\pi$    & Upper bound \\
-\quad Cumulative upper bound & $U_k$       & $\pi$    & For IRLS \\[4pt]
+%%% U_k and L_k rows removed — IRLS appendix commented out
+%%\quad Cumulative upper bound & $U_k$       & $\pi$    & For IRLS \\
+
 \multicolumn{4}{@{}l}{\textit{Normalized $(\pinorm)$}} \\[2pt]
 \quad Depth-of-truth         & $\alpha^*$  & $\pinorm$ & Shape quality \\
 \quad Nonspecificity          & $\eta$      & $\pinorm$ & Shape diffuseness \\
 \quad Conditional necessity   & $\Nc(A)$    & $\pinorm$ & Certainty given coverage \\[4pt]
 \multicolumn{4}{@{}l}{\textit{Both}} \\[2pt]
 \quad Lower threshold bound  & $L_t$       & Both     & Coverage $\times$ certainty \\
-\quad Cumulative lower bound & $L_k$       & Both     & IRLS counterpart \\
+%%\quad Cumulative lower bound & $L_k$       & Both     & IRLS counterpart \\
 \bottomrule
 \end{tabular}
 \renewcommand{\arraystretch}{1.0}
@@ -358,10 +360,9 @@ ones.
 \label{fig:upper_lower}
 \end{figure*}
 
-Two additional tools---the imprecise ranked logarithmic score (IRLS)
-and possibilistic climatology---are developed in
-Appendix~\ref{sec:appendix_alt}.  IRLS integrates the ILS across all
-category boundaries; possibilistic climatology provides the consonant
-baseline needed for skill scores.
+Two natural extensions---an imprecise ranked logarithmic score that
+integrates the ILS across all category boundaries, and a possibilistic
+climatology that provides a consonant baseline for skill scores---are
+deferred to future work pending larger reforecast datasets.
 
 \FloatBarrier

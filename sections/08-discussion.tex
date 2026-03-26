@@ -236,8 +236,8 @@ Python.  The accompanying code is publicly available at
 \url{https://github.com/bingham-research-center/possibility-verif}.
 Key modules implement the five-number scorecard
 (\texttt{compute\_scorecard}), bridge conversion from possibility
-distributions to $(n{+}1)$-category probability vectors, the interval
-log score, and possibilistic climatology construction.  The
+distributions to $(n{+}1)$-category probability vectors, and the
+interval log score.  The
 implementation operates on NumPy arrays and can interface with xarray
 datasets for gridded verification workflows.
 
@@ -245,19 +245,21 @@ datasets for gridded verification workflows.
 \subsection{Limitations and Future Directions}%
 \label{sec:limitations}
 
-Several limitations should be noted.  The interval-refined log score
-(IRLS; Appendix~\ref{sec:irls}) is formally defined but
-its detailed application requires a larger reforecast dataset than the
-synthetic examples used here.  Sample-size requirements for the three
-reliability hypothesis tests (Section~\ref{sec:three_tests}) have not
-been established; at pilot scales (${\sim}100$ cases), these tests
-should be supplemented with illustrative case studies and bootstrap
-confidence intervals to guard against small-sample artifacts.  The
-possibilistic climatology construction
-(Section~\ref{sec:poss_climatology}) assumes a consonant (nested)
-reference distribution, which may not suit all applications---particularly
-those with multimodal climatologies where the nested-set assumption
-breaks down.
+Several limitations should be noted.  Sample-size requirements for the
+three reliability hypothesis tests
+(Section~\ref{sec:three_tests}) have not been established; at pilot
+scales (${\sim}100$ cases), these tests should be supplemented with
+illustrative case studies and bootstrap confidence intervals to guard
+against small-sample artifacts.  The interval log score and scorecard
+are demonstrated here without a possibilistic skill score, because
+defining a principled possibilistic climatology---the baseline needed
+for skill---remains an open problem.  A consonant (nested) reference
+distribution derived from observed category frequencies is one
+candidate, but it may not suit applications with multimodal
+climatologies where the nested-set assumption breaks down.
+Construction of such baselines, together with an imprecise ranked
+logarithmic score that integrates the ILS across all category
+boundaries, is deferred to future work.
 
 The possibility-to-probability bridge assumes that the ignorance
 outcome is never observed: the true category is always one of the
