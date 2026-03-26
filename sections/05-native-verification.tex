@@ -24,6 +24,24 @@ $\pi$ denotes the raw (subnormal) possibility distribution,
 $m = \max_{\omega \in \Omega} \pi(\omega)$ is the subnormality, and
 $\ign = 1 - m$ is ignorance (Eq.~\ref{eq:ignorance}).
 
+\begin{figure}[t]
+\centering
+\includegraphics[width=\columnwidth]{perf_hexbin_trajectory.png}
+\caption{Possibilistic performance diagram for a two-year synthetic
+    reforecast.
+    \textbf{Hex bins:} colour is mean $\ign$ (dark purple = confident).
+    \textbf{Contours:} joint skill $S = \alpha^* \times (1 - \eta)$.
+    \textbf{Dashed diagonal:} $\delta = 0$ break-even.
+    \textbf{Green line:} category-conditional means from \spc{NONE}
+    (easy, upper right) to \spc{HIGH} (rare, lower left); dot
+    size $\propto$ sample count; shade encodes $\ign$ (dark green
+    = confident), paralleling the purple hex bins.
+    \textbf{Stars:} worked scenarios from
+    Section~\ref{sec:worked_examples} (green edge = hit, red = miss).
+    The upper-right corner is the perfect-forecast region.}
+\label{fig:performance_diagram}
+\end{figure}
+
 %----------------------------------------------------------
 \subsection{Normalization Protocol}\label{sec:norm_protocol}
 
@@ -175,24 +193,6 @@ Aggregates $\overline{\alpha^*}$, $\overline{\eta}$,
 $\overline{\delta}$, $\overline{\ign}$, $\overline{\Nc^*}$ are reported
 with bootstrap confidence intervals.
 
-\begin{figure}[t]
-\centering
-\includegraphics[width=\columnwidth]{perf_hexbin_trajectory.png}
-\caption{Possibilistic performance diagram for a two-year synthetic
-    reforecast.
-    \textbf{Hex bins:} colour is mean $\ign$ (dark purple = confident).
-    \textbf{Contours:} joint skill $S = \alpha^* \times (1 - \eta)$.
-    \textbf{Dashed diagonal:} $\delta = 0$ break-even.
-    \textbf{Green line:} category-conditional means from \spc{NONE}
-    (easy, upper right) to \spc{HIGH} (rare, lower left); dot
-    size $\propto$ sample count; shade encodes $\ign$ (dark green
-    = confident), paralleling the purple hex bins.
-    \textbf{Stars:} worked scenarios from
-    Section~\ref{sec:worked_examples} (green edge = hit, red = miss).
-    The upper-right corner is the perfect-forecast region.}
-\label{fig:performance_diagram}
-\end{figure}
-
 Figure~\ref{fig:performance_diagram} provides a diagnostic view of the
 five scorecard metrics, inspired by \citet{Roebber2009-rv}.  Hexagonal
 bins aggregate forecast--observation pairs by specificity $1 - \eta$
@@ -237,6 +237,8 @@ $\delta = 0$ line, the forecast failed to discriminate.  Anchor~C
 (sharp-wrong) sits squarely in the overconfident quadrant; Anchor~B
 (hedged-correct) sits in the cautious-discriminating region---a
 distinction invisible in the shape-quality diagram.
+
+\FloatBarrier
 
 \begin{figure}[t]
 \centering

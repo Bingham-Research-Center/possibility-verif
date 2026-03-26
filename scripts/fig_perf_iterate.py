@@ -245,36 +245,45 @@ def draw_traj_commit(ax, means, color=GREEN, fontsize=6.5):
 
 def v3b(data, ap, spec, anchors):
     """V3b: green trajectory + enhanced hexbin (all days)."""
-    fig, ax = plt.subplots(figsize=(5.5, 4.5))
     cm = hpi_cmap()
     nm = Normalize(0.0, 0.55)
     gcm = hpi_green_cmap()
     means = cat_means(data, spec)
 
+    # Gridspec: main axes (square) + thin dual-colorbar strip
+    fig = plt.figure(figsize=(5.0, 4.5))
+    gs = fig.add_gridspec(1, 2, width_ratios=[1, 0.04], wspace=0.12)
+    ax = fig.add_subplot(gs[0, 0])
+    cax = fig.add_subplot(gs[0, 1])
+
     ax.set_xlim(-0.02, 1.04)
     ax.set_ylim(-0.02, 1.04)
+    ax.set_box_aspect(1)  # Force square axes box
 
     draw_hyperbolas(ax)
     draw_delta0_diag(ax)
 
-    hb = ax.hexbin(spec, ap, C=data['H_Pi'],
-                   reduce_C_function=np.mean, gridsize=12, cmap=cm,
-                   edgecolors="white", linewidths=0.4, mincnt=1,
-                   alpha=0.65, zorder=1)
+    ax.hexbin(spec, ap, C=data['H_Pi'],
+              reduce_C_function=np.mean, gridsize=12, cmap=cm,
+              edgecolors="white", linewidths=0.4, mincnt=1,
+              alpha=0.65, zorder=1)
 
     draw_traj_spec_alpha(ax, means, gcmap=gcm, gnorm=nm)
     draw_anchors_spec_alpha(ax, anchors)
     draw_compass(ax, 0.97, 0.97, "sharp +\ntruthful")
 
-    # Dual colorbar: purple (hexbin) + green (trajectory), same H_Pi scale
-    cb_p = fig.colorbar(hb, ax=ax, shrink=0.65, pad=0.02)
-    cb_p.ax.tick_params(labelsize=7)
-    cb_p.set_label("")
-    sm_g = plt.cm.ScalarMappable(cmap=gcm, norm=nm)
-    sm_g.set_array([])
-    cb_g = fig.colorbar(sm_g, ax=ax, shrink=0.65, pad=0.02)
-    cb_g.set_label(r"Mean $H_\Pi$  (dark = confident)", fontsize=8)
-    cb_g.ax.set_yticklabels([])
+    # Dual colorbar: purple | green touching, shared label
+    gradient = np.linspace(nm.vmin, nm.vmax, 256)
+    p_colors = cm(nm(gradient))
+    g_colors = gcm(nm(gradient))
+    dual = np.stack([p_colors, g_colors], axis=1)
+    cax.imshow(dual, aspect='auto', origin='lower',
+               extent=[0, 1, nm.vmin, nm.vmax])
+    cax.set_xticks([])
+    cax.yaxis.tick_right()
+    cax.yaxis.set_label_position("right")
+    cax.set_ylabel(r"Mean $H_\Pi$  (dark = confident)", fontsize=8)
+    cax.tick_params(labelsize=7)
 
     h_t = mlines.Line2D([], [], marker="o", ls="-", color=GREEN, lw=2,
                         mfc=GREEN, mec=DARK_GREY, ms=6,
@@ -288,7 +297,6 @@ def v3b(data, ap, spec, anchors):
     ax.legend(handles=[h_t, h_v, h_m], loc="lower left", fontsize=7,
               frameon=True, fancybox=False, edgecolor=MID_GREY)
 
-    ax.set_aspect('equal', adjustable='box')
     ax.set_xlabel(r"Specificity  $1\!-\!\eta$  (sharper $\rightarrow$)",
                   fontsize=9)
     ax.set_ylabel(r"Depth-of-truth  $\alpha^*$  (more truthful $\rightarrow$)",
