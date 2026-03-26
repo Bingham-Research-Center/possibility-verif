@@ -264,7 +264,7 @@ def v3b(data, ap, spec, anchors):
     ax.set_aspect('equal', adjustable='box')
     ax.set_xlabel(r"Specificity  $1\!-\!\eta$  (sharper $\rightarrow$)",
                   fontsize=9)
-    ax.set_ylabel(r"Depth-of-truth  $\alpha^*$  (more truthful $\uparrow$)",
+    ax.set_ylabel(r"Depth-of-truth  $\alpha^*$  (more truthful $\rightarrow$)",
                   fontsize=9)
     ax.set_title(f"V3b: Hexbin + Green Trajectory  (all, $n = {len(spec)}$)",
                  fontsize=9, fontweight="bold", pad=8)
@@ -313,7 +313,7 @@ def v4b(data, ap, spec, anchors):
         r"  (more committed $\rightarrow$)", fontsize=9)
     ax.set_ylabel(
         r"Discrimination  $\delta = \alpha^* - \eta$"
-        r"  ($\uparrow$ better)", fontsize=9)
+        r"  ($\rightarrow$ better)", fontsize=9)
     ax.set_title(
         f"V4b: Commitment–Discrimination + Trajectory"
         f"  (all, $n = {len(spec)}$)",
@@ -362,7 +362,7 @@ def v4c(data, ap, spec, anchors):
         r"Commitment  $\pi_{\max}$  (more committed $\rightarrow$)",
         fontsize=9)
     ax.set_ylabel(
-        r"Discrimination  $\delta$  ($\uparrow$ better)", fontsize=9)
+        r"Discrimination  $\delta$  ($\rightarrow$ better)", fontsize=9)
     ax.set_title(
         f"V4c: Commitment–Discrimination  (SLGT+, $n = {sev.sum()}$)",
         fontsize=9, fontweight="bold", pad=8)
@@ -414,7 +414,7 @@ def v4d(data, ap, spec, anchors):
         ax.set_title(title, fontsize=9, fontweight="bold")
 
     ax_l.set_ylabel(
-        r"$\delta$  (discriminating $\uparrow$)", fontsize=9)
+        r"$\delta$  (discriminating $\rightarrow$)", fontsize=9)
 
     cb = fig.colorbar(hb, ax=[ax_l, ax_r], shrink=0.65, pad=0.02)
     cb.set_label("Count per bin", fontsize=8)

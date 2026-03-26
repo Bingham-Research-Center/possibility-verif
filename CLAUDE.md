@@ -11,7 +11,7 @@ Standalone methods paper: "Possible, yes; ignorant, perhaps: a scorecard for pos
 ## Build
 
 - **LaTeX**: Compiled on **Overleaf with XeLaTeX** (TeX Live 2025). Locally: `latexmk -xelatex main.tex`.
-- **Figures**: `python scripts/generate_all.py` then `python scripts/fig_scorecard_table.py`, `python scripts/fig_performance_diagram.py`, and `python scripts/fig_severity_matrix.py`. Outputs 12 PNGs to `figures/`.
+- **Figures**: `python scripts/generate_all.py` then `python scripts/fig_scorecard_table.py`, `python scripts/fig_performance_diagram.py`, `python scripts/fig_severity_matrix.py`, and `python scripts/fig_perf_iterate.py`. Outputs 13 PNGs to `figures/`.
 - **Python env**: `conda env create -f environment.yml` creates `poss-verif`.
 
 ## Gotchas
@@ -75,7 +75,7 @@ Scorecard computation canonical in `fig_three_scenario.py:compute_scorecard`.
 ### Done
 - All 10 section files with equations migrated from preprint
 - 15 labelled equations, all cross-references resolve
-- 12 figures (PNG) embedded with captions + in-text references
+- 13 figures (PNG) embedded with captions + in-text references
 - NONE category added to Ω: K=6, ordering (NONE, MRGL, SLGT, ENH, MDT, HIGH)
 - All π arrays, scorecard values, bridge computations, and ILS calculations updated for K=6
 - Notation table (§2) with Form (raw/norm) and Eq. columns

@@ -106,7 +106,7 @@ def std_axes(ax):
     ax.set_xlim(-0.02, 1.02)
     ax.set_ylim(-0.04, 1.04)
     ax.set_xlabel(r"Specificity  $1\!-\!\eta$  (sharper $\rightarrow$)", fontsize=9)
-    ax.set_ylabel(r"Depth-of-truth  $\alpha^*$  (more truthful $\uparrow$)", fontsize=9)
+    ax.set_ylabel(r"Depth-of-truth  $\alpha^*$  (more truthful $\rightarrow$)", fontsize=9)
 
 
 def cat_means(data, spec):
@@ -344,7 +344,7 @@ def v4(data, ap, spec, anchors):
     ax.set_ylim(-0.55, 0.65)
     ax.set_xlabel(r"Commitment  $\pi_{\max} = 1 - H_\Pi$  (more committed $\rightarrow$)",
                   fontsize=9)
-    ax.set_ylabel(r"Discrimination  $\delta = \alpha^* - \eta$  ($\uparrow$ better)",
+    ax.set_ylabel(r"Discrimination  $\delta = \alpha^* - \eta$  ($\rightarrow$ better)",
                   fontsize=9)
 
     cb = fig.colorbar(hb, ax=ax, shrink=0.7, pad=0.02)
