@@ -36,6 +36,13 @@ def hpi_cmap():
     ], N=256)
 
 
+def hpi_green_cmap():
+    """H_Pi in green: dark green (confident) → pale green (uncertain)."""
+    return LinearSegmentedColormap.from_list("hpi_green", [
+        "#1B5E20", GREEN, "#A5D6A7", "#E8F5E9",
+    ], N=256)
+
+
 def count_cmap():
     """Count: pale lavender (few) → very dark purple (many)."""
     return LinearSegmentedColormap.from_list("cnt2", [
@@ -178,8 +185,12 @@ def _traj_labels(ax, cats, xs, ys, ns, color=GREEN, fontsize=6.5):
             zorder=8)
 
 
-def draw_traj_spec_alpha(ax, means, color=GREEN):
-    """GREEN trajectory on (1-eta, alpha*) axes."""
+def draw_traj_spec_alpha(ax, means, color=GREEN, gcmap=None, gnorm=None):
+    """GREEN trajectory on (1-eta, alpha*) axes.
+
+    If gcmap/gnorm are provided, dots are shaded by mean H_Pi
+    (dark green = confident, pale green = uncertain).
+    """
     cats = [c for c in SPC_CATEGORIES if c in means]
     xs = [means[c]['spec'] for c in cats]
     ys = [means[c]['alpha'] for c in cats]
@@ -193,8 +204,16 @@ def draw_traj_spec_alpha(ax, means, color=GREEN):
     s_min, s_max = 60, 350
     mx = max(ns)
     sizes = [s_min + (s_max - s_min) * (n / mx) for n in ns]
-    ax.scatter(xs, ys, s=sizes, fc=color, ec="white", lw=2.0, zorder=6)
-    ax.scatter(xs, ys, s=sizes, fc=color, ec=DARK_GREY, lw=0.8, zorder=7)
+
+    if gcmap is not None and gnorm is not None:
+        hs = [means[c]['hpi'] for c in cats]
+        ax.scatter(xs, ys, s=sizes, c=hs, cmap=gcmap, norm=gnorm,
+                   ec="white", lw=2.0, zorder=6)
+        ax.scatter(xs, ys, s=sizes, c=hs, cmap=gcmap, norm=gnorm,
+                   ec=DARK_GREY, lw=0.8, zorder=7)
+    else:
+        ax.scatter(xs, ys, s=sizes, fc=color, ec="white", lw=2.0, zorder=6)
+        ax.scatter(xs, ys, s=sizes, fc=color, ec=DARK_GREY, lw=0.8, zorder=7)
 
     _traj_labels(ax, cats, xs, ys, ns, color)
 
@@ -226,10 +245,15 @@ def draw_traj_commit(ax, means, color=GREEN, fontsize=6.5):
 
 def v3b(data, ap, spec, anchors):
     """V3b: green trajectory + enhanced hexbin (all days)."""
-    fig, ax = plt.subplots(figsize=(6.0, 5.5), constrained_layout=True)
+    fig, ax = plt.subplots(figsize=(5.0, 4.5), constrained_layout=True)
     cm = hpi_cmap()
     nm = Normalize(0.0, 0.55)
+    gcm = hpi_green_cmap()
     means = cat_means(data, spec)
+
+    # Set equal ranges BEFORE hexbin so hex grid is regular
+    ax.set_xlim(-0.02, 1.04)
+    ax.set_ylim(-0.02, 1.04)
 
     draw_hyperbolas(ax)
     draw_delta0_diag(ax)
@@ -239,9 +263,9 @@ def v3b(data, ap, spec, anchors):
                    edgecolors="white", linewidths=0.4, mincnt=1,
                    alpha=0.65, zorder=1)
 
-    draw_traj_spec_alpha(ax, means)
+    draw_traj_spec_alpha(ax, means, gcmap=gcm, gnorm=nm)
     draw_anchors_spec_alpha(ax, anchors)
-    draw_compass(ax, 0.95, 0.95, "sharp +\ntruthful")
+    draw_compass(ax, 0.97, 0.97, "sharp +\ntruthful")
 
     cb = fig.colorbar(hb, ax=ax, shrink=0.65, pad=0.02)
     cb.set_label(r"Mean $H_\Pi$  (dark = confident)", fontsize=8)
@@ -259,9 +283,6 @@ def v3b(data, ap, spec, anchors):
     ax.legend(handles=[h_t, h_v, h_m], loc="lower left", fontsize=7,
               frameon=True, fancybox=False, edgecolor=MID_GREY)
 
-    ax.set_xlim(-0.02, 1.02)
-    ax.set_ylim(-0.04, 1.04)
-    ax.set_aspect('equal')
     ax.set_xlabel(r"Specificity  $1\!-\!\eta$  (sharper $\rightarrow$)",
                   fontsize=9)
     ax.set_ylabel(r"Depth-of-truth  $\alpha^*$  (more truthful $\rightarrow$)",
