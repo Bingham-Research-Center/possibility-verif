@@ -2,7 +2,7 @@
 
 ## What This Is
 
-Standalone methods paper: "Possible, yes; ignorant, perhaps: a scorecard for possibilistic forecasts". Targets JAS. Extracts the verification framework from the Clyfar preprint appendices (C, E, F) with convective mode categories as the running example.
+Standalone methods paper: "Possible, yes; ignorant, perhaps: a scorecard for possibilistic forecasts". Targets JAS. Extracts the verification framework from the Clyfar preprint appendices (C, E, F) with SPC severe weather categories as the running example.
 
 **Author:** John R. Lawson (@johnrobertlawson), Utah State University (Bingham Research Center + Dept of Mathematics and Statistics). Email: john.lawson@usu.edu.
 
@@ -18,6 +18,7 @@ Standalone methods paper: "Possible, yes; ignorant, perhaps: a scorecard for pos
 
 - **Figures must be PNG, not PDF.** XeTeX's xdvipdfmx backend crashes silently on matplotlib PDF transparency (`/SMask`, `/ca`, `/CA`). No `!` error in the log — just "No PDF produced" on Overleaf. `scripts/style.py` sets `FIG_FORMAT = "png"`. Do not switch back to PDF.
 - **`generate_all.py` only runs figs 1–9.** Figs 10–12 (`fig_scorecard_table.py`, `fig_performance_diagram.py`, `fig_severity_matrix.py`) must be run separately.
+- **Scenario mismatch**: `07-worked-examples.tex` scenarios (A, B, C) use slightly different pi values than some figure scripts (e.g., `fig_upper_lower_bounds.py`). The LaTeX table and `fig_three_scenario.py` share the same D4 values. Fig 2's caption notes this.
 - **`Smets1990-MISSING`** citation key in `04-pignistic-bridge.tex` is a placeholder — needs a real bib entry added to `paperpile.bib`.
 - **`rho.cls` loads heavy unused packages** (circuitikz, chemfig, matlab-prettifier, lipsum). Do not modify `rho.cls`, but be aware compilation is slow.
 
@@ -38,12 +39,12 @@ Standalone methods paper: "Possible, yes; ignorant, perhaps: a scorecard for pos
 | `\Nc` | N_c | Conditional necessity |
 | `\nec` | N | Classical necessity |
 | `\pinorm` | pi' | Shape-normalised distribution (pi / max pi) |
-| `\mode{SUPER}` | SUPER (smallcaps) | Convective mode name |
+| `\spc{MDT}` | MDT (smallcaps) | SPC category name |
 
 ### Distribution formatting convention
 
 - **First use** (§2, §6): `\begin{cases}` format, one category per line.
-- **Subsequent uses** (§3, §4): ordered-tuple `$\pi = (0.00,\, 0.05,\, 0.85,\, 0.10,\, 0.05)$` with ordering (NULL, CELL, SUPER, QLCS, MCS).
+- **Subsequent uses** (§3, §4): ordered-tuple `$\pi = (0.05,\, 0.2,\, 0.4,\, 0.6,\, 0.1,\, 0.0)$` with ordering (NONE, MRGL, SLGT, ENH, MDT, HIGH).
 
 ## Figures (12 total, all PNG, no number prefixes)
 
@@ -60,24 +61,11 @@ Standalone methods paper: "Possible, yes; ignorant, perhaps: a scorecard for pos
 | `ffion_advisory` | `fig_ffion_advisory.py` | §7.3 | JSON → LLM advisory mock-up |
 | `scorecard_table` | `fig_scorecard_table.py` | §5.2 | ECMWF-style scorecard with triangles |
 | `performance_diagram` | `fig_performance_diagram.py` | §4.2 | Roebber-style five-metric diagram |
-| `severity_matrix` | `fig_severity_matrix.py` | §7.4 | Wind-max severity × confidence matrix |
-
-## Convective Mode Categories (K=5)
-
-| Short | Full name | Definition |
-|-------|-----------|------------|
-| NULL  | No convection | No echoes ≥35 dBZ in domain during period |
-| CELL  | Discrete cells | Unorganised single cells, no rotation |
-| SUPER | Supercell(s) | Discrete cells with mesocyclone |
-| QLCS  | Quasi-linear | Linear convective organisation ≥75 km |
-| MCS   | Mesoscale convective system | Contiguous system ≥100 km, ≥3 hr |
-
-- **Threshold event:** A_T = {SUPER, QLCS, MCS} = "organised convection"
-- **Climatology (synthetic):** NULL 45%, CELL 25%, SUPER 15%, QLCS 10%, MCS 5%
+| `severity_matrix` | `fig_severity_matrix.py` | §7.4 | Severity-confidence matrix |
 
 ## Python
 
-Canonical constants in `scripts/style.py`: `PURPLE`, `GREEN`, `CONV_MODES`, `CONV_N`, `FIG_FORMAT = "png"`.
+Canonical constants in `scripts/style.py`: `PURPLE`, `GREEN`, `SPC_CATEGORIES`, `FIG_FORMAT = "png"`.
 
 Scorecard computation canonical in `fig_three_scenario.py:compute_scorecard`.
 
@@ -87,8 +75,8 @@ Scorecard computation canonical in `fig_three_scenario.py:compute_scorecard`.
 - All 10 section files with equations migrated from preprint
 - 15 labelled equations, all cross-references resolve
 - 12 figures (PNG) embedded with captions + in-text references
-- Running example switched from SPC categories (K=6) to convective mode categories (K=5)
-- All π arrays, scorecard values, bridge computations, and ILS calculations updated for K=5
+- NONE category added to Ω: K=6, ordering (NONE, MRGL, SLGT, ENH, MDT, HIGH)
+- All π arrays, scorecard values, bridge computations, and ILS calculations updated for K=6
 - Notation table (§2) with Form (raw/norm) and Eq. columns
 - Ffion/LLM communication subsection (§7.3) with pipeline sketch
 - ILS framed as probability-of-exceedance
@@ -98,7 +86,6 @@ Scorecard computation canonical in `fig_three_scenario.py:compute_scorecard`.
 - §5.2 diagnostic workflow paragraph filled (scorecard table figure + interpretation)
 - §4.2 performance diagram paragraph filled (Roebber-style five-metric diagnostic)
 - Fig 7 IG decomposition bug fixed (negative-DSC bar placement)
-- Severity matrix rethemed to generic wind-max severity × confidence (domain-independent)
 
 ### Still placeholder (`% [PLACEHOLDER]`)
 - §1 (introduction) — mostly placeholder with paper-outline paragraph done

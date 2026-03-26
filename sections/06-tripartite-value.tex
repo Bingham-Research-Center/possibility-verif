@@ -4,7 +4,7 @@
 % MIGRATED from preprint A5-verification-framework.tex §E.6
 %    + A6-plain-language-verification.tex three-lanes section
 % Removed: Clyfar-specific language, appendix framing
-% Ozone categories → SPC categories → convective mode categories
+% Ozone categories → SPC categories
 %----------------------------------------------------------
 
 \section{Three-Component Value}\label{sec:tripartite_value}
@@ -39,13 +39,13 @@ higher, the possibility component has independent skill.
 \textit{Met analogue:} Comparing a model's Brier skill score against
 persistence---``Is your resolution better than a na\"ive forecast?''
 
-For convective mode forecasts, a system that consistently assigns higher possibility
+For SPC outlooks, a system that consistently assigns higher possibility
 to the observed category than to the average category will exhibit
 positive $\delta$ across the verification sample.  Climatology, by
 construction, peaks at the most frequent category and assigns near-zero
-possibility to rare outcomes like \mode{MCS}; a skilful possibilistic
-system should outperform this baseline on days when \mode{SUPER} or rarer
-modes verify.
+possibility to rare outcomes like \spc{HIGH}; a skilful possibilistic
+system should outperform this baseline on days when \spc{ENH} or higher
+categories verify.
 
 \paragraph{Test 2: Ignorance self-awareness (\ign{}).}
 
@@ -97,7 +97,7 @@ forecasts identify genuinely confident predictions.
 \caption{Reliability of conditional necessity.  The purple curve shows
     the conditional hit rate for the observed category as a function of
     the $\Nc$ threshold $\tau$.  The horizontal dashed line marks the
-    climatological base rate ($1/K = 0.200$ for $K = 5$ categories).
+    climatological base rate ($1/K \approx 0.167$ for $K = 6$ categories).
     When the curve lies above the base rate, high-$\Nc$ forecasts verify
     better than climatology---confirming that conditional necessity is an
     informative confidence signal.  Data are synthetic, generated to

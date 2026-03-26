@@ -23,7 +23,8 @@ Worked examples in Section~\ref{sec:worked_examples} demonstrated
 that each uncertainty component---possibility, ignorance, and
 conditional necessity---independently contributes verification value,
 so that collapsing the distribution into a single point forecast
-discards actionable information.  Although convective mode categories served as the running example throughout, the framework
+discards actionable information.  Although the SPC convective outlook
+categories served as the running example throughout, the framework
 applies to any finite universe of discourse $\Omega$ over which a
 subnormal possibility distribution is defined.
 
@@ -81,8 +82,8 @@ The verification framework is domain-agnostic: any system that
 produces subnormal possibility distributions over a finite universe of
 discourse $\Omega$ can be evaluated using the five-number scorecard,
 the possibility-to-probability bridge, and the interval log score
-without modification.  The convective mode categories
-(\mode{NULL} through \mode{MCS}) served as an illustrative running
+without modification.  The SPC convective outlook categories
+(\spc{NONE} through \spc{HIGH}) served as an illustrative running
 example, but the same machinery applies directly to air-quality
 exceedance categories (e.g., ozone or PM$_{2.5}$ index tiers),
 wildfire risk levels, flood inundation severity classes, and climate
@@ -134,7 +135,8 @@ of likelihood and impact to determine warning levels
 \citep{Neal2014-MISSING}.  The impact axis encodes what \textit{might}
 happen (the shape of the possibility distribution), while the likelihood
 axis encodes how confident the forecaster is (akin to subnormality).
-Figure~\ref{fig:severity_matrix} illustrates this concept with a generic wind-speed severity scale, mapping severity tiers against confidence levels to show
+Figure~\ref{fig:severity_matrix} adapts this concept to the paper's SPC
+framework, mapping severity categories against confidence levels to show
 how the joint signal varies from ``monitor'' (low severity, high
 ignorance) to ``act now'' (high severity, low ignorance).  The
 verification framework developed here formalizes this operational
@@ -150,7 +152,8 @@ onto conditional necessity.
 \centering
 \includegraphics[width=\columnwidth]{severity_matrix.png}
 \caption{Severity--confidence matrix adapted from the UK Met Office
-    NSWWS framework \citep{Neal2014-MISSING} into a generic continuous-threat format.  Rows are wind-max severity tiers ($<$25~kt through $>$100~kt);
+    NSWWS framework \citep{Neal2014-MISSING} into the SPC categorical
+    system.  Rows are SPC severity categories (\spc{NONE}--\spc{HIGH});
     columns represent forecaster confidence, mapped to subnormality
     ($\ign$).  Color intensity encodes the joint risk signal: deep purple
     indicates high severity with high confidence (act now); pale tones
@@ -259,8 +262,8 @@ outcome is never observed: the true category is always one of the
 elements of $\Omega$.  This is a closed-world assumption, appropriate
 when $\Omega$ is exhaustive.  For open-world applications in which the
 true outcome may lie outside the defined categories---for instance,
-an unprecedented convective mode not represented in the defined
-categories---the framework would need modification to allow the ignorance
+an unprecedented severe weather mode not represented in the SPC
+taxonomy---the framework would need modification to allow the ignorance
 outcome to verify as ``correct'' under certain conditions, effectively
 treating $\ign$ as a legitimate forecast of novelty.
 

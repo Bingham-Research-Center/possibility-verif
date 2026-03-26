@@ -2,7 +2,7 @@
 %----------------------------------------------------------
 % 03-possibility-primer.tex — Section 2: Possibility Theory Primer
 % MIGRATED from preprint 04-possibility-theory.tex
-% Ozone categories → SPC categories → convective mode categories (NULL, CELL, SUPER, QLCS, MCS)
+% Ozone categories → SPC categories (MRGL, SLGT, ENH, MDT, HIGH)
 % Removed: Clyfar-specific FIS/fuzzification framing, figures
 %----------------------------------------------------------
 
@@ -12,12 +12,12 @@ This section provides a self-contained primer on possibility theory for
 atmospheric scientists.  No prior knowledge of fuzzy logic or
 Dempster--Shafer theory is assumed; all definitions are built from scratch.
 A running example---a possibilistic convective outlook assigning
-possibility values to the five convective mode categories \mode{NULL},
-\mode{CELL}, \mode{SUPER}, \mode{QLCS}, and \mode{MCS}---illustrates each
+possibility values to the six SPC categories \spc{NONE}, \spc{MRGL},
+\spc{SLGT}, \spc{ENH}, \spc{MDT}, and \spc{HIGH}---illustrates each
 definition.  The categories are categorical and mutually exclusive: on any
 given day at any given point, exactly one category describes the observed
-outcome.  \mode{NULL} represents the absence of convection (no echoes
-$\geq$35~dBZ in domain during period)---the true null.  The
+outcome.  \spc{NONE} represents the absence of any SPC categorical outlook
+at the point of interest---the true null (no severe weather).  The
 possibilistic distribution over these categories encodes graded
 plausibility; the categories themselves are crisp.  The mathematical
 framework developed here underpins all verification metrics in subsequent
@@ -27,9 +27,9 @@ sections.
 
 Let $\Omega$ denote the \textit{universe of discourse}---the complete set
 of mutually exclusive and collectively exhaustive outcomes for a variable
-of interest (e.g., convective mode categories
-$\Omega = \{\mode{NULL},\, \mode{CELL},\, \mode{SUPER},\, \mode{QLCS},\,
-\mode{MCS}\}$).  A \textit{possibility distribution}
+of interest (e.g., SPC convective outlook categories
+$\Omega = \{\spc{NONE},\, \spc{MRGL},\, \spc{SLGT},\, \spc{ENH},\,
+\spc{MDT},\, \spc{HIGH}\}$).  A \textit{possibility distribution}
 $\pi: \Omega \to [0,1]$ assigns to each outcome $\omega \in \Omega$ a
 degree of possibility $\pi(\omega)$ satisfying:
 
@@ -106,8 +106,8 @@ annotated with $\Pi_{\max}$, \ign{}, and \Nc{} for the peak category.
 \begin{figure}[t]
 \centering
 \includegraphics[width=\columnwidth]{possibility_anatomy.png}
-\caption{Anatomy of a subnormal possibility distribution over convective
-    mode categories.  Purple bars show raw possibility $\pi(\omega)$.  The
+\caption{Anatomy of a subnormal possibility distribution over SPC
+    categories.  Purple bars show raw possibility $\pi(\omega)$.  The
     dashed line marks $\Pi_{\max} = \max(\pi)$; the gap from
     $\Pi_{\max}$ to $1.0$ is the ignorance $\ign$
     (Eq.~\ref{eq:ignorance}).  Conditional necessity \Nc{} for the peak
@@ -117,71 +117,73 @@ annotated with $\Pi_{\max}$, \ign{}, and \Nc{} for the peak category.
 
 Normalizing a subnormal distribution forces the derived probability
 distribution to sum to unity, masking the distinction between ``the
-system predicts \mode{SUPER}'' and ``the system has insufficient
+system predicts \spc{MDT}'' and ``the system has insufficient
 information to rule out any category.''  Preserving subnormality trades
 formal completeness for operational transparency: the forecaster sees
 not only which categories are plausible but how much confidence the
 system places in the entire assessment.
 
-\textbf{Example 1 (sharp \mode{SUPER} forecast):}
-Consider a setup favouring discrete supercells with
-CAPE $>$ 2000~J\,kg$^{-1}$, 0--6~km shear exceeding 40~kt, and
+\textbf{Example 1 (sharp \spc{MDT} forecast):}
+Consider a classic severe-weather setup with strong instability
+(CAPE $>$ 3000~J\,kg$^{-1}$), deep-layer shear exceeding 40~kt, and
 a boundary-layer dewpoint of 20\,$^\circ$C advancing into the warm
 sector of a surface cyclone.
 The resulting possibility distribution is:
 \[
 \pi(\omega) = \begin{cases}
-0.00 & \omega = \mode{NULL}  \\
-0.05 & \omega = \mode{CELL}  \\
-0.85 & \omega = \mode{SUPER} \\
-0.10 & \omega = \mode{QLCS}  \\
-0.05 & \omega = \mode{MCS}
+0.05 & \omega = \spc{NONE} \\
+0.00 & \omega = \spc{MRGL} \\
+0.10 & \omega = \spc{SLGT} \\
+0.20 & \omega = \spc{ENH}  \\
+0.75 & \omega = \spc{MDT}  \\
+0.15 & \omega = \spc{HIGH}
 \end{cases}
 \]
-with $\ign = 1 - 0.85 = 0.15$ and
-$\Nc(\mode{SUPER}) = 1 - 0.118 = 0.88$.  Interpretation: \mode{SUPER}
-is the most plausible outcome ($\Pi = 0.85$) with low ignorance
-($\ign = 0.15$); conditional necessity of $0.88$ indicates that among
-scenarios the system covers, \mode{SUPER} is the dominant category.
+with $\ign = 1 - 0.75 = 0.25$ and
+$\Nc(\spc{MDT}) = 1 - 0.267/1.0 = 0.73$.  Interpretation: \spc{MDT}
+is the most plausible outcome ($\Pi = 0.75$) with moderate ignorance
+($\ign = 0.25$); conditional necessity of $0.73$ indicates that among
+scenarios the system covers, \spc{MDT} is the dominant category.
 
-\textbf{Example 2 (ambiguous \mode{QLCS}/\mode{MCS} forecast):}
-Now consider an ambiguous organised-convection scenario where
-moderate CAPE and strong low-level shear support both quasi-linear and
-mesoscale convective structures equally.
+\textbf{Example 2 (ambiguous \spc{MRGL}/\spc{SLGT} forecast):}
+Now consider a marginal severe-weather setup where CAPE hovers near
+1000~J\,kg$^{-1}$, shear is 20--25~kt, and convective initiation is
+uncertain due to a weak capping inversion.
 The resulting possibility distribution is:
 \[
 \pi(\omega) = \begin{cases}
-0.05 & \omega = \mode{NULL}  \\
-0.10 & \omega = \mode{CELL}  \\
-0.15 & \omega = \mode{SUPER} \\
-0.50 & \omega = \mode{QLCS}  \\
-0.50 & \omega = \mode{MCS}
+0.30 & \omega = \spc{NONE} \\
+0.50 & \omega = \spc{MRGL} \\
+0.50 & \omega = \spc{SLGT} \\
+0.00 & \omega = \spc{ENH}  \\
+0.00 & \omega = \spc{MDT}  \\
+0.00 & \omega = \spc{HIGH}
 \end{cases}
 \]
 with $\ign = 1 - 0.5 = 0.5$ and
-$\Nc(\mode{QLCS}) = \Nc(\mode{MCS}) = 0.0$.  Interpretation:
-\mode{QLCS} and \mode{MCS} are equally plausible ($\Pi = 0.5$ each),
+$\Nc(\spc{MRGL}) = \Nc(\spc{SLGT}) = 0.0$.  Interpretation:
+\spc{MRGL} and \spc{SLGT} are equally plausible ($\Pi = 0.5$ each),
 high ignorance ($\ign = 0.5$) indicates that the system struggles with
 this meteorological scenario, and neither outcome has conditional
 necessity.
 
-Blindly normalizing Example~2 would inflate $\pi(\mode{QLCS})$ and
-$\pi(\mode{MCS})$ to 1.0, hiding the fact that the forecasting system
+Blindly normalizing Example~2 would inflate $\pi(\spc{MRGL})$ and
+$\pi(\spc{SLGT})$ to 1.0, hiding the fact that the forecasting system
 struggles with this meteorological scenario.  Preserving subnormality
 makes these knowledge gaps explicit.
 
 \smallskip\noindent\textit{Notation convention.}  Henceforth,
 distributions are written as ordered tuples
-$(\mode{NULL},\, \mode{CELL},\, \mode{SUPER},\, \mode{QLCS},\, \mode{MCS})$
-when context is clear:\ e.g., Example~1 is
-$\pi = (0.00,\, 0.05,\, 0.85,\, 0.10,\, 0.05)$.
+$(\spc{NONE},\, \spc{MRGL},\, \spc{SLGT},\, \spc{ENH},\, \spc{MDT},\,
+\spc{HIGH})$ when context is clear:\ e.g., Example~1 is
+$\pi = (0.05,\, 0,\, 0.1,\, 0.2,\, 0.75,\, 0.15)$.
 
 %----------------------------------------------------------
 \subsection{Three-Component Uncertainty}\label{sec:three_component}
 
 An analogue of ``classical'' necessity (requiring a normalized
 possibility distribution $\pinorm$) supplements \poss{} and \ign{} for
-each convective mode category $A$ by computing necessity after normalization of
+each SPC category $A$ by computing necessity after normalization of
 known outcomes.  The three components are:
 
 \begin{enumerate}[leftmargin=2em]
@@ -220,17 +222,17 @@ explicit enumeration of focal elements, whereas the possibilistic
 three-component decomposition yields a compact five-number scorecard
 (Section~\ref{sec:native_scorecard}).
 
-\textbf{Communication example (from Example~1):} ``\mode{SUPER} is
-the most plausible outcome ($\Pi = 0.85$) with low ignorance
-($\ign = 0.15$).  Conditional necessity is $0.88$: among scenarios the
-system covers, \mode{SUPER} is the dominant category.''  This statement
+\textbf{Communication example (from Example~1):} ``\spc{MDT} risk is
+the most plausible outcome ($\Pi = 0.75$) with moderate ignorance
+($\ign = 0.25$).  Conditional necessity is $0.73$: among scenarios the
+system covers, \spc{MDT} is the dominant category.''  This statement
 conveys:
 \begin{itemize}[leftmargin=2em]
-\item \mode{SUPER} is plausible but not guaranteed ($\Pi = 0.85$).
-\item The system has high confidence in its assessment
-    ($\ign = 0.15$).
-\item Among scenarios the system \textit{does} cover, \mode{SUPER} is the
-    dominant outcome ($\Nc = 0.88$).
+\item \spc{MDT} risk is plausible but not guaranteed ($\Pi = 0.75$).
+\item The system has moderate confidence in its assessment
+    ($\ign = 0.25$).
+\item Among scenarios the system \textit{does} cover, \spc{MDT} is the
+    dominant outcome ($\Nc = 0.73$).
 \end{itemize}
 
 %----------------------------------------------------------
@@ -256,9 +258,9 @@ it is operationally actionable, because a downstream decision-maker can
 treat high-\ign{} forecasts differently from low-\ign{} ones
 (Section~\ref{sec:three_tests}).
 
-Convective mode prediction naturally produces categorical language
-that maps more naturally onto possibility than probability.  ``\mode{SUPER}
-is possible'' is a statement about plausibility, not calibrated
+In severe-weather forecasting, SPC already uses categorical language
+that maps more naturally onto possibility than probability.  ``\spc{MDT}
+risk is possible'' is a statement about plausibility, not calibrated
 frequency.  Possibility theory formalizes this linguistic tradition while
 preserving the ability to derive probabilities when needed via the
 bridge in Section~\ref{sec:poss_prob_bridge}.  \citet{Roulston2002-eq}

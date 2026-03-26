@@ -3,7 +3,7 @@
 % 05-native-verification.tex — Section 4: Native Possibilistic Verification
 % MIGRATED from preprint A5-verification-framework.tex + A6 plain language
 % Removed: appendix framing, Product 3 language
-% Ozone categories → SPC categories → convective mode categories
+% Ozone categories → SPC categories
 % Inlined plain-language explanations from A6
 %----------------------------------------------------------
 
@@ -87,8 +87,8 @@ the normalized rank position of the observation within the ensemble).
 \subsection{Five-Number Scorecard}\label{sec:native_scorecard}
 
 Five summary statistics evaluate each forecast--observation pair, where
-$c_{\mathrm{obs}}$ denotes the observed convective mode and $K = |\Omega|$
-is the number of categories (here, $K = 5$).
+$c_{\mathrm{obs}}$ denotes the observed SPC category and $K = |\Omega|$
+is the number of categories (here, $K = 6$).
 Table~\ref{tab:scorecard_defs} lists the definitions; the equations
 are given below.
 
@@ -206,29 +206,29 @@ operationally useful.
 
 \textit{Stratification by observed category.}
 Like deterministic accuracy, aggregate possibilistic metrics can be
-inflated by trivially correct null forecasts.  If \mode{NULL} days
-dominate the sample, a system that is
+inflated by trivially correct null forecasts.  If \spc{NONE} days
+dominate the sample (as they do in SPC climatology), a system that is
 merely sharp and confident on routine days will exhibit high mean
 $\alpha^*$, high mean $\Nc^*$, and low mean $\ign$---regardless of its
 skill on rare events.  Figure~\ref{fig:performance_diagram} addresses
 this by presenting both the unconditional diagram (panel~a) and the
-\mode{CELL}$+$ conditional diagram (panel~b).  The former is needed to
+\spc{SLGT}$+$ conditional diagram (panel~b).  The former is needed to
 detect false-alarm patterns on null days; the latter exposes the
 rare-event population where ignorance and near-miss structures dominate.
 For operational dashboards, we recommend reporting scorecard aggregates
-separately for null (\mode{NULL}) and eventful (\mode{CELL}$+$) subsets.
+separately for null (\spc{NONE}) and eventful (\spc{SLGT}$+$) subsets.
 
 \begin{figure*}[!t]
 \centering
 \includegraphics[width=\textwidth]{performance_diagram.png}
 \caption{Possibilistic performance diagram for a two-year synthetic
-    reforecast with mode-like base rates (\mode{NULL}~45\%,
-    \mode{CELL}~25\%, \mode{SUPER}~15\%, \mode{QLCS}~10\%,
-    \mode{MCS}~5\%).
+    reforecast with SPC-like base rates (\spc{NONE}~60\%,
+    \spc{MRGL}~18\%, \spc{SLGT}~12\%, \spc{ENH}~6\%, \spc{MDT}~3.2\%,
+    \spc{HIGH}~0.8\%).
     \textbf{(a)}~All days ($n = 730$): the shaded ellipse at upper right
-    summarizes trivially correct \mode{NULL} forecasts that inflate
+    summarizes trivially correct \spc{NONE} forecasts that inflate
     aggregate metrics.
-    \textbf{(b)}~Non-null days (\mode{CELL}$+$): with null cases
+    \textbf{(b)}~Severe days only (\spc{SLGT}$+$): with null cases
     removed, the rare-event population (diamonds) is exposed and the
     ignorance gradient becomes visible.  Stars mark the three worked
     scenarios from Section~\ref{sec:worked_examples}; green edges denote
@@ -247,8 +247,8 @@ separately for null (\mode{NULL}) and eventful (\mode{CELL}$+$) subsets.
 \subsection{Interval Log Score}\label{sec:interval_log}
 
 For a threshold event $A_T \subseteq \Omega$---any ``probability of
-exceedance'' question, such as $A_T = \{\mode{SUPER},\, \mode{QLCS},\,
-\mode{MCS}\}$ for organised convection, or categories above
+exceedance'' question, such as $A_T = \{\spc{ENH},\, \spc{MDT},\,
+\spc{HIGH}\}$ for significant severe weather, or categories above
 50\,ppb for ozone, or accumulations exceeding 5\,in.\ for
 snowfall---the possibilistic forecast produces an interval $[L, U]$
 rather than a point probability.  The bounds derive from the
@@ -304,22 +304,22 @@ possible'' and ``essentially certain.''
 The ILS uses optimistic verification: when the event occurs, the penalty is $-\log_2(U)$, crediting the upper (most generous) bound rather than a point probability.  This means a forecaster can reduce the penalty by widening the interval---assigning higher possibility to more outcomes---without improving the forecast's sharpness.  The width penalty enters implicitly through $\ign$: widening the distribution increases subnormality, which the native scorecard's ignorance metric penalizes.  The ILS is therefore not strictly proper in the classical sense, but the companion $\ign$ metric partially mitigates gaming by exposing the cost of artificial interval inflation.
 
 \textbf{Worked example} (Example~1 from Section~\ref{sec:subnormal},
-$\pi = (0.05,\, 0.15,\, 0.70,\allowbreak\, 0.40,\, 0.10)$, threshold
-$A_T = \{\mode{SUPER},\allowbreak\, \mode{QLCS},\, \mode{MCS}\}$):
+$\pi = (0.05,\, 0,\, 0.1,\allowbreak\, 0.2,\, 0.75,\, 0.15)$, threshold
+$A_T = \{\spc{ENH},\allowbreak\, \spc{MDT},\, \spc{HIGH}\}$):
 \begin{align*}
-m &= 0.70 \\
-U &= \max(0.70,\, 0.40,\, 0.10) = 0.70 \\
-\pinorm &= (0.071,\; 0.214,\; 1.0,\; 0.571,\; 0.143) \\
-\Nc(A_T) &= 1 - \max(0.071,\, 0.214) = 0.786 \\
-L &= 0.70 \times 0.786 = 0.550 \quad (L \leq U \;\checkmark) \\
-\mathrm{ILS}_{\text{event}} &= -\log_2(0.70) = 0.51\;\text{bits} \\
+m &= 0.75 \\
+U &= \max(0.2,\, 0.75,\, 0.15) = 0.75 \\
+\pinorm &= (0.067,\; 0.0,\; 0.133,\; 0.267,\; 1.0,\; 0.2) \\
+\Nc(A_T) &= 1 - \max(0.067,\, 0.0,\, 0.133) = 0.867 \\
+L &= 0.75 \times 0.867 = 0.65 \quad (L \leq U \;\checkmark) \\
+\mathrm{ILS}_{\text{event}} &= -\log_2(0.75) = 0.42\;\text{bits} \\
 \mathrm{ILS}_{\text{non-event}}
-  &= -\log_2(1 - 0.550) = -\log_2(0.450) = 1.15\;\text{bits}
+  &= -\log_2(1 - 0.65) = -\log_2(0.35) = 1.51\;\text{bits}
 \end{align*}
 
 Figure~\ref{fig:upper_lower} shows the interval $[L, U]$ for several
 forecast scenarios applied to the threshold event
-$A_T = \{\mode{SUPER},\, \mode{QLCS},\, \mode{MCS}\}$, illustrating how
+$A_T = \{\spc{ENH},\, \spc{MDT},\, \spc{HIGH}\}$, illustrating how
 sharp forecasts produce narrow intervals while hedged or ignorant
 forecasts produce wide ones.
 
@@ -327,7 +327,7 @@ forecasts produce wide ones.
 \centering
 \includegraphics[width=0.75\textwidth]{upper_lower_bounds.png}
 \caption{Upper and lower probability bounds for the threshold event
-    $A_T = \{\mode{SUPER},\, \mode{QLCS},\, \mode{MCS}\}$ across three
+    $A_T = \{\spc{ENH},\, \spc{MDT},\, \spc{HIGH}\}$ across three
     forecast scenarios.  Each horizontal band shows the interval
     $[L, U]$ (Eqs.~\ref{eq:L_bound}--\ref{eq:U_bound}) on a $[0,1]$
     number line.  Narrow intervals indicate high conditional necessity;

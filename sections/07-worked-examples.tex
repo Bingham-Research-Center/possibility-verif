@@ -9,7 +9,7 @@
 The preceding sections developed three verification lanes---the native
 scorecard, the possibility-to-probability bridge with information gain,
 and the interval log score---in the abstract.  This section applies all
-three to a concrete trio of stylized convective mode scenarios.  Each
+three to a concrete trio of stylized convective outlook scenarios.  Each
 scenario is designed to isolate a different diagnostic situation: a sharp
 forecast that verifies correctly, a hedged forecast that also verifies
 correctly, and a sharp forecast that misses badly.  Walking through the
@@ -21,81 +21,87 @@ framework.
 %----------------------------------------------------------
 \subsection{Scenario Setup}\label{sec:scenario_setup}
 
-Three stylized possibilistic convective mode forecasts are defined, each
+Three stylized possibilistic convective outlooks are defined, each
 representing a distinct forecasting situation.  All distributions are
-defined over $\Omega = \{\mode{NULL},\, \mode{CELL},\, \mode{SUPER},\,
-\mode{QLCS},\, \mode{MCS}\}$ with $K = 5$.  We consider hypothetical
-possibilistic convective mode forecasts verified against the observed
-dominant storm mode at a given point.
+defined over $\Omega = \{\spc{NONE},\, \spc{MRGL},\, \spc{SLGT},\,
+\spc{ENH},\, \spc{MDT},\, \spc{HIGH}\}$ with $K = 6$.  We consider a
+notional point forecast extracted at Norman, Oklahoma: the SPC categorical
+outlook at that location on each day serves as the observation.
 
-\paragraph{Scenario A: Sharp-correct \mode{SUPER} forecast.}
+\paragraph{Scenario A: Sharp-correct \spc{MDT} forecast.}
 
-A classic supercell environment is in place: 0--6~km bulk shear exceeds
-40~kt, surface-based CAPE surpasses 2000~J~kg$^{-1}$, and discrete
-initiation is expected along a well-defined dryline.  The ingredients for
-supercellular convection are co-located and unambiguous, so the system
-confidently assigns high possibility to \mode{SUPER} while leaving only
-token values for neighbouring categories.  Subnormality is low
-($m = 0.85$, $\ign = 0.15$): the system is nearly fully committed.
+A textbook severe weather environment is in place: surface-based CAPE
+exceeds 3000~J~kg$^{-1}$, 0--6~km bulk shear surpasses 40~kt, and a
+well-defined dryline provides a reliable mesoscale trigger.  The
+ingredients for significant severe thunderstorms are all present and
+co-located, so the system assigns high possibility to \spc{MDT} while
+leaving only token values for neighbouring categories.  Subnormality is
+low ($m = 0.90$, $\ign = 0.10$): the system is nearly fully committed.
 
 \[
 \pi_A(\omega) = \begin{cases}
-0.00 & \omega = \mode{NULL}  \\
-0.05 & \omega = \mode{CELL}  \\
-0.85 & \omega = \mode{SUPER} \\
-0.10 & \omega = \mode{QLCS}  \\
-0.05 & \omega = \mode{MCS}
+0.00 & \omega = \spc{NONE} \\
+0.00 & \omega = \spc{MRGL} \\
+0.05 & \omega = \spc{SLGT} \\
+0.15 & \omega = \spc{ENH}  \\
+0.90 & \omega = \spc{MDT}  \\
+0.10 & \omega = \spc{HIGH}
 \end{cases}
 \]
-Observed outcome: $c_{\mathrm{obs}} = \mode{SUPER}$.
+Observed outcome: $c_{\mathrm{obs}} = \spc{MDT}$.
 
-\paragraph{Scenario B: Hedged-correct \mode{MCS} forecast.}
+\paragraph{Scenario B: Hedged-correct \spc{ENH} forecast.}
 
-The environment contains competing signals: strong large-scale forcing
-favours organised convection, but whether the convection organises into a
-quasi-linear convective system or a full mesoscale convective system
-depends on cold-pool dynamics and low-level jet timing.  Faced with this
-ambiguity, the system hedges across the organised modes with \mode{MCS}
-as the possibilistic peak, while assigning non-trivial possibility to
-\mode{QLCS} and \mode{SUPER}.  Subnormality is high ($m = 0.55$,
-$\ign = 0.45$), explicitly advertising the system's limited confidence.
+The environment contains competing signals: moderate CAPE
+(1500--2000~J~kg$^{-1}$) and adequate deep-layer shear, but the timing
+and location of the mesoscale trigger remain uncertain.  Whether
+convection organizes into discrete supercells or a mesoscale convective
+system will determine whether the day verifies at \spc{SLGT},
+\spc{ENH}, or even \spc{MDT}.  Faced with this ambiguity, the system
+hedges: possibility is spread across four categories, and subnormality is
+high ($m = 0.55$, $\ign = 0.45$), explicitly advertising the system's
+limited confidence.
 
 \[
 \pi_B(\omega) = \begin{cases}
-0.05 & \omega = \mode{NULL}  \\
-0.10 & \omega = \mode{CELL}  \\
-0.20 & \omega = \mode{SUPER} \\
-0.40 & \omega = \mode{QLCS}  \\
-0.55 & \omega = \mode{MCS}
+0.10 & \omega = \spc{NONE} \\
+0.10 & \omega = \spc{MRGL} \\
+0.40 & \omega = \spc{SLGT} \\
+0.55 & \omega = \spc{ENH}  \\
+0.30 & \omega = \spc{MDT}  \\
+0.00 & \omega = \spc{HIGH}
 \end{cases}
 \]
-Observed outcome: $c_{\mathrm{obs}} = \mode{MCS}$.
+Observed outcome: $c_{\mathrm{obs}} = \spc{ENH}$.
 
-\paragraph{Scenario C: Sharp-wrong \mode{NULL} forecast.}
+\paragraph{Scenario C: Sharp-wrong \spc{NONE} forecast.}
 
 On the surface this appears a quiescent day: large-scale forcing is weak,
-instability is limited, and model guidance is unanimous for no organised
-convection at the point of interest.  The system confidently assigns high
-possibility to \mode{NULL} and near-zero to all convective categories.
-In reality, an unresolved mesoscale boundary triggers unexpected
-supercells---a mode the system deemed essentially impossible.
+surface-based CAPE is marginal (less than 1000~J~kg$^{-1}$), and model
+guidance unanimously favours no severe weather at the point of interest.
+The system confidently assigns high possibility to \spc{NONE}---the true
+null---and near-zero to all severe categories.  In reality, an unresolved
+mesoscale convergence boundary interacts with the residual instability,
+triggering an unexpected severe outbreak that verifies at \spc{MDT}---a
+category the system deemed essentially impossible.
 
 \[
 \pi_C(\omega) = \begin{cases}
-0.80 & \omega = \mode{NULL}  \\
-0.10 & \omega = \mode{CELL}  \\
-0.05 & \omega = \mode{SUPER} \\
-0.00 & \omega = \mode{QLCS}  \\
-0.00 & \omega = \mode{MCS}
+0.85 & \omega = \spc{NONE} \\
+0.10 & \omega = \spc{MRGL} \\
+0.05 & \omega = \spc{SLGT} \\
+0.00 & \omega = \spc{ENH}  \\
+0.00 & \omega = \spc{MDT}  \\
+0.00 & \omega = \spc{HIGH}
 \end{cases}
 \]
-Observed outcome: $c_{\mathrm{obs}} = \mode{SUPER}$.
+Observed outcome: $c_{\mathrm{obs}} = \spc{MDT}$.
 
 %----------------------------------------------------------
 \subsection{Filling the Gauge}\label{sec:filling_gauge}
 
-The gauge visualization maps each convective mode category to a horizontal
-bar whose fill level represents raw possibility $\pi(\omega)$.  A fully
+The gauge visualization maps each SPC category to a horizontal bar
+whose fill level represents raw possibility $\pi(\omega)$.  A fully
 filled bar ($\pi = 1.0$) would indicate complete plausibility; the gap
 between the tallest bar and $1.0$ is the ignorance $\ign$, rendered as
 empty space to the right of every bar.  The observed category is
@@ -108,40 +114,40 @@ tables.
 Figure~\ref{fig:filling_gauge} shows the gauge visualization for
 Scenario~A.  The horizontal bars are filled to the raw possibility
 level; the gap from $\Pi_{\max}$ to $1.0$ visually encodes the
-ignorance $\ign$.  The observed category (\mode{SUPER}) is highlighted
+ignorance $\ign$.  The observed category (\spc{MDT}) is highlighted
 in green.
 
 \begin{figure}[t]
 \centering
 \includegraphics[width=\columnwidth]{filling_gauge.png}
-\caption{Gauge visualization for Scenario~A (sharp-correct \mode{SUPER}).
-    Each horizontal bar represents a convective mode category, filled to
-    its raw possibility value $\pi(\omega)$.  The vertical dashed line
-    marks $\Pi_{\max} = 0.85$; the gap to $1.0$ is ignorance
-    $\ign = 0.15$.  The observed category (\mode{SUPER}, green)
-    dominates the distribution, confirming high conditional necessity.}
+\caption{Gauge visualization for Scenario~A (sharp-correct \spc{MDT}).
+    Each horizontal bar represents an SPC category, filled to its raw
+    possibility value $\pi(\omega)$.  The vertical dashed line marks
+    $\Pi_{\max} = 0.90$; the gap to $1.0$ is ignorance $\ign = 0.10$.
+    The observed category (\spc{MDT}, green) dominates the distribution,
+    confirming high conditional necessity.}
 \label{fig:filling_gauge}
 \end{figure}
 
 Were we to draw the same gauge for Scenario~B, the picture would change
-qualitatively.  Four bars would be partially filled, with \mode{MCS} the
-tallest at only $0.55$; the bars for \mode{QLCS} ($0.40$) and
-\mode{SUPER} ($0.20$) would reach substantial height as well.  The large
+qualitatively.  Five bars would be partially filled, with \spc{ENH} the
+tallest at only $0.55$; the remaining bars for \spc{SLGT} ($0.40$) and
+\spc{MDT} ($0.30$) would reach nearly the same height.  The large
 $\ign = 0.45$ gap would dominate the right-hand side of every bar,
 immediately signaling that the system is hedging rather than committing.
-The observed category (\mode{MCS}, green) would still be the tallest bar,
+The observed category (\spc{ENH}, green) would still be the tallest bar,
 but only marginally so---consistent with a forecast that is directionally
 correct yet openly uncertain.
 
 Scenario~C would present the most visually striking gauge.  A single bar
-(\mode{NULL}) would dominate at $0.80$, with \mode{CELL} contributing a
-sliver at $0.10$ and the remaining three categories nearly empty.
-The ignorance gap ($\ign = 0.20$) would be small, reinforcing the
+(\spc{NONE}) would dominate at $0.85$, with \spc{MRGL} contributing a
+sliver at $0.10$ and the remaining four categories nearly empty.
+The ignorance gap ($\ign = 0.15$) would be small, reinforcing the
 impression of a confident forecast.  Yet the observed category
-(\mode{SUPER}, green) would appear as a barely visible bar at
-$0.05$---a stark visual indictment.  Placing the three gauges side by
-side reveals at a glance that sharpness alone is not a virtue: it must
-be aimed at the correct outcome.
+(\spc{MDT}, green) would appear as an unfilled bar at zero---a stark
+visual indictment.  Placing the three gauges side by side reveals at a
+glance that sharpness alone is not a virtue: it must be aimed at the
+correct outcome.
 
 %----------------------------------------------------------
 \subsection{Full Scorecard Comparison}\label{sec:scorecard_comparison}
@@ -161,17 +167,17 @@ Statistic & Scenario A & Scenario B & Scenario C \\
     & (sharp-correct) & (hedged-correct) & (sharp-wrong) \\
 \midrule
 $m$ (subnormality)
-    & $0.85$ & $0.55$ & $0.80$ \\
+    & $0.90$ & $0.55$ & $0.85$ \\
 $\ign$ (ignorance)
-    & $0.15$ & $0.45$ & $0.20$ \\
+    & $0.10$ & $0.45$ & $0.15$ \\
 $\alpha^*$ (depth-of-truth)
-    & $1.00$ & $1.00$ & $0.063$ \\
+    & $1.00$ & $1.00$ & $0.00$ \\
 $\eta$ (nonspecificity)
-    & $0.247$ & $0.473$ & $0.238$ \\
+    & $0.222$ & $0.439$ & $0.196$ \\
 $\delta$ (resolution gap)
-    & $+0.753$ & $+0.527$ & $-0.175$ \\
+    & $+0.778$ & $+0.561$ & $-0.196$ \\
 $\Nc^*$ (cond.\ necessity of truth)
-    & $0.882$ & $0.273$ & $0.000$ \\
+    & $0.833$ & $0.273$ & $0.00$ \\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -183,51 +189,50 @@ $\Nc^*$ (cond.\ necessity of truth)
     distribution $\pi(\omega)$ as bar charts; the observed category is
     highlighted in green, others in purple.  The five-number scorecard
     values are printed below each panel.  \textbf{(a)}~Scenario~A:
-    sharp-correct \mode{SUPER}---high $\alpha^*$, high $\Nc^*$, positive
-    $\delta$.  \textbf{(b)}~Scenario~B: hedged-correct \mode{MCS}---high
+    sharp-correct \spc{MDT}---high $\alpha^*$, high $\Nc^*$, positive
+    $\delta$.  \textbf{(b)}~Scenario~B: hedged-correct \spc{ENH}---high
     $\alpha^*$ but diffuse shape ($\eta$) and low $\Nc^*$.
     \textbf{(c)}~Scenario~C: sharp-wrong
-    \mode{NULL}---$\alpha^* = 0.063$ (truth barely acknowledged) and
+    \spc{NONE}---$\alpha^* = 0$ (truth assigned zero possibility) and
     negative $\delta$.}
 \label{fig:three_scenario}
 \end{figure*}
 
 Scenario~A represents the ideal case.  The depth-of-truth
-$\alpha^* = 1.00$ confirms that the observed category (\mode{SUPER})
+$\alpha^* = 1.00$ confirms that the observed category (\spc{MDT})
 received the highest raw possibility after normalization, and the
-conditional necessity of truth $\Nc^* = 0.882$ indicates that
+conditional necessity of truth $\Nc^* = 0.833$ indicates that
 alternatives were strongly down-weighted.  Ignorance is low
-($\ign = 0.15$), nonspecificity is modest ($\eta = 0.247$), and the
-resolution gap $\delta = +0.753$ is strongly positive---the system knew
+($\ign = 0.10$), nonspecificity is modest ($\eta = 0.222$), and the
+resolution gap $\delta = +0.778$ is strongly positive---the system knew
 what was happening and said so confidently.  Every metric in the
 scorecard rewards this forecast.
 
 Scenario~B tells a different but equally honest story.  The
-depth-of-truth remains perfect ($\alpha^* = 1.00$) because \mode{MCS},
+depth-of-truth remains perfect ($\alpha^* = 1.00$) because \spc{ENH},
 the observed category, is indeed the possibilistic peak after shape
 normalization.  However, the system's hedging shows up clearly:
-$\ign = 0.45$ is three times that of Scenario~A, nonspecificity
-rises to $\eta = 0.473$, and $\Nc^* = 0.273$ is low because
-\mode{QLCS} and \mode{SUPER} were assigned plausible alternatives.  The
-resolution gap $\delta = +0.527$ is positive but moderate, reflecting
+$\ign = 0.45$ is nearly five times that of Scenario~A, nonspecificity
+rises to $\eta = 0.439$, and $\Nc^* = 0.273$ is low because
+\spc{SLGT} and \spc{MDT} were assigned plausible alternatives.  The
+resolution gap $\delta = +0.561$ is positive but moderate, reflecting
 genuine skill tempered by acknowledged uncertainty.  This is the
 signature of a well-calibrated system on a difficult day.
 
 Scenario~C is the pathological case.  The system assigned
-$\pi(\mode{SUPER}) = 0.05$---barely above zero---so the observed
-outcome was deemed essentially impossible;
-accordingly $\alpha^* = 0.063$ and $\Nc^* = 0.000$.  The resolution gap
-$\delta = -0.175$ is the only negative value in the table, indicating
+$\pi(\spc{MDT}) = 0.00$, declaring the observed outcome impossible;
+accordingly $\alpha^* = 0.00$ and $\Nc^* = 0.00$.  The resolution gap
+$\delta = -0.196$ is the only negative value in the table, indicating
 that the forecast pointed \emph{away} from the truth.  Critically,
-ignorance was low ($\ign = 0.20$): the system was not hedging
+ignorance was low ($\ign = 0.15$): the system was not hedging
 cautiously---it was confident and wrong.  Low ignorance amplifies the
 penalty because there is no uncertainty buffer to absorb the miss.
 
 Contrasting Scenarios~B and~C reveals the scorecard's diagnostic power.
-Both forecasts have noteworthy ignorance levels ($0.45$ and $0.20$,
+Both forecasts have noteworthy ignorance levels ($0.45$ and $0.15$,
 respectively), yet the scorecard sharply distinguishes them.  Scenario~B
-earns $\delta = +0.527$ because its hedging was aimed in the right
-direction; Scenario~C earns $\delta = -0.175$ because its confidence
+earns $\delta = +0.561$ because its hedging was aimed in the right
+direction; Scenario~C earns $\delta = -0.196$ because its confidence
 was aimed in the wrong direction.  A single summary statistic (e.g.,
 mean possibility or maximum value) would conflate these two situations.
 The five-number scorecard correctly separates ``honestly uncertain'' from
@@ -240,8 +245,8 @@ operational forecasters need when tuning a possibilistic system.
 We now apply the possibility-to-probability bridge
 (Section~\ref{sec:poss_prob_bridge}) to each scenario, then compute
 information gain relative to a uniform climatological baseline
-$p_{\mathrm{clim}} = 1/5 = 0.200$ per category
-(surprise $= \log_2 5 = 2.322$~bits).
+$p_{\mathrm{clim}} = 1/6 \approx 0.167$ per category
+(surprise $= \log_2 6 = 2.585$~bits).
 The bridge reserves $p_{\mathrm{ign}} = \ign$, distributes
 the remaining $m$ proportionally via
 $p_i = \pi_i \cdot m / \sum_j \pi_j$,
@@ -253,10 +258,9 @@ readable column by column.
 \centering
 \caption{Bridge conversion, information gain, and interval log score
     for the three worked scenarios.  \textbf{Top:} bridge probabilities and
-    IG relative to uniform climatology ($\log_2 5 = 2.322$~bits).
+    IG relative to uniform climatology ($\log_2 6 = 2.585$~bits).
     \textbf{Bottom:} ILS for the threshold event
-    $A_T = \{\mode{SUPER},\, \mode{QLCS},\, \mode{MCS}\}$
-    (organised convection).
+    $A_T = \{\spc{ENH},\, \spc{MDT},\, \spc{HIGH}\}$.
     Asterisk ($^*$) denotes $\varepsilon$-floored values.}
 \label{tab:bridge_ils}
 \footnotesize
@@ -267,36 +271,33 @@ readable column by column.
  & correct) & correct) & wrong) \\
 \midrule
 \multicolumn{4}{l}{\textit{Bridge conversion}} \\[2pt]
-$\ign$ & $0.15$ & $0.45$ & $0.20$ \\
-$\sum \pi$ & $1.05$ & $1.30$ & $0.95$ \\
-$p(c_{\mathrm{obs}})$ & $0.688$ & $0.233$ & $0.042$ \\
-Surprise (bits) & $0.54$ & $2.10$ & $4.57$ \\
-\textbf{IG (bits)} & $\mathbf{+1.78}$ & $\mathbf{+0.22}$ & $\mathbf{-2.25}$ \\[4pt]
+$\ign$ & $0.10$ & $0.45$ & $0.15$ \\
+$\sum \pi$ & $1.20$ & $1.45$ & $1.00$ \\
+$p(c_{\mathrm{obs}})$ & $0.675$ & $0.209$ & $0.000^*$ \\
+Surprise (bits) & $0.567$ & $2.258$ & $6.644^*$ \\
+\textbf{IG (bits)} & $\mathbf{+2.018}$ & $\mathbf{+0.327}$ & $\mathbf{-4.059}$ \\[4pt]
 \multicolumn{4}{l}{\textit{ILS\/ for
-    $A_T = \{$\mode{SUPER}$,\,$\mode{QLCS}$,\,$\mode{MCS}$\}$}} \\[2pt]
-$U = \poss(A_T)$ & $0.85$ & $0.55$ & $0.05$ \\
-$\Nc(A_T)$ & $0.941$ & $0.818$ & $0.000$ \\
-$L = m \cdot \Nc$ & $0.800$ & $0.450$ & $0.000$ \\
-$[L,\, U]$ & $[0.80,\, 0.85]$ & $[0.45,\, 0.55]$ & $[0.00,\, 0.05]$ \\
-\textbf{ILS (bits)} & $\mathbf{0.23}$ & $\mathbf{0.86}$ & $\mathbf{4.32}^*$ \\
+    $A_T = \{$\spc{ENH}$,\,$\spc{MDT}$,\,$\spc{HIGH}$\}$}} \\[2pt]
+$U = \poss(A_T)$ & $0.90$ & $0.55$ & $0.00^*$ \\
+$\Nc(A_T)$ & $0.944$ & $0.273$ & --- \\
+$L = m \cdot \Nc$ & $0.850$ & $0.150$ & $0.000$ \\
+$[L,\, U]$ & $[0.85,\, 0.90]$ & $[0.15,\, 0.55]$ & $[0,\, 0]$ \\
+\textbf{ILS (bits)} & $\mathbf{0.152}$ & $\mathbf{0.862}$ & $\mathbf{6.644}^*$ \\
 \bottomrule
 \end{tabular}
 \end{table}
 
 The three scenarios trace a clear arc from skill to catastrophe.
 Scenario~A's bridge concentrates probability on the correct outcome
-($p = 0.688$); low ignorance means little mass is stranded in the
-ignorance bin, yielding $\mathrm{IG} = +1.78$~bits and a tight
-ILS interval $[0.80,\, 0.85]$.
-Scenario~B is positive but modest ($\mathrm{IG} = +0.22$~bits): the
-high $\ign = 0.45$ correctly deflates $p(\mode{MCS})$ from the
-simple-normalization value of $0.55/1.30 = 0.423$ down to $0.233$,
-honestly reflecting the system's uncertainty; the ILS interval
-$[0.45,\, 0.55]$ confirms the ambivalence, though the event remains
-more likely than not.
-Scenario~C incurs steep penalties on both scores because the
-bridge assigns only $p = 0.042$ to the observed outcome.  Crucially,
-ignorance was modest ($\ign = 0.20$): the system was not hedging
-cautiously---it was confident and wrong.  The wide ILS interval
-$[0.00,\, 0.05]$ for organised convection confirms that the system
-all but ruled out the event class that materialised.
+($p = 0.675$); low ignorance means little mass is stranded in the
+ignorance bin, yielding $\mathrm{IG} = +2.018$~bits and a tight
+ILS interval $[0.85,\, 0.90]$.
+Scenario~B is positive but modest ($\mathrm{IG} = +0.327$~bits): the
+high $\ign = 0.45$ correctly deflates $p(\spc{ENH})$ from the
+simple-normalization value of $0.55/1.45 = 0.379$ down to $0.209$,
+honestly reflecting the system's uncertainty; the wide ILS interval
+$[0.15,\, 0.55]$ confirms the ambivalence.
+Scenario~C incurs catastrophic penalties on both scores because the
+bridge assigns zero probability to the observed outcome.  Crucially,
+low ignorance ($\ign = 0.15$) provides almost no cushion: the system
+left itself no escape route for an outcome it had ruled out.

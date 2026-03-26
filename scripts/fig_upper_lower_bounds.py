@@ -1,9 +1,9 @@
 """Figure 5: Upper / lower probability bounds.
 
 For each of the three scenarios, shows the interval [L, U] on a [0, 1]
-number line for the threshold event A_T = {SUPER, QLCS, MCS}
-(organised convection). L and U are derived from the convective-mode
-possibility distribution via the tripartite bridge.
+number line for the threshold event A_T = {ENH, MDT, HIGH}.
+L and U are derived from the possibility distribution via the
+tripartite bridge.
 """
 import numpy as np
 import matplotlib.pyplot as plt
@@ -12,19 +12,19 @@ import matplotlib.patches as mpatches
 from style import (
     apply_style, save_fig,
     PURPLE, GREEN, LIGHT_GREY, DARK_GREY, MID_GREY,
-    CONV_MODES, CONV_N,
+    SPC_CATEGORIES, SPC_N,
 )
 
 
-# Three scenarios (K=5 convective modes)
+# Three scenarios (same as fig_three_scenario)
 SCENARIOS = {
-    "Sharp-Correct": np.array([0.00, 0.05, 0.85, 0.10, 0.05]),
-    "Hedged-Correct": np.array([0.05, 0.10, 0.20, 0.40, 0.55]),
-    "Sharp-Wrong":    np.array([0.80, 0.10, 0.05, 0.00, 0.00]),
+    "Sharp-Correct": np.array([0.00, 0.05, 0.10, 0.15, 0.90, 0.05]),
+    "Hedged-Correct": np.array([0.10, 0.30, 0.45, 0.50, 0.55, 0.10]),
+    "Sharp-Wrong":    np.array([0.85, 0.10, 0.05, 0.02, 0.01, 0.00]),
 }
 
-# Threshold event: organised convection
-EVENT_CATS = {"SUPER", "QLCS", "MCS"}
+# Threshold event: categories at ENH or higher
+EVENT_CATS = {"ENH", "MDT", "HIGH"}
 
 
 def bounds_from_possibility(pi, event_indices):
@@ -55,7 +55,7 @@ def bounds_from_possibility(pi, event_indices):
 def main():
     apply_style()
 
-    event_idx = np.array([CONV_MODES.index(c) for c in EVENT_CATS])
+    event_idx = np.array([SPC_CATEGORIES.index(c) for c in EVENT_CATS])
 
     labels = list(SCENARIOS.keys())
     n = len(labels)
@@ -89,7 +89,7 @@ def main():
     ax.set_yticks(y_positions)
     ax.set_yticklabels(labels, fontsize=9)
     ax.set_xlabel("Probability of event " +
-                  r"$A_T = \{$SUPER, QLCS, MCS$\}$", fontsize=9)
+                  r"$A_T = \{$ENH, MDT, HIGH$\}$", fontsize=9)
     ax.set_xlim(-0.05, 1.08)
     ax.set_ylim(-0.6, n - 0.3)
 

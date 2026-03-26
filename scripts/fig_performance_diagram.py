@@ -1,9 +1,9 @@
 """Possibilistic performance diagram (Roebber-style), two-panel.
 
-Left panel:  all days (n ≈ 1,825) — full context including null (NULL) cases.
-Right panel: non-null days only (CELL+) — where the framework earns its keep.
-             Without the NULL mass the rare-event population
-             (QLCS/MCS) is exposed and ignorance patterns become visible.
+Left panel:  all days (n ≈ 1,825) — full context including null (NONE) cases.
+Right panel: severe days only (SLGT+) — where the framework earns its keep.
+             Without the NONE/MRGL mass the rare-event population
+             (MDT/HIGH) is exposed and ignorance patterns become visible.
 
 Encoding (5 metrics on one plot):
   x-axis    1 - eta   specificity (higher = sharper)
@@ -27,7 +27,7 @@ from matplotlib.colors import Normalize, LinearSegmentedColormap
 from style import (
     apply_style, save_fig,
     PURPLE, GREEN, DARK_GREY, MID_GREY, LIGHT_GREY,
-    CONV_MODES, CONV_N,
+    SPC_CATEGORIES, SPC_N,
 )
 from fig_three_scenario import compute_scorecard, SCENARIOS
 
@@ -36,7 +36,7 @@ from fig_three_scenario import compute_scorecard, SCENARIOS
 # Data generation (swap this for real data)                           #
 # ------------------------------------------------------------------ #
 
-def scorecard_from_data(pi_array, obs_categories, K=CONV_N):
+def scorecard_from_data(pi_array, obs_categories, K=SPC_N):
     """Compute five-number scorecard for each forecast--observation pair.
 
     Parameters
@@ -44,14 +44,14 @@ def scorecard_from_data(pi_array, obs_categories, K=CONV_N):
     pi_array : ndarray, shape (n, K)
         Raw (possibly subnormal) possibility distributions.
     obs_categories : array-like of str, length n
-        Observed convective-mode category for each case.
+        Observed SPC category for each case.
 
     Returns
     -------
     dict of ndarrays: alpha_star, eta, delta, H_Pi, Nc_star, obs_idx
     """
     n = len(obs_categories)
-    obs_idx = np.array([CONV_MODES.index(c) for c in obs_categories])
+    obs_idx = np.array([SPC_CATEGORIES.index(c) for c in obs_categories])
 
     alpha_star = np.empty(n)
     eta = np.empty(n)
@@ -78,16 +78,15 @@ def scorecard_from_data(pi_array, obs_categories, K=CONV_N):
                 H_Pi=H_Pi, Nc_star=Nc_star, obs_idx=obs_idx)
 
 
-def generate_reforecast(n_years=2, K=CONV_N, seed=42):
+def generate_reforecast(n_years=2, K=SPC_N, seed=42):
     """Generate a two-year synthetic possibilistic reforecast.
 
     The synthetic model has physically motivated behaviour:
-      - Convective-mode base rates:
-        NULL 45 %, CELL 25 %, SUPER 15 %, QLCS 10 %, MCS 5 %
-      - Mode-dependent accuracy: 82 % correct peak for NULL, 35 % for MCS
-      - Mode-dependent ignorance: H_Pi ~ 0.06 for NULL, ~ 0.40 for MCS
-      - Nominal confusion model: wrong forecasts drawn from per-mode
-        confusion neighbours (not ordinal offsets)
+      - SPC-like base rates (slightly smoothed to reduce null-day dominance):
+        NONE 60 %, MRGL 18 %, SLGT 12 %, ENH 6 %, MDT 3.2 %, HIGH 0.8 %
+      - Category-dependent accuracy: 82 % correct peak for NONE, 18 % for HIGH
+      - Category-dependent ignorance: H_Pi ~ 0.06 for NONE, ~ 0.52 for HIGH
+      - Near-miss errors: wrong forecasts tend to be +/- 1 category
       - Extra spread noise for visual separation on the diagram
 
     Returns
@@ -98,27 +97,18 @@ def generate_reforecast(n_years=2, K=CONV_N, seed=42):
     rng = np.random.default_rng(seed)
 
     # --- Observation climatology ---
-    clim = np.array([0.45, 0.25, 0.15, 0.10, 0.05])
+    clim = np.array([0.60, 0.18, 0.12, 0.06, 0.032, 0.008])
     n_days = n_years * 365
     obs_idx = rng.choice(K, size=n_days, p=clim)
-    obs_categories = [CONV_MODES[i] for i in obs_idx]
+    obs_categories = [SPC_CATEGORIES[i] for i in obs_idx]
 
-    # --- Mode-dependent model parameters ---
+    # --- Category-dependent model parameters ---
     # Wider spread & ignorance sigmas to scatter points more on the diagram
-    correct_prob = np.array([0.82, 0.70, 0.55, 0.45, 0.35])
-    h_mu = np.array([0.06, 0.10, 0.18, 0.28, 0.40])
-    h_sig = np.array([0.06, 0.08, 0.12, 0.14, 0.15])
-    s_mu = np.array([2.4, 2.0, 1.5, 1.2, 0.8])
-    s_sig = np.array([0.8, 0.8, 0.7, 0.6, 0.5])
-
-    # Per-mode confusion matrix for wrong forecasts
-    confusion = {
-        0: [1, 2],        # NULL wrong → CELL, SUPER
-        1: [0, 2],        # CELL wrong → NULL, SUPER
-        2: [1, 3],        # SUPER wrong → CELL, QLCS
-        3: [4, 2],        # QLCS wrong → MCS, SUPER
-        4: [3],           # MCS wrong → QLCS
-    }
+    correct_prob = np.array([0.82, 0.78, 0.65, 0.48, 0.32, 0.18])
+    h_mu = np.array([0.06, 0.08, 0.15, 0.25, 0.38, 0.52])
+    h_sig = np.array([0.06, 0.07, 0.12, 0.14, 0.16, 0.15])
+    s_mu = np.array([2.6, 2.4, 1.8, 1.3, 1.0, 0.7])
+    s_sig = np.array([0.9, 0.9, 0.8, 0.7, 0.6, 0.5])
 
     pi_array = np.empty((n_days, K))
 
@@ -128,7 +118,8 @@ def generate_reforecast(n_years=2, K=CONV_N, seed=42):
         if rng.random() < correct_prob[oi]:
             peak = oi
         else:
-            peak = rng.choice(confusion[oi])
+            offset = rng.choice([-2, -1, 1, 2], p=[0.10, 0.40, 0.40, 0.10])
+            peak = int(np.clip(oi + offset, 0, K - 1))
 
         spread = max(0.3, rng.normal(s_mu[oi], s_sig[oi]))
         dists = np.abs(np.arange(K) - peak).astype(float)
@@ -172,8 +163,8 @@ def _draw_panel(ax, spec, alpha, sizes, hpi, obs_idx,
             ha="center", va="center")
 
     # ---- Scatter ---- #
-    _NULL_IDX = CONV_MODES.index("NULL")
-    null = obs_idx == _NULL_IDX
+    _NONE_IDX = SPC_CATEGORIES.index("NONE")
+    null = obs_idx == _NONE_IDX
     eventful = ~null
 
     # Layer 1: null days — shaded ellipse summary (visible only in panel a)
@@ -186,7 +177,7 @@ def _draw_panel(ax, spec, alpha, sizes, hpi, obs_idx,
         ell = Ellipse((cx, cy), wx, wy, facecolor="#D0D0D0", alpha=0.35,
                        edgecolor="#AAAAAA", linewidth=0.8, zorder=1)
         ax.add_patch(ell)
-        ax.text(cx, cy, f"$n = {n_none:,}$\nNULL obs", fontsize=6,
+        ax.text(cx, cy, f"$n = {n_none:,}$\nNONE obs", fontsize=6,
                 ha="center", va="center", color=MID_GREY,
                 fontweight="bold", zorder=2)
 
@@ -197,7 +188,7 @@ def _draw_panel(ax, spec, alpha, sizes, hpi, obs_idx,
                          edgecolors=DARK_GREY, linewidths=0.2, alpha=0.35,
                          marker="o", zorder=2, rasterized=True)
 
-    rare = (obs_idx == CONV_MODES.index("QLCS")) | (obs_idx == CONV_MODES.index("MCS"))
+    rare = obs_idx >= SPC_CATEGORIES.index("MDT")
     sc = ax.scatter(spec[rare], alpha[rare],
                     s=sizes[rare] * 1.3, c=hpi[rare], cmap=cmap, norm=norm,
                     edgecolors=DARK_GREY, linewidths=0.5, alpha=0.55,
@@ -270,9 +261,9 @@ def main():
 
     # §6 anchor scenarios (with verified flag for edge colour)
     anchor_meta = [
-        ("Sharp-Correct",  "A", "Sharp, confident\n(SUPER obs)",  True),
-        ("Hedged-Correct", "B", "Hedged, uncertain\n(MCS obs)", True),
-        ("Sharp-Wrong",    "C", "Sharp, wrong\n(SUPER obs)",      False),
+        ("Sharp-Correct",  "A", "Sharp, confident\n(MDT obs)",  True),
+        ("Hedged-Correct", "B", "Hedged, uncertain\n(ENH obs)", True),
+        ("Sharp-Wrong",    "C", "Sharp, wrong\n(MDT obs)",      False),
     ]
     anchors = []
     for name, letter, desc, verified in anchor_meta:
@@ -280,9 +271,9 @@ def main():
         card = compute_scorecard(sc['pi'], sc['obs'])
         anchors.append((letter, desc, card, verified))
 
-    # ---- Subset: CELL+ (non-null days) ---- #
-    _CELL_IDX = CONV_MODES.index("CELL")
-    severe = data['obs_idx'] >= _CELL_IDX
+    # ---- Subset: SLGT+ ---- #
+    _SLGT_IDX = SPC_CATEGORIES.index("SLGT")
+    severe = data['obs_idx'] >= _SLGT_IDX
     n_sev = severe.sum()
 
     # ---- Figure ---- #
@@ -298,13 +289,13 @@ def main():
     ax_l.set_xlabel(r"Specificity  $1 - \eta$  (higher = sharper)", fontsize=9)
     ax_l.set_ylabel(r"Depth-of-truth  $\alpha^*$  (higher = better)", fontsize=9)
 
-    # Right: CELL+ only
+    # Right: SLGT+ only
     sc = _draw_panel(
         ax_r, specificity[severe], alpha_plot[severe],
         sizes[severe], data['H_Pi'][severe],
         data['obs_idx'][severe], cmap, norm, s_min, anchors,
         show_anchor_labels=True,
-        title=f"(b)  Non-null days  (CELL+,  $n = {n_sev:,}$)")
+        title=f"(b)  Severe days only  (SLGT+,  $n = {n_sev:,}$)")
     ax_r.set_xlabel(r"Specificity  $1 - \eta$  (higher = sharper)", fontsize=9)
 
     # ---- Shared colorbar ---- #
@@ -327,12 +318,12 @@ def main():
         mlines.Line2D([], [], marker="D", linestyle="None",
                       markersize=4.5, markerfacecolor="#C9A5E0",
                       markeredgecolor=DARK_GREY,
-                      label="QLCS / MCS obs"))
+                      label="MDT / HIGH obs"))
     leg_handles.append(
         mlines.Line2D([], [], marker="o", linestyle="None",
                       markersize=5, markerfacecolor="#D0D0D0",
                       markeredgecolor="#AAAAAA", alpha=0.5,
-                      label="NULL cluster (panel a)"))
+                      label="NONE cluster (panel a)"))
     leg_handles.append(
         mlines.Line2D([], [], marker="*", linestyle="None",
                       markersize=7, markerfacecolor=MID_GREY,
@@ -349,10 +340,10 @@ def main():
                 handletextpad=0.4, borderpad=0.5)
 
     # Print summary
-    n_qlcs = (data['obs_idx'] == CONV_MODES.index("QLCS")).sum()
-    n_mcs = (data['obs_idx'] == CONV_MODES.index("MCS")).sum()
-    print(f"  All: n={n_all}  |  CELL+: n={n_sev}  "
-          f"|  QLCS: {n_qlcs}  MCS: {n_mcs}")
+    n_mdt = (data['obs_idx'] == SPC_CATEGORIES.index("MDT")).sum()
+    n_high = (data['obs_idx'] == SPC_CATEGORIES.index("HIGH")).sum()
+    print(f"  All: n={n_all}  |  SLGT+: n={n_sev}  "
+          f"|  MDT: {n_mdt}  HIGH: {n_high}")
 
     save_fig(fig, "performance_diagram")
 

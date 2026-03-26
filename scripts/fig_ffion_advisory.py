@@ -3,7 +3,6 @@
 Renders a mock-up of a Ffion-style advisory: structured forecast data
 on the left, plain-language LLM translation on the right, showing how
 the three-component triplet feeds automated risk communication.
-Uses convective mode categories (K=5): NULL, CELL, SUPER, QLCS, MCS.
 """
 import matplotlib.pyplot as plt
 import matplotlib.patches as mpatches
@@ -15,14 +14,14 @@ from style import (
 
 # The advisory text — representative of Ffion's output style.
 ADVISORY_TEXT = (
-    "Supercell mode is the most plausible convective outcome today "
-    "(\u03A0 = 0.85). Confidence is high: the system flags "
-    "15% ignorance, meaning conditions are well within "
+    "MDT risk is the most plausible convective outlook today "
+    "(\u03A0 = 0.75). Confidence is moderate: the system flags "
+    "25% ignorance, meaning conditions partially lie outside "
     "typical rule coverage. Among scenarios the system does "
-    "cover, supercell mode dominates all alternatives (N\u2099 = 0.88). "
-    "QLCS retains non-trivial plausibility (\u03C0 = 0.10); "
-    "protective actions for supercell-level impacts are recommended "
-    "while monitoring for potential mode evolution toward QLCS or MCS."
+    "cover, MDT dominates all alternatives (N\u2099 = 0.73). "
+    "ENH risk retains non-trivial plausibility (\u03C0 = 0.20); "
+    "protective actions for MDT-level impacts are recommended "
+    "while monitoring for upgrade to HIGH."
 )
 
 STRUCTURED_DATA = (
@@ -30,19 +29,20 @@ STRUCTURED_DATA = (
     "\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500"
     "\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500"
     "\u2500\u2500\u2500\n"
-    "\u03A0(SUPER) = 0.85  (peak)\n"
-    "H\u03A0       = 0.15\n"
-    "N\u2099(SUPER) = 0.88\n"
+    "\u03A0(MDT)  = 0.75  (peak)\n"
+    "H\u03A0      = 0.25\n"
+    "N\u2099(MDT) = 0.73\n"
     "\n"
     "Full distribution\n"
     "\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500"
     "\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500"
     "\u2500\u2500\u2500\n"
-    "NULL   0.00\n"
-    "CELL   0.05\n"
-    "SUPER  0.85  \u25C0\n"
-    "QLCS   0.10\n"
-    "MCS    0.05"
+    "NONE  0.05\n"
+    "MRGL  0.00\n"
+    "SLGT  0.10\n"
+    "ENH   0.20\n"
+    "MDT   0.75  \u25C0\n"
+    "HIGH  0.15"
 )
 
 

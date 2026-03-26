@@ -12,7 +12,7 @@ import matplotlib.pyplot as plt
 from style import (
     apply_style, save_fig,
     PURPLE, GREEN, LIGHT_GREY, DARK_GREY, MID_GREY,
-    CONV_MODES, CONV_N,
+    SPC_CATEGORIES, SPC_N,
 )
 
 
@@ -61,9 +61,9 @@ def main():
             markersize=4, zorder=3, label="Observed hit rate")
 
     # Climatological base rate
-    base = 1.0 / CONV_N
+    base = 1.0 / SPC_N
     ax.axhline(base, linestyle="--", linewidth=1.0, color=MID_GREY, zorder=2,
-               label=f"Climatology (1/{CONV_N} = {base:.3f})")
+               label=f"Climatology (1/{SPC_N} = {base:.2f})")
 
     # Perfect reliability diagonal
     ax.plot([0, 1], [0, 1], linestyle=":", linewidth=0.8, color=DARK_GREY,
