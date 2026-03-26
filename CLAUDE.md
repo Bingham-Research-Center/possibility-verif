@@ -46,7 +46,7 @@ Standalone methods paper: "Possible, yes; ignorant, perhaps: a scorecard for pos
 - **First use** (§2, §6): `\begin{cases}` format, one category per line.
 - **Subsequent uses** (§3, §4): ordered-tuple `$\pi = (0.05,\, 0.2,\, 0.4,\, 0.6,\, 0.1,\, 0.0)$` with ordering (NONE, MRGL, SLGT, ENH, MDT, HIGH).
 
-## Figures (12 total, all PNG, no number prefixes)
+## Figures (13 total, all PNG, no number prefixes)
 
 | PNG name | Script | Section | What it shows |
 |----------|--------|---------|---------------|
@@ -60,7 +60,8 @@ Standalone methods paper: "Possible, yes; ignorant, perhaps: a scorecard for pos
 | `verification_lanes` | `fig_verification_lanes.py` | §5.2 | Three-lane flowchart schematic |
 | `ffion_advisory` | `fig_ffion_advisory.py` | §7.3 | JSON → LLM advisory mock-up |
 | `scorecard_table` | `fig_scorecard_table.py` | §5.2 | ECMWF-style scorecard with triangles |
-| `performance_diagram` | `fig_performance_diagram.py` | §4.2 | Roebber-style five-metric diagram |
+| `performance_diagram` | `fig_perf_iterate.py` | §4.2 | Hexbin + green trajectory shape-quality diagram |
+| `commitment_diagram` | `fig_perf_iterate.py` | §4.2 | Commitment × discrimination diagnostic |
 | `severity_matrix` | `fig_severity_matrix.py` | §7.4 | Severity-confidence matrix |
 
 ## Python

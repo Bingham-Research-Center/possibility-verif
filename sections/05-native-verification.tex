@@ -175,71 +175,87 @@ Aggregates $\overline{\alpha^*}$, $\overline{\eta}$,
 $\overline{\delta}$, $\overline{\ign}$, $\overline{\Nc^*}$ are reported
 with bootstrap confidence intervals.
 
-Figure~\ref{fig:performance_diagram} provides a diagnostic view of all
-five metrics simultaneously, inspired by the performance diagram of
-\citet{Roebber2009-rv}.  Each forecast--observation pair maps to a
-point whose position encodes depth-of-truth ($\alpha^*$, $y$-axis) and
-specificity ($1 - \eta$, $x$-axis); diagonal contour lines mark constant
-resolution gap $\delta = \alpha^* - \eta$.  Marker colour encodes
-ignorance $\ign$ and marker size encodes conditional necessity $\Nc^*$.
+Figure~\ref{fig:performance_diagram} provides a diagnostic view of the
+five scorecard metrics, inspired by \citet{Roebber2009-rv}.  Hexagonal
+bins aggregate forecast--observation pairs by specificity $1 - \eta$
+($x$-axis) and depth-of-truth $\alpha^*$ ($y$-axis).  Bin colour
+encodes mean ignorance $\ign$: dark bins are confident, pale bins
+uncertain.  Hyperbolic contours mark constant joint skill
+$S = \alpha^* \times (1 - \eta)$; the dashed diagonal marks
+$\delta = 0$.  The green trajectory connects category-conditional
+means, tracing how the system degrades from \spc{NONE} (easy, upper
+right) to \spc{HIGH} (rare, lower left), with point size proportional
+to sample count.
 
-The structural analogy with Roebber's diagram is deliberate.  His
-$x$-axis (success ratio) measures forecast precision; here, specificity
-$1 - \eta$ plays the same role---how focused was the distribution?  His
-$y$-axis (probability of detection) measures whether the forecast
-captured what happened; here, $\alpha^*$ asks the same question in
-possibility space.  His curved CSI contours measure net quality given
-both axes; here, straight $\delta$ contours serve the same purpose
-($\delta > 0$ means the system assigned more support to the truth than
-to the average category).  Where the diagrams diverge is that
-possibilistic forecasts carry two additional uncertainty dimensions---ignorance
-$\ign$ (colour) and conditional necessity $\Nc^*$ (marker size)---that
-have no analogue in deterministic verification.
+The analogy with Roebber's diagram is deliberate: specificity plays the
+role of success ratio (how focused was the distribution?), $\alpha^*$
+plays the role of probability of detection (did the forecast capture
+truth?), and the $S$ hyperbolas play the role of CSI contours (net
+quality given both axes).  The key addition is ignorance $\ign$, encoded
+as bin colour, which has no deterministic analogue.
 
-\textit{Reading the diagram at a glance:} the upper-right corner is
-ideal (sharp and correct); the lower-right is the worst failure mode
-(sharp and wrong).  Dark, large markers signal confident, dominant
-forecasts; light, small markers signal uncertain, hedged ones.  A
-cluster of light markers in the upper left---diffuse but correct---may
-indicate a system that captures the truth but lacks the sharpness to be
-operationally useful.
-
-\textit{Stratification by observed category.}
-Like deterministic accuracy, aggregate possibilistic metrics can be
-inflated by trivially correct null forecasts.  If \spc{NONE} days
-dominate the sample (as they do in SPC climatology), a system that is
-merely sharp and confident on routine days will exhibit high mean
-$\alpha^*$, high mean $\Nc^*$, and low mean $\ign$---regardless of its
-skill on rare events.  Figure~\ref{fig:performance_diagram} addresses
-this by presenting both the unconditional diagram (panel~a) and the
-\spc{SLGT}$+$ conditional diagram (panel~b).  The former is needed to
-detect false-alarm patterns on null days; the latter exposes the
-rare-event population where ignorance and near-miss structures dominate.
-For operational dashboards, we recommend reporting scorecard aggregates
-separately for null (\spc{NONE}) and eventful (\spc{SLGT}$+$) subsets.
+\textit{Reading the diagram:} upper right is ideal (sharp and truthful);
+lower right is the worst failure mode (sharp and wrong).  Above the
+$\delta = 0$ diagonal, the forecast discriminated; below it, the truth
+received less support than the categorical average.  The trajectory's
+slope reveals where skill degrades fastest---a steep drop between
+adjacent categories signals the system's breaking point.
 
 \begin{figure*}[!t]
 \centering
 \includegraphics[width=\textwidth]{performance_diagram.png}
 \caption{Possibilistic performance diagram for a two-year synthetic
-    reforecast with SPC-like base rates (\spc{NONE}~60\%,
-    \spc{MRGL}~18\%, \spc{SLGT}~12\%, \spc{ENH}~6\%, \spc{MDT}~3.2\%,
-    \spc{HIGH}~0.8\%).
-    \textbf{(a)}~All days ($n = 730$): the shaded ellipse at upper right
-    summarizes trivially correct \spc{NONE} forecasts that inflate
-    aggregate metrics.
-    \textbf{(b)}~Severe days only (\spc{SLGT}$+$): with null cases
-    removed, the rare-event population (diamonds) is exposed and the
-    ignorance gradient becomes visible.  Stars mark the three worked
-    scenarios from Section~\ref{sec:worked_examples}; green edges denote
-    verified forecasts, red edges denote misses.
-    \textbf{Position:} specificity $1 - \eta$ ($x$) vs.\
-    depth-of-truth $\alpha^*$ ($y$); diagonal dashed line is
-    $\delta = 0$.  \textbf{Colour:} ignorance $\ign$ (darker $=$ more
-    confident).  \textbf{Size:} conditional necessity $\Nc^*$ (larger
-    $=$ truth more dominant).}
+    reforecast.
+    \textbf{Hex bins:} colour is mean $\ign$ (dark = confident).
+    \textbf{Contours:} joint skill $S = \alpha^* \times (1 - \eta)$.
+    \textbf{Dashed diagonal:} $\delta = 0$ break-even.
+    \textbf{Green line:} category-conditional means from \spc{NONE}
+    (easy, upper right) to \spc{HIGH} (rare, lower left); dot
+    size $\propto$ sample count.
+    \textbf{Stars:} worked scenarios from
+    Section~\ref{sec:worked_examples} (green edge = hit, red = miss).
+    The upper-right corner is the perfect-forecast region.}
 \label{fig:performance_diagram}
 \end{figure*}
+
+Both axes of Figure~\ref{fig:performance_diagram} operate on the
+normalised shape $\pi'$: two forecasts with identical shapes but
+different commitment levels ($\ign = 0.05$ vs.\ $\ign = 0.50$) land at
+the same position.  Commitment is visible only through bin colour---a
+weaker perceptual channel.
+Figure~\ref{fig:commitment_diagram} promotes commitment to a primary
+axis: $x = \pi_{\max} = 1 - \ign$ (how much of the unit interval the
+forecaster used) versus $y = \delta = \alpha^* - \eta$ (net
+discrimination).  These axes are orthogonal---$\pi_{\max}$ is the raw
+\emph{scale} of $\pi$; $\delta$ is the \emph{shape quality} of $\pi'$.
+
+\textit{Reading the commitment diagram:} upper right is committed and
+discriminating (ideal); lower right is overconfident and wrong; upper
+left is the cautious forecast that got the shape right.  Below the
+$\delta = 0$ line, the forecast failed to discriminate.  Anchor~C
+(sharp-wrong) sits squarely in the overconfident quadrant; Anchor~B
+(hedged-correct) sits in the cautious-discriminating region---a
+distinction invisible in the shape-quality diagram.
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=\columnwidth]{commitment_diagram.png}
+\caption{Commitment--discrimination diagram for the same reforecast.
+    \textbf{$x$:}~commitment $\pi_{\max} = 1 - \ign$ (how much the
+    forecaster staked).
+    \textbf{$y$:}~discrimination $\delta = \alpha^* - \eta$ (did the
+    shape favour truth?).
+    These axes are orthogonal: $x$ is the raw scale of $\pi$; $y$ is
+    the quality of the normalised shape $\pi'$.
+    \textbf{Hex bins:} coloured by count.
+    \textbf{Green line:} category means from \spc{NONE} (upper right)
+    to \spc{HIGH} (lower left).
+    \textbf{Stars:} Section~\ref{sec:worked_examples} anchors.
+    Upper right = committed \& discriminating.
+    Lower right = overconfident \& wrong.
+    Dashed line = $\delta = 0$ break-even.}
+\label{fig:commitment_diagram}
+\end{figure}
 
 \FloatBarrier
 
