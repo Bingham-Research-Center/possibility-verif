@@ -160,24 +160,19 @@ visual comparison, with scorecard values printed below each panel.
 \centering
 \caption{Five-number scorecard for the three worked scenarios.}
 \label{tab:scorecard_comparison}
-\small
+\footnotesize
+\setlength{\tabcolsep}{4pt}
 \begin{tabular}{lccc}
 \toprule
-Statistic & Scenario A & Scenario B & Scenario C \\
-    & (sharp-correct) & (hedged-correct) & (sharp-wrong) \\
+ & \textbf{A} (sharp- & \textbf{B} (hedged- & \textbf{C} (sharp- \\
+ & correct) & correct) & wrong) \\
 \midrule
-$m$ (subnormality)
-    & $0.90$ & $0.55$ & $0.85$ \\
-$\ign$ (ignorance)
-    & $0.10$ & $0.45$ & $0.15$ \\
-$\alpha^*$ (depth-of-truth)
-    & $1.00$ & $1.00$ & $0.00$ \\
-$\eta$ (nonspecificity)
-    & $0.222$ & $0.439$ & $0.196$ \\
-$\delta$ (resolution gap)
-    & $+0.778$ & $+0.561$ & $-0.196$ \\
-$\Nc^*$ (cond.\ necessity of truth)
-    & $0.833$ & $0.273$ & $0.00$ \\
+$m$ (commitment)       & $0.90$  & $0.55$  & $0.85$ \\
+$\ign$ (ignorance)     & $0.10$  & $0.45$  & $0.15$ \\
+$\alpha^*$ (depth-of-truth) & $1.00$ & $1.00$ & $0.00$ \\
+$\eta$ (nonspecificity) & $0.222$ & $0.439$ & $0.196$ \\
+$\delta$ (discrimination) & $+0.778$ & $+0.561$ & $-0.196$ \\
+$\Nc^*$ (cond.\ necessity) & $0.833$ & $0.273$ & $0.00$ \\
 \bottomrule
 \end{tabular}
 \end{table}
