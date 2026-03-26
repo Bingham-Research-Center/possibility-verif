@@ -44,7 +44,7 @@ def tripartite_bridge(pi):
 def main():
     apply_style()
 
-    pi = np.array([0.10, 0.25, 0.70, 0.45, 0.05])
+    pi = np.array([0.05, 0.10, 0.25, 0.70, 0.45, 0.05])
     p_cats, p_ign = tripartite_bridge(pi)
 
     # Verify the probability sums to 1

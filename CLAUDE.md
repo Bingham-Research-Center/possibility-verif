@@ -11,14 +11,14 @@ Standalone methods paper: "Possible, yes; ignorant, perhaps: a scorecard for pos
 ## Build
 
 - **LaTeX**: Compiled on **Overleaf with XeLaTeX** (TeX Live 2025). Locally: `latexmk -xelatex main.tex`.
-- **Figures**: `python scripts/generate_all.py` then `python scripts/fig_scorecard_table.py` and `python scripts/fig_performance_diagram.py`. Outputs 11 PNGs to `figures/`.
+- **Figures**: `python scripts/generate_all.py` then `python scripts/fig_scorecard_table.py`, `python scripts/fig_performance_diagram.py`, and `python scripts/fig_severity_matrix.py`. Outputs 12 PNGs to `figures/`.
 - **Python env**: `conda env create -f environment.yml` creates `poss-verif`.
 
 ## Gotchas
 
 - **Figures must be PNG, not PDF.** XeTeX's xdvipdfmx backend crashes silently on matplotlib PDF transparency (`/SMask`, `/ca`, `/CA`). No `!` error in the log — just "No PDF produced" on Overleaf. `scripts/style.py` sets `FIG_FORMAT = "png"`. Do not switch back to PDF.
-- **`generate_all.py` only runs figs 1–9.** Figs 10–11 (`fig_scorecard_table.py`, `fig_performance_diagram.py`) must be run separately.
-- **Scenario mismatch**: `07-worked-examples.tex` scenarios (A, B, C) use different pi values than `fig_three_scenario.py`. The LaTeX table is self-consistent. Fig 2's caption notes this.
+- **`generate_all.py` only runs figs 1–9.** Figs 10–12 (`fig_scorecard_table.py`, `fig_performance_diagram.py`, `fig_severity_matrix.py`) must be run separately.
+- **Scenario mismatch**: `07-worked-examples.tex` scenarios (A, B, C) use slightly different pi values than some figure scripts (e.g., `fig_upper_lower_bounds.py`). The LaTeX table and `fig_three_scenario.py` share the same D4 values. Fig 2's caption notes this.
 - **`Smets1990-MISSING`** citation key in `04-pignistic-bridge.tex` is a placeholder — needs a real bib entry added to `paperpile.bib`.
 - **`rho.cls` loads heavy unused packages** (circuitikz, chemfig, matlab-prettifier, lipsum). Do not modify `rho.cls`, but be aware compilation is slow.
 
@@ -44,9 +44,9 @@ Standalone methods paper: "Possible, yes; ignorant, perhaps: a scorecard for pos
 ### Distribution formatting convention
 
 - **First use** (§2, §6): `\begin{cases}` format, one category per line.
-- **Subsequent uses** (§3, §4): ordered-tuple `$\pi = (0.2,\, 0.4,\, 0.6,\, 0.1,\, 0.0)$` with ordering (MRGL, SLGT, ENH, MDT, HIGH).
+- **Subsequent uses** (§3, §4): ordered-tuple `$\pi = (0.05,\, 0.2,\, 0.4,\, 0.6,\, 0.1,\, 0.0)$` with ordering (NONE, MRGL, SLGT, ENH, MDT, HIGH).
 
-## Figures (11 total, all PNG)
+## Figures (12 total, all PNG)
 
 | Fig | Script | Section | What it shows |
 |-----|--------|---------|---------------|
@@ -73,7 +73,9 @@ Scorecard computation canonical in `fig_three_scenario.py:compute_scorecard`.
 ### Done
 - All 10 section files with equations migrated from preprint
 - 15 labelled equations, all cross-references resolve
-- 11 figures (PNG) embedded with captions + in-text references
+- 12 figures (PNG) embedded with captions + in-text references
+- NONE category added to Ω: K=6, ordering (NONE, MRGL, SLGT, ENH, MDT, HIGH)
+- All π arrays, scorecard values, bridge computations, and ILS calculations updated for K=6
 - Notation table (§2) with Form (raw/norm) and Eq. columns
 - Ffion/LLM communication subsection (§7.3) with pipeline sketch
 - ILS framed as probability-of-exceedance

@@ -12,18 +12,24 @@ This section provides a self-contained primer on possibility theory for
 atmospheric scientists.  No prior knowledge of fuzzy logic or
 Dempster--Shafer theory is assumed; all definitions are built from scratch.
 A running example---a possibilistic convective outlook assigning
-possibility values to the five SPC categories \spc{MRGL}, \spc{SLGT},
-\spc{ENH}, \spc{MDT}, and \spc{HIGH}---illustrates each definition.  The
-mathematical framework developed here underpins all verification metrics
-in subsequent sections.
+possibility values to the six SPC categories \spc{NONE}, \spc{MRGL},
+\spc{SLGT}, \spc{ENH}, \spc{MDT}, and \spc{HIGH}---illustrates each
+definition.  The categories are categorical and mutually exclusive: on any
+given day at any given point, exactly one category describes the observed
+outcome.  \spc{NONE} represents the absence of any SPC categorical outlook
+at the point of interest---the true null (no severe weather).  The
+possibilistic distribution over these categories encodes graded
+plausibility; the categories themselves are crisp.  The mathematical
+framework developed here underpins all verification metrics in subsequent
+sections.
 
 \subsection{Axioms and Definitions}\label{sec:poss_axioms}
 
 Let $\Omega$ denote the \textit{universe of discourse}---the complete set
 of mutually exclusive and collectively exhaustive outcomes for a variable
 of interest (e.g., SPC convective outlook categories
-$\Omega = \{\spc{MRGL},\, \spc{SLGT},\, \spc{ENH},\, \spc{MDT},\,
-\spc{HIGH}\}$).  A \textit{possibility distribution}
+$\Omega = \{\spc{NONE},\, \spc{MRGL},\, \spc{SLGT},\, \spc{ENH},\,
+\spc{MDT},\, \spc{HIGH}\}$).  A \textit{possibility distribution}
 $\pi: \Omega \to [0,1]$ assigns to each outcome $\omega \in \Omega$ a
 degree of possibility $\pi(\omega)$ satisfying:
 
@@ -125,6 +131,7 @@ sector of a surface cyclone.
 The resulting possibility distribution is:
 \[
 \pi(\omega) = \begin{cases}
+0.05 & \omega = \spc{NONE} \\
 0.00 & \omega = \spc{MRGL} \\
 0.10 & \omega = \spc{SLGT} \\
 0.20 & \omega = \spc{ENH}  \\
@@ -133,7 +140,7 @@ The resulting possibility distribution is:
 \end{cases}
 \]
 with $\ign = 1 - 0.75 = 0.25$ and
-$\Nc(\spc{MDT}) = 1 - 0.2/0.75 = 0.73$.  Interpretation: \spc{MDT}
+$\Nc(\spc{MDT}) = 1 - 0.267/1.0 = 0.73$.  Interpretation: \spc{MDT}
 is the most plausible outcome ($\Pi = 0.75$) with moderate ignorance
 ($\ign = 0.25$); conditional necessity of $0.73$ indicates that among
 scenarios the system covers, \spc{MDT} is the dominant category.
@@ -145,6 +152,7 @@ uncertain due to a weak capping inversion.
 The resulting possibility distribution is:
 \[
 \pi(\omega) = \begin{cases}
+0.30 & \omega = \spc{NONE} \\
 0.50 & \omega = \spc{MRGL} \\
 0.50 & \omega = \spc{SLGT} \\
 0.00 & \omega = \spc{ENH}  \\
@@ -166,9 +174,9 @@ makes these knowledge gaps explicit.
 
 \smallskip\noindent\textit{Notation convention.}  Henceforth,
 distributions are written as ordered tuples
-$(\spc{MRGL},\, \spc{SLGT},\, \spc{ENH},\, \spc{MDT},\, \spc{HIGH})$
-when context is clear:\ e.g., Example~1 is
-$\pi = (0,\, 0.1,\, 0.2,\, 0.75,\, 0.15)$.
+$(\spc{NONE},\, \spc{MRGL},\, \spc{SLGT},\, \spc{ENH},\, \spc{MDT},\,
+\spc{HIGH})$ when context is clear:\ e.g., Example~1 is
+$\pi = (0.05,\, 0,\, 0.1,\, 0.2,\, 0.75,\, 0.15)$.
 
 %----------------------------------------------------------
 \subsection{Three-Component Uncertainty}\label{sec:three_component}

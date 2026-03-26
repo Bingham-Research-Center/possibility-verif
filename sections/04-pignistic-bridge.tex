@@ -54,26 +54,26 @@ This extension to subnormal distributions generalizes the pignistic transformati
 
 \textbf{Worked example.}
 Suppose a possibilistic convective outlook produces
-$\pi = (0.2,\; 0.4,\; 0.6,\; 0.1,\; 0.0)$.
+$\pi = (0.05,\; 0.2,\; 0.4,\; 0.6,\; 0.1,\; 0.0)$.
 Then:
 \begin{itemize}[leftmargin=2em]
 \item $\ign = 1 - 0.6 = 0.4$ (system is 40\% unsure).
-\item $\sum_j \pi_j = 1.3$; remaining $0.6$ distributed
+\item $\sum_j \pi_j = 1.35$; remaining $0.6$ distributed
     proportionally:
-\item $\mathbf{p} = (0.092,\; 0.185,\; 0.277,\; 0.046,\; 0.0,\;
-    \underbrace{0.400}_{\text{ign}})$.
+\item $\mathbf{p} = (0.022,\; 0.089,\; 0.178,\; 0.267,\; 0.044,\;
+    0.0,\; \underbrace{0.400}_{\text{ign}})$.
 \item If \spc{ENH} is observed: self-entropy
-    $= -\log_2(0.277) = 1.85$~bits.
+    $= -\log_2(0.267) = 1.91$~bits.
 \item Climatological baseline (e.g.,
     $p_{\mathrm{clim}}(\spc{ENH}) = 0.05$):
     $-\log_2(0.05) = 4.32$~bits.
-\item $\mathrm{IG} = 4.32 - 1.85 = 2.47$ bits gained over
+\item $\mathrm{IG} = 4.32 - 1.91 = 2.41$ bits gained over
     climatology.
 \end{itemize}
 
 High \ign{} ($0.4$) correctly inflated the ignorance outcome, reducing
 $p(\spc{ENH})$ from what simple normalization would give
-($0.6/1.3 = 0.462$) to $0.277$.  The verification score ($1.85$~bits)
+($0.6/1.35 = 0.444$) to $0.267$.  The verification score ($1.85$~bits)
 honestly reflects the system's partial uncertainty.
 Figure~\ref{fig:pignistic_bridge} visualizes this transformation.
 
@@ -82,7 +82,7 @@ Figure~\ref{fig:pignistic_bridge} visualizes this transformation.
 \includegraphics[width=0.85\textwidth]{fig4_pignistic_bridge.png}
 \caption{Possibility-to-probability bridge applied to a subnormal possibility
     distribution.  \textbf{Left:} raw possibility values $\pi(\omega)$
-    for five SPC categories.  \textbf{Right:} resulting $(n{+}1)$-category
+    for six SPC categories.  \textbf{Right:} resulting $(n{+}1)$-category
     probability vector, with the grey bar representing the explicit
     ignorance outcome $p_{\mathrm{ign}} = \ign$.  Arrows show
     proportional redistribution of the remaining $(1 - \ign)$ mass.  The
@@ -179,13 +179,13 @@ of the converted forecast in proportion to $\ign$.  The more ignorant
 the system, the more mass is stranded, and the larger the penalty.
 
 \textbf{Worked contrast.}
-Using $\pi = (0.2,\, 0.4,\, 0.6,\, 0.1,\, 0.0)$ from the worked
+Using $\pi = (0.05,\, 0.2,\, 0.4,\, 0.6,\, 0.1,\, 0.0)$ from the worked
 example in Section~\ref{sec:poss_prob_bridge}:
 \begin{itemize}[leftmargin=2em]
-\item Simple normalization: $p(\spc{ENH}) = 0.6 / 1.3 = 0.462$.
-\item Bridge: $p(\spc{ENH}) = 0.277$, $p_{\mathrm{ign}} = 0.400$.
-\item If \spc{ENH} is observed: self-entropy $= -\log_2(0.462) = 1.11$~bits
-    (simple) vs.\ $-\log_2(0.277) = 1.85$~bits (bridge).
+\item Simple normalization: $p(\spc{ENH}) = 0.6 / 1.35 = 0.444$.
+\item Bridge: $p(\spc{ENH}) = 0.267$, $p_{\mathrm{ign}} = 0.400$.
+\item If \spc{ENH} is observed: self-entropy $= -\log_2(0.444) = 1.17$~bits
+    (simple) vs.\ $-\log_2(0.267) = 1.91$~bits (bridge).
 \item The $0.74$-bit gap is the verification cost of ignoring the
     system's admitted uncertainty.  Simple normalization rewards the
     system for confidence it never claimed.

@@ -85,7 +85,7 @@ the normalized rank position of the observation within the ensemble).
 
 Five summary statistics evaluate each forecast--observation pair, where
 $c_{\mathrm{obs}}$ denotes the observed SPC category and $K = |\Omega|$
-is the number of categories (here, $K = 5$).
+is the number of categories (here, $K = 6$).
 
 \paragraph{Depth-of-truth $\alpha^*$.}
 \begin{equation}
@@ -193,7 +193,7 @@ operationally useful.
 
 \textit{Stratification by observed category.}
 Like deterministic accuracy, aggregate possibilistic metrics can be
-inflated by trivially correct null forecasts.  If \spc{MRGL} days
+inflated by trivially correct null forecasts.  If \spc{NONE} days
 dominate the sample (as they do in SPC climatology), a system that is
 merely sharp and confident on routine days will exhibit high mean
 $\alpha^*$, high mean $\Nc^*$, and low mean $\ign$---regardless of its
@@ -203,19 +203,21 @@ this by presenting both the unconditional diagram (panel~a) and the
 detect false-alarm patterns on null days; the latter exposes the
 rare-event population where ignorance and near-miss structures dominate.
 For operational dashboards, we recommend reporting scorecard aggregates
-separately for null (\spc{MRGL}) and eventful (\spc{SLGT}$+$) subsets.
+separately for null (\spc{NONE}) and eventful (\spc{SLGT}$+$) subsets.
 
 \begin{figure*}[t]
 \centering
 \includegraphics[width=\textwidth]{fig11_performance_diagram.png}
 \caption{Possibilistic performance diagram for a five-year synthetic
-    reforecast with SPC-like base rates.
+    reforecast with SPC-like base rates (slightly smoothed to reduce
+    null-day dominance; \spc{NONE}~60\%, \spc{MRGL}~18\%, \spc{SLGT}~12\%,
+    \spc{ENH}~6\%, \spc{MDT}~3.2\%, \spc{HIGH}~0.8\%).
     \textbf{(a)}~All days ($n = 1{,}825$): the dense dark cluster at
-    upper right is dominated by trivially correct \spc{MRGL} forecasts
+    upper right is dominated by trivially correct \spc{NONE} forecasts
     that inflate aggregate metrics.
-    \textbf{(b)}~Severe days only (\spc{SLGT}$+$, $n = 1{,}005$): with
-    null cases removed, the rare-event population (\spc{MDT}: 144,
-    \spc{HIGH}: 41, shown as diamonds) is exposed and the ignorance
+    \textbf{(b)}~Severe days only (\spc{SLGT}$+$, $n \approx 419$): with
+    null cases removed, the rare-event population (\spc{MDT}: ${\sim}56$,
+    \spc{HIGH}: ${\sim}18$, shown as diamonds) is exposed and the ignorance
     gradient becomes visible.  Stars mark the three worked scenarios from
     Section~\ref{sec:worked_examples}.  \textbf{Position:} specificity
     $1 - \eta$ ($x$) vs.\ depth-of-truth $\alpha^*$ ($y$); diagonal
@@ -286,13 +288,13 @@ possible'' and ``essentially certain.''
 The ILS uses optimistic verification: when the event occurs, the penalty is $-\log_2(U)$, crediting the upper (most generous) bound rather than a point probability.  This means a forecaster can reduce the penalty by widening the interval---assigning higher possibility to more outcomes---without improving the forecast's sharpness.  The width penalty enters implicitly through $\ign$: widening the distribution increases subnormality, which the native scorecard's ignorance metric penalizes.  The ILS is therefore not strictly proper in the classical sense, but the companion $\ign$ metric partially mitigates gaming by exposing the cost of artificial interval inflation.
 
 \textbf{Worked example} (Example~1 from Section~\ref{sec:subnormal},
-$\pi = (0,\, 0.1,\, 0.2,\, 0.75,\, 0.15)$, threshold
+$\pi = (0.05,\, 0,\, 0.1,\, 0.2,\, 0.75,\, 0.15)$, threshold
 $A_T = \{\spc{ENH},\, \spc{MDT},\, \spc{HIGH}\}$):
 \begin{itemize}[leftmargin=2em]
 \item $m = 0.75$;
 \item $U = \max(0.2,\, 0.75,\, 0.15) = 0.75$;
-\item $\pinorm = \{0.0,\; 0.133,\; 0.267,\; 1.0,\; 0.2\}$;
-\item $\Nc(A_T) = 1 - \max(0.0,\, 0.133) = 0.867$;
+\item $\pinorm = \{0.067,\; 0.0,\; 0.133,\; 0.267,\; 1.0,\; 0.2\}$;
+\item $\Nc(A_T) = 1 - \max(0.067,\, 0.0,\, 0.133) = 0.867$;
 \item $L = 0.75 \times 0.867 = 0.65$;
 \item $L \leq U$ confirmed ($0.65 \leq 0.75$).
 \item If the threshold event occurs:

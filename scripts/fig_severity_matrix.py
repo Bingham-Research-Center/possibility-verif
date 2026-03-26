@@ -26,7 +26,7 @@ def main():
     n_conf = len(confidence_labels)
 
     # Severity weight (higher category → higher impact)
-    severity_weight = np.array([0.2, 0.4, 0.6, 0.8, 1.0])  # MRGL→HIGH
+    severity_weight = np.array([0.0, 0.2, 0.4, 0.6, 0.8, 1.0])  # NONE→HIGH
 
     # Confidence weight (higher confidence → stronger signal)
     confidence_weight = np.array([0.2, 0.4, 0.6, 0.8, 1.0])
@@ -43,7 +43,7 @@ def main():
         N=256,
     )
 
-    fig, ax = plt.subplots(figsize=(5.5, 3.5))
+    fig, ax = plt.subplots(figsize=(5.5, 4.0))
 
     im = ax.imshow(risk, cmap=cmap, aspect="auto", vmin=0, vmax=1,
                    origin="lower")
@@ -53,28 +53,33 @@ def main():
         (0, 0): "Monitor",
         (0, 1): "Monitor",
         (0, 2): "Monitor",
-        (0, 3): "Aware",
-        (0, 4): "Aware",
+        (0, 3): "Monitor",
+        (0, 4): "Monitor",
         (1, 0): "Monitor",
         (1, 1): "Monitor",
-        (1, 2): "Aware",
+        (1, 2): "Monitor",
         (1, 3): "Aware",
-        (1, 4): "Prepare",
+        (1, 4): "Aware",
         (2, 0): "Monitor",
-        (2, 1): "Aware",
-        (2, 2): "Prepare",
-        (2, 3): "Prepare",
-        (2, 4): "Act",
-        (3, 0): "Aware",
-        (3, 1): "Prepare",
+        (2, 1): "Monitor",
+        (2, 2): "Aware",
+        (2, 3): "Aware",
+        (2, 4): "Prepare",
+        (3, 0): "Monitor",
+        (3, 1): "Aware",
         (3, 2): "Prepare",
-        (3, 3): "Act",
+        (3, 3): "Prepare",
         (3, 4): "Act",
         (4, 0): "Aware",
         (4, 1): "Prepare",
-        (4, 2): "Act",
+        (4, 2): "Prepare",
         (4, 3): "Act",
         (4, 4): "Act",
+        (5, 0): "Aware",
+        (5, 1): "Prepare",
+        (5, 2): "Act",
+        (5, 3): "Act",
+        (5, 4): "Act",
     }
 
     for (row, col), label in action_labels.items():

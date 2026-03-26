@@ -25,8 +25,12 @@ representing relative frequency or degree of belief, and those numbers
 must sum to unity.  Not all forecasting systems produce output that
 satisfies these constraints.  The Storm Prediction Center (SPC)
 convective outlooks, for instance, assign ordered categorical labels
-(\spc{MRGL} through \spc{HIGH}) that express graded plausibility rather
-than calibrated frequency.  Possibility theory \citep{Dubois1988-nh}
+(\spc{NONE} through \spc{HIGH}) that express graded plausibility rather
+than calibrated frequency.  SPC issues crisp categorical outlooks drawn
+on a map; this paper proposes a hypothetical possibilistic alternative
+using these familiar categories as the running example, treating the
+outlook at a single point (Norman, Oklahoma) as the observation.
+Possibility theory \citep{Dubois1988-nh}
 provides a mathematical framework for exactly this kind of statement:
 graded compatibility of outcomes with available evidence, without the
 additivity requirement that probability imposes.  Despite a mature
@@ -79,9 +83,9 @@ be well-defined \citep{Dubois1988-nh}.  In a verification context,
 normalizing a subnormal distribution---rescaling so that $\max(\pi) =
 1$---destroys precisely the ignorance signal that distinguishes a
 confident forecast from a tentative one.  A system that produces
-$\pi = (0.2,\, 0.4,\, 0.6,\, 0.1,\, 0.0)$, indicating 40\% ignorance,
+$\pi = (0.05,\, 0.2,\, 0.4,\, 0.6,\, 0.1,\, 0.0)$, indicating 40\% ignorance,
 becomes indistinguishable after normalization from a system that
-confidently assigns $\pi = (0.33,\, 0.67,\, 1.0,\, 0.17,\, 0.0)$.
+confidently assigns $\pi = (0.08,\, 0.33,\, 0.67,\, 1.0,\, 0.17,\, 0.0)$.
 Both carry the same shape, but the first system was honestly reporting
 that it lacked evidence.
 
@@ -157,6 +161,6 @@ Section~\ref{sec:tripartite_value} establishes three hypothesis tests
 demonstrating that each uncertainty component (possibility, ignorance,
 conditional necessity) independently contributes verification value.
 Section~\ref{sec:worked_examples} walks through three worked examples
-using SPC convective outlook categories (\spc{MRGL} through \spc{HIGH}).
+using SPC convective outlook categories (\spc{NONE} through \spc{HIGH}).
 Section~\ref{sec:discussion} discusses connections to Dempster--Shafer
 theory, applicability beyond severe weather, and future directions.

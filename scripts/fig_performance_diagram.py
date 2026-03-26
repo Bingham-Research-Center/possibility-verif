@@ -1,10 +1,9 @@
 """Possibilistic performance diagram (Roebber-style), two-panel.
 
-Left panel:  all days (n ≈ 1,825) — full context including null (MRGL) cases.
-Right panel: severe days only (SLGT+, n ≈ 1,004) — where the framework
-             earns its keep.  Without the MRGL mass the rare-event
-             population (MDT/HIGH) is exposed and ignorance patterns
-             become visible.
+Left panel:  all days (n ≈ 1,825) — full context including null (NONE) cases.
+Right panel: severe days only (SLGT+) — where the framework earns its keep.
+             Without the NONE/MRGL mass the rare-event population
+             (MDT/HIGH) is exposed and ignorance patterns become visible.
 
 Encoding (5 metrics on one plot):
   x-axis    1 - eta   specificity (higher = sharper)
@@ -82,9 +81,10 @@ def generate_reforecast(n_years=5, K=SPC_N, seed=42):
     """Generate a five-year synthetic possibilistic reforecast.
 
     The synthetic model has physically motivated behaviour:
-      - SPC-like base rates: MRGL 45 %, SLGT 30 %, ENH 15 %, MDT 8 %, HIGH 2 %
-      - Category-dependent accuracy: 78 % correct peak for MRGL, 18 % for HIGH
-      - Category-dependent ignorance: H_Pi ~ 0.08 for MRGL, ~ 0.52 for HIGH
+      - SPC-like base rates (slightly smoothed to reduce null-day dominance):
+        NONE 60 %, MRGL 18 %, SLGT 12 %, ENH 6 %, MDT 3.2 %, HIGH 0.8 %
+      - Category-dependent accuracy: 82 % correct peak for NONE, 18 % for HIGH
+      - Category-dependent ignorance: H_Pi ~ 0.06 for NONE, ~ 0.52 for HIGH
       - Near-miss errors: wrong forecasts tend to be +/- 1 category
 
     Returns
@@ -95,17 +95,17 @@ def generate_reforecast(n_years=5, K=SPC_N, seed=42):
     rng = np.random.default_rng(seed)
 
     # --- Observation climatology ---
-    clim = np.array([0.45, 0.30, 0.15, 0.08, 0.02])
+    clim = np.array([0.60, 0.18, 0.12, 0.06, 0.032, 0.008])
     n_days = n_years * 365
     obs_idx = rng.choice(K, size=n_days, p=clim)
     obs_categories = [SPC_CATEGORIES[i] for i in obs_idx]
 
     # --- Category-dependent model parameters ---
-    correct_prob = np.array([0.78, 0.65, 0.48, 0.32, 0.18])
-    h_mu = np.array([0.08, 0.15, 0.25, 0.38, 0.52])
-    h_sig = np.array([0.05, 0.08, 0.10, 0.12, 0.12])
-    s_mu = np.array([2.8, 2.2, 1.6, 1.2, 0.8])
-    s_sig = np.array([0.6, 0.5, 0.5, 0.4, 0.3])
+    correct_prob = np.array([0.82, 0.78, 0.65, 0.48, 0.32, 0.18])
+    h_mu = np.array([0.06, 0.08, 0.15, 0.25, 0.38, 0.52])
+    h_sig = np.array([0.04, 0.05, 0.08, 0.10, 0.12, 0.12])
+    s_mu = np.array([3.0, 2.8, 2.2, 1.6, 1.2, 0.8])
+    s_sig = np.array([0.6, 0.6, 0.5, 0.5, 0.4, 0.3])
 
     pi_array = np.empty((n_days, K))
 
@@ -162,7 +162,7 @@ def _draw_panel(ax, spec, alpha, sizes, hpi, obs_idx,
                edgecolors=DARK_GREY, linewidths=0.2, alpha=0.25,
                marker="o", zorder=2, rasterized=True)
 
-    rare = obs_idx >= 3
+    rare = obs_idx >= SPC_CATEGORIES.index("MDT")
     sc = ax.scatter(spec[rare], alpha[rare],
                     s=sizes[rare] * 1.3, c=hpi[rare], cmap=cmap, norm=norm,
                     edgecolors=DARK_GREY, linewidths=0.5, alpha=0.55,
@@ -244,8 +244,9 @@ def main():
         card = compute_scorecard(sc['pi'], sc['obs'])
         anchors.append((letter, desc, card))
 
-    # ---- Subset: SLGT+ (obs_idx >= 1) ---- #
-    severe = data['obs_idx'] >= 1
+    # ---- Subset: SLGT+ ---- #
+    _SLGT_IDX = SPC_CATEGORIES.index("SLGT")
+    severe = data['obs_idx'] >= _SLGT_IDX
     n_sev = severe.sum()
 
     # ---- Figure ---- #
@@ -297,8 +298,8 @@ def main():
                 handletextpad=0.4, borderpad=0.5)
 
     # Print summary
-    n_mdt = (data['obs_idx'] == 3).sum()
-    n_high = (data['obs_idx'] == 4).sum()
+    n_mdt = (data['obs_idx'] == SPC_CATEGORIES.index("MDT")).sum()
+    n_high = (data['obs_idx'] == SPC_CATEGORIES.index("HIGH")).sum()
     print(f"  All: n={n_all}  |  SLGT+: n={n_sev}  "
           f"|  MDT: {n_mdt}  HIGH: {n_high}")
 

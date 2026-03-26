@@ -20,7 +20,7 @@ def main():
     apply_style()
 
     # Subnormal possibility distribution
-    pi = np.array([0.10, 0.25, 0.70, 0.45, 0.05])
+    pi = np.array([0.05, 0.10, 0.25, 0.70, 0.45, 0.05])
     pi_max = pi.max()
     peak_idx = int(np.argmax(pi))
     h_pi = 1.0 - pi_max
@@ -71,7 +71,7 @@ def main():
     ax.set_xlabel("SPC Category " + r"$\omega$")
     ax.set_ylabel(r"Possibility $\pi(\omega)$")
     ax.set_ylim(0, 1.10)
-    ax.set_xlim(-0.5, SPC_N - 0.3)
+    ax.set_xlim(-0.5, SPC_N + 0.3)
 
     # Thin reference line at 1.0
     ax.axhline(1.0, linestyle=":", linewidth=0.6, color=MID_GREY, zorder=1)

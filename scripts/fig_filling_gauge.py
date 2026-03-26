@@ -20,13 +20,13 @@ def main():
     apply_style()
 
     # Sharp-correct scenario
-    pi = np.array([0.05, 0.10, 0.15, 0.90, 0.05])
+    pi = np.array([0.00, 0.00, 0.05, 0.15, 0.90, 0.10])
     obs = "MDT"
     obs_idx = SPC_CATEGORIES.index(obs)
     pi_max = pi.max()
     h_pi = 1.0 - pi_max
 
-    fig, ax = plt.subplots(figsize=(6.5, 3.5))
+    fig, ax = plt.subplots(figsize=(6.5, 4.0))
 
     bar_height = 0.55
     y_positions = np.arange(SPC_N)

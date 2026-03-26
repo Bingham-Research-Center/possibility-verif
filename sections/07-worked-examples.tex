@@ -23,8 +23,10 @@ framework.
 
 Three stylized possibilistic convective outlooks are defined, each
 representing a distinct forecasting situation.  All distributions are
-defined over $\Omega = \{\spc{MRGL},\, \spc{SLGT},\, \spc{ENH},\,
-\spc{MDT},\, \spc{HIGH}\}$ with $K = 5$.
+defined over $\Omega = \{\spc{NONE},\, \spc{MRGL},\, \spc{SLGT},\,
+\spc{ENH},\, \spc{MDT},\, \spc{HIGH}\}$ with $K = 6$.  We consider a
+notional point forecast extracted at Norman, Oklahoma: the SPC categorical
+outlook at that location on each day serves as the observation.
 
 \paragraph{Scenario A: Sharp-correct \spc{MDT} forecast.}
 
@@ -38,6 +40,7 @@ low ($m = 0.90$, $\ign = 0.10$): the system is nearly fully committed.
 
 \[
 \pi_A(\omega) = \begin{cases}
+0.00 & \omega = \spc{NONE} \\
 0.00 & \omega = \spc{MRGL} \\
 0.05 & \omega = \spc{SLGT} \\
 0.15 & \omega = \spc{ENH}  \\
@@ -61,6 +64,7 @@ limited confidence.
 
 \[
 \pi_B(\omega) = \begin{cases}
+0.10 & \omega = \spc{NONE} \\
 0.10 & \omega = \spc{MRGL} \\
 0.40 & \omega = \spc{SLGT} \\
 0.55 & \omega = \spc{ENH}  \\
@@ -70,21 +74,22 @@ limited confidence.
 \]
 Observed outcome: $c_{\mathrm{obs}} = \spc{ENH}$.
 
-\paragraph{Scenario C: Sharp-wrong \spc{MRGL} forecast.}
+\paragraph{Scenario C: Sharp-wrong \spc{NONE} forecast.}
 
 On the surface this appears a quiescent day: large-scale forcing is weak,
 surface-based CAPE is marginal (less than 1000~J~kg$^{-1}$), and model
-guidance unanimously favours isolated pulse-type convection at most.  The
-system confidently assigns high possibility to \spc{MRGL} and zero to
-\spc{ENH}, \spc{MDT}, and \spc{HIGH}.  In reality, an unresolved
+guidance unanimously favours no severe weather at the point of interest.
+The system confidently assigns high possibility to \spc{NONE}---the true
+null---and near-zero to all severe categories.  In reality, an unresolved
 mesoscale convergence boundary interacts with the residual instability,
 triggering an unexpected severe outbreak that verifies at \spc{MDT}---a
-category the system deemed impossible.
+category the system deemed essentially impossible.
 
 \[
 \pi_C(\omega) = \begin{cases}
-0.85 & \omega = \spc{MRGL} \\
-0.10 & \omega = \spc{SLGT} \\
+0.85 & \omega = \spc{NONE} \\
+0.10 & \omega = \spc{MRGL} \\
+0.05 & \omega = \spc{SLGT} \\
 0.00 & \omega = \spc{ENH}  \\
 0.00 & \omega = \spc{MDT}  \\
 0.00 & \omega = \spc{HIGH}
@@ -125,7 +130,7 @@ in green.
 \end{figure}
 
 Were we to draw the same gauge for Scenario~B, the picture would change
-qualitatively.  Four bars would be partially filled, with \spc{ENH} the
+qualitatively.  Five bars would be partially filled, with \spc{ENH} the
 tallest at only $0.55$; the remaining bars for \spc{SLGT} ($0.40$) and
 \spc{MDT} ($0.30$) would reach nearly the same height.  The large
 $\ign = 0.45$ gap would dominate the right-hand side of every bar,
@@ -135,8 +140,8 @@ but only marginally so---consistent with a forecast that is directionally
 correct yet openly uncertain.
 
 Scenario~C would present the most visually striking gauge.  A single bar
-(\spc{MRGL}) would dominate at $0.85$, with \spc{SLGT} contributing a
-sliver at $0.10$ and the remaining three categories completely empty.
+(\spc{NONE}) would dominate at $0.85$, with \spc{MRGL} contributing a
+sliver at $0.10$ and the remaining four categories nearly empty.
 The ignorance gap ($\ign = 0.15$) would be small, reinforcing the
 impression of a confident forecast.  Yet the observed category
 (\spc{MDT}, green) would appear as an unfilled bar at zero---a stark
@@ -168,9 +173,9 @@ $\ign$ (ignorance)
 $\alpha^*$ (depth-of-truth)
     & $1.00$ & $1.00$ & $0.00$ \\
 $\eta$ (nonspecificity)
-    & $0.267$ & $0.491$ & $0.224$ \\
+    & $0.222$ & $0.439$ & $0.196$ \\
 $\delta$ (resolution gap)
-    & $+0.733$ & $+0.509$ & $-0.224$ \\
+    & $+0.778$ & $+0.561$ & $-0.196$ \\
 $\Nc^*$ (cond.\ necessity of truth)
     & $0.833$ & $0.273$ & $0.00$ \\
 \bottomrule
@@ -188,7 +193,7 @@ $\Nc^*$ (cond.\ necessity of truth)
     $\delta$.  \textbf{(b)}~Scenario~B: hedged-correct \spc{ENH}---high
     $\alpha^*$ but diffuse shape ($\eta$) and low $\Nc^*$.
     \textbf{(c)}~Scenario~C: sharp-wrong
-    \spc{MRGL}---$\alpha^* = 0$ (truth assigned zero possibility) and
+    \spc{NONE}---$\alpha^* = 0$ (truth assigned zero possibility) and
     negative $\delta$.}
 \label{fig:three_scenario}
 \end{figure*}
@@ -198,8 +203,8 @@ $\alpha^* = 1.00$ confirms that the observed category (\spc{MDT})
 received the highest raw possibility after normalization, and the
 conditional necessity of truth $\Nc^* = 0.833$ indicates that
 alternatives were strongly down-weighted.  Ignorance is low
-($\ign = 0.10$), nonspecificity is modest ($\eta = 0.267$), and the
-resolution gap $\delta = +0.733$ is strongly positive---the system knew
+($\ign = 0.10$), nonspecificity is modest ($\eta = 0.222$), and the
+resolution gap $\delta = +0.778$ is strongly positive---the system knew
 what was happening and said so confidently.  Every metric in the
 scorecard rewards this forecast.
 
@@ -208,16 +213,16 @@ depth-of-truth remains perfect ($\alpha^* = 1.00$) because \spc{ENH},
 the observed category, is indeed the possibilistic peak after shape
 normalization.  However, the system's hedging shows up clearly:
 $\ign = 0.45$ is nearly five times that of Scenario~A, nonspecificity
-rises to $\eta = 0.491$, and $\Nc^* = 0.273$ is low because
+rises to $\eta = 0.439$, and $\Nc^* = 0.273$ is low because
 \spc{SLGT} and \spc{MDT} were assigned plausible alternatives.  The
-resolution gap $\delta = +0.509$ is positive but moderate, reflecting
+resolution gap $\delta = +0.561$ is positive but moderate, reflecting
 genuine skill tempered by acknowledged uncertainty.  This is the
 signature of a well-calibrated system on a difficult day.
 
 Scenario~C is the pathological case.  The system assigned
 $\pi(\spc{MDT}) = 0.00$, declaring the observed outcome impossible;
 accordingly $\alpha^* = 0.00$ and $\Nc^* = 0.00$.  The resolution gap
-$\delta = -0.224$ is the only negative value in the table, indicating
+$\delta = -0.196$ is the only negative value in the table, indicating
 that the forecast pointed \emph{away} from the truth.  Critically,
 ignorance was low ($\ign = 0.15$): the system was not hedging
 cautiously---it was confident and wrong.  Low ignorance amplifies the
@@ -226,8 +231,8 @@ penalty because there is no uncertainty buffer to absorb the miss.
 Contrasting Scenarios~B and~C reveals the scorecard's diagnostic power.
 Both forecasts have noteworthy ignorance levels ($0.45$ and $0.15$,
 respectively), yet the scorecard sharply distinguishes them.  Scenario~B
-earns $\delta = +0.509$ because its hedging was aimed in the right
-direction; Scenario~C earns $\delta = -0.224$ because its confidence
+earns $\delta = +0.561$ because its hedging was aimed in the right
+direction; Scenario~C earns $\delta = -0.196$ because its confidence
 was aimed in the wrong direction.  A single summary statistic (e.g.,
 mean possibility or maximum value) would conflate these two situations.
 The five-number scorecard correctly separates ``honestly uncertain'' from
@@ -240,41 +245,41 @@ operational forecasters need when tuning a possibilistic system.
 We now apply the possibility-to-probability bridge
 (Section~\ref{sec:poss_prob_bridge}) to each scenario, then compute
 information gain relative to a uniform climatological baseline
-$p_{\mathrm{clim}} = (0.20,\, 0.20,\, 0.20,\, 0.20,\, 0.20)$ over the
-five SPC categories.  Recall the bridge steps: reserve ignorance mass
+$p_{\mathrm{clim}} = (1/6,\ldots,1/6) \approx 0.167$ per category over
+the six SPC categories.  Recall the bridge steps: reserve ignorance mass
 $p_{\mathrm{ign}} = \ign = 1 - m$; distribute the remaining $1 - \ign$
 proportionally across outcomes via $p_i = \pi_i (1 - \ign) / \sum_j
 \pi_j$; append the ignorance outcome.
 
 \begin{itemize}[leftmargin=2em]
 \item \textbf{Scenario~A:} $\ign = 0.10$, $\sum \pi = 1.20$.  The
-    bridge yields $\mathbf{p}_A = (0.000,\, 0.038,\, 0.113,\, 0.675,\,
-    0.075,\, \underbrace{0.100}_{\text{ign}})$.  Since \spc{MDT} is
-    observed, $-\!\log_2(0.675) = 0.567$~bits.  Climatological surprise
-    is $-\!\log_2(0.20) = 2.322$~bits, giving
-    $\mathrm{IG}_A = 2.322 - 0.567 = +1.755$~bits.
-\item \textbf{Scenario~B:} $\ign = 0.45$, $\sum \pi = 1.35$.  The
-    bridge yields $\mathbf{p}_B = (0.041,\, 0.163,\, 0.224,\, 0.122,\,
-    0.000,\, \underbrace{0.450}_{\text{ign}})$.  Since \spc{ENH} is
-    observed, $-\!\log_2(0.224) = 2.158$~bits, giving
-    $\mathrm{IG}_B = 2.322 - 2.158 = +0.164$~bits.
-\item \textbf{Scenario~C:} $\ign = 0.15$, $\sum \pi = 0.95$.  The
-    bridge yields $\mathbf{p}_C = (0.761,\, 0.089,\, 0.000,\, 0.000,\,
-    0.000,\, \underbrace{0.150}_{\text{ign}})$.  Since \spc{MDT} is
-    observed, $p(\spc{MDT}) = 0.00$; using $\varepsilon = 0.01$ to
+    bridge yields $\mathbf{p}_A = (0.000,\, 0.000,\, 0.038,\, 0.113,\,
+    0.675,\, 0.075,\, \underbrace{0.100}_{\text{ign}})$.  Since \spc{MDT}
+    is observed, $-\!\log_2(0.675) = 0.567$~bits.  Climatological surprise
+    is $-\!\log_2(1/6) = 2.585$~bits, giving
+    $\mathrm{IG}_A = 2.585 - 0.567 = +2.018$~bits.
+\item \textbf{Scenario~B:} $\ign = 0.45$, $\sum \pi = 1.45$.  The
+    bridge yields $\mathbf{p}_B = (0.038,\, 0.038,\, 0.152,\, 0.209,\,
+    0.114,\, 0.000,\, \underbrace{0.450}_{\text{ign}})$.  Since \spc{ENH}
+    is observed, $-\!\log_2(0.209) = 2.258$~bits, giving
+    $\mathrm{IG}_B = 2.585 - 2.258 = +0.327$~bits.
+\item \textbf{Scenario~C:} $\ign = 0.15$, $\sum \pi = 1.00$.  The
+    bridge yields $\mathbf{p}_C = (0.722,\, 0.085,\, 0.042,\, 0.000,\,
+    0.000,\, 0.000,\, \underbrace{0.150}_{\text{ign}})$.  Since \spc{MDT}
+    is observed, $p(\spc{MDT}) = 0.00$; using $\varepsilon = 0.01$ to
     regularize, $-\!\log_2(0.01) = 6.644$~bits, giving
-    $\mathrm{IG}_C = 2.322 - 6.644 = -4.322$~bits.
+    $\mathrm{IG}_C = 2.585 - 6.644 = -4.059$~bits.
 \end{itemize}
 
 The three IG values span a wide range and align with the scorecard
-diagnostics.  Scenario~A's $+1.755$~bits reflects genuine skill: the
+diagnostics.  Scenario~A's $+2.018$~bits reflects genuine skill: the
 bridge concentrated probability on the correct outcome, and low ignorance
 meant little mass was diverted to the ignorance bin.  Scenario~B's
-$+0.164$~bits is positive but modest---the high $\ign = 0.45$ correctly
+$+0.327$~bits is positive but modest---the high $\ign = 0.45$ correctly
 deflated $p(\spc{ENH})$ from what simple normalization would have
-produced ($0.55 / 1.35 = 0.407$) down to $0.224$, honestly reflecting
+produced ($0.55 / 1.45 = 0.379$) down to $0.209$, honestly reflecting
 the system's uncertainty.  Scenario~C incurs a catastrophic
-$-4.322$~bits because the bridge assigned zero probability to the
+$-4.059$~bits because the bridge assigned zero probability to the
 observed outcome; even with the $\varepsilon$ floor, the logarithmic
 penalty is severe.  Crucially, the low ignorance in Scenario~C
 ($\ign = 0.15$) provides almost no cushion: the system left itself no
@@ -291,17 +296,17 @@ $-\!\log_2(U)$.
 
 \begin{itemize}[leftmargin=2em]
 \item \textbf{Scenario~A:} $U = \max(0.15, 0.90, 0.10) = 0.90$.
-    Shape-normalizing gives $\pinorm = (0.000,\, 0.056,\, 0.167,\,
-    1.000,\, 0.111)$; $\max_{\omega \notin A_T} \pinorm = \max(0.000,\,
-    0.056) = 0.056$, so $\Nc(A_T) = 0.944$ and $L = 0.90 \times 0.944
-    = 0.850$.  Event occurs (\spc{MDT} $\in A_T$):
-    $\mathrm{ILS}_A = -\!\log_2(0.90) = 0.152$~bits.
+    Shape-normalizing gives $\pinorm = (0.000,\, 0.000,\, 0.056,\,
+    0.167,\, 1.000,\, 0.111)$; $\max_{\omega \notin A_T} \pinorm =
+    \max(0.000,\, 0.000,\, 0.056) = 0.056$, so $\Nc(A_T) = 0.944$ and
+    $L = 0.90 \times 0.944 = 0.850$.  Event occurs (\spc{MDT}
+    $\in A_T$): $\mathrm{ILS}_A = -\!\log_2(0.90) = 0.152$~bits.
 \item \textbf{Scenario~B:} $U = \max(0.55, 0.30, 0.00) = 0.55$.
-    Shape-normalizing gives $\pinorm = (0.182,\, 0.727,\, 1.000,\,
-    0.545,\, 0.000)$; $\max_{\omega \notin A_T} \pinorm = \max(0.182,\,
-    0.727) = 0.727$, so $\Nc(A_T) = 0.273$ and $L = 0.55 \times 0.273
-    = 0.150$.  Event occurs (\spc{ENH} $\in A_T$):
-    $\mathrm{ILS}_B = -\!\log_2(0.55) = 0.862$~bits.
+    Shape-normalizing gives $\pinorm = (0.182,\, 0.182,\, 0.727,\,
+    1.000,\, 0.545,\, 0.000)$; $\max_{\omega \notin A_T} \pinorm =
+    \max(0.182,\, 0.182,\, 0.727) = 0.727$, so $\Nc(A_T) = 0.273$ and
+    $L = 0.55 \times 0.273 = 0.150$.  Event occurs (\spc{ENH}
+    $\in A_T$): $\mathrm{ILS}_B = -\!\log_2(0.55) = 0.862$~bits.
 \item \textbf{Scenario~C:} $U = \max(0.00, 0.00, 0.00) = 0.00$.
     Using $\varepsilon = 0.01$, the event occurs (\spc{MDT} $\in A_T$):
     $\mathrm{ILS}_C = -\!\log_2(0.01) = 6.644$~bits---maximum penalty.
