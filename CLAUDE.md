@@ -2,7 +2,7 @@
 
 ## What This Is
 
-Standalone methods paper: "Possible, yes; ignorant, perhaps: a scorecard for possibilistic forecasts". Short title: "Possibilistic forecast verification". Targets JAS. Extracts the verification framework from the Clyfar preprint appendices (C, E, F) and generalises it with SPC severe weather categories as the running example.
+Standalone methods paper: "Possible, yes; ignorant, perhaps: a scorecard for possibilistic forecasts". Targets JAS. Extracts the verification framework from the Clyfar preprint appendices (C, E, F) with SPC severe weather categories as the running example.
 
 **Author:** John R. Lawson (@johnrobertlawson), Utah State University (Bingham Research Center + Dept of Mathematics and Statistics). Email: john.lawson@usu.edu.
 
@@ -10,18 +10,25 @@ Standalone methods paper: "Possible, yes; ignorant, perhaps: a scorecard for pos
 
 ## Build
 
-- **LaTeX**: Compiled on **Overleaf with XeLaTeX**. Locally: `latexmk -xelatex main.tex`.
-- **Figures**: `python scripts/generate_all.py` (or individual `python scripts/fig_*.py`). Outputs 9 PDFs to `figures/`.
+- **LaTeX**: Compiled on **Overleaf with XeLaTeX** (TeX Live 2025). Locally: `latexmk -xelatex main.tex`.
+- **Figures**: `python scripts/generate_all.py` then `python scripts/fig_scorecard_table.py` and `python scripts/fig_performance_diagram.py`. Outputs 11 PNGs to `figures/`.
 - **Python env**: `conda env create -f environment.yml` creates `poss-verif`.
+
+## Gotchas
+
+- **Figures must be PNG, not PDF.** XeTeX's xdvipdfmx backend crashes silently on matplotlib PDF transparency (`/SMask`, `/ca`, `/CA`). No `!` error in the log — just "No PDF produced" on Overleaf. `scripts/style.py` sets `FIG_FORMAT = "png"`. Do not switch back to PDF.
+- **`generate_all.py` only runs figs 1–9.** Figs 10–11 (`fig_scorecard_table.py`, `fig_performance_diagram.py`) must be run separately.
+- **Scenario mismatch**: `07-worked-examples.tex` scenarios (A, B, C) use different pi values than `fig_three_scenario.py`. The LaTeX table is self-consistent. Fig 2's caption notes this.
+- **`Smets1990-MISSING`** citation key in `04-pignistic-bridge.tex` is a placeholder — needs a real bib entry added to `paperpile.bib`.
+- **`rho.cls` loads heavy unused packages** (circuitikz, chemfig, matlab-prettifier, lipsum). Do not modify `rho.cls`, but be aware compilation is slow.
 
 ## LaTeX
 
 - **Template**: rho-class (two-column, 9.5pt). Do not modify `rho.cls`.
-- **Colours**: Purple `#7B1FA2` (rhocolor), Green `#46A21F` (rationalecolor). Set in `preamble.tex`.
+- **Colours**: Purple `#7B1FA2`, Green `#46A21F`. Set in `preamble.tex`.
 - **Environments**: `rhoenv` (purple) for definitions/theorems. `rationaleenv` (green) for "Intuition" sidebars.
 - **Citations**: natbib + `ametsocV6.bst`. Use `\citet{}` / `\citep{}`.
 - **No appendices**. Everything in main text.
-- **Significance statement**: Uses `\section*{Significance Statement}` (not a custom environment).
 
 ### Macros
 
@@ -36,49 +43,40 @@ Standalone methods paper: "Possible, yes; ignorant, perhaps: a scorecard for pos
 
 ### Distribution formatting convention
 
-- **First use** (§2 Examples 1–2, §6 Scenarios A–C): `\begin{cases}` format, one category per line. Fits two-column layout cleanly.
-- **Subsequent uses** (§3, §4 worked examples): ordered-tuple notation `$\pi = (0.2,\, 0.4,\, 0.6,\, 0.1,\, 0.0)$` with ordering convention stated in §2: (MRGL, SLGT, ENH, MDT, HIGH).
+- **First use** (§2, §6): `\begin{cases}` format, one category per line.
+- **Subsequent uses** (§3, §4): ordered-tuple `$\pi = (0.2,\, 0.4,\, 0.6,\, 0.1,\, 0.0)$` with ordering (MRGL, SLGT, ENH, MDT, HIGH).
 
-## Figures (11 total)
+## Figures (11 total, all PNG)
 
-| Fig | Script | Placed in | Type | What it shows |
-|-----|--------|-----------|------|---------------|
-| 1 | `fig_possibility_anatomy.py` | §2.2 | `figure` | Subnormal bar chart with Pi_max, H_Pi, N_c annotated |
-| 2 | `fig_three_scenario.py` | §6.3 | `figure*` | Three scenarios side-by-side, scorecard values below |
-| 3 | `fig_filling_gauge.py` | §6.2 | `figure` | Horizontal gauge bars for Scenario A |
-| 4 | `fig_pignistic_bridge.py` | §3.1 | `figure*` | Raw pi → probability with ignorance bar + arrows |
-| 5 | `fig_upper_lower_bounds.py` | §4.3 | `figure*` | [L,U] intervals on number line for threshold event |
-| 6 | `fig_reliability_curves.py` | §5.1 | `figure` | Conditional hit rate vs N_c threshold |
-| 7 | `fig_ig_decomposition.py` | §3.2 | `figure*` | Stacked bar IG decomposition (UNC, DSC, REL) |
-| 8 | `fig_verification_lanes.py` | §5.2 | `figure*` | Three-lane flowchart schematic |
-| 9 | `fig_ffion_advisory.py` | §7.3 | `figure*` | Structured JSON → LLM advisory mock-up |
-| 10 | `fig_scorecard_table.py` | §5.2 | `figure*` | ECMWF-style scorecard with triangle indicators across model versions |
-| 11 | `fig_performance_diagram.py` | §4.2 | `figure*` | Roebber-style diagram encoding all five scorecard metrics |
+| Fig | Script | Section | What it shows |
+|-----|--------|---------|---------------|
+| 1 | `fig_possibility_anatomy.py` | §2.2 | Subnormal bar chart with Pi_max, H_Pi, N_c |
+| 2 | `fig_three_scenario.py` | §6.3 | Three scenarios side-by-side with scorecard |
+| 3 | `fig_filling_gauge.py` | §6.2 | Horizontal gauge bars for Scenario A |
+| 4 | `fig_pignistic_bridge.py` | §3.1 | Raw pi → probability with ignorance bar |
+| 5 | `fig_upper_lower_bounds.py` | §4.3 | [L,U] intervals on number line |
+| 6 | `fig_reliability_curves.py` | §5.1 | Conditional hit rate vs N_c threshold |
+| 7 | `fig_ig_decomposition.py` | §3.2 | Stacked bar IG decomposition (UNC, DSC, REL) |
+| 8 | `fig_verification_lanes.py` | §5.2 | Three-lane flowchart schematic |
+| 9 | `fig_ffion_advisory.py` | §7.3 | JSON → LLM advisory mock-up |
+| 10 | `fig_scorecard_table.py` | §5.2 | ECMWF-style scorecard with triangles |
+| 11 | `fig_performance_diagram.py` | §4.2 | Roebber-style five-metric diagram |
 
 ## Python
 
-Canonical constants in `scripts/style.py`:
-
-```
-PURPLE, GREEN, LIGHT_GREY, DARK_GREY, MID_GREY
-SPC_CATEGORIES = ["MRGL", "SLGT", "ENH", "MDT", "HIGH"]
-```
+Canonical constants in `scripts/style.py`: `PURPLE`, `GREEN`, `SPC_CATEGORIES`, `FIG_FORMAT = "png"`.
 
 Scorecard computation canonical in `fig_three_scenario.py:compute_scorecard`.
-
-### Known scenario mismatch
-
-`07-worked-examples.tex` scenarios (A, B, C) use different pi values and observed categories than `fig_three_scenario.py`. The LaTeX table values are self-consistent. When reconciling, decide which set is canonical and update the other. Fig 2's caption notes this.
 
 ## Manuscript Status
 
 ### Done
-- All 10 section files created with equations migrated from preprint
+- All 10 section files with equations migrated from preprint
 - 15 labelled equations, all cross-references resolve
-- 11 figures generated and embedded with captions + in-text references
+- 11 figures (PNG) embedded with captions + in-text references
 - Notation table (§2) with Form (raw/norm) and Eq. columns
 - Ffion/LLM communication subsection (§7.3) with pipeline sketch
-- ILS framed as probability-of-exceedance (50 ppb, 5 in. snowfall examples)
+- ILS framed as probability-of-exceedance
 - §3 opening paragraph filled (etymology, motivation, bridge summary)
 - §3.3 "Why Naive Normalisation Erases Information" filled (3 paragraphs + worked contrast)
 - "Tripartite pignistic" renamed to "possibility-to-probability bridge" globally
@@ -87,16 +85,16 @@ Scorecard computation canonical in `fig_three_scenario.py:compute_scorecard`.
 - Fig 7 IG decomposition bug fixed (negative-DSC bar placement)
 
 ### Still placeholder (`% [PLACEHOLDER]`)
+- §1 (introduction) — mostly placeholder with paper-outline paragraph done
 - §2 opening paragraph, §2.4 "Why Not Just Probabilities?" (3–4 paragraphs)
 - §4 opening paragraph, ILS motivation paragraph
 - §5 opening paragraph, sample-size discussion
-- §6 opening paragraph, meteorological scenario descriptions for A/B/C, interpretation paragraphs for scorecard table, bridge walkthrough computations
-- §7 opening paragraph, all four subsection bodies (DS connections, beyond severe weather, software, limitations)
-- §1 (introduction) — mostly placeholder with paper-outline paragraph done
-- Missing citations: Dubois 2006, Smets 1990, Shafer 1976, Roulston & Smith 2002, Lawson 2024, Roebber 2009
+- §6 opening paragraph, meteorological scenario descriptions for A/B/C, interpretation paragraphs, bridge walkthrough computations
+- §7 opening paragraph, subsection bodies (DS connections, beyond severe weather, software, limitations)
+- Missing citations: Dubois 2006, Smets 1990, Shafer 1976, Roulston & Smith 2002, Lawson 2024
 
 ## Related Work
 
-- **Clyfar preprint**: `../preprint-clyfar-v0p9/` — the source material. Appendices C, E, F contain the framework.
-- **Ffion** (Lawson, in prep.): LLM-mediated risk communication layer. Pipeline: GEFS ensemble → Monte Carlo clustering → JSON extraction → guarded LLM prompt (Claude, ~3 min inference) → tiered PDF advisories. §7.3 sketches this. Full details in `../brc-knowledge/` (see `scholarium/active-projects/clyfar/`, `ffrwd/PERSONAE.md` for Ffion persona definition).
+- **Clyfar preprint**: `../preprint-clyfar-v0p9/` — source material (Appendices C, E, F).
+- **Ffion** (Lawson, in prep.): LLM-mediated risk communication. Details in `../brc-knowledge/`.
 - **Archive**: `archive/preprint-sections/` — verbatim copies of preprint 04, A3, A5, A6.
