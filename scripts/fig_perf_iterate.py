@@ -187,6 +187,16 @@ def _traj_labels(ax, cats, xs, ys, ns, color=GREEN, fontsize=6.5):
             zorder=8)
 
 
+def _smooth_path(xs, ys, n_pts=80):
+    """Smooth curve through trajectory points using numpy polyfit."""
+    xs, ys = np.asarray(xs), np.asarray(ys)
+    t = np.linspace(0, 1, len(xs))
+    ts = np.linspace(0, 1, n_pts)
+    deg = min(3, len(xs) - 1)
+    return np.polyval(np.polyfit(t, xs, deg), ts), \
+           np.polyval(np.polyfit(t, ys, deg), ts)
+
+
 def draw_traj_spec_alpha(ax, means, color=GREEN, gcmap=None, gnorm=None):
     """GREEN trajectory on (1-eta, alpha*) axes.
 
@@ -198,9 +208,10 @@ def draw_traj_spec_alpha(ax, means, color=GREEN, gcmap=None, gnorm=None):
     ys = [means[c]['alpha'] for c in cats]
     ns = [means[c]['n'] for c in cats]
 
-    ax.plot(xs, ys, '-', color="white", lw=6, zorder=4,
+    xs_s, ys_s = _smooth_path(xs, ys)
+    ax.plot(xs_s, ys_s, '-', color="white", lw=6, zorder=4,
             solid_capstyle="round")
-    ax.plot(xs, ys, '-', color=color, lw=2.5, zorder=5,
+    ax.plot(xs_s, ys_s, '-', color=color, lw=2.5, zorder=5,
             solid_capstyle="round")
 
     s_min, s_max = 60, 350
@@ -231,9 +242,10 @@ def draw_traj_commit(ax, means, color=GREEN, fontsize=6.5,
     ys = [means[c]['delta'] for c in cats]
     ns = [means[c]['n'] for c in cats]
 
-    ax.plot(xs, ys, '-', color="white", lw=6, zorder=4,
+    xs_s, ys_s = _smooth_path(xs, ys)
+    ax.plot(xs_s, ys_s, '-', color="white", lw=6, zorder=4,
             solid_capstyle="round")
-    ax.plot(xs, ys, '-', color=color, lw=2.5, zorder=5,
+    ax.plot(xs_s, ys_s, '-', color=color, lw=2.5, zorder=5,
             solid_capstyle="round")
 
     s_min, s_max = 60, 350
@@ -259,15 +271,19 @@ def draw_traj_commit(ax, means, color=GREEN, fontsize=6.5,
 
 def v3b(data, ap, spec, anchors):
     """V3b: green trajectory + enhanced hexbin (all days)."""
+    from style import FIG_DIR, FIG_FORMAT, DPI
+    import os
+
     cm = hpi_cmap()
     nm = Normalize(0.0, 0.55)
     gcm = hpi_green_cmap()
     means = cat_means(data, spec)
 
-    # Manual positioning: guaranteed square axes box (3" × 3")
-    fig = plt.figure(figsize=(5.0, 4.5))
-    ax = fig.add_axes([0.13, 0.12, 0.60, 0.60 * 5.0 / 4.5])
-    cax = fig.add_axes([0.79, 0.36, 0.025, 0.24])
+    # Tight figsize minimises whitespace so bbox_inches='tight' can't
+    # distort the aspect ratio.  Axes box is exactly 3.0" × 3.0".
+    fig = plt.figure(figsize=(4.1, 3.6))
+    ax = fig.add_axes([0.15, 0.14, 3.0 / 4.1, 3.0 / 3.6])
+    cax = fig.add_axes([0.91, 0.32, 0.025, 0.35])
 
     ax.set_xlim(-0.02, 1.04)
     ax.set_ylim(-0.02, 1.04)
@@ -321,7 +337,15 @@ def v3b(data, ap, spec, anchors):
                   fontsize=9)
     ax.set_ylabel(r"Depth-of-truth  $\alpha^*$  (more truthful $\rightarrow$)",
                   fontsize=9)
-    save_fig(fig, "perf_hexbin_trajectory")
+
+    # Save WITHOUT bbox_inches='tight' to preserve exact square axes
+    path = os.path.join(FIG_DIR, f"perf_hexbin_trajectory.{FIG_FORMAT}")
+    os.makedirs(FIG_DIR, exist_ok=True)
+    with plt.rc_context({'savefig.bbox': 'standard'}):
+        fig.savefig(path, facecolor="white", transparent=False,
+                    dpi=DPI, pad_inches=0)
+    plt.close(fig)
+    print(f"Saved: {path}")
 
 
 # ------------------------------------------------------------------ #
