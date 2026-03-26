@@ -55,7 +55,7 @@ def count_cmap():
 # ------------------------------------------------------------------ #
 
 def get_data():
-    d = generate_reforecast()
+    d = generate_reforecast(n_years=3)
     spec = 1.0 - d['eta']
     rng = np.random.default_rng(99)
     top = d['alpha_star'] > 0.99
@@ -318,13 +318,16 @@ def v4b(data, ap, spec, anchors):
     """V4b: commitment-discrimination + trajectory (all days)."""
     fig, ax = plt.subplots(figsize=(5.8, 7.0))
     cm = count_cmap()
+    cm.set_under("#E8E0F0")  # distinct pale shade for bins with count < 5
     means = cat_means(data, spec)
 
     pi_max = 1.0 - data['H_Pi']
     delta = data['delta']
 
-    hb = ax.hexbin(pi_max, delta, gridsize=14, cmap=cm,
+    hb = ax.hexbin(pi_max, delta, gridsize=12, cmap=cm,
                    edgecolors="white", linewidths=0.4, mincnt=1, zorder=2)
+    # Clamp: bins with count < 5 get the set_under colour
+    hb.set_clim(vmin=5)
 
     draw_delta0_horiz(ax)
 
@@ -339,7 +342,7 @@ def v4b(data, ap, spec, anchors):
     draw_anchors_commit(ax, anchors)
     draw_compass(ax, 0.95, 0.72, "better")
 
-    cb = fig.colorbar(hb, ax=ax, shrink=0.55, pad=0.02)
+    cb = fig.colorbar(hb, ax=ax, shrink=0.55, pad=0.02, extend='min')
     cb.set_label("Count per bin", fontsize=8)
     cb.ax.tick_params(labelsize=7)
 
