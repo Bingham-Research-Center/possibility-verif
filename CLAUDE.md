@@ -28,7 +28,7 @@ Standalone methods paper: "Possible, yes; ignorant, perhaps: a scorecard for pos
 - **Colours**: Purple `#7B1FA2`, Green `#46A21F`. Set in `preamble.tex`.
 - **Environments**: `rhoenv` (purple) for definitions/theorems. `rationaleenv` (green) for "Intuition" sidebars.
 - **Citations**: natbib + `ametsocV6.bst`. Use `\citet{}` / `\citep{}`.
-- **No appendices**. Everything in main text.
+- **Appendix A** (`appendix-alternative-scores.tex`): IRLS + possibilistic climatology.
 
 ### Macros
 
@@ -46,21 +46,22 @@ Standalone methods paper: "Possible, yes; ignorant, perhaps: a scorecard for pos
 - **First use** (§2, §6): `\begin{cases}` format, one category per line.
 - **Subsequent uses** (§3, §4): ordered-tuple `$\pi = (0.05,\, 0.2,\, 0.4,\, 0.6,\, 0.1,\, 0.0)$` with ordering (NONE, MRGL, SLGT, ENH, MDT, HIGH).
 
-## Figures (12 total, all PNG)
+## Figures (12 total, all PNG, no number prefixes)
 
-| Fig | Script | Section | What it shows |
-|-----|--------|---------|---------------|
-| 1 | `fig_possibility_anatomy.py` | §2.2 | Subnormal bar chart with Pi_max, H_Pi, N_c |
-| 2 | `fig_three_scenario.py` | §6.3 | Three scenarios side-by-side with scorecard |
-| 3 | `fig_filling_gauge.py` | §6.2 | Horizontal gauge bars for Scenario A |
-| 4 | `fig_pignistic_bridge.py` | §3.1 | Raw pi → probability with ignorance bar |
-| 5 | `fig_upper_lower_bounds.py` | §4.3 | [L,U] intervals on number line |
-| 6 | `fig_reliability_curves.py` | §5.1 | Conditional hit rate vs N_c threshold |
-| 7 | `fig_ig_decomposition.py` | §3.2 | Stacked bar IG decomposition (UNC, DSC, REL) |
-| 8 | `fig_verification_lanes.py` | §5.2 | Three-lane flowchart schematic |
-| 9 | `fig_ffion_advisory.py` | §7.3 | JSON → LLM advisory mock-up |
-| 10 | `fig_scorecard_table.py` | §5.2 | ECMWF-style scorecard with triangles |
-| 11 | `fig_performance_diagram.py` | §4.2 | Roebber-style five-metric diagram |
+| PNG name | Script | Section | What it shows |
+|----------|--------|---------|---------------|
+| `possibility_anatomy` | `fig_possibility_anatomy.py` | §2.2 | Subnormal bar chart with Pi_max, H_Pi, N_c |
+| `three_scenario` | `fig_three_scenario.py` | §6.3 | Three scenarios side-by-side with scorecard |
+| `filling_gauge` | `fig_filling_gauge.py` | §6.2 | Horizontal gauge bars for Scenario A |
+| `pignistic_bridge` | `fig_pignistic_bridge.py` | §3.1 | Raw pi → probability with ignorance bar |
+| `upper_lower_bounds` | `fig_upper_lower_bounds.py` | §4.3 | [L,U] intervals on number line |
+| `reliability_curves` | `fig_reliability_curves.py` | §5.1 | Conditional hit rate vs N_c threshold |
+| `ig_decomposition` | `fig_ig_decomposition.py` | §3.2 | Stacked bar IG decomposition (UNC, DSC, REL) |
+| `verification_lanes` | `fig_verification_lanes.py` | §5.2 | Three-lane flowchart schematic |
+| `ffion_advisory` | `fig_ffion_advisory.py` | §7.3 | JSON → LLM advisory mock-up |
+| `scorecard_table` | `fig_scorecard_table.py` | §5.2 | ECMWF-style scorecard with triangles |
+| `performance_diagram` | `fig_performance_diagram.py` | §4.2 | Roebber-style five-metric diagram |
+| `severity_matrix` | `fig_severity_matrix.py` | §7.4 | Severity-confidence matrix |
 
 ## Python
 
