@@ -102,7 +102,7 @@ def main():
     _arrow(ax, 5.0, 4.55, 5.0, 4.18)
 
     _box(ax, 5.0, 3.0, 2.5, 0.50,
-         "IG = UNC - DSC + REL",
+         "IG = DSC - REL",
          LANE_COLOURS[2], alpha=0.75, fontsize=8)
     _arrow(ax, 5.0, 3.62, 5.0, 3.28)
 

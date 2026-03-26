@@ -1,11 +1,13 @@
 """Figure 7: Information Gain (IG) decomposition — stacked bars.
 
-Five forecast scenarios with stacked bars decomposing the Ignorance
-score into Uncertainty (UNC), Discrimination (DSC), and Reliability (REL).
+Five forecast scenarios with stacked bars decomposing Information Gain
+into Discrimination (DSC) and Reliability (REL) components.
 
-    IG = UNC - DSC + REL
+    IG = DSC - REL        (Eq. 6; higher is better)
 
-Plausible synthetic values are used for illustration.
+Positive IG means the forecast beats climatology; negative IG means it
+does worse.  DSC contributes positively (skill) while REL is a penalty
+(subtracted).  Plausible synthetic values are used for illustration.
 """
 import numpy as np
 import matplotlib.pyplot as plt
@@ -31,65 +33,100 @@ def main():
     n = len(scenarios)
 
     # Plausible synthetic values (bits).
-    # IG = UNC - DSC + REL
-    # Lower IG is better.  Negative DSC hurts, positive REL hurts.
-    # UNC is the same for all (entropy of the verification sample).
-    UNC = np.array([2.32, 2.32, 2.32, 2.32, 2.32])  # log2(5) ~ 2.32
+    # UNC is context only (same for all scenarios).
+    UNC_val = np.log2(5)  # ~2.32 bits
+
     DSC = np.array([1.80, 1.10, -0.30, 0.20, 0.00])  # discrimination
     REL = np.array([0.05, 0.10, 0.45, 0.55, 0.00])   # reliability penalty
 
-    IG = UNC - DSC + REL  # net ignorance
+    IG = DSC - REL  # net information gain (higher is better)
 
     x = np.arange(n)
     bar_width = 0.50
 
     fig, ax = plt.subplots(figsize=(7.5, 4.5))
 
-    # Stacked bars — bottom to top: UNC (grey), then DSC portion removed,
-    # then REL added.  For visual clarity we plot three separate stacked
-    # components with absolute values.
+    # --- Stacking logic ---
+    # DSC bars extend from 0: upward if positive, downward if negative.
+    # REL bars always subtract (penalty), extending downward from the DSC top.
+    #
+    # For positive DSC: DSC bar [0, DSC], then REL bar [DSC-REL, DSC] going down.
+    # For negative DSC: DSC bar [DSC, 0] going down, then REL bar [DSC-REL, DSC]
+    #   going further down.
+    # Net top of stack = DSC - REL = IG in both cases.
 
-    # Component 1: UNC (always positive, base layer)
-    bars_unc = ax.bar(x, UNC, width=bar_width, color="#D0D0D0",
-                       edgecolor="white", linewidth=0.8, zorder=2,
-                       label=r"UNC (uncertainty)")
+    # Component 1: DSC (purple, skill component)
+    # bottom = min(0, DSC), height = |DSC|
+    dsc_bottoms = np.minimum(0, DSC)
+    bars_dsc = ax.bar(
+        x, np.abs(DSC), width=bar_width, bottom=dsc_bottoms,
+        color=PURPLE, edgecolor="white", linewidth=0.8,
+        zorder=3, alpha=0.80,
+        label=r"DSC (discrimination, $+$skill)",
+    )
 
-    # Component 2: DSC (purple).
-    # Positive DSC (skill): overlaps grey from the base, showing UNC removed.
-    # Negative DSC (anti-skill): sits above grey, showing score inflated
-    #   beyond UNC — this fills the gap to the REL bar at UNC - DSC.
-    dsc_bottoms = np.where(DSC >= 0, 0, UNC)
-    bars_dsc = ax.bar(x, np.abs(DSC), width=bar_width, bottom=dsc_bottoms,
-                       color=PURPLE, edgecolor="white", linewidth=0.8,
-                       zorder=3, alpha=0.75,
-                       label=r"DSC (discrimination)")
+    # Component 2: REL (green, penalty — always extends downward from DSC top)
+    # REL bar goes from DSC down to DSC - REL = IG.
+    # bottom = DSC - REL, height = REL
+    rel_bottoms = DSC - REL  # = IG
+    bars_rel = ax.bar(
+        x, REL, width=bar_width, bottom=rel_bottoms,
+        color=GREEN, edgecolor="white", linewidth=0.8,
+        zorder=3, alpha=0.80,
+        label=r"REL (reliability, $-$penalty)",
+    )
 
-    # Component 3: REL (green, penalty added on top of remaining)
-    bars_rel = ax.bar(x, REL, width=bar_width,
-                       bottom=UNC - DSC,  # = IG - REL + REL_base... just UNC-DSC
-                       color=GREEN, edgecolor="white", linewidth=0.8,
-                       zorder=3, alpha=0.75,
-                       label=r"REL (reliability penalty)")
+    # --- Baseline at IG = 0 (climatology performance) ---
+    ax.axhline(0, linewidth=1.2, color=DARK_GREY, zorder=2)
 
-    # Net IG annotation above each bar
+    # --- UNC reference (context only) ---
+    ax.axhline(UNC_val, linestyle="--", linewidth=0.8, color=MID_GREY, zorder=1)
+    ax.text(
+        n - 0.5, UNC_val + 0.05,
+        r"UNC = $\log_2 5$",
+        ha="right", va="bottom", fontsize=8, color=MID_GREY,
+    )
+
+    # --- Annotate each bar with net IG ---
     for i in range(n):
         net = IG[i]
-        top = max(UNC[i], UNC[i] - DSC[i] + REL[i]) + 0.12
-        ax.text(x[i], top, f"IG = {net:.2f}",
-                ha="center", va="bottom", fontsize=8, fontweight="bold",
-                color=DARK_GREY)
+        # Place annotation above or below the stack
+        if net >= 0:
+            y_annot = net + 0.10
+            va = "bottom"
+        else:
+            y_annot = net - 0.10
+            va = "top"
+        ax.text(
+            x[i], y_annot,
+            f"IG = {net:+.2f}",
+            ha="center", va=va, fontsize=8, fontweight="bold",
+            color=DARK_GREY,
+        )
 
+    # --- Axes ---
     ax.set_xticks(x)
     ax.set_xticklabels(scenarios, fontsize=8)
-    ax.set_ylabel("Score (bits)", fontsize=10)
-    ax.set_ylim(0, max(IG) + 0.6)
-    ax.legend(loc="upper right", fontsize=8, frameon=True, fancybox=False,
-              edgecolor=MID_GREY)
+    ax.set_ylabel("Information Gain (bits)", fontsize=10)
 
-    # Horizontal reference at UNC = log2(5)
-    ax.axhline(2.32, linestyle="--", linewidth=0.8, color=MID_GREY, zorder=1)
-    ax.text(n - 0.5, 2.35, r"UNC = $\log_2 5$", ha="right", va="bottom",
-            fontsize=8, color=MID_GREY)
+    y_lo = min(IG.min(), DSC.min()) - 0.4
+    y_hi = max(IG.max(), DSC.max(), UNC_val) + 0.4
+    ax.set_ylim(y_lo, y_hi)
+
+    # Skill / no-skill region labels
+    ax.text(
+        -0.45, 0.15, "forecast beats\nclimatology",
+        fontsize=7, color=MID_GREY, fontstyle="italic", va="bottom",
+    )
+    ax.text(
+        -0.45, -0.15, "forecast worse\nthan climatology",
+        fontsize=7, color=MID_GREY, fontstyle="italic", va="top",
+    )
+
+    ax.legend(
+        loc="upper right", fontsize=8, frameon=True, fancybox=False,
+        edgecolor=MID_GREY,
+    )
 
     fig.tight_layout()
     save_fig(fig, "fig7_ig_decomposition")

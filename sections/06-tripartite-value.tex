@@ -9,11 +9,14 @@
 
 \section{Three-Component Value}\label{sec:tripartite_value}
 
-% [PLACEHOLDER: Opening paragraph — a reviewer might ask "Why do you need
-%  all three components?  Perhaps ignorance is redundant once you have
-%  possibility and necessity."  This section lays out three hypothesis
-%  tests, each isolating one component and asking whether it adds
-%  information the other two do not provide.]
+A reviewer might ask whether all three
+components---possibility, ignorance, and conditional necessity---independently
+contribute to verification, or whether some are redundant once others
+are known.  This section addresses that question directly.  Three
+hypothesis tests are constructed, each isolating one component and
+asking whether it adds information the other two do not provide.  An
+affirmative answer for all three justifies the full five-number
+scorecard.
 
 %----------------------------------------------------------
 \subsection{Three Hypothesis Tests}\label{sec:three_tests}
@@ -36,9 +39,13 @@ higher, the possibility component has independent skill.
 \textit{Met analogue:} Comparing a model's Brier skill score against
 persistence---``Is your resolution better than a na\"ive forecast?''
 
-% [PLACEHOLDER: Discuss expected behaviour for SPC outlooks — a system
-%  that consistently assigns higher possibility to the observed category
-%  than to the average category has positive resolution gap.]
+For SPC outlooks, a system that consistently assigns higher possibility
+to the observed category than to the average category will exhibit
+positive $\delta$ across the verification sample.  Climatology, by
+construction, peaks at the most frequent category and assigns near-zero
+possibility to rare outcomes like \spc{HIGH}; a skilful possibilistic
+system should outperform this baseline on days when \spc{ENH} or higher
+categories verify.
 
 \paragraph{Test 2: Ignorance self-awareness (\ign{}).}
 
@@ -55,10 +62,13 @@ ensemble forecasting.  Stratify by ensemble spread and check whether
 high-spread cases have higher error.  This test asks the same question
 about \ign{}: is it an honest uncertainty signal, or just noise?
 
-% [PLACEHOLDER: Discuss implications — if H_Pi does NOT track forecast
-%  difficulty, the subnormality signal is uninformative and normalisation
-%  is costless.  If it DOES track difficulty, normalisation destroys
-%  operationally valuable information.]
+The implications of this test are decisive for system design.  If \ign{}
+does \emph{not} track forecast difficulty, the subnormality signal is
+uninformative and normalization is costless---one might as well enforce
+$\max(\pi) = 1$ and simplify the framework.  If \ign{} \emph{does}
+track difficulty, normalization destroys operationally valuable
+information: a forecaster who normalizes away high-\ign{} signals loses
+the ability to distinguish confident forecasts from hedged ones.
 
 \paragraph{Test 3: Conditional necessity reliability ($\Nc^*$).}
 
@@ -90,13 +100,21 @@ forecasts identify genuinely confident predictions.
     climatological base rate ($1/K = 0.20$ for $K = 5$ categories).
     When the curve lies above the base rate, high-$\Nc$ forecasts verify
     better than climatology---confirming that conditional necessity is an
-    informative confidence signal.}
+    informative confidence signal.  Data are synthetic, generated to
+    illustrate the expected curve shape.}
 \label{fig:reliability}
 \end{figure}
 
-% [PLACEHOLDER: Discuss sample-size requirements.  At pilot scales
-%  (~90 station-days), these tests are supplemented by illustrative case
-%  studies.  Recommend minimum sample sizes for each test.]
+All three tests require adequate sample sizes to yield statistically
+meaningful results.  At pilot scales (${\sim}90$ station-days), the
+stratified tests (Tests~2 and~3) will have limited statistical power;
+they should be supplemented by illustrative case studies that demonstrate
+the qualitative behaviour predicted by each hypothesis.  As a rough
+guideline, Test~1 (resolution gap vs.\ baseline) requires at least 50
+forecast--observation pairs for a paired-difference bootstrap to detect
+moderate effect sizes; Tests~2 and~3 require at least 30 cases per
+stratum (high/low \ign{} or above/below the $\Nc$ threshold) to
+estimate conditional means with reasonable precision.
 
 %----------------------------------------------------------
 \subsection{Three Verification Lanes}\label{sec:three_lanes}

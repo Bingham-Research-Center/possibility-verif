@@ -5,42 +5,164 @@
 
 \section{Discussion and Future Work}\label{sec:discussion}
 
-% [PLACEHOLDER: Opening paragraph — summarise the main contributions:
-%  five-number scorecard, possibility-to-probability bridge, interval log
-%  score, three verification lanes, and the tripartite value
-%  demonstration.]
+This paper has developed a self-contained verification framework for
+possibilistic forecasts.  The core contribution is a five-number
+scorecard (Section~\ref{sec:native_scorecard}) that evaluates a
+subnormal possibility distribution on its own terms---without first
+converting it to a probability.  Supporting this scorecard are a
+possibility-to-probability bridge
+(Section~\ref{sec:poss_prob_bridge}) that preserves the ignorance
+signal as an explicit outcome rather than erasing it through
+normalization, an interval log score
+(Section~\ref{sec:interval_log}) that extends logarithmic
+verification to the interval-valued forecasts produced by the
+$[\Nc,\,\poss]$ bounds, and three complementary verification lanes
+(Section~\ref{sec:three_lanes}) that together cover
+deterministic, probabilistic, and native possibilistic evaluation.
+Worked examples in Section~\ref{sec:worked_examples} demonstrated
+that each uncertainty component---possibility, ignorance, and
+conditional necessity---independently contributes verification value,
+so that collapsing the distribution into a single point forecast
+discards actionable information.  Although the SPC convective outlook
+categories served as the running example throughout, the framework
+applies to any finite universe of discourse $\Omega$ over which a
+subnormal possibility distribution is defined.
 
 %----------------------------------------------------------
 \subsection{Connections to Dempster--Shafer Theory}%
 \label{sec:ds_connections}
 
-% [PLACEHOLDER: 2–3 paragraphs discussing:
-%  - Structural resemblance: Pi corresponds to plausibility (upper
-%    probability bound), Nc plays a role analogous to belief (lower
-%    bound).
-%  - Key difference: H_Pi quantifies model coverage gaps rather than
-%    evidential conflict between sources — it has no direct DS analogue.
-%  - The possibility-to-probability bridge generalises the pignistic
-%    transformation of Smets (1990) to subnormal distributions.
-%  - Potential for unifying possibilistic verification with
-%    belief-function verification (Denoeux 2008, etc.).
-%  - Cite: Shafer (1976), Smets & Kennes (1994), Denoeux (2008).]
+The possibility--necessity duality has a well-known structural
+counterpart in Dempster--Shafer (DS) theory
+\citep{Shafer1976-MISSING}.  In DS terms, the possibility measure
+$\poss(A)$ corresponds to the plausibility function $\mathrm{Pl}(A)$:
+both represent an upper bound on the probability of the event $A$.
+Conditional necessity $\Nc(A)$ plays the role of the belief function
+$\mathrm{Bel}(A)$: both represent a lower bound.  The interval
+$[\Nc(A),\,\poss(A)]$ used throughout this paper is therefore
+structurally equivalent to the DS interval
+$[\mathrm{Bel}(A),\,\mathrm{Pl}(A)]$, and the verification metrics
+defined in Sections~\ref{sec:native_verification}
+and~\ref{sec:interval_log} can be read as special cases of
+interval-probability verification.
+
+A key difference concerns the nature of the residual uncertainty.
+Possibilistic ignorance $\ign = 1 - \max(\pi)$ quantifies a
+\emph{coverage gap}: the fraction of plausibility that the forecasting
+system left unassigned to any outcome.  In DS theory, uncertainty
+instead arises from \emph{evidential conflict} among multiple
+information sources, and is distributed across focal elements of
+varying specificity.  The scalar $\ign$ therefore has no direct DS
+analogue; it is a distinctly possibilistic quantity.  The
+possibility-to-probability bridge
+(Section~\ref{sec:poss_prob_bridge}) generalizes the pignistic
+transformation of \citet{Smets1990-MISSING} to subnormal
+distributions: the classical pignistic transform assumes a normal
+(i.e., $\max(\pi)=1$) mass function, whereas the bridge explicitly
+allocates the subnormality residual $\ign$ to a dedicated ignorance
+outcome before redistributing the remaining mass.
+
+The structural parallels suggest a natural avenue for generalization.
+The verification framework developed here could be extended to
+belief-function forecasts by replacing $\poss$ and $\Nc$ with
+$\mathrm{Pl}$ and $\mathrm{Bel}$ throughout.  The five-number
+scorecard generalizes naturally: $\alpha^{*}$ becomes the plausibility
+of the observed outcome, $\eta$ measures the diffuseness of the
+plausibility function, and the interval log score applies without
+modification to $[\mathrm{Bel},\,\mathrm{Pl}]$ intervals.  We note
+this connection as a direction for future work, as a full treatment
+would require addressing the richer combinatorial structure of general
+mass functions.
 
 %----------------------------------------------------------
 \subsection{Applicability Beyond Severe Weather}%
 \label{sec:beyond_severe}
 
-% [PLACEHOLDER: 2–3 paragraphs discussing:
-%  - The framework is domain-agnostic: any system producing subnormal
-%    possibility distributions can be verified using this scorecard.
-%  - Potential applications: air quality (ozone, PM2.5 categories),
-%    wildfire risk, flood inundation categories, climate scenario
-%    classification.
-%  - The SPC category framing is a running example, not a limitation.
-%    The five-number scorecard applies to any finite universe of
-%    discourse Omega.
-%  - Extension to continuous variables via alpha-cut discretisation
-%    is straightforward.]
+The verification framework is domain-agnostic: any system that
+produces subnormal possibility distributions over a finite universe of
+discourse $\Omega$ can be evaluated using the five-number scorecard,
+the possibility-to-probability bridge, and the interval log score
+without modification.  The SPC convective outlook categories
+(\spc{MRGL} through \spc{HIGH}) served as an illustrative running
+example, but the same machinery applies directly to air-quality
+exceedance categories (e.g., ozone or PM$_{2.5}$ index tiers),
+wildfire risk levels, flood inundation severity classes, and climate
+scenario classifications.  In each case the forecaster supplies a
+possibility distribution $\pi$ over the domain-specific categories,
+and the scorecard quantifies how well that distribution captured the
+observed outcome.
+
+Extension to continuous forecast variables is straightforward via
+$\alpha$-cut discretization.  The continuous possibility distribution
+is sliced at a set of threshold levels $\alpha_1 > \alpha_2 > \cdots
+> \alpha_k$; each slice defines a nested categorical event (the set of
+outcomes with $\pi(\omega) \geq \alpha_i$) for which the scorecard and
+interval log score apply.  For spatial fields, pointwise application
+of the scorecard at each grid cell produces spatially resolved
+verification maps, while aggregation across grid points yields
+domain-averaged skill metrics analogous to those used in conventional
+probabilistic forecast evaluation.
+
+%----------------------------------------------------------
+\subsection{Generating Possibilistic Forecasts}%
+\label{sec:generation}
+
+A natural question arises: where do possibilistic forecasts come from?
+This paper addresses verification, not generation, but several pathways
+exist for producing the subnormal distributions the framework evaluates.
+
+\textbf{Fuzzy inference systems.}  The most direct route uses fuzzy
+rules whose membership functions are possibility distributions by
+construction \citep{Klir1995-va}.  A fuzzy inference system maps input
+meteorological variables through rule sets with fuzzy antecedents and
+consequents; the aggregated output is naturally subnormal when rules
+fire at partial strength, encoding the system's incomplete confidence
+without normalization.
+
+\textbf{Ensemble-derived possibility.}  For each category, compute the
+fraction of ensemble members predicting it---but do \textit{not}
+normalize to $\max = 1$.  Let the ensemble spread speak: if members are
+scattered across categories, the maximum fraction is low and $\ign$ is
+high; if members cluster, the maximum is high and $\ign$ is low.  The
+raw ensemble ``support'' for each outcome is already a possibility-like
+quantity.  This is the most accessible pathway for a NWP audience:
+ensemble spread, formalized as subnormality.
+
+\textbf{Severity--confidence matrices.}  Operational warning frameworks
+already encode possibilistic structure.  The UK Met Office National
+Severe Weather Warning Service (NSWWS) uses a two-dimensional matrix
+of likelihood and impact to determine warning levels
+\citep{Neal2014-MISSING}.  The impact axis encodes what \textit{might}
+happen (the shape of the possibility distribution), while the likelihood
+axis encodes how confident the forecaster is (akin to subnormality).
+Figure~\ref{fig:severity_matrix} adapts this concept to the paper's SPC
+framework, mapping severity categories against confidence levels to show
+how the joint signal varies from ``monitor'' (low severity, high
+ignorance) to ``act now'' (high severity, low ignorance).  The
+verification framework developed here formalizes this operational
+intuition with precise metrics.
+
+\textbf{Conformal prediction.}  Conformal methods produce prediction
+sets at given confidence levels---structurally, these are $\alpha$-cuts
+of a possibility distribution.  Building sets at multiple $\alpha$
+levels constructs a full distribution, and the coverage guarantee maps
+onto conditional necessity.
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=\columnwidth]{fig12_severity_matrix.png}
+\caption{Severity--confidence matrix adapted from the UK Met Office
+    NSWWS framework \citep{Neal2014-MISSING} into the SPC categorical
+    system.  Rows are SPC severity categories (\spc{MRGL}--\spc{HIGH});
+    columns represent forecaster confidence, mapped to subnormality
+    ($\ign$).  Color intensity encodes the joint risk signal: deep purple
+    indicates high severity with high confidence (act now); pale tones
+    indicate low severity or low confidence (monitor).  The matrix
+    illustrates how operational warning decisions already implicitly
+    navigate the two-dimensional space that possibility theory
+    formalizes.}
+\label{fig:severity_matrix}
+\end{figure}
 
 %----------------------------------------------------------
 \subsection{Structured Uncertainty and LLM-Mediated Communication}%
@@ -58,7 +180,7 @@ four-stage pipeline:
     possibility values and an ignorance estimate.
 \item \textbf{Structured extraction.}  The possibilistic triplet
     ($\poss$, $\ign$, $\Nc$) and supporting meteorological context are
-    serialised as JSON, providing the LLM with machine-readable
+    serialized as JSON, providing the LLM with machine-readable
     uncertainty metadata rather than raw gridded fields.
 \item \textbf{Guarded prompt construction.}  Pre-set guardrails enforce
     citation of source data, caveats when $\ign$ exceeds a threshold
@@ -92,7 +214,7 @@ Claude, operating as a CLI tool) requires approximately three minutes of
 inference time per outlook cycle, ingesting data slices and forecast
 context before generating each advisory document.  The explicit ignorance
 signal is critical: it gives the LLM a principled basis for expressing
-uncertainty rather than manufacturing false precision from a normalised
+uncertainty rather than manufacturing false precision from a normalized
 distribution.  Conditional necessity provides the complementary trigger
 for confident statements.
 
@@ -106,30 +228,57 @@ uncertainty metadata that probabilistic point forecasts do not.
 %----------------------------------------------------------
 \subsection{Software Availability}\label{sec:software}
 
-% [PLACEHOLDER: 1–2 paragraphs describing:
-%  - The Python package implementing all verification metrics.
-%  - Repository location: https://github.com/johnrobertlawson/possibility-verif
-%  - Key modules: scorecard computation, pignistic bridge, interval log
-%    score, possibilistic climatology, visualisation tools.
-%  - Compatibility with existing verification packages (e.g., xarray,
-%    properscoring).]
+All verification metrics, the possibility-to-probability bridge, and
+the visualization tools described in this paper are implemented in
+Python.  The accompanying code is publicly available at
+\url{https://github.com/bingham-research-center/possibility-verif}.
+Key modules implement the five-number scorecard
+(\texttt{compute\_scorecard}), bridge conversion from possibility
+distributions to $(n{+}1)$-category probability vectors, the interval
+log score, and possibilistic climatology construction.  The
+implementation operates on NumPy arrays and can interface with xarray
+datasets for gridded verification workflows.
 
 %----------------------------------------------------------
 \subsection{Limitations and Future Directions}%
 \label{sec:limitations}
 
-% [PLACEHOLDER: 2–3 paragraphs discussing:
-%  - The IRLS is defined but deferred to future work with larger
-%    reforecast datasets.
-%  - Sample-size requirements for the three hypothesis tests
-%    (Section 5.1) are not yet established.
-%  - The possibilistic climatology construction (Section 4.5) assumes
-%    a consonant (nested) reference distribution — this may not be
-%    appropriate for all applications.
-%  - The tripartite bridge assumes the ignorance outcome is never
-%    observed — this is a modelling choice that could be revisited
-%    for open-world applications where the true outcome may lie outside
-%    Omega.
-%  - Future directions: multivariate possibilistic verification,
-%    spatial possibilistic fields, real-time operational implementation,
-%    connection to conformal prediction.]
+Several limitations should be noted.  The interval-refined log score
+(IRLS; Section~\ref{sec:interval_log}) is formally defined but
+its detailed application requires a larger reforecast dataset than the
+synthetic examples used here.  Sample-size requirements for the three
+reliability hypothesis tests (Section~\ref{sec:three_tests}) have not
+been established; at pilot scales (${\sim}100$ cases), these tests
+should be supplemented with illustrative case studies and bootstrap
+confidence intervals to guard against small-sample artifacts.  The
+possibilistic climatology construction
+(Section~\ref{sec:poss_climatology}) assumes a consonant (nested)
+reference distribution, which may not suit all applications---particularly
+those with multimodal climatologies where the nested-set assumption
+breaks down.
+
+The possibility-to-probability bridge assumes that the ignorance
+outcome is never observed: the true category is always one of the
+elements of $\Omega$.  This is a closed-world assumption, appropriate
+when $\Omega$ is exhaustive.  For open-world applications in which the
+true outcome may lie outside the defined categories---for instance,
+an unprecedented severe weather mode not represented in the SPC
+taxonomy---the framework would need modification to allow the ignorance
+outcome to verify as ``correct'' under certain conditions, effectively
+treating $\ign$ as a legitimate forecast of novelty.
+
+Several directions for future work follow naturally.  First,
+multivariate possibilistic verification for correlated hazards (e.g.,
+simultaneous wind and hail occurrence) would require joint possibility
+distributions and an extension of the scorecard to multidimensional
+$\Omega$.  Second, conformal prediction also produces interval-valued
+forecasts but from a frequentist calibration perspective; a formal
+comparison of conformal coverage guarantees with possibilistic
+$[\Nc,\,\poss]$ intervals could clarify the relative merits of each
+paradigm.  Third, real-time operational implementation with automated
+scorecard dashboards would enable forecasters to monitor possibilistic
+skill across successive forecast cycles.  Finally, the performance
+diagram (Figure~\ref{fig:performance_diagram}) could be extended to
+track model development trajectories, plotting successive model
+versions as connected points to visualize the trade-offs between
+sharpness, calibration, and ignorance over time.

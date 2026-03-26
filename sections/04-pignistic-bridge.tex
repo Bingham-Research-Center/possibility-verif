@@ -10,7 +10,7 @@
 
 The term \textit{pignistic} derives from the Latin \textit{pignus} (a
 wager): it denotes the probabilities one would assign if forced to bet.
-Standard verification scores---the logarithmic score, Brier score, and
+Standard verification scores---the logarithmic score, Brier score \citep{Brier1950-lc}, and
 information gain---require probability inputs that sum to unity.  A
 possibility distribution does not satisfy this constraint: its values
 encode plausibility rather than relative frequency, and a subnormal
@@ -18,7 +18,7 @@ distribution does not even reach a maximum of one.  The
 \textit{possibility-to-probability bridge} developed below converts a
 subnormal possibility distribution into an $(n{+}1)$-category probability
 vector, preserving the subnormality signal as an explicit ignorance
-outcome rather than erasing it through na\"ive normalisation.
+outcome rather than erasing it through na\"ive normalization.
 
 %----------------------------------------------------------
 \subsection{Possibility-to-Probability Bridge}\label{sec:poss_prob_bridge}
@@ -41,18 +41,16 @@ signal through three steps:
     categories that sums to unity.
 \end{enumerate}
 
-Simple normalisation ($p_i = \pi_i / \sum_j \pi_j$) erases
+Simple normalization ($p_i = \pi_i / \sum_j \pi_j$) erases
 subnormality---probabilities always sum to one regardless of model
 confidence.  This is equivalent to the pignistic transformation of
 \citet{Smets1990-MISSING}, which was designed for normal belief
 functions.  The bridge preserves the ignorance signal,
-ensuring that verification scores correctly penalise uncertain forecasts
+ensuring that verification scores correctly penalize uncertain forecasts
 by routing probability mass into a non-observed outcome.  For normal
 distributions ($\max \pi = 1$, $\ign = 0$), both methods coincide.
 
-% [PLACEHOLDER: 1–2 sentences on the connection to transferable belief
-%  model (Smets & Kennes 1994) and why our extension to subnormal
-%  distributions is novel.]
+This extension to subnormal distributions generalizes the pignistic transformation, which \citet{Smets1990-MISSING} developed within the transferable belief model for normal belief functions.  The key innovation is reserving the ignorance mass as an explicit outcome rather than redistributing it, enabling verification scores to penalize subnormality directly.
 
 \textbf{Worked example.}
 Suppose a possibilistic convective outlook produces
@@ -74,10 +72,10 @@ Then:
 \end{itemize}
 
 High \ign{} ($0.4$) correctly inflated the ignorance outcome, reducing
-$p(\spc{ENH})$ from what simple normalisation would give
+$p(\spc{ENH})$ from what simple normalization would give
 ($0.6/1.3 = 0.462$) to $0.277$.  The verification score ($1.85$~bits)
 honestly reflects the system's partial uncertainty.
-Figure~\ref{fig:pignistic_bridge} visualises this transformation.
+Figure~\ref{fig:pignistic_bridge} visualizes this transformation.
 
 \begin{figure*}[t]
 \centering
@@ -88,7 +86,7 @@ Figure~\ref{fig:pignistic_bridge} visualises this transformation.
     probability vector, with the grey bar representing the explicit
     ignorance outcome $p_{\mathrm{ign}} = \ign$.  Arrows show
     proportional redistribution of the remaining $(1 - \ign)$ mass.  The
-    ignorance bar absorbs probability mass that simple normalisation would
+    ignorance bar absorbs probability mass that simple normalization would
     have spread across all categories, preserving the subnormality signal.}
 \label{fig:pignistic_bridge}
 \end{figure*}
@@ -96,8 +94,7 @@ Figure~\ref{fig:pignistic_bridge} visualises this transformation.
 %----------------------------------------------------------
 \subsection{Information-Gain Decomposition}\label{sec:ig_decomposition}
 
-% [PLACEHOLDER: Opening paragraph — briefly introduce the information-gain
-%  framework and its relationship to the logarithmic scoring rule.]
+The logarithmic scoring rule---which assigns a penalty of $-\log_2 p(c_{\mathrm{obs}})$ bits for the probability assigned to the observed outcome---is the natural companion to the bridge.  Its information-theoretic decomposition into uncertainty, discrimination, and reliability mirrors the Brier score's three-component decomposition but operates in logarithmic units, making it particularly sensitive to confident misses on rare events.
 
 After the bridge converts possibilities to probabilities,
 standard information-theoretic verification applies.  Information gain
@@ -111,12 +108,12 @@ where $o$ is the observation, $f_1$ is the baseline (e.g., climatology),
 and $f_2$ is the possibilistic forecast (after bridge conversion).
 Positive IG indicates that the forecast reduced surprise relative to the
 baseline.
-% [PLACEHOLDER: Add Roulston & Smith (2002) and Lawson (2024) citations.]
+This formulation follows \citet{Roulston2002-eq}; \citet{Lawson2024-bu} extended it to atmospheric forecast evaluation with explicit decomposition diagnostics.
 
-Information gain decomposes diagnostically:
+The mean logarithmic score of the forecast decomposes diagnostically:
 \begin{equation}
-\mathrm{IG}_{\mathrm{decomp}} = \mathrm{UNC} - \mathrm{DSC} + \mathrm{REL}
-\quad \text{(all in bits)}
+\mathrm{LS} = \mathrm{UNC} - \mathrm{DSC} + \mathrm{REL}
+\quad \text{(all in bits; lower is better)}
 \label{eq:ig_decomp}
 \end{equation}
 where:
@@ -128,24 +125,30 @@ where:
     tell events apart?
 \end{itemize}
 
+\noindent When the baseline $f_1$ in Eq.~\eqref{eq:ig} is climatology,
+$D_{\mathrm{KL}}(o \,\|\, \mathrm{clim}) = \mathrm{UNC}$, and information
+gain reduces to $\mathrm{IG} = \mathrm{DSC} - \mathrm{REL}$.  Positive IG
+thus requires discrimination to exceed calibration error.
+
 This decomposition diagnoses whether a possibilistic forecast's value
 arises from calibration or from discriminating between severe-weather
 regimes.  Figure~\ref{fig:ig_decomp} illustrates the decomposition for
 several forecast scenarios with net IG annotated.
 
-% [PLACEHOLDER: Brief paragraph connecting IG decomposition to familiar
-%  meteorological analogues — Brier decomposition, reliability diagrams.]
+The IG decomposition is the logarithmic counterpart of the Brier score's familiar three-component breakdown ($\mathrm{BS} = \mathrm{REL} - \mathrm{RES} + \mathrm{UNC}$).  Where the Brier decomposition measures skill in probability-squared units, the IG decomposition measures it in bits---additive, interpretable information units.  A reliability diagram plots observed frequency against forecast probability; the REL term in Eq.~\eqref{eq:ig_decomp} is its scalar summary.  Similarly, the DSC term summarizes the spread of conditional outcome distributions that a reliability diagram visualizes as deviations from the diagonal.
 
 \begin{figure*}[t]
 \centering
 \includegraphics[width=0.75\textwidth]{fig7_ig_decomposition.png}
 \caption{Information-gain decomposition for five forecast scenarios.
-    Stacked bars show the three components: UNC (light grey;
-    irreducible uncertainty), DSC (purple; discrimination---higher is
-    better), and REL (green; calibration error---lower is better).  Net
-    IG is annotated above each bar.  The sharp-correct scenario achieves
-    the highest IG; the sharp-wrong scenario shows negative IG (worse
-    than climatology).}
+    Bars show net $\mathrm{IG} = \mathrm{DSC} - \mathrm{REL}$ (bits),
+    with the zero baseline representing climatological performance.
+    Purple bars show discrimination (DSC; positive $=$ skill); green
+    bars show reliability penalty (REL; subtracted from DSC).  Positive
+    net IG indicates the forecast beat climatology; negative IG indicates
+    it performed worse.  The sharp-correct scenario achieves the highest
+    IG ($+1.75$~bits); the sharp-wrong scenario shows negative IG
+    ($-0.75$~bits, worse than climatology).}
 \label{fig:ig_decomp}
 \end{figure*}
 
@@ -154,23 +157,23 @@ manuscript uses ``information gain'' (IG) rather than the abbreviation
 IGN used in some verification literature.
 
 %----------------------------------------------------------
-\subsection{Why Na\"ive Normalisation Erases Information}%
-\label{sec:naive_normalisation}
+\subsection{Why Na\"ive Normalization Erases Information}%
+\label{sec:naive_normalization}
 
-Simple normalisation ($p_i = \pi_i / \sum_j \pi_j$) is the standard
+Simple normalization ($p_i = \pi_i / \sum_j \pi_j$) is the standard
 route from possibilities to probabilities.  It forces the result to sum
 to one regardless of model confidence: a system that is $90\%$ unsure
 ($\ign = 0.9$) produces the same probability vector as one that is
 $10\%$ unsure ($\ign = 0.1$), provided their raw shapes are
 proportional.  The ignorance signal is erased.  Verification scores
-applied to the normalised vector cannot distinguish a sharp, confident
+applied to the normalized vector cannot distinguish a sharp, confident
 forecast from a diffuse, hedged one---the answer to ``how would you
 bet?'' is given without acknowledging ``I wouldn't bet at all.''
 
 The possibility-to-probability bridge avoids this by deferring
 probabilistic commitment for the ignorance portion.  Mass equal to
 $\ign$ is routed into an $(n{+}1)$-th outcome that can never be the
-observed category.  Uncertain forecasts are penalised because this
+observed category.  Uncertain forecasts are penalized because this
 stranded mass earns no verification credit: it inflates the self-entropy
 of the converted forecast in proportion to $\ign$.  The more ignorant
 the system, the more mass is stranded, and the larger the penalty.
@@ -179,12 +182,12 @@ the system, the more mass is stranded, and the larger the penalty.
 Using $\pi = (0.2,\, 0.4,\, 0.6,\, 0.1,\, 0.0)$ from the worked
 example in Section~\ref{sec:poss_prob_bridge}:
 \begin{itemize}[leftmargin=2em]
-\item Simple normalisation: $p(\spc{ENH}) = 0.6 / 1.3 = 0.462$.
+\item Simple normalization: $p(\spc{ENH}) = 0.6 / 1.3 = 0.462$.
 \item Bridge: $p(\spc{ENH}) = 0.277$, $p_{\mathrm{ign}} = 0.400$.
 \item If \spc{ENH} is observed: self-entropy $= -\log_2(0.462) = 1.11$~bits
     (simple) vs.\ $-\log_2(0.277) = 1.85$~bits (bridge).
 \item The $0.74$-bit gap is the verification cost of ignoring the
-    system's admitted uncertainty.  Simple normalisation rewards the
+    system's admitted uncertainty.  Simple normalization rewards the
     system for confidence it never claimed.
 \end{itemize}
 

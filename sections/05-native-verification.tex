@@ -9,11 +9,15 @@
 
 \section{Native Possibilistic Verification}\label{sec:native_verification}
 
-% [PLACEHOLDER: Opening paragraph — motivate why native possibilistic
-%  verification is needed alongside the probabilistic lane.  The pignistic
-%  bridge (Section 3) is lossy: it compresses the full possibility shape
-%  into n+1 probabilities.  Native metrics evaluate the raw distribution
-%  directly.]
+The possibility-to-probability bridge
+(Section~\ref{sec:poss_prob_bridge}) enables probabilistic verification
+of possibilistic forecasts, but the conversion is lossy: it compresses
+the full possibility shape into $n{+}1$ probabilities, with the entire
+subnormality signal collapsed into a single ignorance bin.  Native
+possibilistic verification evaluates the raw distribution directly,
+preserving the shape information that the bridge discards.  The metrics
+defined below complement the bridge-based lane by diagnosing forecast
+quality in possibility space.
 
 All definitions use the notation of Section~\ref{sec:poss_primer}:
 $\pi$ denotes the raw (subnormal) possibility distribution,
@@ -21,14 +25,14 @@ $m = \max_{\omega \in \Omega} \pi(\omega)$ is the subnormality, and
 $\ign = 1 - m$ is ignorance (Eq.~\ref{eq:ignorance}).
 
 %----------------------------------------------------------
-\subsection{Normalisation Protocol}\label{sec:norm_protocol}
+\subsection{Normalization Protocol}\label{sec:norm_protocol}
 
 Some verification quantities require the raw distribution $\pi$ while
-others require the normalised form $\pinorm = \pi / m$.  Two
-normalisation operations serve distinct purposes:
+others require the normalized form $\pinorm = \pi / m$.  Two
+normalization operations serve distinct purposes:
 
 \begin{enumerate}[leftmargin=2em]
-\item \textbf{Shape normalisation} ($\pi \to \pinorm$): Rescales so
+\item \textbf{Shape normalization} ($\pi \to \pinorm$): Rescales so
     that $\max(\pinorm) = 1$, isolating the system's relative
     preferences among outcomes.  Used for computing \Nc{}
     (Eq.~\ref{eq:cond_nec}) and the native scorecard
@@ -39,14 +43,14 @@ normalisation operations serve distinct purposes:
     for information-gain verification.
 \end{enumerate}
 
-These are not alternatives: normalisation operates within the possibility
+These are not alternatives: normalization operates within the possibility
 space; the pignistic bridge converts to the probability space.
 
 Table~\ref{tab:raw_norm} specifies which form each quantity uses.
 
 \begin{table}[htbp]
 \centering
-\caption{Raw vs.\ normalised possibility assignments for verification
+\caption{Raw vs.\ normalized possibility assignments for verification
     quantities.}
 \label{tab:raw_norm}
 \small
@@ -67,13 +71,14 @@ Cumulative lower bound & $L_k$ & Both & IRLS counterpart of $L_t$ \\
 \end{tabularx}
 \end{table}
 
-\textbf{Why this matters:} Getting the raw/normalised distinction wrong
+\textbf{Why this matters:} Getting the raw/normalized distinction wrong
 is the single most common error in possibilistic scoring.  Computing
 \Nc{} from raw values yields nonsense (it would be negative when
-$m < 0.5$).  Computing ignorance from normalised values gives zero by
+$m < 0.5$).  Computing ignorance from normalized values gives zero by
 definition.
-% [PLACEHOLDER: Add met analogue — loosely analogous to ensemble-mean
-%  error (raw) vs. rank histogram (normalised rank position).]
+The distinction is loosely analogous to evaluating ensemble-mean error
+(which uses raw ensemble members) versus a rank histogram (which uses
+the normalized rank position of the observation within the ensemble).
 
 %----------------------------------------------------------
 \subsection{Five-Number Scorecard}\label{sec:native_scorecard}
@@ -90,19 +95,19 @@ where $\alpha^* = 1$ when the truth coincides with the system's peak
 category and $\alpha^* = 0$ when the system assigns zero possibility to
 the observed outcome.
 
-\textit{Plain language:} ``How much normalised possibility did the system
+\textit{Plain language:} ``How much normalized possibility did the system
 assign to what actually happened?''  Like probability of detection (POD)
 for the winning bin, but continuous rather than binary.
 
 \paragraph{Nonspecificity $\eta$.}
 Following \citet{Klir1995-va}, nonspecificity measures the diffuseness
-of the normalised shape:
+of the normalized shape:
 \begin{equation}
 \eta = \frac{1}{K} \sum_{c=1}^{K} \pinorm(c) \label{eq:ns}
 \end{equation}
 ranging from $1/K$ (sharp) to $1$ (uniform).
 
-\textit{Plain language:} ``How spread out was the normalised
+\textit{Plain language:} ``How spread out was the normalized
 distribution?''  Like ensemble spread or sharpness.  A tight ensemble
 (all members agree) has low $\eta$; a flat ensemble (members everywhere)
 has high $\eta$.
@@ -135,7 +140,7 @@ Like ensemble spread, but model-intrinsic.
 \label{eq:nc_star}
 \end{equation}
 where $\Nc^* > 0$ only when the observed category dominates all
-alternatives in the normalised distribution.  This is a direct
+alternatives in the normalized distribution.  This is a direct
 application of Eq.~\eqref{eq:cond_nec} evaluated at the observation.
 
 \textit{Plain language:} ``Among scenarios the system covered, was the
@@ -234,10 +239,13 @@ $-\log_2(0.01) \approx 6.64$~bits).  When $L = U = p$ (a point
 probability), ILS reduces to the standard log score.
 
 \textbf{Motivation.}
-% [PLACEHOLDER: Explain why logarithmic scoring is preferred over
-%  quadratic (Brier) for rare severe-weather events.  Brier barely
-%  distinguishes 0% from 5% for a rare event that occurs; the log score's
-%  exponential penalty catches overconfident misses.]
+Logarithmic scoring is preferred over quadratic (Brier) scoring for rare
+severe-weather events because the Brier score barely distinguishes a 0\%
+forecast from a 5\% forecast when the event occurs: the squared
+penalties are $1.0$ and $0.9025$, respectively.  The log score's
+exponential penalty ($-\log_2 0.05 = 4.32$~bits vs.\ $-\log_2 0.0 \to
+\infty$) more sharply penalizes overconfident misses, which is precisely
+the failure mode of greatest operational concern.
 
 \textbf{Three-component interpretation.}
 The forecast assigns possibility $\poss = U$ to the threshold event,
@@ -257,6 +265,8 @@ possible'' and ``essentially certain.''
     event happened'' (costly) from ``no information and nothing
     happened'' (costless).
 \end{itemize}
+
+The ILS uses optimistic verification: when the event occurs, the penalty is $-\log_2(U)$, crediting the upper (most generous) bound rather than a point probability.  This means a forecaster can reduce the penalty by widening the interval---assigning higher possibility to more outcomes---without improving the forecast's sharpness.  The width penalty enters implicitly through $\ign$: widening the distribution increases subnormality, which the native scorecard's ignorance metric penalizes.  The ILS is therefore not strictly proper in the classical sense, but the companion $\ign$ metric partially mitigates gaming by exposing the cost of artificial interval inflation.
 
 \textbf{Worked example} (Example~1 from Section~\ref{sec:subnormal},
 $\pi = (0,\, 0.1,\, 0.2,\, 0.75,\, 0.15)$, threshold
@@ -323,10 +333,7 @@ all $k$, IRLS reduces to the standard ranked logarithmic score.
 \item $L_k \leq U_k$ for all $k$.
 \end{itemize}
 
-% [PLACEHOLDER: Met analogue — IRLS is the logarithmic version of CRPS.
-%  Meteorologists know CRPS as the integral of Brier scores across all
-%  thresholds; IRLS is the integral of interval log scores across all
-%  thresholds.]
+The IRLS bears the same relationship to ILS that CRPS bears to the Brier score: it integrates the threshold-specific score across all category boundaries, producing a single summary measure that rewards both sharpness and calibration across the full distribution rather than at a single threshold.
 
 \textbf{Note:} IRLS is formally defined here for completeness, but its
 detailed application is deferred to future work with a larger
@@ -360,6 +367,4 @@ $u_k = F_{k-1} + 0.5\, p_k$, and define:
 Climatological ignorance is zero by convention
 ($H_{\Pi,\mathrm{clim}} = 0$): climatology is a reference distribution,
 not a live forecasting system.
-% [PLACEHOLDER: Brief paragraph explaining that any H_Pi > 0 from an
-%  operational system therefore reflects genuine model uncertainty beyond
-%  the baseline.]
+The consonant construction is the least-committed possibility distribution consistent with a given CDF: its nested $\alpha$-cuts are central intervals that encode no shape preference beyond what the cumulative frequencies imply.  For applications with multimodal climatologies or strongly asymmetric base rates, alternative constructions (e.g., non-nested random sets) may be more appropriate; the choice of climatological reference should be justified on physical grounds.  Any $\ign > 0$ from an operational system therefore reflects genuine model uncertainty beyond this baseline---the system's admitted ignorance is measured relative to a reference that, by convention, claims complete knowledge.
