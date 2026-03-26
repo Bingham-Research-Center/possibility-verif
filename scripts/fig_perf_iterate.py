@@ -30,9 +30,9 @@ MISS_RED = "#C0392B"
 # ------------------------------------------------------------------ #
 
 def hpi_cmap():
-    """H_Pi: very dark purple (confident) → warm peach (uncertain)."""
+    """H_Pi: dark purple (confident) → pale purple (uncertain)."""
     return LinearSegmentedColormap.from_list("hpi2", [
-        "#1A0533", "#6A1B9A", PURPLE, "#BA68C8", "#E1BEE7", "#FFE0B2",
+        "#2E0854", PURPLE, "#CE93D8", "#F3E5F5",
     ], N=256)
 
 
@@ -226,7 +226,7 @@ def draw_traj_commit(ax, means, color=GREEN, fontsize=6.5):
 
 def v3b(data, ap, spec, anchors):
     """V3b: green trajectory + enhanced hexbin (all days)."""
-    fig, ax = plt.subplots(figsize=(5.8, 5.5))
+    fig, ax = plt.subplots(figsize=(6.0, 5.5), constrained_layout=True)
     cm = hpi_cmap()
     nm = Normalize(0.0, 0.55)
     means = cat_means(data, spec)
@@ -237,7 +237,7 @@ def v3b(data, ap, spec, anchors):
     hb = ax.hexbin(spec, ap, C=data['H_Pi'],
                    reduce_C_function=np.mean, gridsize=12, cmap=cm,
                    edgecolors="white", linewidths=0.4, mincnt=1,
-                   alpha=0.6, zorder=1)
+                   alpha=0.65, zorder=1)
 
     draw_traj_spec_alpha(ax, means)
     draw_anchors_spec_alpha(ax, anchors)
@@ -261,14 +261,11 @@ def v3b(data, ap, spec, anchors):
 
     ax.set_xlim(-0.02, 1.02)
     ax.set_ylim(-0.04, 1.04)
-    ax.set_aspect('equal', adjustable='box')
+    ax.set_aspect('equal')
     ax.set_xlabel(r"Specificity  $1\!-\!\eta$  (sharper $\rightarrow$)",
                   fontsize=9)
     ax.set_ylabel(r"Depth-of-truth  $\alpha^*$  (more truthful $\rightarrow$)",
                   fontsize=9)
-    ax.set_title(f"V3b: Hexbin + Green Trajectory  (all, $n = {len(spec)}$)",
-                 fontsize=9, fontweight="bold", pad=8)
-    fig.tight_layout()
     save_fig(fig, "performance_diagram")
 
 
