@@ -1,9 +1,10 @@
-"""Possibilistic performance diagram (Roebber-style).
+"""Possibilistic performance diagram (Roebber-style), two-panel.
 
-Five-year synthetic reforecast with SPC-like climatology.  Models a
-forecasting system with category-dependent skill and ignorance: common
-events (MRGL, SLGT) are forecast confidently and usually correctly;
-rare events (MDT, HIGH) carry higher ignorance and more errors.
+Left panel:  all days (n ≈ 1,825) — full context including null (MRGL) cases.
+Right panel: severe days only (SLGT+, n ≈ 1,004) — where the framework
+             earns its keep.  Without the MRGL mass the rare-event
+             population (MDT/HIGH) is exposed and ignorance patterns
+             become visible.
 
 Encoding (5 metrics on one plot):
   x-axis    1 - eta   specificity (higher = sharper)
@@ -14,15 +15,9 @@ Encoding (5 metrics on one plot):
 
 Three anchor scenarios from Section 6 are overlaid as labeled stars.
 
-Structural parallel with Roebber (2009):
-  Roebber x = success ratio (precision)  <-->  specificity 1-eta
-  Roebber y = POD (detection)            <-->  depth-of-truth alpha*
-  Roebber contours = CSI (skill)         <-->  delta contours
-  NEW colour = ignorance H_Pi (no deterministic analogue)
-  NEW size   = cond. necessity N_c* (no deterministic analogue)
-
-The generate_reforecast() function is designed as a drop-in: replace it
-with real (pi_array, obs_categories) data for Clyfar verification.
+The generate_reforecast() / scorecard_from_data() functions are designed
+as drop-ins: replace with real (pi_array, obs_categories) data for
+Clyfar verification.
 """
 import numpy as np
 import matplotlib.pyplot as plt
@@ -106,12 +101,9 @@ def generate_reforecast(n_years=5, K=SPC_N, seed=42):
     obs_categories = [SPC_CATEGORIES[i] for i in obs_idx]
 
     # --- Category-dependent model parameters ---
-    # P(model peaks at correct category | obs)
     correct_prob = np.array([0.78, 0.65, 0.48, 0.32, 0.18])
-    # Mean and std of ignorance H_Pi
     h_mu = np.array([0.08, 0.15, 0.25, 0.38, 0.52])
     h_sig = np.array([0.05, 0.08, 0.10, 0.12, 0.12])
-    # Distribution sharpness (exponential decay rate from peak)
     s_mu = np.array([2.8, 2.2, 1.6, 1.2, 0.8])
     s_sig = np.array([0.6, 0.5, 0.5, 0.4, 0.3])
 
@@ -120,30 +112,98 @@ def generate_reforecast(n_years=5, K=SPC_N, seed=42):
     for i in range(n_days):
         oi = obs_idx[i]
 
-        # Peak category: correct or near-miss
         if rng.random() < correct_prob[oi]:
             peak = oi
         else:
             offset = rng.choice([-2, -1, 1, 2], p=[0.10, 0.40, 0.40, 0.10])
             peak = int(np.clip(oi + offset, 0, K - 1))
 
-        # Pi distribution: exponential decay from peak
         spread = max(0.3, rng.normal(s_mu[oi], s_sig[oi]))
         dists = np.abs(np.arange(K) - peak).astype(float)
         pi = np.exp(-spread * dists)
-        pi += rng.uniform(0, 0.02, K)   # small noise
+        pi += rng.uniform(0, 0.02, K)
 
-        # Apply subnormality (category-dependent)
         h = np.clip(rng.normal(h_mu[oi], h_sig[oi]), 0.02, 0.85)
         pi = pi / pi.max() * (1.0 - h)
 
         pi_array[i] = pi
 
-    # Compute scorecard for all cases
     result = scorecard_from_data(pi_array, obs_categories, K)
     result['pi_array'] = pi_array
     result['obs_categories'] = np.array(obs_categories)
     return result
+
+
+# ------------------------------------------------------------------ #
+# Panel-drawing helper                                                #
+# ------------------------------------------------------------------ #
+
+def _draw_panel(ax, spec, alpha, sizes, hpi, obs_idx,
+                cmap, norm, s_min, anchors,
+                show_anchor_labels=False, title=""):
+    """Draw one performance-diagram panel."""
+
+    # ---- Delta contours ---- #
+    x_line = np.linspace(-0.1, 1.1, 50)
+    for d_val in np.arange(-0.6, 0.81, 0.2):
+        y_line = d_val + 1.0 - x_line
+        if abs(d_val) < 1e-9:
+            ax.plot(x_line, y_line, lw=1.5, color=DARK_GREY,
+                    alpha=0.35, ls="--", zorder=1)
+        else:
+            ax.plot(x_line, y_line, lw=0.5, color=MID_GREY,
+                    alpha=0.15, ls=":", zorder=1)
+    ax.text(0.28, 0.74, r"$\delta\!=\!0$", fontsize=7,
+            color=DARK_GREY, alpha=0.5, rotation=-45,
+            ha="center", va="center")
+
+    # ---- Scatter ---- #
+    ax.scatter(spec, alpha, s=sizes, c=hpi, cmap=cmap, norm=norm,
+               edgecolors=DARK_GREY, linewidths=0.2, alpha=0.25,
+               marker="o", zorder=2, rasterized=True)
+
+    rare = obs_idx >= 3
+    sc = ax.scatter(spec[rare], alpha[rare],
+                    s=sizes[rare] * 1.3, c=hpi[rare], cmap=cmap, norm=norm,
+                    edgecolors=DARK_GREY, linewidths=0.5, alpha=0.55,
+                    marker="D", zorder=3)
+
+    # ---- Anchor stars ---- #
+    anchor_offsets = {
+        "A": (-0.20, -0.16),
+        "B": (-0.20, -0.16),
+        "C": (-0.20, 0.14),
+    }
+    for letter, desc, card in anchors:
+        sx, sy = 1 - card['eta'], card['alpha_star']
+        ax.scatter(sx, sy, s=280, c=[card['H_Pi']], cmap=cmap, norm=norm,
+                   edgecolors="white", linewidths=2.0, alpha=1.0,
+                   marker="*", zorder=6)
+        if show_anchor_labels:
+            ox, oy = anchor_offsets[letter]
+            ax.annotate(
+                f"{letter}: {desc}", xy=(sx, sy),
+                xytext=(sx + ox, sy + oy),
+                fontsize=6.5, fontweight="bold", color=DARK_GREY,
+                arrowprops=dict(arrowstyle="->", color=MID_GREY, lw=0.7),
+                bbox=dict(boxstyle="round,pad=0.25", facecolor="white",
+                          edgecolor=MID_GREY, alpha=0.9),
+                zorder=7, linespacing=1.3)
+
+    # ---- Quadrant labels ---- #
+    kw = dict(fontsize=8, fontstyle="italic", color=DARK_GREY,
+              alpha=0.30, ha="center", va="center")
+    ax.text(0.73, 0.90, "Sharp\ncorrect", **kw)
+    ax.text(0.06, 0.90, "Diffuse\ncorrect", **kw)
+    ax.text(0.73, 0.08, "Sharp\nwrong", **kw)
+    ax.text(0.06, 0.38, "Diffuse\nwrong", **kw)
+
+    # ---- Axes ---- #
+    ax.set_xlim(-0.02, 0.85)
+    ax.set_ylim(-0.04, 1.04)
+    ax.set_title(title, fontsize=9, fontweight="bold", pad=6)
+
+    return sc
 
 
 # ------------------------------------------------------------------ #
@@ -154,18 +214,25 @@ def main():
     apply_style()
 
     data = generate_reforecast()
-    n = len(data['alpha_star'])
+    n_all = len(data['alpha_star'])
     specificity = 1.0 - data['eta']
 
-    # Gentle downward jitter for alpha*=1 cases to reduce overplotting
-    # at the top boundary.  All jittered values stay in [0.96, 1.0],
-    # which is physically honest (still "correct").
+    # Jitter alpha*=1 cases downward within [0.96, 1.0]
     rng_j = np.random.default_rng(99)
     at_top = data['alpha_star'] > 0.99
     alpha_plot = data['alpha_star'].copy()
     alpha_plot[at_top] -= rng_j.uniform(0.0, 0.04, at_top.sum())
 
-    # Compute §6 anchor scenarios
+    # Sizes
+    s_min, s_max = 10, 120
+    sizes = s_min + (s_max - s_min) * data['Nc_star']
+
+    # Colormap and norm (shared)
+    cmap = LinearSegmentedColormap.from_list(
+        "hpi", [PURPLE, "#C9A5E0", "#F0E4F7"], N=256)
+    norm = Normalize(vmin=0.0, vmax=0.65)
+
+    # §6 anchor scenarios
     anchor_meta = [
         ("Sharp-Correct",  "A", "Sharp, confident\n(MDT obs)"),
         ("Hedged-Correct", "B", "Hedged, uncertain\n(ENH obs)"),
@@ -177,126 +244,64 @@ def main():
         card = compute_scorecard(sc['pi'], sc['obs'])
         anchors.append((letter, desc, card))
 
-    fig, ax = plt.subplots(figsize=(7.5, 6.5))
+    # ---- Subset: SLGT+ (obs_idx >= 1) ---- #
+    severe = data['obs_idx'] >= 1
+    n_sev = severe.sum()
 
-    # ---- Delta contour lines ---- #
-    x_line = np.linspace(-0.1, 1.1, 50)
-    for d_val in np.arange(-0.6, 0.81, 0.2):
-        y_line = d_val + 1.0 - x_line
-        if abs(d_val) < 1e-9:
-            # delta = 0: the key boundary
-            ax.plot(x_line, y_line, linewidth=1.5, color=DARK_GREY,
-                    alpha=0.35, linestyle="--", zorder=1)
-            ax.text(0.30, 0.72, r"$\delta = 0$", fontsize=8,
-                    color=DARK_GREY, alpha=0.55, rotation=-45,
-                    ha="center", va="center")
-        else:
-            ax.plot(x_line, y_line, linewidth=0.5, color=MID_GREY,
-                    alpha=0.15, linestyle=":", zorder=1)
-    # Label two reference contours
-    ax.text(0.60, 0.82, r"$\delta{=}{+}0.4$", fontsize=6.5,
-            color=MID_GREY, alpha=0.55, rotation=-45, ha="center")
-    ax.text(0.60, 0.42, r"$\delta{=}{-}0.2$", fontsize=6.5,
-            color=MID_GREY, alpha=0.55, rotation=-45, ha="center")
+    # ---- Figure ---- #
+    fig, (ax_l, ax_r) = plt.subplots(
+        1, 2, figsize=(13.5, 5.5), sharey=True,
+        gridspec_kw={"wspace": 0.08, "right": 0.88})
 
-    # ---- Colormap: dark purple (confident) → pale lavender (uncertain) ---- #
-    cmap = LinearSegmentedColormap.from_list(
-        "hpi", [PURPLE, "#C9A5E0", "#F0E4F7"], N=256)
-    norm = Normalize(vmin=0.0, vmax=0.65)
+    # Left: all days
+    _draw_panel(ax_l, specificity, alpha_plot, sizes, data['H_Pi'],
+                data['obs_idx'], cmap, norm, s_min, anchors,
+                show_anchor_labels=False,
+                title=f"(a)  All days  ($n = {n_all:,}$)")
+    ax_l.set_xlabel(r"Specificity  $1 - \eta$  (higher = sharper)", fontsize=9)
+    ax_l.set_ylabel(r"Depth-of-truth  $\alpha^*$  (higher = better)", fontsize=9)
 
-    # ---- Scatter: all cases ---- #
-    s_min, s_max = 12, 140
-    sizes = s_min + (s_max - s_min) * data['Nc_star']
+    # Right: SLGT+ only
+    sc = _draw_panel(
+        ax_r, specificity[severe], alpha_plot[severe],
+        sizes[severe], data['H_Pi'][severe],
+        data['obs_idx'][severe], cmap, norm, s_min, anchors,
+        show_anchor_labels=True,
+        title=f"(b)  Severe days only  (SLGT+,  $n = {n_sev:,}$)")
+    ax_r.set_xlabel(r"Specificity  $1 - \eta$  (higher = sharper)", fontsize=9)
 
-    ax.scatter(
-        specificity, alpha_plot,
-        s=sizes, c=data['H_Pi'], cmap=cmap, norm=norm,
-        edgecolors=DARK_GREY, linewidths=0.2, alpha=0.25,
-        marker="o", zorder=2, rasterized=True,
-    )
-    # Slightly bolder layer for MDT/HIGH obs days so they're visible
-    rare = data['obs_idx'] >= 3   # MDT or HIGH
-    sc = ax.scatter(
-        specificity[rare], alpha_plot[rare],
-        s=sizes[rare] * 1.3, c=data['H_Pi'][rare], cmap=cmap, norm=norm,
-        edgecolors=DARK_GREY, linewidths=0.5, alpha=0.55,
-        marker="D", zorder=3,
-    )
+    # ---- Shared colorbar ---- #
+    cbar = fig.colorbar(sc, ax=[ax_l, ax_r], pad=0.02, fraction=0.025,
+                        shrink=0.75)
+    cbar.set_label(r"Ignorance $H_\Pi$" + "\n(dark = confident)", fontsize=8)
+    cbar.ax.tick_params(labelsize=7)
 
-    # ---- Anchor points from §6 ---- #
-    anchor_offsets = {
-        "A": (-0.22, -0.18),
-        "B": (-0.22, -0.18),
-        "C": (-0.22, 0.14),
-    }
-    for letter, desc, card in anchors:
-        sx = 1 - card['eta']
-        sy = card['alpha_star']
-        ax.scatter(
-            sx, sy, s=300, c=[card['H_Pi']], cmap=cmap, norm=norm,
-            edgecolors="white", linewidths=2.5, alpha=1.0,
-            marker="*", zorder=6,
-        )
-        ox, oy = anchor_offsets[letter]
-        ax.annotate(
-            f"{letter}: {desc}",
-            xy=(sx, sy), xytext=(sx + ox, sy + oy),
-            fontsize=7, fontweight="bold", color=DARK_GREY,
-            arrowprops=dict(arrowstyle="->", color=MID_GREY, lw=0.8),
-            bbox=dict(boxstyle="round,pad=0.3", facecolor="white",
-                      edgecolor=MID_GREY, alpha=0.9),
-            zorder=7, linespacing=1.3,
-        )
-
-    # ---- Colorbar ---- #
-    cbar = fig.colorbar(sc, ax=ax, pad=0.02, fraction=0.04, shrink=0.70)
-    cbar.set_label(r"Ignorance $H_\Pi$" + "\n(dark = confident)",
-                   fontsize=9)
-    cbar.ax.tick_params(labelsize=8)
-
-    # ---- Quadrant annotations ---- #
-    kw = dict(fontsize=9, fontstyle="italic", color=DARK_GREY,
-              alpha=0.35, ha="center", va="center")
-    ax.text(0.75, 0.90, "Sharp\ncorrect", **kw)
-    ax.text(0.06, 0.90, "Diffuse\ncorrect", **kw)
-    ax.text(0.75, 0.08, "Sharp\nwrong", **kw)
-    ax.text(0.06, 0.42, "Diffuse\nwrong", **kw)
-
-    # ---- Size legend ---- #
+    # ---- Shared legend (on left panel) ---- #
     leg_handles = []
     for nc in [0.0, 0.3, 0.7]:
         s = s_min + (s_max - s_min) * nc
         lbl = f"$N_c^*$ = {nc:.1f}" if nc > 0 else r"$N_c^* = 0$"
         leg_handles.append(
             mlines.Line2D([], [], marker="o", linestyle="None",
-                          markersize=np.sqrt(s) * 0.65,
+                          markersize=np.sqrt(s) * 0.6,
                           markerfacecolor=MID_GREY,
                           markeredgecolor=DARK_GREY, label=lbl))
-    # Diamond marker explanation
     leg_handles.append(
         mlines.Line2D([], [], marker="D", linestyle="None",
-                      markersize=5, markerfacecolor="#C9A5E0",
+                      markersize=4.5, markerfacecolor="#C9A5E0",
                       markeredgecolor=DARK_GREY,
                       label="MDT / HIGH obs"))
-    ax.legend(handles=leg_handles, loc="lower left", fontsize=7,
-              frameon=True, fancybox=False, edgecolor=MID_GREY,
-              title="Marker encoding", title_fontsize=7.5,
-              handletextpad=0.5, borderpad=0.6)
+    ax_l.legend(handles=leg_handles, loc="lower left", fontsize=6.5,
+                frameon=True, fancybox=False, edgecolor=MID_GREY,
+                title="Marker encoding", title_fontsize=7,
+                handletextpad=0.4, borderpad=0.5)
 
-    # ---- Axes ---- #
-    ax.set_xlabel(r"Specificity  $1 - \eta$  (higher = sharper)",
-                  fontsize=10)
-    ax.set_ylabel(r"Depth-of-truth  $\alpha^*$  (higher = better)",
-                  fontsize=10)
-    ax.set_xlim(-0.02, 0.85)
-    ax.set_ylim(-0.04, 1.04)
-
-    # Print data summary for caption reference
+    # Print summary
     n_mdt = (data['obs_idx'] == 3).sum()
     n_high = (data['obs_idx'] == 4).sum()
-    print(f"  Data: n={n}, MDT obs={n_mdt}, HIGH obs={n_high}")
+    print(f"  All: n={n_all}  |  SLGT+: n={n_sev}  "
+          f"|  MDT: {n_mdt}  HIGH: {n_high}")
 
-    fig.tight_layout()
     save_fig(fig, "fig11_performance_diagram")
 
 

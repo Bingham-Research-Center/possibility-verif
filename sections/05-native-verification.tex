@@ -191,24 +191,37 @@ cluster of light markers in the upper left---diffuse but correct---may
 indicate a system that captures the truth but lacks the sharpness to be
 operationally useful.
 
+\textit{Stratification by observed category.}
+Like deterministic accuracy, aggregate possibilistic metrics can be
+inflated by trivially correct null forecasts.  If \spc{MRGL} days
+dominate the sample (as they do in SPC climatology), a system that is
+merely sharp and confident on routine days will exhibit high mean
+$\alpha^*$, high mean $\Nc^*$, and low mean $\ign$---regardless of its
+skill on rare events.  Figure~\ref{fig:performance_diagram} addresses
+this by presenting both the unconditional diagram (panel~a) and the
+\spc{SLGT}$+$ conditional diagram (panel~b).  The former is needed to
+detect false-alarm patterns on null days; the latter exposes the
+rare-event population where ignorance and near-miss structures dominate.
+For operational dashboards, we recommend reporting scorecard aggregates
+separately for null (\spc{MRGL}) and eventful (\spc{SLGT}$+$) subsets.
+
 \begin{figure*}[t]
 \centering
-\includegraphics[width=0.85\textwidth]{fig11_performance_diagram.png}
+\includegraphics[width=\textwidth]{fig11_performance_diagram.png}
 \caption{Possibilistic performance diagram for a five-year synthetic
-    reforecast ($n = 1{,}825$ days) with SPC-like base rates.  Circles
-    show common-category days (\spc{MRGL}--\spc{ENH}); diamonds
-    highlight rare-event days (\spc{MDT}: 144, \spc{HIGH}: 41).
-    Stars mark the three worked scenarios from
-    Section~\ref{sec:worked_examples}.  \textbf{Position:}
-    specificity $1 - \eta$ ($x$) vs.\ depth-of-truth $\alpha^*$ ($y$).
-    The dashed $\delta = 0$ contour separates forecasts that assign more
-    possibility to the truth than to the average category (above) from
-    those that do not (below).  \textbf{Colour:} ignorance $\ign$
+    reforecast with SPC-like base rates.
+    \textbf{(a)}~All days ($n = 1{,}825$): the dense dark cluster at
+    upper right is dominated by trivially correct \spc{MRGL} forecasts
+    that inflate aggregate metrics.
+    \textbf{(b)}~Severe days only (\spc{SLGT}$+$, $n = 1{,}005$): with
+    null cases removed, the rare-event population (\spc{MDT}: 144,
+    \spc{HIGH}: 41, shown as diamonds) is exposed and the ignorance
+    gradient becomes visible.  Stars mark the three worked scenarios from
+    Section~\ref{sec:worked_examples}.  \textbf{Position:} specificity
+    $1 - \eta$ ($x$) vs.\ depth-of-truth $\alpha^*$ ($y$); diagonal
+    dashed line is $\delta = 0$.  \textbf{Colour:} ignorance $\ign$
     (darker $=$ more confident).  \textbf{Size:} conditional necessity
-    $\Nc^*$ (larger $=$ truth more dominant).  The dense dark cluster at
-    upper right represents confident correct forecasts on common events;
-    scattered pale diamonds trace the rare-event population, which carries
-    higher ignorance and is harder to forecast correctly.}
+    $\Nc^*$ (larger $=$ truth more dominant).}
 \label{fig:performance_diagram}
 \end{figure*}
 
