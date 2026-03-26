@@ -1,7 +1,7 @@
 """Figure 4: Pignistic bridge walkthrough.
 
-Left panel: raw possibility distribution (5 bars).
-Right panel: (n+1)-category probability distribution produced by the
+Left panel: raw possibility distribution (K=5 bars, convective modes).
+Right panel: (K+1)-category probability distribution produced by the
 tripartite possibilistic-to-probabilistic bridge, with an explicit
 ignorance bar.  Arrows connect corresponding bars between panels.
 """
@@ -13,7 +13,7 @@ from matplotlib.patches import FancyArrowPatch
 from style import (
     apply_style, save_fig,
     PURPLE, GREEN, LIGHT_GREY, DARK_GREY, MID_GREY,
-    SPC_CATEGORIES, SPC_N,
+    CONV_MODES, CONV_N,
 )
 
 
@@ -44,14 +44,14 @@ def tripartite_bridge(pi):
 def main():
     apply_style()
 
-    pi = np.array([0.05, 0.10, 0.25, 0.70, 0.45, 0.05])
+    pi = np.array([0.05, 0.15, 0.70, 0.40, 0.10])
     p_cats, p_ign = tripartite_bridge(pi)
 
     # Verify the probability sums to 1
     assert abs(p_cats.sum() + p_ign - 1.0) < 1e-12
 
-    x_left = np.arange(SPC_N)
-    x_right = np.arange(SPC_N + 1)
+    x_left = np.arange(CONV_N)
+    x_right = np.arange(CONV_N + 1)
 
     bar_width = 0.50
 
@@ -62,7 +62,7 @@ def main():
     ax_l.bar(x_left, pi, width=bar_width, color=PURPLE, edgecolor="white",
              linewidth=0.8, zorder=3)
     ax_l.set_xticks(x_left)
-    ax_l.set_xticklabels(SPC_CATEGORIES, fontsize=8)
+    ax_l.set_xticklabels(CONV_MODES, fontsize=8)
     ax_l.set_ylabel(r"Possibility $\pi(\omega)$")
     ax_l.set_title("Raw Possibility Distribution", fontsize=10,
                     fontweight="bold", pad=8)
@@ -70,9 +70,9 @@ def main():
     ax_l.axhline(1.0, linestyle=":", linewidth=0.6, color=MID_GREY, zorder=1)
 
     # --- Right panel: (n+1)-category probability distribution ---
-    right_labels = list(SPC_CATEGORIES) + ["IGN"]
+    right_labels = list(CONV_MODES) + ["IGN"]
     right_vals = np.concatenate([p_cats, [p_ign]])
-    right_colours = [PURPLE] * SPC_N + [MID_GREY]
+    right_colours = [PURPLE] * CONV_N + [MID_GREY]
 
     ax_r.bar(x_right, right_vals, width=bar_width, color=right_colours,
              edgecolor="white", linewidth=0.8, zorder=3)
@@ -92,7 +92,7 @@ def main():
     # --- Arrows connecting corresponding bars ---
     # Use figure-level coordinates via ConnectionPatch
     from matplotlib.patches import ConnectionPatch
-    for i in range(SPC_N):
+    for i in range(CONV_N):
         # Connect top of left bar to top of right bar
         con = ConnectionPatch(
             xyA=(x_left[i], pi[i]), coordsA=ax_l.transData,
@@ -106,7 +106,7 @@ def main():
     con_ign = ConnectionPatch(
         xyA=(x_left[int(np.argmax(pi))], pi.max()),
         coordsA=ax_l.transData,
-        xyB=(SPC_N, p_ign), coordsB=ax_r.transData,
+        xyB=(CONV_N, p_ign), coordsB=ax_r.transData,
         arrowstyle="->", color=MID_GREY, linewidth=0.8,
         linestyle="--", connectionstyle="arc3,rad=0.25",
     )

@@ -58,7 +58,7 @@ def main():
                 [(+1, False, 0.20), (+1, True,  0.50), (-1, False, 0.20)]),
             ("DSC",                      "Discrimination",
                 [(+1, True,  0.45), (+1, True,  0.70), (+1, True,  0.90)]),
-            (r"$P(\geq\!$ENH$)$",       "Exceedance skill",
+            (r"$P($organised$)$",       "Exceedance skill",
                 [(+1, False, 0.25), (+1, True,  0.50), (+1, True,  0.65)]),
         ]),
         ("Deterministic", [

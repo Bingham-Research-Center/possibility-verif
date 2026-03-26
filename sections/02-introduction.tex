@@ -23,13 +23,14 @@ verification through proper scoring rules.  Yet probability demands
 precise quantification---each outcome receives a single number
 representing relative frequency or degree of belief, and those numbers
 must sum to unity.  Not all forecasting systems produce output that
-satisfies these constraints.  The Storm Prediction Center (SPC)
-convective outlooks, for instance, assign ordered categorical labels
-(\spc{NONE} through \spc{HIGH}) that express graded plausibility rather
-than calibrated frequency.  SPC issues crisp categorical outlooks drawn
-on a map; this paper proposes a hypothetical possibilistic alternative
-using these familiar categories as the running example, treating the
-outlook at a single point (Norman, Oklahoma) as the observation.
+satisfies these constraints.
+Convective mode prediction---classifying storms as discrete cells,
+supercells, quasi-linear convective systems (QLCS), or mesoscale
+convective systems (MCS)---offers a natural running example.  Mode
+categories are point-verifiable (an observer can identify the storm
+type), genuinely independent (a supercell is not `one step worse' than a
+cell), and inherently uncertain (mode evolution depends on mesoscale
+processes that are poorly resolved by current models).
 Possibility theory \citep{Dubois1988-nh}
 provides a mathematical framework for exactly this kind of statement:
 graded compatibility of outcomes with available evidence, without the
@@ -47,14 +48,14 @@ settings.  Expert-rule systems and fuzzy inference engines produce
 membership functions that are possibility distributions by construction
 \citep{Klir1995-va}.  Imprecise-probability frameworks generate upper
 and lower bounds on event probabilities that map directly onto the
-possibility--necessity duality.  In severe-weather forecasting, a
-forecaster may wish to express that \spc{MDT} risk is plausible but not
+possibility--necessity duality.  In convective mode prediction, a
+forecaster may wish to express that \mode{SUPER} is plausible but not
 certain, while acknowledging that the mesoscale environment is poorly
 sampled---a statement that maps cleanly onto a subnormal possibility
 distribution but awkwardly onto a probability.  Assigning
-$\pi(\spc{MDT}) = 0.7$ says ``\spc{MDT} is fairly compatible with
+$\pi(\mode{SUPER}) = 0.7$ says ``\mode{SUPER} is fairly compatible with
 available evidence''; it does not say ``the long-run frequency of
-\spc{MDT} events is 70\%.''
+\mode{SUPER} events is 70\%.''
 
 For subnormal distributions ($\max_\omega \pi(\omega) < 1$), the
 possibilistic ignorance $\ign = 1 - \max(\pi)$ quantifies the gap
@@ -62,7 +63,7 @@ between the system's best-supported outcome and full endorsement---a
 signal that probability, which must sum to unity, cannot represent.
 Normalizing a subnormal distribution to $\max(\pi) = 1$ erases this
 signal, a problem we call \textit{ignorance erasure}: it conflates ``the
-system thinks \spc{ENH} is most likely'' with ``the system is
+system thinks \mode{QLCS} is most likely'' with ``the system is
 confident'' (Section~\ref{sec:naive_normalization} develops this
 contrast in detail).
 
@@ -130,6 +131,6 @@ Section~\ref{sec:tripartite_value} establishes three hypothesis tests
 demonstrating that each uncertainty component (possibility, ignorance,
 conditional necessity) independently contributes verification value.
 Section~\ref{sec:worked_examples} walks through three worked examples
-using SPC convective outlook categories (\spc{NONE} through \spc{HIGH}).
+using convective mode categories (\mode{NULL} through \mode{MCS}).
 Section~\ref{sec:discussion} discusses connections to Dempster--Shafer
 theory, applicability beyond severe weather, and future directions.

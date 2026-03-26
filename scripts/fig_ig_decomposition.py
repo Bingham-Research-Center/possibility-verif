@@ -16,7 +16,7 @@ import matplotlib.patches as mpatches
 from style import (
     apply_style, save_fig,
     PURPLE, GREEN, LIGHT_GREY, DARK_GREY, MID_GREY,
-    SPC_N,
+    CONV_N,
 )
 
 
@@ -35,7 +35,7 @@ def main():
 
     # Plausible synthetic values (bits).
     # UNC is context only (same for all scenarios).
-    UNC_val = np.log2(SPC_N)  # ~2.58 bits for K=6
+    UNC_val = np.log2(CONV_N)  # ~2.32 bits for K=5
 
     DSC = np.array([1.80, 1.10, -0.30, 0.20, 0.00])  # discrimination
     REL = np.array([0.05, 0.10, 0.45, 0.55, 0.00])   # reliability penalty
@@ -84,7 +84,7 @@ def main():
     ax.axhline(UNC_val, linestyle="--", linewidth=0.8, color=MID_GREY, zorder=1)
     ax.text(
         n - 0.5, UNC_val + 0.05,
-        f"UNC = $\\log_2 {SPC_N}$",
+        f"UNC = $\\log_2 {CONV_N}$",
         ha="right", va="bottom", fontsize=8, color=MID_GREY,
     )
 

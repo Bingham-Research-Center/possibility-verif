@@ -21,9 +21,9 @@ LIGHT_GREY = "#F0F0F0"
 DARK_GREY = "#333333"
 MID_GREY = "#999999"
 
-# SPC convective outlook categories (6-level, including null; no TSTM)
-SPC_CATEGORIES = ["NONE", "MRGL", "SLGT", "ENH", "MDT", "HIGH"]
-SPC_N = len(SPC_CATEGORIES)
+# Convective mode categories (5-level, nominal/independent)
+CONV_MODES = ["NULL", "CELL", "SUPER", "QLCS", "MCS"]
+CONV_N = len(CONV_MODES)
 
 # Figure output (resolved relative to project root)
 import os as _os

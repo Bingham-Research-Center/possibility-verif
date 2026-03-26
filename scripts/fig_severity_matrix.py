@@ -1,7 +1,7 @@
-"""Figure 12: Severity--confidence matrix (adapted from UK Met Office NSWWS).
+"""Figure 12: Generic wind-severity x confidence matrix.
 
 Shows how operational warning decisions implicitly navigate the two-dimensional
-space that possibility theory formalizes.  Rows are SPC severity categories;
+space that possibility theory formalizes.  Rows are wind-max severity tiers;
 columns represent forecaster confidence mapped to subnormality (H_Pi).
 Color intensity encodes the joint risk signal.
 """
@@ -11,7 +11,6 @@ from matplotlib.colors import LinearSegmentedColormap
 
 from style import (
     apply_style, save_fig, PURPLE, GREEN, DARK_GREY, MID_GREY,
-    SPC_CATEGORIES, SPC_N,
 )
 
 
@@ -25,8 +24,11 @@ def main():
     ignorance_values  = [0.8, 0.6, 0.4, 0.2, 0.0]   # H_Pi for each column
     n_conf = len(confidence_labels)
 
-    # Severity weight (higher category → higher impact)
-    severity_weight = np.array([0.0, 0.2, 0.4, 0.6, 0.8, 1.0])  # NONE→HIGH
+    # Wind-max severity tiers (general-purpose, not SPC-specific)
+    wind_tiers = ["<25 kt", "25\u201350 kt", "50\u201375 kt", "75\u2013100 kt", ">100 kt"]
+
+    # Severity weight (higher tier → higher impact)
+    severity_weight = np.array([0.0, 0.25, 0.50, 0.75, 1.0])
 
     # Confidence weight (higher confidence → stronger signal)
     confidence_weight = np.array([0.2, 0.4, 0.6, 0.8, 1.0])
@@ -57,29 +59,24 @@ def main():
         (0, 4): "Monitor",
         (1, 0): "Monitor",
         (1, 1): "Monitor",
-        (1, 2): "Monitor",
+        (1, 2): "Aware",
         (1, 3): "Aware",
-        (1, 4): "Aware",
+        (1, 4): "Prepare",
         (2, 0): "Monitor",
-        (2, 1): "Monitor",
-        (2, 2): "Aware",
-        (2, 3): "Aware",
-        (2, 4): "Prepare",
-        (3, 0): "Monitor",
-        (3, 1): "Aware",
+        (2, 1): "Aware",
+        (2, 2): "Prepare",
+        (2, 3): "Prepare",
+        (2, 4): "Act",
+        (3, 0): "Aware",
+        (3, 1): "Prepare",
         (3, 2): "Prepare",
-        (3, 3): "Prepare",
+        (3, 3): "Act",
         (3, 4): "Act",
-        (4, 0): "Aware",
+        (4, 0): "Prepare",
         (4, 1): "Prepare",
-        (4, 2): "Prepare",
+        (4, 2): "Act",
         (4, 3): "Act",
         (4, 4): "Act",
-        (5, 0): "Aware",
-        (5, 1): "Prepare",
-        (5, 2): "Act",
-        (5, 3): "Act",
-        (5, 4): "Act",
     }
 
     for (row, col), label in action_labels.items():
@@ -90,12 +87,12 @@ def main():
     # Axes
     ax.set_xticks(range(n_conf))
     ax.set_xticklabels(confidence_labels, fontsize=8)
-    ax.set_yticks(range(SPC_N))
-    ax.set_yticklabels(SPC_CATEGORIES, fontsize=9, fontfamily="monospace")
+    ax.set_yticks(range(5))
+    ax.set_yticklabels(wind_tiers, fontsize=9, fontfamily="monospace")
 
     ax.set_xlabel("Forecaster confidence  (low $\\longrightarrow$ high;  "
                   "$H_\\Pi$: high $\\longrightarrow$ low)", fontsize=9)
-    ax.set_ylabel("Severity category", fontsize=9)
+    ax.set_ylabel("Wind-max severity", fontsize=9)
 
     # Ignorance annotation along top
     ax2 = ax.secondary_xaxis("top")
