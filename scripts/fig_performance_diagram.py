@@ -158,9 +158,25 @@ def _draw_panel(ax, spec, alpha, sizes, hpi, obs_idx,
             ha="center", va="center")
 
     # ---- Scatter ---- #
-    ax.scatter(spec, alpha, s=sizes, c=hpi, cmap=cmap, norm=norm,
-               edgecolors=DARK_GREY, linewidths=0.2, alpha=0.25,
-               marker="o", zorder=2, rasterized=True)
+    # Separate null (NONE) days from eventful days so the two panels
+    # are visually distinguishable: null days appear as small grey
+    # squares in the all-days panel but are absent from the SLGT+ panel.
+    _NONE_IDX = SPC_CATEGORIES.index("NONE")
+    null = obs_idx == _NONE_IDX
+    eventful = ~null
+
+    # Layer 1: null days — grey squares (visible only in panel a)
+    if null.any():
+        ax.scatter(spec[null], alpha[null], s=22, color="#D0D0D0",
+                   edgecolors="#AAAAAA", linewidths=0.3, alpha=0.45,
+                   marker="s", zorder=1, rasterized=True)
+
+    # Layer 2: eventful days — colored circles
+    sc_main = ax.scatter(spec[eventful], alpha[eventful],
+                         s=sizes[eventful], c=hpi[eventful],
+                         cmap=cmap, norm=norm,
+                         edgecolors=DARK_GREY, linewidths=0.2, alpha=0.35,
+                         marker="o", zorder=2, rasterized=True)
 
     rare = obs_idx >= SPC_CATEGORIES.index("MDT")
     sc = ax.scatter(spec[rare], alpha[rare],
@@ -262,6 +278,22 @@ def main():
     ax_l.set_xlabel(r"Specificity  $1 - \eta$  (higher = sharper)", fontsize=9)
     ax_l.set_ylabel(r"Depth-of-truth  $\alpha^*$  (higher = better)", fontsize=9)
 
+    # Annotate the NONE cluster so the panel difference is unmissable
+    _NONE_IDX = SPC_CATEGORIES.index("NONE")
+    none_mask = data['obs_idx'] == _NONE_IDX
+    none_spec = specificity[none_mask].mean()
+    none_alpha = alpha_plot[none_mask].mean()
+    n_none = none_mask.sum()
+    ax_l.annotate(
+        f"NONE obs\n($n = {n_none:,}$)",
+        xy=(none_spec, none_alpha),
+        xytext=(0.45, 0.92),
+        fontsize=6.5, fontweight="bold", color=MID_GREY,
+        arrowprops=dict(arrowstyle="->", color=MID_GREY, lw=0.8),
+        bbox=dict(boxstyle="round,pad=0.25", facecolor="white",
+                  edgecolor=MID_GREY, alpha=0.9),
+        zorder=7)
+
     # Right: SLGT+ only
     sc = _draw_panel(
         ax_r, specificity[severe], alpha_plot[severe],
@@ -292,6 +324,11 @@ def main():
                       markersize=4.5, markerfacecolor="#C9A5E0",
                       markeredgecolor=DARK_GREY,
                       label="MDT / HIGH obs"))
+    leg_handles.append(
+        mlines.Line2D([], [], marker="s", linestyle="None",
+                      markersize=3.5, markerfacecolor="#C0C0C0",
+                      markeredgecolor=MID_GREY,
+                      label="NONE obs (panel a only)"))
     ax_l.legend(handles=leg_handles, loc="lower left", fontsize=6.5,
                 frameon=True, fancybox=False, edgecolor=MID_GREY,
                 title="Marker encoding", title_fontsize=7,
