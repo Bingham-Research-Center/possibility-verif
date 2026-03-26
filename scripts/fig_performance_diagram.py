@@ -238,114 +238,19 @@ def _draw_panel(ax, spec, alpha, sizes, hpi, obs_idx,
 # ------------------------------------------------------------------ #
 
 def main():
+    """Generate performance_diagram.png and commitment_diagram.png.
+
+    Delegates to fig_perf_iterate.v3b (hexbin + green trajectory) and
+    fig_perf_iterate.v4b (commitment-discrimination + trajectory).
+    The data-generation helpers above (generate_reforecast,
+    scorecard_from_data) are still importable by other scripts.
+    """
+    from fig_perf_iterate import get_data, v3b, v4b
+
     apply_style()
-
-    data = generate_reforecast()
-    n_all = len(data['alpha_star'])
-    specificity = 1.0 - data['eta']
-
-    # Jitter alpha*=1 cases downward within [0.96, 1.0]
-    rng_j = np.random.default_rng(99)
-    at_top = data['alpha_star'] > 0.99
-    alpha_plot = data['alpha_star'].copy()
-    alpha_plot[at_top] -= rng_j.uniform(0.0, 0.04, at_top.sum())
-
-    # Sizes (scaled for smaller figsize)
-    s_min, s_max = 8, 80
-    sizes = s_min + (s_max - s_min) * data['Nc_star']
-
-    # Colormap and norm (shared)
-    cmap = LinearSegmentedColormap.from_list(
-        "hpi", [PURPLE, "#C9A5E0", "#F0E4F7"], N=256)
-    norm = Normalize(vmin=0.0, vmax=0.65)
-
-    # §6 anchor scenarios (with verified flag for edge colour)
-    anchor_meta = [
-        ("Sharp-Correct",  "A", "Sharp, confident\n(MDT obs)",  True),
-        ("Hedged-Correct", "B", "Hedged, uncertain\n(ENH obs)", True),
-        ("Sharp-Wrong",    "C", "Sharp, wrong\n(MDT obs)",      False),
-    ]
-    anchors = []
-    for name, letter, desc, verified in anchor_meta:
-        sc = SCENARIOS[name]
-        card = compute_scorecard(sc['pi'], sc['obs'])
-        anchors.append((letter, desc, card, verified))
-
-    # ---- Subset: SLGT+ ---- #
-    _SLGT_IDX = SPC_CATEGORIES.index("SLGT")
-    severe = data['obs_idx'] >= _SLGT_IDX
-    n_sev = severe.sum()
-
-    # ---- Figure ---- #
-    fig, (ax_l, ax_r) = plt.subplots(
-        1, 2, figsize=(7.5, 3.5), sharey=True,
-        gridspec_kw={"wspace": 0.12, "right": 0.88})
-
-    # Left: all days
-    _draw_panel(ax_l, specificity, alpha_plot, sizes, data['H_Pi'],
-                data['obs_idx'], cmap, norm, s_min, anchors,
-                show_anchor_labels=False,
-                title=f"(a)  All days  ($n = {n_all:,}$)")
-    ax_l.set_xlabel(r"Specificity  $1 - \eta$  (higher = sharper)", fontsize=9)
-    ax_l.set_ylabel(r"Depth-of-truth  $\alpha^*$  (higher = better)", fontsize=9)
-
-    # Right: SLGT+ only
-    sc = _draw_panel(
-        ax_r, specificity[severe], alpha_plot[severe],
-        sizes[severe], data['H_Pi'][severe],
-        data['obs_idx'][severe], cmap, norm, s_min, anchors,
-        show_anchor_labels=True,
-        title=f"(b)  Severe days only  (SLGT+,  $n = {n_sev:,}$)")
-    ax_r.set_xlabel(r"Specificity  $1 - \eta$  (higher = sharper)", fontsize=9)
-
-    # ---- Shared colorbar ---- #
-    cbar = fig.colorbar(sc, ax=[ax_l, ax_r], pad=0.02, fraction=0.025,
-                        shrink=0.75)
-    cbar.set_label(r"Ignorance $H_\Pi$" + "\n(dark = confident)", fontsize=8)
-    cbar.ax.tick_params(labelsize=7)
-
-    # ---- Shared legend (on left panel) ---- #
-    leg_handles = []
-    for nc in [0.0, 0.3, 0.7]:
-        s = s_min + (s_max - s_min) * nc
-        lbl = f"$N_c^*$ = {nc:.1f}" if nc > 0 else r"$N_c^* = 0$"
-        leg_handles.append(
-            mlines.Line2D([], [], marker="o", linestyle="None",
-                          markersize=np.sqrt(s) * 0.6,
-                          markerfacecolor=MID_GREY,
-                          markeredgecolor=DARK_GREY, label=lbl))
-    leg_handles.append(
-        mlines.Line2D([], [], marker="D", linestyle="None",
-                      markersize=4.5, markerfacecolor="#C9A5E0",
-                      markeredgecolor=DARK_GREY,
-                      label="MDT / HIGH obs"))
-    leg_handles.append(
-        mlines.Line2D([], [], marker="o", linestyle="None",
-                      markersize=5, markerfacecolor="#D0D0D0",
-                      markeredgecolor="#AAAAAA", alpha=0.5,
-                      label="NONE cluster (panel a)"))
-    leg_handles.append(
-        mlines.Line2D([], [], marker="*", linestyle="None",
-                      markersize=7, markerfacecolor=MID_GREY,
-                      markeredgecolor=GREEN, markeredgewidth=1.2,
-                      label="Anchor (verified)"))
-    leg_handles.append(
-        mlines.Line2D([], [], marker="*", linestyle="None",
-                      markersize=7, markerfacecolor=MID_GREY,
-                      markeredgecolor=_MISS_RED, markeredgewidth=1.2,
-                      label="Anchor (miss)"))
-    ax_l.legend(handles=leg_handles, loc="lower left", fontsize=6.5,
-                frameon=True, fancybox=False, edgecolor=MID_GREY,
-                title="Marker encoding", title_fontsize=7,
-                handletextpad=0.4, borderpad=0.5)
-
-    # Print summary
-    n_mdt = (data['obs_idx'] == SPC_CATEGORIES.index("MDT")).sum()
-    n_high = (data['obs_idx'] == SPC_CATEGORIES.index("HIGH")).sum()
-    print(f"  All: n={n_all}  |  SLGT+: n={n_sev}  "
-          f"|  MDT: {n_mdt}  HIGH: {n_high}")
-
-    save_fig(fig, "performance_diagram")
+    data, ap, spec, anch = get_data()
+    v3b(data, ap, spec, anch)
+    v4b(data, ap, spec, anch)
 
 
 if __name__ == "__main__":

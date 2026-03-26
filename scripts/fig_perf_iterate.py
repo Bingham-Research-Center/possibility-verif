@@ -269,7 +269,7 @@ def v3b(data, ap, spec, anchors):
     ax.set_title(f"V3b: Hexbin + Green Trajectory  (all, $n = {len(spec)}$)",
                  fontsize=9, fontweight="bold", pad=8)
     fig.tight_layout()
-    save_fig(fig, "perf_v3b_green")
+    save_fig(fig, "performance_diagram")
 
 
 # ------------------------------------------------------------------ #
@@ -319,7 +319,7 @@ def v4b(data, ap, spec, anchors):
         f"  (all, $n = {len(spec)}$)",
         fontsize=9, fontweight="bold", pad=8)
     fig.tight_layout()
-    save_fig(fig, "perf_v4b_traj")
+    save_fig(fig, "commitment_diagram")
 
 
 # ------------------------------------------------------------------ #

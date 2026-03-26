@@ -11,7 +11,7 @@ Standalone methods paper: "Possible, yes; ignorant, perhaps: a scorecard for pos
 ## Build
 
 - **LaTeX**: Compiled on **Overleaf with XeLaTeX** (TeX Live 2025). Locally: `latexmk -xelatex main.tex`.
-- **Figures**: `python scripts/generate_all.py` then `python scripts/fig_scorecard_table.py`, `python scripts/fig_performance_diagram.py`, `python scripts/fig_severity_matrix.py`, and `python scripts/fig_perf_iterate.py`. Outputs 13 PNGs to `figures/`.
+- **Figures**: `python scripts/generate_all.py` then `python scripts/fig_scorecard_table.py`, `python scripts/fig_performance_diagram.py`, and `python scripts/fig_severity_matrix.py`. Outputs 13 PNGs to `figures/`.
 - **Python env**: `conda env create -f environment.yml` creates `poss-verif`.
 
 ## Gotchas
