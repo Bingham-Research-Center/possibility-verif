@@ -311,10 +311,6 @@ def v4b(data, ap, spec, anchors):
     ax.set_ylabel(
         r"Discrimination  $\delta = \alpha^* - \eta$"
         r"  ($\rightarrow$ better)", fontsize=9)
-    ax.set_title(
-        f"V4b: Commitment–Discrimination + Trajectory"
-        f"  (all, $n = {len(spec)}$)",
-        fontsize=9, fontweight="bold", pad=8)
     fig.tight_layout()
     save_fig(fig, "commitment_diagram")
 
