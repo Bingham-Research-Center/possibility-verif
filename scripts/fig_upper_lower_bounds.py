@@ -8,7 +8,6 @@ L and U are the possibilistic bounds from Eqs 11-12:
 """
 import numpy as np
 import matplotlib.pyplot as plt
-import matplotlib.patches as mpatches
 
 from style import (
     apply_style, save_fig,
