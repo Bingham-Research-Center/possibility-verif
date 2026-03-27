@@ -67,7 +67,11 @@ def main():
     ax_l.set_title("Raw Possibility Distribution", fontsize=10,
                     fontweight="bold", pad=8)
     ax_l.set_ylim(0, 1.10)
-    ax_l.axhline(1.0, linestyle=":", linewidth=0.6, color=MID_GREY, zorder=1)
+    ax_l.axhline(1.0, linestyle="--", linewidth=0.8, color=GREEN, zorder=1,
+                 alpha=0.7)
+    ax_l.text(SPC_N - 0.6, 1.03,
+              r"$\pi = 1$ (no ignorance)",
+              fontsize=7.5, fontstyle="italic", color=GREEN, ha="right")
 
     # --- Right panel: (n+1)-category probability distribution ---
     right_labels = list(SPC_CATEGORIES) + ["IGN"]
@@ -97,7 +101,7 @@ def main():
         con = ConnectionPatch(
             xyA=(x_left[i], pi[i]), coordsA=ax_l.transData,
             xyB=(x_right[i], p_cats[i]), coordsB=ax_r.transData,
-            arrowstyle="->", color=MID_GREY, linewidth=0.8,
+            arrowstyle="->", color=GREEN, linewidth=0.8,
             connectionstyle="arc3,rad=0.12",
         )
         fig.add_artist(con)
@@ -107,7 +111,7 @@ def main():
         xyA=(x_left[int(np.argmax(pi))], pi.max()),
         coordsA=ax_l.transData,
         xyB=(SPC_N, p_ign), coordsB=ax_r.transData,
-        arrowstyle="->", color=MID_GREY, linewidth=0.8,
+        arrowstyle="->", color=GREEN, linewidth=0.8,
         linestyle="--", connectionstyle="arc3,rad=0.25",
     )
     fig.add_artist(con_ign)
@@ -121,7 +125,14 @@ def main():
         ha="center", va="bottom", fontsize=9, color=DARK_GREY,
     )
 
-    fig.subplots_adjust(left=0.08, right=0.96, bottom=0.12, top=0.92,
+    # Note about differing y-axes
+    fig.text(0.50, 0.95, "Note: y-axes differ",
+             ha="center", va="top", fontsize=8, fontstyle="italic",
+             color=GREEN,
+             bbox=dict(boxstyle="round,pad=0.3", facecolor="white",
+                       edgecolor=GREEN, linewidth=0.8, alpha=0.9))
+
+    fig.subplots_adjust(left=0.08, right=0.96, bottom=0.12, top=0.88,
                         wspace=0.40)
     save_fig(fig, "pignistic_bridge")
 

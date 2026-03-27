@@ -34,8 +34,12 @@ def main():
 
     # --- Annotation: Pi_max dashed line ---
     ax.axhline(pi_max, linestyle="--", linewidth=1.0, color=DARK_GREY, zorder=2)
-    ax.text(SPC_N - 0.5, pi_max - 0.03,
-            r"$\Pi_{\max}$" + f" = {pi_max:.2f}" + "\n(peak plausibility)",
+    ax.text(SPC_N - 0.5, pi_max - 0.02,
+            "Peak plausibility",
+            ha="right", va="top", fontsize=9, fontweight="bold",
+            color=DARK_GREY)
+    ax.text(SPC_N - 0.5, pi_max - 0.11,
+            r"$\Pi_{\max}$" + f" = {pi_max:.2f}",
             ha="right", va="top", fontsize=9, color=DARK_GREY)
 
     # --- Annotation: H_Pi bracket on the right side ---
@@ -51,19 +55,26 @@ def main():
             color=DARK_GREY, linewidth=1.0, zorder=4)
     # Label
     mid_y = (pi_max + 1.0) / 2.0
-    ax.text(bracket_x + 0.15, mid_y,
-            r"$H_\Pi$" + f" = {h_pi:.2f}" + "\n(admitted ignorance)",
+    ax.text(bracket_x + 0.15, mid_y + 0.05,
+            "Admitted ignorance",
+            ha="left", va="center", fontsize=9, fontweight="bold",
+            color=DARK_GREY)
+    ax.text(bracket_x + 0.15, mid_y - 0.05,
+            r"$H_\Pi$" + f" = {h_pi:.2f}",
             ha="left", va="center", fontsize=9, color=DARK_GREY)
 
     # --- Annotation: N_c for the peak category ---
     ax.annotate(
-        r"$N_c$" + f" = {SPC_CATEGORIES[peak_idx]}" + "\n(most certain category)",
+        "Most certain category",
         xy=(peak_idx, pi[peak_idx]),
-        xytext=(peak_idx - 1.2, pi[peak_idx] + 0.22),
-        fontsize=9, color=DARK_GREY,
+        xytext=(peak_idx - 1.2, pi[peak_idx] + 0.28),
+        fontsize=9, fontweight="bold", color=DARK_GREY,
         arrowprops=dict(arrowstyle="->", color=DARK_GREY, lw=1.0),
         ha="center", va="bottom",
     )
+    ax.text(peak_idx - 1.2, pi[peak_idx] + 0.19,
+            r"$N_c$" + f" = {SPC_CATEGORIES[peak_idx]}",
+            fontsize=9, color=DARK_GREY, ha="center", va="bottom")
 
     # Axes
     ax.set_xticks(x)

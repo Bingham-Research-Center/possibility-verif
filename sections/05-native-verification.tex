@@ -190,9 +190,11 @@ $\Nc^*$ & Among scenarios the system covered, was the truth dominant
 \end{tabularx}
 \renewcommand{\arraystretch}{1.0}
 
-Aggregates $\overline{\alpha^*}$, $\overline{\eta}$,
-$\overline{\delta}$, $\overline{\ign}$, $\overline{\Nc^*}$ are reported
-with bootstrap confidence intervals.
+Overbar notation ($\overline{\alpha^*}$, $\overline{\eta}$, etc.)
+denotes summary statistics computed over the verification sample;
+the specific aggregation function (mean, median, or other robust
+estimator) and uncertainty quantification method are left to the
+practitioner.
 
 \textbf{Permutation invariance and ordinal domains.}
 The five scorecard metrics are permutation-invariant: they treat
@@ -247,8 +249,8 @@ discrimination).  These axes are orthogonal---$\pi_{\max}$ is the raw
 \textit{Reading the commitment diagram:} upper right is committed and
 discriminating (ideal); lower right is overconfident and wrong; upper
 left is the cautious forecast that got the shape right.  Below the
-$\delta = 0$ line, the forecast failed to discriminate.  Anchor~C
-(sharp-wrong) sits squarely in the overconfident quadrant; Anchor~B
+$\delta = 0$ line, the forecast failed to discriminate.  Scenario~C
+(sharp-wrong) sits squarely in the overconfident quadrant; Scenario~B
 (hedged-correct) sits in the cautious-discriminating region---a
 distinction invisible in the shape-quality diagram.
 
@@ -267,7 +269,7 @@ distinction invisible in the shape-quality diagram.
     \textbf{Hex bins:} coloured by count.
     \textbf{Green line:} category means from \spc{NONE} (upper right)
     to \spc{HIGH} (lower left).
-    \textbf{Stars:} Section~\ref{sec:worked_examples} anchors.
+    \textbf{Stars:} Section~\ref{sec:worked_examples} scenarios.
     Upper right = committed \& discriminating.
     Lower right = overconfident \& wrong.
     Dashed line = $\delta = 0$ break-even.}

@@ -97,10 +97,31 @@ def main():
         # Reference line at 1.0
         ax.axhline(1.0, linestyle=":", linewidth=0.6, color=MID_GREY, zorder=1)
 
+        # H_Pi gap annotation
+        pi_max = pi.max()
+        h_pi = 1.0 - pi_max
+
+        # Dashed line at Pi_max
+        ax.axhline(pi_max, linestyle="--", linewidth=0.8, color=DARK_GREY,
+                   alpha=0.5, zorder=2)
+
+        # Small bracket on right side
+        bx = SPC_N - 0.55
+        ax.plot([bx, bx], [pi_max, 1.0],
+                color=DARK_GREY, lw=0.7, zorder=4)
+        ax.plot([bx - 0.05, bx + 0.05], [1.0, 1.0],
+                color=DARK_GREY, lw=0.7, zorder=4)
+        ax.plot([bx - 0.05, bx + 0.05], [pi_max, pi_max],
+                color=DARK_GREY, lw=0.7, zorder=4)
+        mid_gap = (pi_max + 1.0) / 2.0
+        ax.text(bx + 0.12, mid_gap,
+                r"$H_\Pi$" + f"={h_pi:.2f}",
+                fontsize=7, color=DARK_GREY, ha="left", va="center")
+
         ax.set_xticks(x)
         ax.set_xticklabels(SPC_CATEGORIES, fontsize=8)
         ax.set_title(title, fontsize=10, fontweight="bold", pad=8)
-        ax.set_ylim(0, 1.15)
+        ax.set_ylim(0, 1.20)
 
         # Compute scorecard
         sc = compute_scorecard(pi, obs)

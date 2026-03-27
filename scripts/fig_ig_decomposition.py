@@ -118,16 +118,18 @@ def main():
     # Skill / no-skill region labels
     ax.text(
         -0.45, 0.15, "forecast beats\nclimatology",
-        fontsize=7, color=MID_GREY, fontstyle="italic", va="bottom",
+        fontsize=8, color=DARK_GREY, fontstyle="italic",
+        fontweight="medium", va="bottom",
     )
     ax.text(
         -0.45, -0.15, "forecast worse\nthan climatology",
-        fontsize=7, color=MID_GREY, fontstyle="italic", va="top",
+        fontsize=8, color=DARK_GREY, fontstyle="italic",
+        fontweight="medium", va="top",
     )
 
     ax.legend(
-        loc="upper left", fontsize=8, frameon=True, fancybox=False,
-        edgecolor=MID_GREY,
+        bbox_to_anchor=(0.5, 1.02), loc="lower center", ncol=2,
+        fontsize=8, frameon=True, fancybox=False, edgecolor=MID_GREY,
     )
 
     fig.tight_layout()
