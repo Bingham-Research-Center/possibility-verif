@@ -168,9 +168,9 @@ Figure~\ref{fig:three_lanes_schematic} provides a visual summary of the
 three lanes, showing how the raw possibility distribution feeds into each
 verification pathway.
 
-\begin{figure}[!t]
+\begin{figure*}[!t]
 \centering
-\includegraphics[width=\columnwidth]{verification_lanes.png}
+\includegraphics[width=0.85\textwidth]{verification_lanes.png}
 \caption{Three-lane verification schematic.  A subnormal possibility
     distribution feeds three parallel verification pathways:
     \textbf{Lane~1} (categorical) evaluates the mode-based point
@@ -182,7 +182,7 @@ verification pathway.
     Each lane diagnoses failure modes invisible to
     the others (Table~\ref{tab:three_lanes}).}
 \label{fig:three_lanes_schematic}
-\end{figure}
+\end{figure*}
 
 In practice, a verification analyst would compile scorecard aggregates
 across a test sample, tracking changes between model versions or
@@ -202,9 +202,9 @@ pushed discrimination further at the cost of slight reliability
 degradation---a trade-off the three-lane view makes immediately visible
 but that no single metric could reveal.
 
-\begin{figure*}[b]
+\begin{figure}[t]
 \centering
-\includegraphics[width=0.80\textwidth]{scorecard_table.png}
+\includegraphics[width=\columnwidth]{scorecard_table.png}
 \caption{Verification scorecard for a hypothetical possibilistic
     forecasting system across three development versions, each compared
     to a v1.0 baseline.  Rows are grouped into three verification lanes:
@@ -219,6 +219,6 @@ but that no single metric could reveal.
     recalibrated uncertainty that the native possibilistic lane detects
     but the probabilistic lane may absorb.}
 \label{fig:scorecard_table}
-\end{figure*}
+\end{figure}
 
 \FloatBarrier

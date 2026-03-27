@@ -91,7 +91,7 @@ def main():
     # ------------------------------------------------------------------ #
     min_s, max_s = 55, 280   # marker size range
 
-    fig, ax = plt.subplots(figsize=(7.0, 6.0))
+    fig, ax = plt.subplots(figsize=(3.8, 5.5))
 
     # y-axis: row 0 at top, extra padding at bottom for legend clearance
     ax.set_ylim(n_rows + 0.3, -0.5)
@@ -109,7 +109,7 @@ def main():
             # Centred lane label
             mid_x = (n_ver - 1) / 2.0
             ax.text(mid_x, r, label, ha="center", va="center",
-                    fontsize=8.5, fontweight="bold", fontstyle="italic",
+                    fontsize=8, fontweight="bold", fontstyle="italic",
                     color=DARK_GREY, zorder=4)
         else:
             # Alternating row shading (count only metric rows)
@@ -119,7 +119,7 @@ def main():
 
             # Row label (axes-fraction x, data y)
             ax.text(-0.02, r, label, transform=ytrans,
-                    ha="right", va="center", fontsize=8, color=DARK_GREY)
+                    ha="right", va="center", fontsize=7, color=DARK_GREY)
 
             # Triangle markers
             for j in range(n_ver):
@@ -172,7 +172,7 @@ def main():
               frameon=True, fancybox=False, edgecolor=MID_GREY,
               handletextpad=0.3, columnspacing=1.0)
 
-    fig.tight_layout(rect=[0.28, 0.09, 1.0, 0.97])
+    fig.tight_layout(rect=[0.32, 0.09, 1.0, 0.97])
     save_fig(fig, "scorecard_table")
 
 
