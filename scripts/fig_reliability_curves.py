@@ -1,4 +1,4 @@
-"""Figure 6: Reliability-style curve for possibilistic specificity.
+"""Figure 6 (PDF order): Reliability-style curve for possibilistic specificity.
 
 x-axis: N_c threshold (0 to 1).
 y-axis: Conditional hit rate — fraction of forecasts whose N_c exceeds

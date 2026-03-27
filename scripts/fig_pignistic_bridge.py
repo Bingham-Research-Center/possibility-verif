@@ -1,4 +1,4 @@
-"""Figure 4: Pignistic bridge walkthrough.
+"""Figure 2 (PDF order): Pignistic bridge walkthrough.
 
 Left panel: raw possibility distribution (5 bars).
 Right panel: (n+1)-category probability distribution produced by the

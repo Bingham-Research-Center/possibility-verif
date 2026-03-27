@@ -1,9 +1,8 @@
-"""Possibilistic performance diagram (Roebber-style), two-panel.
+"""Possibilistic performance diagram (Roebber-style).
 
-Left panel:  all days (n ≈ 1,825) — full context including null (NONE) cases.
-Right panel: severe days only (SLGT+) — where the framework earns its keep.
-             Without the NONE/MRGL mass the rare-event population
-             (MDT/HIGH) is exposed and ignorance patterns become visible.
+Generates two separate figures via fig_perf_iterate:
+  - perf_hexbin_trajectory.png  (Fig 4, PDF order): shape-quality hexbin diagram
+  - commitment_diagram.png      (Fig 5, PDF order): commitment × discrimination
 
 Encoding (5 metrics on one plot):
   x-axis    1 - eta   specificity (higher = sharper)
@@ -238,7 +237,7 @@ def _draw_panel(ax, spec, alpha, sizes, hpi, obs_idx,
 # ------------------------------------------------------------------ #
 
 def main():
-    """Generate performance_diagram.png and commitment_diagram.png.
+    """Generate perf_hexbin_trajectory.png and commitment_diagram.png.
 
     Delegates to fig_perf_iterate.v3b (hexbin + green trajectory) and
     fig_perf_iterate.v4b (commitment-discrimination + trajectory).

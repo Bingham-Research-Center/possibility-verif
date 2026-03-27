@@ -1,8 +1,8 @@
-"""Figure 10: Verification scorecard with triangle indicators.
+"""Figure 8 (PDF order): Verification scorecard with triangle indicators.
 
 Shows improvement/degradation of a possibilistic forecast system across
 model versions, relative to a baseline (v1.0).  Metrics span three
-verification lanes: native possibilistic, probabilistic, and deterministic.
+verification lanes: native possibilistic, probabilistic, and categorical.
 
 Convention (following ECMWF/WMO scorecard style):
   Filled up-triangle (green)    statistically significant improvement

@@ -1,7 +1,8 @@
-"""Figure 2: Three-scenario comparison.
+"""Figure 10 (PDF order): Three-scenario comparison.
 
 Side-by-side bar charts for three forecast scenarios (sharp-correct,
-hedged-correct, sharp-wrong), all verified against observed = MDT.
+hedged-correct, sharp-wrong).  Observed outcome varies by scenario
+(A: MDT, B: ENH, C: MDT).
 Below each panel a text box reports the five-number possibilistic scorecard.
 """
 import numpy as np

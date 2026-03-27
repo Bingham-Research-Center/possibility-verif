@@ -1,4 +1,4 @@
-"""Figure 3: Filling the gauge.
+"""Figure 9 (PDF order): Filling the gauge.
 
 Horizontal SPC gauge bars whose fill level equals the possibility value.
 Uses the sharp-correct scenario; the observed category (MDT) is filled

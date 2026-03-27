@@ -1,4 +1,4 @@
-"""Figure 12: Severity--confidence matrix (adapted from UK Met Office NSWWS).
+"""Figure 12 (PDF order): Severity--confidence matrix (adapted from UK Met Office NSWWS).
 
 Shows how operational warning decisions implicitly navigate the two-dimensional
 space that possibility theory formalizes.  Rows are SPC severity categories;

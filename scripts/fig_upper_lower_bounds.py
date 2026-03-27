@@ -1,4 +1,6 @@
-"""Figure 5: Upper / lower probability bounds.
+"""Not in manuscript (exceedance bounds removed in Round 2).
+
+Originally Figure 5: Upper / lower probability bounds.
 
 For each of the three scenarios, shows the interval [L, U] on a [0, 1]
 number line for the threshold event A_T = {ENH, MDT, HIGH}.
