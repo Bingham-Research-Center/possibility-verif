@@ -87,6 +87,33 @@ def main():
         ax.text(col, row, label, ha="center", va="center",
                 fontsize=8, fontweight="bold", color=text_color)
 
+    # --- Scenario overlays ---
+    MISS_RED = "#C0392B"
+    # A: MDT (row 4), H_Pi=0.10 → Very high confidence (col 4)
+    # B: ENH (row 3), H_Pi=0.45 → Medium confidence (col 2)
+    # C forecast: NONE (row 0), H_Pi=0.15 → High confidence (col 3)
+    scenario_cells = [
+        ("A", 4, 4, GREEN),      # MDT × Very high → Act (correct)
+        ("B", 3, 2, GREEN),      # ENH × Medium → Prepare (correct)
+        ("C", 0, 3, MISS_RED),   # NONE × High → Monitor (wrong)
+    ]
+    for ltr, row, col, color in scenario_cells:
+        ax.add_patch(plt.Rectangle(
+            (col - 0.45, row - 0.45), 0.9, 0.9, fill=False,
+            edgecolor=color, linewidth=2.5, zorder=5,
+        ))
+        ax.text(col + 0.38, row + 0.38, ltr, fontsize=8,
+                fontweight="bold", color=color, ha="right", va="top",
+                zorder=6)
+
+    # Dashed red arrow from C's forecast cell (NONE, High) to C's truth (MDT, High)
+    ax.annotate("", xy=(3, 4), xytext=(3, 0.5),
+                arrowprops=dict(arrowstyle="-|>", color=MISS_RED,
+                                linewidth=1.5, linestyle="--"),
+                zorder=5)
+    ax.text(3.48, 2.0, "C miss", fontsize=7, fontstyle="italic",
+            color=MISS_RED, ha="left", va="center", rotation=90)
+
     # Axes
     ax.set_xticks(range(n_conf))
     ax.set_xticklabels(confidence_labels, fontsize=8)

@@ -208,11 +208,21 @@ def main():
             ax_conf.text(c, r, str(val), ha="center", va="center",
                          fontsize=8, fontweight=fontw, color=txt_color)
 
+    # ±1 off-diagonal shading (near-miss cells)
+    for r in range(SPC_N):
+        for c in range(SPC_N):
+            if r != c and abs(r - c) == 1:
+                ax_conf.add_patch(plt.Rectangle(
+                    (c - 0.5, r - 0.5), 1, 1, fill=True,
+                    facecolor=PURPLE, alpha=0.06, edgecolor="none",
+                    zorder=1,
+                ))
+
     # Diagonal highlight
     for k in range(SPC_N):
         ax_conf.add_patch(plt.Rectangle(
             (k - 0.5, k - 0.5), 1, 1, fill=False,
-            edgecolor=GREEN, linewidth=1.8, zorder=3,
+            edgecolor=GREEN, linewidth=2.0, zorder=3,
         ))
 
     ax_conf.set_xticks(range(SPC_N))
@@ -225,7 +235,7 @@ def main():
                       fontweight="bold", pad=8)
 
     # Colorbar inset (top-left of panel b)
-    cax = ax_conf.inset_axes([0.02, 0.82, 0.35, 0.06])
+    cax = ax_conf.inset_axes([0.60, 0.82, 0.35, 0.06])
     cbar = fig.colorbar(im, cax=cax, orientation="horizontal")
     cbar.set_ticks([0, np.log10(11), np.log10(101), vmax])
     cbar.set_ticklabels(["0", "10", "100", str(int(conf.max()))])
@@ -250,11 +260,11 @@ def main():
                   edgecolor=MID_GREY, linewidth=0.6),
     )
 
-    # "Green = correct" legend note near diagonal
+    # Legend note
     ax_conf.text(
-        0.03, 0.50, "Green = correct",
-        transform=ax_conf.transAxes, ha="left", va="center",
-        fontsize=6.5, fontstyle="italic", color=GREEN,
+        0.03, 0.97, "Green = correct\nShading = near miss (±1 cat)",
+        transform=ax_conf.transAxes, ha="left", va="top",
+        fontsize=6.5, fontstyle="italic", color=DARK_GREY,
     )
 
     fig.tight_layout(w_pad=3.0)
