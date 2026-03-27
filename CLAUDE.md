@@ -50,13 +50,13 @@ Standalone methods paper: "Possible, yes; ignorant, perhaps: a scorecard for pos
 | PNG name | Script | Section | What it shows |
 |----------|--------|---------|---------------|
 | `possibility_anatomy` | `fig_possibility_anatomy.py` | §2.2 | Subnormal bar chart with Pi_max, H_Pi, N_c |
-| `three_scenario` | `fig_three_scenario.py` | §6.3 | Three scenarios side-by-side with scorecard |
-| `filling_gauge` | `fig_filling_gauge.py` | §6.2 | Horizontal gauge bars for Scenario A |
+| `three_scenario` | `fig_three_scenario.py` | §6.5 | Three scenarios side-by-side with scorecard |
+| `filling_gauge` | `fig_filling_gauge.py` | §6.4 | Horizontal gauge bars for Scenario A |
 | `pignistic_bridge` | `fig_pignistic_bridge.py` | §3.1 | Raw pi → probability with ignorance bar |
 | `reliability_curves` | `fig_reliability_curves.py` | §5.1 | Conditional hit rate vs N_c threshold |
 | `ig_decomposition` | `fig_ig_decomposition.py` | §3.2 | Stacked bar IG decomposition (UNC, DSC, REL) |
 | `verification_lanes` | `fig_verification_lanes.py` | §5.2 | Three-lane flowchart schematic |
-| `categorical_scores` | `fig_categorical_scores.py` | §6.x | Two-panel: threshold POD/FAR/CSI + confusion matrix |
+| `categorical_scores` | `fig_categorical_scores.py` | §6.2 | Two-panel: threshold POD/FAR/CSI + confusion matrix |
 | `scorecard_table` | `fig_scorecard_table.py` | §5.2 | ECMWF-style scorecard with triangles |
 | `perf_hexbin_trajectory` | `fig_perf_iterate.py` | §4.2 | Hexbin + green trajectory shape-quality diagram |
 | `commitment_diagram` | `fig_perf_iterate.py` | §4.2 | Commitment × discrimination diagnostic |
@@ -85,7 +85,7 @@ The paper has three verification lanes:
 - **Probabilistic lane** (§3): IG via bridge — converts to probabilities (with explicit ignorance outcome), measures information gain relative to SPC climatological baseline.
 - **Native possibilistic lane** (§4): five-number scorecard — evaluates shape and confidence without conversion (α*, η, δ, H_Π, N_c*).
 
-Exceedance bounds [L, U] were removed in Round 2 (circular under subnormality). Formal credal-set bounds noted as future work in §7.6.
+Exceedance bounds [L, U] were removed in Round 2 (circular under subnormality). Formal credal-set bounds noted as future work in §7.5.
 
 ## Manuscript Status
 

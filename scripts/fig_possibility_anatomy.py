@@ -1,4 +1,4 @@
-"""Figure 1: Possibility distribution anatomy.
+"""Figure 1 (PDF order): Possibility distribution anatomy.
 
 Shows a subnormal bar chart over the five SPC convective outlook categories,
 annotating the key structural features: Pi_max, the hesitancy gap H_Pi,
@@ -28,14 +28,14 @@ def main():
     x = np.arange(SPC_N)
     bar_width = 0.55
 
-    fig, ax = plt.subplots(figsize=(5.5, 4.0))
+    fig, ax = plt.subplots(figsize=(5.5, 4.5))
     bars = ax.bar(x, pi, width=bar_width, color=PURPLE, edgecolor="white",
                   linewidth=0.8, zorder=3)
 
     # --- Annotation: Pi_max dashed line ---
     ax.axhline(pi_max, linestyle="--", linewidth=1.0, color=DARK_GREY, zorder=2)
     ax.text(SPC_N - 0.5, pi_max - 0.03,
-            r"$\Pi_{\max}$" + f" = {pi_max:.2f}",
+            r"$\Pi_{\max}$" + f" = {pi_max:.2f}" + "\n(peak plausibility)",
             ha="right", va="top", fontsize=9, color=DARK_GREY)
 
     # --- Annotation: H_Pi bracket on the right side ---
@@ -52,14 +52,14 @@ def main():
     # Label
     mid_y = (pi_max + 1.0) / 2.0
     ax.text(bracket_x + 0.15, mid_y,
-            r"$H_\Pi$" + f" = {h_pi:.2f}",
+            r"$H_\Pi$" + f" = {h_pi:.2f}" + "\n(admitted ignorance)",
             ha="left", va="center", fontsize=9, color=DARK_GREY)
 
     # --- Annotation: N_c for the peak category ---
     ax.annotate(
-        r"$N_c$" + f" = {SPC_CATEGORIES[peak_idx]}",
+        r"$N_c$" + f" = {SPC_CATEGORIES[peak_idx]}" + "\n(most certain category)",
         xy=(peak_idx, pi[peak_idx]),
-        xytext=(peak_idx - 1.2, pi[peak_idx] + 0.18),
+        xytext=(peak_idx - 1.2, pi[peak_idx] + 0.22),
         fontsize=9, color=DARK_GREY,
         arrowprops=dict(arrowstyle="->", color=DARK_GREY, lw=1.0),
         ha="center", va="bottom",
@@ -70,7 +70,7 @@ def main():
     ax.set_xticklabels(SPC_CATEGORIES)
     ax.set_xlabel("SPC Category " + r"$\omega$")
     ax.set_ylabel(r"Possibility $\pi(\omega)$")
-    ax.set_ylim(0, 1.10)
+    ax.set_ylim(0, 1.18)
     ax.set_xlim(-0.5, SPC_N + 0.3)
 
     # Thin reference line at 1.0

@@ -224,15 +224,37 @@ def main():
     ax_conf.set_title("(b)  Confusion matrix", fontsize=10,
                       fontweight="bold", pad=8)
 
-    # Accuracy annotation
+    # Colorbar inset (top-left of panel b)
+    cax = ax_conf.inset_axes([0.02, 0.82, 0.35, 0.06])
+    cbar = fig.colorbar(im, cax=cax, orientation="horizontal")
+    cbar.set_ticks([0, np.log10(11), np.log10(101), vmax])
+    cbar.set_ticklabels(["0", "10", "100", str(int(conf.max()))])
+    cbar.ax.tick_params(labelsize=6)
+    cbar.set_label("Count", fontsize=7, labelpad=1)
+
+    # Near-miss computation
+    incorrect = conf.sum() - np.trace(conf)
+    near_miss = sum(conf[r, c] for r in range(SPC_N) for c in range(SPC_N)
+                    if r != c and abs(r - c) == 1)
+    near_pct = near_miss / incorrect if incorrect > 0 else 0
+
+    # Mode accuracy + near-miss annotation
     accuracy = np.trace(conf) / conf.sum()
     ax_conf.text(
         0.97, 0.03,
-        f"Accuracy = {accuracy:.1%}",
+        f"Mode accuracy = {accuracy:.1%}\n"
+        + r"$\pm$1 cat errors = " + f"{near_pct:.0%} of misses",
         transform=ax_conf.transAxes, ha="right", va="bottom",
-        fontsize=9, fontweight="bold", color=DARK_GREY,
+        fontsize=8, fontweight="bold", color=DARK_GREY,
         bbox=dict(boxstyle="round,pad=0.3", facecolor="white",
                   edgecolor=MID_GREY, linewidth=0.6),
+    )
+
+    # "Green = correct" legend note near diagonal
+    ax_conf.text(
+        0.03, 0.50, "Green = correct",
+        transform=ax_conf.transAxes, ha="left", va="center",
+        fontsize=6.5, fontstyle="italic", color=GREEN,
     )
 
     fig.tight_layout(w_pad=3.0)

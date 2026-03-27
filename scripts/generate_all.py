@@ -1,20 +1,20 @@
-"""Generate all figures for the possibilistic verification manuscript.
+"""Generate 8 of 12 manuscript figures.
 
-Figures included in the manuscript (12 total):
-  1. possibility_anatomy     (§2.2)
-  2. three_scenario           (§6.3)
-  3. filling_gauge            (§6.2)
-  4. pignistic_bridge         (§3.1)
-  5. reliability_curves       (§5.1)
-  6. ig_decomposition         (§3.2)
-  7. verification_lanes       (§5.2)
-  8. categorical_scores       (§6.x)
+Script order → (PDF fig #) and section:
+  1. possibility_anatomy     → Fig 1   (§2.2)
+  2. three_scenario          → Fig 10  (§6.5)
+  3. filling_gauge           → Fig 9   (§6.4)
+  4. pignistic_bridge        → Fig 2   (§3.1)
+  5. reliability_curves      → Fig 6   (§5.1)
+  6. ig_decomposition        → Fig 3   (§3.2)
+  7. verification_lanes      → Fig 7   (§5.2)
+  8. categorical_scores      → Fig 11  (§6.2)
 
 Run separately (import from other scripts):
-  - fig_scorecard_table.py     → scorecard_table.png         (§5.2)
-  - fig_performance_diagram.py → perf_hexbin_trajectory.png  (§4.2)
-                               → commitment_diagram.png      (§4.2)
-  - fig_severity_matrix.py     → severity_matrix.png         (§7.3)
+  - fig_scorecard_table.py     → scorecard_table.png         Fig 8  (§5.2)
+  - fig_performance_diagram.py → perf_hexbin_trajectory.png  Fig 4  (§4)
+                               → commitment_diagram.png      Fig 5  (§4)
+  - fig_severity_matrix.py     → severity_matrix.png         Fig 12 (§7.3)
 
 Not in manuscript (scripts retained, PNGs still generated):
   - fig_upper_lower_bounds.py  (exceedance bounds removed in Round 2)

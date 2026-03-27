@@ -141,9 +141,9 @@ several forecast scenarios with net IG annotated.
 
 The IG decomposition is the logarithmic counterpart of the Brier score's familiar three-component breakdown ($\mathrm{BS} = \mathrm{REL} - \mathrm{RES} + \mathrm{UNC}$).  Where the Brier decomposition measures skill in probability-squared units, the IG decomposition measures it in bits---additive, interpretable information units.  A reliability diagram plots observed frequency against forecast probability; the REL term in Eq.~\eqref{eq:ig_decomp} is its scalar summary.  Similarly, the DSC term summarizes the spread of conditional outcome distributions that a reliability diagram visualizes as deviations from the diagonal.
 
-\begin{figure*}[!b]
+\begin{figure}[!b]
 \centering
-\includegraphics[width=0.75\textwidth]{ig_decomposition.png}
+\includegraphics[width=\columnwidth]{ig_decomposition.png}
 \caption{Information-gain decomposition for five forecast scenarios.
     Bars show net $\mathrm{IG} = \mathrm{DSC} - \mathrm{REL}$ (bits),
     with the zero baseline representing climatological performance.
@@ -154,7 +154,7 @@ The IG decomposition is the logarithmic counterpart of the Brier score's familia
     IG ($+1.75$~bits); the sharp-wrong scenario shows negative IG
     ($-0.75$~bits, worse than climatology).}
 \label{fig:ig_decomp}
-\end{figure*}
+\end{figure}
 
 To avoid naming collision with possibilistic ignorance $\ign$, this
 manuscript uses ``information gain'' (IG) rather than the abbreviation

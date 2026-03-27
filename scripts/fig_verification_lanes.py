@@ -1,7 +1,7 @@
-"""Figure 8: Three-lane verification summary schematic.
+"""Figure 7 (PDF order): Three-lane verification summary schematic.
 
 Flowchart-style diagram showing the three complementary verification lanes:
-  Lane 1 — Scalar (RMSE, bias) evaluates the point forecast.
+  Lane 1 — Categorical (POD, FAR, CSI, HSS) evaluates the mode-based forecast.
   Lane 2 — Probabilistic (IG via bridge) evaluates the converted probability.
   Lane 3 — Possibilistic (five-number scorecard) evaluates the native
             possibility distribution (the novel contribution).
@@ -58,82 +58,85 @@ def _arrow(ax, x0, y0, x1, y1, **kwargs):
 def main():
     apply_style()
 
-    fig, ax = plt.subplots(figsize=(10.0, 6.5))
-    ax.set_xlim(0, 10)
-    ax.set_ylim(0, 7)
+    fig, ax = plt.subplots(figsize=(3.8, 7.0))
+    ax.set_xlim(0, 3.8)
+    ax.set_ylim(0, 7.0)
     ax.axis("off")
 
+    cx = 1.9   # centre x
+    bw = 3.2   # box width (wide boxes)
+    bw_s = 2.6  # box width (processing/metric boxes)
+
     # ===== Top: forecast input =====
-    _box(ax, 5.0, 6.3, 3.8, 0.7,
-         "Possibilistic Forecast\n" + r"$\pi(\omega)$",
-         DARK_GREY, fontsize=10, fontweight="bold")
+    _box(ax, cx, 6.60, bw, 0.55,
+         "Possibilistic Forecast  " + r"$\pi(\omega)$",
+         DARK_GREY, fontsize=8, fontweight="bold")
 
-    # Three vertical arrows from forecast box to lane headers
-    lane_x = [1.8, 5.0, 8.2]
-    for lx in lane_x:
-        _arrow(ax, lx, 5.90, lx, 5.15)
-
-    # ===== Lane headers =====
-    lane_labels = [
-        "Lane 1: Categorical",
-        "Lane 2: Probabilistic",
-        "Lane 3: Possibilistic",
-    ]
-    for i, (lx, label) in enumerate(zip(lane_x, lane_labels), 1):
-        _box(ax, lx, 4.85, 2.8, 0.55, label,
-             LANE_COLOURS[i], fontsize=9, fontweight="bold")
-
-    # ===== Processing steps =====
-    # Lane 1: extract mode -> categorical metrics
-    _box(ax, 1.8, 3.9, 2.5, 0.50,
+    # --- Lane 1: Categorical (blue-grey) ---
+    y_hdr1 = 5.80
+    _arrow(ax, cx, 6.30, cx, y_hdr1 + 0.22)
+    _box(ax, cx, y_hdr1, bw, 0.40,
+         "Lane 1: Categorical",
+         LANE_COLOURS[1], fontsize=8, fontweight="bold")
+    y_proc1 = 5.30
+    _arrow(ax, cx, y_hdr1 - 0.22, cx, y_proc1 + 0.18)
+    _box(ax, cx, y_proc1, bw_s, 0.32,
          r"Mode: $\hat{c} = \arg\max \pi$",
-         LANE_COLOURS[1], alpha=0.75, fontsize=8)
-    _arrow(ax, 1.8, 4.55, 1.8, 4.18)
-
-    _box(ax, 1.8, 3.0, 2.5, 0.50,
+         LANE_COLOURS[1], alpha=0.75, fontsize=7)
+    y_met1 = 4.88
+    _arrow(ax, cx, y_proc1 - 0.18, cx, y_met1 + 0.15)
+    _box(ax, cx, y_met1, bw_s, 0.28,
          "POD, FAR, CSI, HSS",
-         LANE_COLOURS[1], alpha=0.75, fontsize=8)
-    _arrow(ax, 1.8, 3.62, 1.8, 3.28)
+         LANE_COLOURS[1], alpha=0.75, fontsize=7)
 
-    # Lane 2: bridge -> IG
-    _box(ax, 5.0, 3.9, 2.5, 0.50,
-         "Pignistic bridge\n" + r"$\pi \rightarrow p$",
-         LANE_COLOURS[2], alpha=0.75, fontsize=8)
-    _arrow(ax, 5.0, 4.55, 5.0, 4.18)
+    # --- Lane 2: Probabilistic (light blue) ---
+    y_hdr2 = 4.30
+    _arrow(ax, cx, y_met1 - 0.16, cx, y_hdr2 + 0.22)
+    _box(ax, cx, y_hdr2, bw, 0.40,
+         "Lane 2: Probabilistic",
+         LANE_COLOURS[2], fontsize=8, fontweight="bold")
+    y_proc2 = 3.80
+    _arrow(ax, cx, y_hdr2 - 0.22, cx, y_proc2 + 0.18)
+    _box(ax, cx, y_proc2, bw_s, 0.32,
+         r"Bridge: $\pi \rightarrow p$",
+         LANE_COLOURS[2], alpha=0.75, fontsize=7)
+    y_met2 = 3.38
+    _arrow(ax, cx, y_proc2 - 0.18, cx, y_met2 + 0.15)
+    _box(ax, cx, y_met2, bw_s, 0.28,
+         "IG = DSC " + r"$-$" + " REL",
+         LANE_COLOURS[2], alpha=0.75, fontsize=7)
 
-    _box(ax, 5.0, 3.0, 2.5, 0.50,
-         "IG = DSC - REL",
-         LANE_COLOURS[2], alpha=0.75, fontsize=8)
-    _arrow(ax, 5.0, 3.62, 5.0, 3.28)
-
-    # Lane 3: native scorecard
-    _box(ax, 8.2, 3.9, 2.5, 0.50,
-         "Native distribution\n" + r"$\pi(\omega)$ directly",
-         LANE_COLOURS[3], alpha=0.85, fontsize=8)
-    _arrow(ax, 8.2, 4.55, 8.2, 4.18)
-
-    _box(ax, 8.2, 3.0, 2.5, 0.50,
+    # --- Lane 3: Possibilistic (purple, highlighted) ---
+    y_hdr3 = 2.78
+    _arrow(ax, cx, y_met2 - 0.16, cx, y_hdr3 + 0.22)
+    _box(ax, cx, y_hdr3, bw, 0.40,
+         "Lane 3: Possibilistic",
+         LANE_COLOURS[3], fontsize=8, fontweight="bold")
+    y_proc3 = 2.28
+    _arrow(ax, cx, y_hdr3 - 0.22, cx, y_proc3 + 0.18)
+    _box(ax, cx, y_proc3, bw_s, 0.32,
+         r"Native $\pi(\omega)$ directly",
+         LANE_COLOURS[3], alpha=0.85, fontsize=7)
+    y_met3 = 1.86
+    _arrow(ax, cx, y_proc3 - 0.18, cx, y_met3 + 0.15)
+    _box(ax, cx, y_met3, bw_s, 0.28,
          r"$\alpha^*, \eta, \delta, H_\Pi, N_c^*$",
-         LANE_COLOURS[3], alpha=0.85, fontsize=8)
-    _arrow(ax, 8.2, 3.62, 8.2, 3.28)
+         LANE_COLOURS[3], alpha=0.85, fontsize=7)
 
     # ===== Observation box =====
-    _box(ax, 5.0, 1.6, 3.8, 0.60,
+    y_obs = 1.20
+    _arrow(ax, cx, y_met3 - 0.16, cx, y_obs + 0.22,
+           arrowstyle="<|-", color=GREEN, linewidth=0.8)
+    _box(ax, cx, y_obs, bw, 0.40,
          "Observation  " + r"$c_{\mathrm{obs}}$",
-         GREEN, fontsize=10, fontweight="bold")
-    # Arrows from observation to each lane's metric box
-    for lx in lane_x:
-        _arrow(ax, lx, 2.72, lx, 1.95,
-               connectionstyle="arc3,rad=0.0",
-               arrowstyle="<|-", color=GREEN, linewidth=0.8)
+         GREEN, fontsize=8, fontweight="bold")
 
-    # ===== Footer: convergence arrows into a combined assessment =====
-    _box(ax, 5.0, 0.55, 5.0, 0.50,
-         "Comprehensive Forecast Assessment",
-         DARK_GREY, fontsize=9, fontweight="bold")
-    for lx in lane_x:
-        _arrow(ax, lx, 1.27, 5.0 + (lx - 5.0) * 0.3, 0.83,
-               connectionstyle="arc3,rad=0.0")
+    # ===== Assessment footer =====
+    y_assess = 0.50
+    _arrow(ax, cx, y_obs - 0.22, cx, y_assess + 0.20)
+    _box(ax, cx, y_assess, bw, 0.38,
+         "Comprehensive Assessment",
+         DARK_GREY, fontsize=7.5, fontweight="bold")
 
     fig.tight_layout()
     save_fig(fig, "verification_lanes")

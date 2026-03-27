@@ -1,4 +1,4 @@
-"""Figure 7: Information Gain (IG) decomposition — stacked bars.
+"""Figure 3 (PDF order): Information Gain (IG) decomposition — stacked bars.
 
 Five forecast scenarios with stacked bars decomposing Information Gain
 into Discrimination (DSC) and Reliability (REL) components.
@@ -44,9 +44,9 @@ def main():
     IG = DSC - REL  # net information gain (higher is better)
 
     x = np.arange(n)
-    bar_width = 0.50
+    bar_width = 0.45
 
-    fig, ax = plt.subplots(figsize=(7.5, 4.5))
+    fig, ax = plt.subplots(figsize=(4.0, 4.2))
 
     # --- Stacking logic ---
     # DSC bars extend from 0: upward if positive, downward if negative.
@@ -63,7 +63,7 @@ def main():
     bars_dsc = ax.bar(
         x, np.abs(DSC), width=bar_width, bottom=dsc_bottoms,
         color=PURPLE, edgecolor="white", linewidth=0.8,
-        zorder=3, alpha=0.80,
+        zorder=4, alpha=0.80,
         label=r"DSC (discrimination, $+$skill)",
     )
 
@@ -108,7 +108,7 @@ def main():
 
     # --- Axes ---
     ax.set_xticks(x)
-    ax.set_xticklabels(scenarios, fontsize=8)
+    ax.set_xticklabels(scenarios, fontsize=9)
     ax.set_ylabel("Information Gain (bits)", fontsize=10)
 
     y_lo = min(IG.min(), DSC.min()) - 0.4
@@ -126,7 +126,7 @@ def main():
     )
 
     ax.legend(
-        loc="upper right", fontsize=8, frameon=True, fancybox=False,
+        loc="upper left", fontsize=8, frameon=True, fancybox=False,
         edgecolor=MID_GREY,
     )
 

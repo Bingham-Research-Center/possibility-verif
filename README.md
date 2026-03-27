@@ -10,8 +10,7 @@ A verification framework for subnormal possibility distributions, introducing:
 
 - **Five-number scorecard**: alpha\*, eta, delta, H\_Pi, N\_c\*
 - **Possibility-to-probability bridge**: converts to probabilities with explicit ignorance outcome
-- **Interval log score**: logarithmic scoring for interval-valued forecasts
-- **Three verification lanes**: deterministic, probabilistic, and native possibilistic
+- **Three verification lanes**: categorical, probabilistic, and native possibilistic
 
 Running example: SPC convective outlook categories (MRGL, SLGT, ENH, MDT, HIGH).
 
@@ -23,9 +22,10 @@ Running example: SPC convective outlook categories (MRGL, SLGT, ENH, MDT, HIGH).
 ```bash
 conda env create -f environment.yml
 conda activate poss-verif
-python scripts/generate_all.py        # figs 1–9
-python scripts/fig_scorecard_table.py  # fig 10
-python scripts/fig_performance_diagram.py  # fig 11
+python scripts/generate_all.py        # 8 of 12 figures
+python scripts/fig_scorecard_table.py  # scorecard (Fig 8)
+python scripts/fig_performance_diagram.py  # hexbin + commitment (Figs 4–5)
+python scripts/fig_severity_matrix.py  # severity matrix (Fig 12)
 ```
 
 ## Repo Layout
@@ -37,7 +37,7 @@ rho-class/                   Template class files (do not modify rho.cls)
 figures/                     Generated PNGs (from scripts/)
 scripts/style.py             Shared palette, rcParams, SPC categories
 scripts/fig_*.py             Individual figure generators
-scripts/generate_all.py      Run figure scripts 1–9
+scripts/generate_all.py      Run 8 of 12 figure scripts
 archive/preprint-sections/   Reference copies of source appendices
 ```
 
