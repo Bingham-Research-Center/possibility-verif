@@ -58,14 +58,16 @@ def main():
                 [(+1, False, 0.20), (+1, True,  0.50), (-1, False, 0.20)]),
             ("DSC",                      "Discrimination",
                 [(+1, True,  0.45), (+1, True,  0.70), (+1, True,  0.90)]),
-            (r"$P(\geq\!$ENH$)$",       "Exceedance skill",
-                [(+1, False, 0.25), (+1, True,  0.50), (+1, True,  0.65)]),
         ]),
-        ("Deterministic", [
-            ("RMSE",                     "Root-mean-square err.",
-                [(+1, False, 0.25), (+1, True,  0.50), (+1, True,  0.70)]),
-            ("Bias",                     "Mean error",
-                [(-1, False, 0.15), (+1, False, 0.10), (+1, False, 0.05)]),
+        ("Categorical", [
+            ("POD",                      "Probability of detection",
+                [(+1, False, 0.20), (+1, True,  0.55), (+1, True,  0.70)]),
+            ("FAR",                      "False alarm ratio",
+                [(+1, False, 0.15), (+1, True,  0.40), (+1, True,  0.55)]),
+            ("CSI",                      "Critical success index",
+                [(+1, False, 0.25), (+1, True,  0.50), (+1, True,  0.65)]),
+            ("HSS",                      "Heidke skill score",
+                [(-1, False, 0.10), (+1, True,  0.45), (+1, True,  0.60)]),
         ]),
     ]
 

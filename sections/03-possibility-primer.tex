@@ -44,6 +44,11 @@ degree of possibility $\pi(\omega)$ satisfying:
     well-defined.  This paper relaxes that requirement, retaining
     subnormal distributions when the forecasting system provides weak
     support for all outcomes (Section~\ref{sec:subnormal}).
+\item \textbf{Max-additivity:} For any events $A, B \subseteq \Omega$
+    with $A \cap B = \emptyset$,
+    $\Pi(A \cup B) = \max\bigl(\Pi(A),\, \Pi(B)\bigr)$.
+    This axiom distinguishes possibility from probability: possibility
+    is governed by the maximum rather than the sum of its components.
 \end{axiomlist}
 
 From a possibility distribution $\pi$ that may or may not be normalized,
@@ -67,13 +72,16 @@ N(A) &= 1 - \Pi(\neg A)
     remains plausible).
 \end{itemize}
 
-For any event $A$, $N(A) \leq \Pi(A)$ always holds
-\citep{Dubois1988-nh}.  The interval $[N(A),\, \Pi(A)]$ brackets the
-range of probabilities $P(A)$ consistent with the available information:
-any probability distribution compatible with $\pi$ must satisfy
-$N(A) \leq P(A) \leq \Pi(A)$.
-This bracketing property is the foundation of imprecise-probability
-reasoning in possibility theory \citep{Dubois2006-MISSING}.
+For normal distributions ($\max(\pi)=1$), $N(A) \leq \Pi(A)$ always
+holds \citep{Dubois1988-nh}, and the interval $[N(A),\, \Pi(A)]$
+brackets the range of probabilities $P(A)$ consistent with the
+available information: any probability distribution compatible with
+$\pi$ must satisfy $N(A) \leq P(A) \leq \Pi(A)$.  Under subnormality
+this ordering can be violated; Section~\ref{sec:three_component}
+introduces conditional necessity $\Nc$, which restores well-behaved
+ordering by operating on the normalized shape.  This bracketing property
+is the foundation of imprecise-probability reasoning in possibility
+theory \citep{Dubois2006-MISSING}.
 
 %----------------------------------------------------------
 \subsection{Subnormal Distributions and Ignorance}\label{sec:subnormal}
@@ -140,7 +148,7 @@ The resulting possibility distribution is:
 \end{cases}
 \]
 with $\ign = 1 - 0.75 = 0.25$ and
-$\Nc(\spc{MDT}) = 1 - 0.267/1.0 = 0.73$.  Interpretation: \spc{MDT}
+$\Nc(\spc{MDT}) = 1 - 0.267 = 0.733$.  Interpretation: \spc{MDT}
 is the most plausible outcome ($\Pi = 0.75$) with moderate ignorance
 ($\ign = 0.25$); conditional necessity of $0.73$ indicates that among
 scenarios the system covers, \spc{MDT} is the dominant category.
@@ -224,7 +232,7 @@ three-component decomposition yields a compact five-number scorecard
 
 \textbf{Communication example (from Example~1):} ``\spc{MDT} risk is
 the most plausible outcome ($\Pi = 0.75$) with moderate ignorance
-($\ign = 0.25$).  Conditional necessity is $0.73$: among scenarios the
+($\ign = 0.25$).  Conditional necessity is $0.733$: among scenarios the
 system covers, \spc{MDT} is the dominant category.''  This statement
 conveys:
 \begin{itemize}[leftmargin=2em]
@@ -232,7 +240,7 @@ conveys:
 \item The system has moderate confidence in its assessment
     ($\ign = 0.25$).
 \item Among scenarios the system \textit{does} cover, \spc{MDT} is the
-    dominant outcome ($\Nc = 0.73$).
+    dominant outcome ($\Nc = 0.733$).
 \end{itemize}
 
 %----------------------------------------------------------

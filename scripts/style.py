@@ -25,6 +25,11 @@ MID_GREY = "#999999"
 SPC_CATEGORIES = ["NONE", "MRGL", "SLGT", "ENH", "MDT", "HIGH"]
 SPC_N = len(SPC_CATEGORIES)
 
+# Approximate SPC category climatological frequencies
+# (NONE dominates; HIGH is very rare)
+import numpy as _np
+SPC_CLIM = _np.array([0.60, 0.18, 0.12, 0.06, 0.032, 0.008])
+
 # Figure output (resolved relative to project root)
 import os as _os
 FIG_DIR = _os.path.join(_os.path.dirname(_os.path.dirname(_os.path.abspath(__file__))), "figures")

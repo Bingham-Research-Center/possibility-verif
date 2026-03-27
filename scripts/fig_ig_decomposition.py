@@ -34,8 +34,9 @@ def main():
     n = len(scenarios)
 
     # Plausible synthetic values (bits).
-    # UNC is context only (same for all scenarios).
-    UNC_val = np.log2(SPC_N)  # ~2.58 bits for K=6
+    # UNC = H(clim), entropy of the SPC climatological baseline.
+    from style import SPC_CLIM
+    UNC_val = -np.sum(SPC_CLIM * np.log2(SPC_CLIM))  # ~1.71 bits
 
     DSC = np.array([1.80, 1.10, -0.30, 0.20, 0.00])  # discrimination
     REL = np.array([0.05, 0.10, 0.45, 0.55, 0.00])   # reliability penalty
@@ -84,7 +85,7 @@ def main():
     ax.axhline(UNC_val, linestyle="--", linewidth=0.8, color=MID_GREY, zorder=1)
     ax.text(
         n - 0.5, UNC_val + 0.05,
-        f"UNC = $\\log_2 {SPC_N}$",
+        r"UNC = $H(\mathrm{clim})$",
         ha="right", va="bottom", fontsize=8, color=MID_GREY,
     )
 

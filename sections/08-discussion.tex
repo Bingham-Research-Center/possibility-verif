@@ -13,12 +13,9 @@ converting it to a probability.  Supporting this scorecard are a
 possibility-to-probability bridge
 (Section~\ref{sec:poss_prob_bridge}) that preserves the ignorance
 signal as an explicit outcome rather than erasing it through
-normalization, exceedance bounds
-(Section~\ref{sec:exceedance_bounds}) that answer
-probability-of-exceedance questions directly from the
-$[\Nc,\,\poss]$ interval, and three complementary verification lanes
+normalization, and three complementary verification lanes
 (Section~\ref{sec:three_lanes}) that together cover
-deterministic, probabilistic, and native possibilistic evaluation.
+categorical, probabilistic, and native possibilistic evaluation.
 Worked examples in Section~\ref{sec:worked_examples} demonstrated
 that each uncertainty component---possibility, ignorance, and
 conditional necessity---independently contributes verification value,
@@ -42,8 +39,8 @@ $\mathrm{Bel}(A)$: both represent a lower bound.  The interval
 $[\Nc(A),\,\poss(A)]$ used throughout this paper is therefore
 structurally equivalent to the DS interval
 $[\mathrm{Bel}(A),\,\mathrm{Pl}(A)]$, and the verification metrics
-defined in Sections~\ref{sec:native_verification}
-and~\ref{sec:exceedance_bounds} can be read as special cases of
+defined in Section~\ref{sec:native_verification}
+can be read as special cases of
 interval-probability verification.
 
 A key difference concerns the nature of the residual uncertainty.
@@ -55,21 +52,20 @@ information sources, and is distributed across focal elements of
 varying specificity.  The scalar $\ign$ therefore has no direct DS
 analogue; it is a distinctly possibilistic quantity.  The
 possibility-to-probability bridge
-(Section~\ref{sec:poss_prob_bridge}) generalizes the pignistic
-transformation of \citet{Smets1990-MISSING} to subnormal
-distributions: the classical pignistic transform assumes a normal
-(i.e., $\max(\pi)=1$) mass function, whereas the bridge explicitly
-allocates the subnormality residual $\ign$ to a dedicated ignorance
-outcome before redistributing the remaining mass.
+(Section~\ref{sec:poss_prob_bridge}) is inspired by the pignistic
+transformation of \citet{Smets1990-MISSING} but extends it to
+subnormal distributions: the classical pignistic transform assumes a
+normal (i.e., $\max(\pi)=1$) mass function, whereas the bridge
+explicitly allocates the subnormality residual $\ign$ to a dedicated
+ignorance outcome before redistributing the remaining mass.
 
 The structural parallels suggest a natural avenue for generalization.
 The verification framework developed here could be extended to
 belief-function forecasts by replacing $\poss$ and $\Nc$ with
-$\mathrm{Pl}$ and $\mathrm{Bel}$ throughout.  The five-number
-scorecard generalizes naturally: $\alpha^{*}$ becomes the plausibility
-of the observed outcome, $\eta$ measures the diffuseness of the
-plausibility function, and the exceedance bounds apply without
-modification to $[\mathrm{Bel},\,\mathrm{Pl}]$ intervals.  We note
+$\mathrm{Pl}$ and $\mathrm{Bel}$ throughout.  The five-number scorecard
+extends naturally: $\alpha^{*}$ becomes the plausibility
+of the observed outcome, and $\eta$ measures the diffuseness of the
+plausibility function.  We note
 this connection as a direction for future work, as a full treatment
 would require addressing the richer combinatorial structure of general
 mass functions.
@@ -80,8 +76,8 @@ mass functions.
 
 The verification framework is domain-agnostic: any system that
 produces subnormal possibility distributions over a finite universe of
-discourse $\Omega$ can be evaluated using the five-number scorecard,
-the possibility-to-probability bridge, and the exceedance bounds
+discourse $\Omega$ can be evaluated using the five-number scorecard
+and the possibility-to-probability bridge
 without modification.  The SPC convective outlook categories
 (\spc{NONE} through \spc{HIGH}) served as an illustrative running
 example, but the same machinery applies directly to air-quality
@@ -96,8 +92,8 @@ Extension to continuous forecast variables is straightforward via
 $\alpha$-cut discretization.  The continuous possibility distribution
 is sliced at a set of threshold levels $\alpha_1 > \alpha_2 > \cdots
 > \alpha_k$; each slice defines a nested categorical event (the set of
-outcomes with $\pi(\omega) \geq \alpha_i$) for which the scorecard and
-exceedance bounds apply.  For spatial fields, pointwise application
+outcomes with $\pi(\omega) \geq \alpha_i$) for which the scorecard
+applies.  For spatial fields, pointwise application
 of the scorecard at each grid cell produces spatially resolved
 verification maps, while aggregation across grid points yields
 domain-averaged skill metrics analogous to those used in conventional
@@ -164,82 +160,28 @@ onto conditional necessity.
 \label{fig:severity_matrix}
 \end{figure}
 
-%----------------------------------------------------------
-\subsection{Structured Uncertainty and LLM-Mediated Communication}%
-\label{sec:llm_communication}
+To connect the matrix to the verification framework, consider a cell at
+\spc{MDT} severity with high confidence ($\ign = 0.10$).  The implied
+distribution might be
+$\pi = (0.00,\, 0.00,\, 0.05,\, 0.15,\, 0.90,\, 0.10)$---exactly
+Scenario~A from Section~\ref{sec:worked_examples}.  The five-number
+scorecard then evaluates whether that matrix cell's implied distribution
+is well-calibrated: $\alpha^* = 1.0$ and $\delta = +0.778$ when
+\spc{MDT} verifies, but $\alpha^* = 0$ and $\delta < 0$ when it does
+not.  Aggregating scorecard values across all days that fall in a given
+matrix cell reveals whether the operational severity--confidence mapping
+is empirically justified.
 
-The three-component representation ($\poss$, $\ign$, $\Nc$) was designed
-not only for verification but also for downstream communication.  In a
-companion system (Lawson, in prep.), a large language model (LLM)
-translates the structured triplet into plain-language advisories via a
-four-stage pipeline:
-
-\begin{enumerate}[leftmargin=2em]
-\item \textbf{Monte Carlo clustering.}  Ensemble members (here, GEFS)
-    are clustered into representative scenarios, each tagged with
-    possibility values and an ignorance estimate.
-\item \textbf{Structured extraction.}  The possibilistic triplet
-    ($\poss$, $\ign$, $\Nc$) and supporting meteorological context are
-    serialized as JSON, providing the LLM with machine-readable
-    uncertainty metadata rather than raw gridded fields.
-\item \textbf{Guarded prompt construction.}  Pre-set guardrails enforce
-    citation of source data, caveats when $\ign$ exceeds a threshold
-    (``conditions are unusual; confidence is limited''), and
-    prohibition of fabricated precision.  Custom messages---e.g.,
-    regulatory triggers, operational deadlines---are injected per
-    stakeholder tier.
-\item \textbf{Tiered advisory generation.}  The LLM produces advisories
-    at three complexity levels (public, stakeholder, technical) rendered
-    as automated PDFs (Figure~\ref{fig:ffion_advisory}).
-\end{enumerate}
-
-\begin{figure*}[t]
-\centering
-\includegraphics[width=\textwidth]{ffion_advisory.png}
-\caption{End-to-end pipeline from raw NWP output to stakeholder
-    advisory.  \textbf{Left:} ensemble exceedance probabilities and
-    CAPE traces---the direct numerical context.  \textbf{Centre:}
-    structured JSON produced by the possibilistic analysis developed
-    in this paper, encoding the three-component triplet and full
-    distribution.  \textbf{Right:} stakeholder-level advisory generated
-    by an LLM with pre-set guardrails.  The ignorance signal
-    ($\ign = 0.25$) produces hedged language; conditional necessity
-    ($\Nc = 0.73$) produces confident language---both grounded in
-    the forecast data rather than manufactured by the model.  Adapted
-    from Lawson (in prep.).}
-\label{fig:ffion_advisory}
-\end{figure*}
-
-Run-to-run consistency is maintained by pinning absolute paths to both
-input NWP data and outlook files; the embedded AI agent (Anthropic's
-Claude, operating as a CLI tool) requires approximately three minutes of
-inference time per outlook cycle, ingesting data slices and forecast
-context before generating each advisory document.  The explicit ignorance
-signal is critical: it gives the LLM a principled basis for expressing
-uncertainty rather than manufacturing false precision from a normalized
-distribution.  Conditional necessity provides the complementary trigger
-for confident statements.
-
-The verification framework developed here closes the loop: the
-five-number scorecard evaluates whether the structured output that feeds
-communication is itself trustworthy.  Full details of the LLM
-translation layer are beyond the present scope; the point relevant to
-verification is that possibilistic forecasts produce machine-readable
-uncertainty metadata that probabilistic point forecasts do not.
+%%% §7.4 (LLM/Ffion communication pipeline) removed in Round 2.
+%%% Moved to future-work paragraph below.
 
 %----------------------------------------------------------
 \subsection{Software Availability}\label{sec:software}
 
-All verification metrics, the possibility-to-probability bridge, and
-the visualization tools described in this paper are implemented in
-Python.  The accompanying code is publicly available at
+All verification metrics, the bridge conversion, and the visualization
+tools described in this paper are implemented in Python and publicly
+available at
 \url{https://github.com/bingham-research-center/possibility-verif}.
-Key modules implement the five-number scorecard
-(\texttt{compute\_scorecard}), bridge conversion from possibility
-distributions to $(n{+}1)$-category probability vectors, and the
-exceedance bounds.  The
-implementation operates on NumPy arrays and can interface with xarray
-datasets for gridded verification workflows.
 
 %----------------------------------------------------------
 \subsection{Limitations and Future Directions}%
@@ -250,15 +192,16 @@ three reliability hypothesis tests
 (Section~\ref{sec:three_tests}) have not been established; at pilot
 scales (${\sim}100$ cases), these tests should be supplemented with
 illustrative case studies and bootstrap confidence intervals to guard
-against small-sample artifacts.  The scorecard and exceedance bounds are demonstrated here without a
+against small-sample artifacts.  The scorecard is demonstrated here without a
 possibilistic skill score, because defining a principled possibilistic
 climatology---the baseline needed for skill---remains an open problem.
 A consonant (nested) reference distribution derived from observed
 category frequencies is one candidate, but it may not suit applications
 with multimodal climatologies where the nested-set assumption breaks
-down.  Formal interval-valued scoring rules for the $[L, U]$ bounds,
-and construction of possibilistic baselines, are deferred to future
-work.
+down.  Formal credal-set exceedance bounds---grounded in the
+possibility--necessity duality but rigorously derived for subnormal
+distributions---and construction of possibilistic baselines are
+deferred to future work.
 
 The possibility-to-probability bridge assumes that the ignorance
 outcome is never observed: the true category is always one of the
@@ -270,22 +213,20 @@ taxonomy---the framework would need modification to allow the ignorance
 outcome to verify as ``correct'' under certain conditions, effectively
 treating $\ign$ as a legitimate forecast of novelty.
 
-The five scorecard metrics are permutation-invariant: they treat
-$\Omega$ as an unordered set.  This is natural when categories are
-genuinely nominal (e.g., precipitation type), but practitioners working
-with ordinal schemes---or discretized continuous variables---may want a
-distance-sensitive penalty that distinguishes a one-step miss from a
-far miss.  Extending the framework with an inter-category cost matrix
-is straightforward but beyond our present scope.
-
-Several directions for future work follow naturally.  First,
+Several directions for future work follow naturally.  The
+three-component representation ($\poss$, $\ign$, $\Nc$) lends itself to
+downstream communication; a companion project (Lawson, in prep.)
+explores LLM-mediated translation of the possibilistic triplet into
+tiered plain-language advisories, using the ignorance signal to trigger
+hedged language and conditional necessity to trigger confident language.
+First,
 multivariate possibilistic verification for correlated hazards (e.g.,
 simultaneous wind and hail occurrence) would require joint possibility
 distributions and an extension of the scorecard to multidimensional
 $\Omega$.  Second, conformal prediction also produces interval-valued
 forecasts but from a frequentist calibration perspective; a formal
 comparison of conformal coverage guarantees with possibilistic
-$[\Nc,\,\poss]$ intervals could clarify the relative merits of each
+intervals could clarify the relative merits of each
 paradigm.  Third, real-time operational implementation with automated
 scorecard dashboards would enable forecasters to monitor possibilistic
 skill across successive forecast cycles.  Finally, the performance

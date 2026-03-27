@@ -86,9 +86,7 @@ Quantity & Symbol & Form & Reason \\
 \quad Depth-of-truth         & $\alpha^*$  & $\pinorm$ & Shape quality \\
 \quad Nonspecificity          & $\eta$      & $\pinorm$ & Shape diffuseness \\
 \quad Conditional necessity   & $\Nc(A)$    & $\pinorm$ & Certainty given coverage \\[4pt]
-\multicolumn{4}{@{}l}{\textit{Both}} \\[2pt]
-\quad Lower threshold bound  & $L_t$       & Both     & Coverage $\times$ certainty \\
-%%\quad Cumulative lower bound & $L_k$       & Both     & IRLS counterpart \\
+%%% L_t row removed — exceedance bounds removed in Round 2.
 \bottomrule
 \end{tabular}
 \renewcommand{\arraystretch}{1.0}
@@ -96,9 +94,10 @@ Quantity & Symbol & Form & Reason \\
 
 \textbf{Why this matters:} Getting the raw/normalized distinction wrong
 is the single most common error in possibilistic scoring.  Computing
-\Nc{} from raw values yields nonsense (it would be negative when
-$m < 0.5$).  Computing ignorance from normalized values gives zero by
-definition.
+\Nc{} from raw values yields nonsense (classical $N(A)$ can exceed
+$\Pi(A)$ for subnormal distributions, breaking the bracketing
+interpretation).  Computing ignorance from normalized values gives zero
+by definition.
 The distinction is loosely analogous to evaluating ensemble-mean error
 (which uses raw ensemble members) versus a rank histogram (which uses
 the normalized rank position of the observation within the ensemble).
@@ -142,8 +141,8 @@ where $\alpha^* = 1$ when the truth coincides with the system's peak
 category and $\alpha^* = 0$ when the system assigns zero possibility to
 the observed outcome.
 
-Following \citet{Klir1995-va}, nonspecificity measures the diffuseness
-of the normalized shape:
+Inspired by the nonspecificity concept of \citet{Klir1995-va}, we
+measure the diffuseness of the normalized shape:
 \begin{equation}
 \eta = \frac{1}{K} \sum_{c=1}^{K} \pinorm(c) \label{eq:ns}
 \end{equation}
@@ -194,6 +193,19 @@ $\Nc^*$ & Among scenarios the system covered, was the truth dominant
 Aggregates $\overline{\alpha^*}$, $\overline{\eta}$,
 $\overline{\delta}$, $\overline{\ign}$, $\overline{\Nc^*}$ are reported
 with bootstrap confidence intervals.
+
+\textbf{Permutation invariance and ordinal domains.}
+The five scorecard metrics are permutation-invariant: they treat
+$\Omega$ as an unordered set.  For the SPC categories, this is
+conservative---the categories are semi-continuous, ranked in severity,
+but with notional rather than uniform spacing between levels.
+The scorecard evaluates whether the forecast pointed at the right
+category, not whether it was close in an ordinal sense.
+For ordinal domains with well-defined distances (e.g., snowfall bands in
+centimetre increments, temperature categories), a distance-sensitive
+score should supplement the scorecard to penalize far misses more
+heavily than near misses.  Such an extension, via an inter-category
+cost matrix, is straightforward but beyond the present scope.
 
 Figure~\ref{fig:performance_diagram} provides a diagnostic view of the
 five scorecard metrics, inspired by \citet{Roebber2009-rv}.  Hexagonal
@@ -264,52 +276,9 @@ distinction invisible in the shape-quality diagram.
 
 \FloatBarrier
 
-%----------------------------------------------------------
-\subsection{Exceedance Bounds}\label{sec:exceedance_bounds}
-
-For any threshold event $A_T \subseteq \Omega$---such as
-$A_T = \{\spc{ENH},\, \spc{MDT},\, \spc{HIGH}\}$ for significant
-severe weather---the possibilistic forecast produces an interval
-$[L, U]$ that brackets the event's plausibility.  The bounds derive
-directly from the three-component framework:
-
-\begin{align}
-U &= \poss(A_T) = \max_{\omega \in A_T} \pi(\omega)
-    \label{eq:U_bound} \\
-L &= m \cdot \Nc(A_T)
-   = m \cdot \bigl[1 - \max_{\omega \notin A_T} \pinorm(\omega)\bigr]
-    \label{eq:L_bound}
-\end{align}
-
-\noindent The interval $[L, U] = [m \cdot \Nc,\; \poss]$ answers
-probability-of-exceedance questions without requiring bridge conversion:
-$U$ is the maximum plausibility of any outcome in $A_T$, while $L$
-combines commitment ($m$) with conditional necessity to give a lower
-bound.  Width $U - L$ reflects ambiguity between ``merely possible''
-and ``essentially certain.''  Under normality ($m = 1$), $L = \nec(A_T)$
-and $U = \poss(A_T)$, recovering the classical necessity--possibility
-interval.  The property $0 \leq L \leq U \leq 1$ always holds.
-
-Figure~\ref{fig:upper_lower} applies these bounds to the three
-worked scenarios of Section~\ref{sec:worked_examples} (Scenarios A--C),
-showing each $[L, U]$ interval on a $[0,1]$ number line for
-$A_T = \{\spc{ENH},\, \spc{MDT},\, \spc{HIGH}\}$.  Sharp forecasts
-produce narrow intervals; hedged or ignorant forecasts produce wide
-ones.
-
-\begin{figure*}[b]
-\centering
-\includegraphics[width=0.75\textwidth]{upper_lower_bounds.png}
-\caption{Exceedance bounds
-    (Eqs.~\ref{eq:U_bound}--\ref{eq:L_bound}) for
-    $A_T = \{\spc{ENH},\, \spc{MDT},\, \spc{HIGH}\}$ applied to
-    Scenarios A--C (Section~\ref{sec:worked_examples}).  Each horizontal
-    band shows $[L, U]$ on a $[0,1]$ number line.  Scenario~A's narrow
-    interval reflects high commitment and conditional necessity;
-    Scenario~B's wide interval reflects hedging; Scenario~C collapses to
-    a point at zero because the system assigned zero possibility to every
-    category in $A_T$.}
-\label{fig:upper_lower}
-\end{figure*}
+%%% §4.3 Exceedance Bounds removed in Round 2 revision.
+%%% Rationale: U = Pi(A_T) is just the possibility measure restated;
+%%% L = m * N_c(A_T) is circular under subnormality; formal credal-set
+%%% bounds remain a direction for future work (see §7.6).
 
 \FloatBarrier

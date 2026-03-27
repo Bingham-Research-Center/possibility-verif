@@ -13,7 +13,7 @@ A reviewer might ask whether all three
 components---possibility, ignorance, and conditional necessity---independently
 contribute to verification, or whether some are redundant once others
 are known.  This section addresses that question directly.  Three
-hypothesis tests are constructed, each isolating one component and
+hypothesis test protocols are proposed, each isolating one component and
 asking whether it adds information the other two do not provide.  An
 affirmative answer for all three justifies the full five-number
 scorecard.
@@ -133,10 +133,11 @@ summarises the three verification lanes and their respective blind spots.
 \toprule
 Lane & Answers the question & What it misses \\
 \midrule
-\textbf{Deterministic} (RMSE, bias)
-    & ``Was the point forecast close?''
-    & All uncertainty information---a perfect point forecast says nothing
-        about confidence. \\
+\textbf{Categorical} (POD, FAR, CSI per threshold; HSS)
+    & ``Did the mode-based point forecast identify the correct severity
+        category?''
+    & All distributional information---a correct mode says nothing
+        about sharpness, hedging, or confidence. \\
 \textbf{Probabilistic} (IG via bridge)
     & ``Was the probabilistic forecast informative?''
     & The bridge is lossy---it compresses the full possibility shape
@@ -154,9 +155,9 @@ Lane & Answers the question & What it misses \\
 Together, the three lanes catch failures that any single lane would miss:
 
 \begin{itemize}[leftmargin=2em]
-\item A forecast with good deterministic scores but flat possibility
+\item A forecast with correct categorical mode but flat possibility
     (high $\eta$) and poor IG is a broken clock that happens to be
-    right.
+    right---the categorical lane passes but the other two fail.
 \item A forecast with great IG but high ignorance and low $\Nc^*$ got
     lucky via the bridge---the raw system was hedging.
 \item A forecast with sharp possibility and high $\Nc^*$ but poor IG has
@@ -172,12 +173,13 @@ verification pathway.
 \includegraphics[width=0.80\textwidth]{verification_lanes.png}
 \caption{Three-lane verification schematic.  A subnormal possibility
     distribution feeds three parallel verification pathways:
-    \textbf{Lane~1} (deterministic) evaluates the defuzzified point
-    forecast via RMSE and bias; \textbf{Lane~2} (probabilistic) applies
-    the possibility-to-probability bridge and evaluates information gain;
+    \textbf{Lane~1} (categorical) evaluates the mode-based point
+    forecast via POD, FAR, and CSI at each severity threshold;
+    \textbf{Lane~2} (probabilistic) applies the possibility-to-probability
+    bridge and evaluates information gain;
     \textbf{Lane~3} (native possibilistic, highlighted in purple)
-    evaluates the raw distribution via the five-number scorecard and
-    exceedance bounds.  Each lane diagnoses failure modes invisible to
+    evaluates the raw distribution via the five-number scorecard.
+    Each lane diagnoses failure modes invisible to
     the others (Table~\ref{tab:three_lanes}).}
 \label{fig:three_lanes_schematic}
 \end{figure*}
@@ -207,8 +209,8 @@ but that no single metric could reveal.
     forecasting system across three development versions, each compared
     to a v1.0 baseline.  Rows are grouped into three verification lanes:
     native possibilistic (five-number scorecard), probabilistic
-    (information gain and its decomposition, probability of exceedance),
-    and deterministic (RMSE, bias).  Filled triangles indicate
+    (information gain and its decomposition),
+    and categorical (POD, FAR, CSI, HSS).  Filled triangles indicate
     statistically significant improvement (green, upward) or degradation
     (red, downward); open triangles indicate non-significant changes.
     Marker size encodes the magnitude of the change.  Note the

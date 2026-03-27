@@ -7,7 +7,7 @@
 \section{Worked Examples}\label{sec:worked_examples}
 
 The preceding sections developed three verification lanes---the native
-scorecard with exceedance bounds, the possibility-to-probability bridge
+scorecard, the possibility-to-probability bridge
 with information gain, and three diagnostic hypothesis tests---in the
 abstract.  This section applies them to a concrete trio of stylized
 convective outlook scenarios.  Each scenario is designed to isolate a
@@ -24,9 +24,16 @@ every stage of the framework.
 Three stylized possibilistic convective outlooks are defined, each
 representing a distinct forecasting situation.  All distributions are
 defined over $\Omega = \{\spc{NONE},\, \spc{MRGL},\, \spc{SLGT},\,
-\spc{ENH},\, \spc{MDT},\, \spc{HIGH}\}$ with $K = 6$.  We consider a
-notional point forecast extracted at Norman, Oklahoma: the SPC categorical
-outlook at that location on each day serves as the observation.
+\spc{ENH},\, \spc{MDT},\, \spc{HIGH}\}$ with $K = 6$.  We envision
+the possibilistic forecast as an early or unofficial Day-1 outlook,
+produced offline in parallel with real operations.  It is verified
+against the final (pre-initiation) Day-1 SPC categorical outlook at
+Norman, Oklahoma.  This like-for-like comparison has several advantages:
+(a)~both forecasts share the same categorical universe $\Omega$;
+(b)~information gain naturally measures the uncertainty reduction from
+baseline to forecast; and (c)~the final outlook plays the ``truth''
+role without requiring post-hoc mapping of storm reports to SPC
+contours, which introduces its own ambiguities.
 
 \paragraph{Scenario A: Sharp-correct \spc{MDT} forecast.}
 
@@ -235,17 +242,40 @@ The five-number scorecard correctly separates ``honestly uncertain'' from
 operational forecasters need when tuning a possibilistic system.
 
 %----------------------------------------------------------
+\subsection{Categorical-Lane Walkthrough}\label{sec:categorical_walkthrough}
+
+The categorical lane evaluates the mode-based point forecast:
+$\hat{c} = \arg\max_\omega \pi(\omega)$, with ties broken by severity
+(the higher category wins).  For each threshold
+$t \in \{\text{\spc{MRGL}+},\, \text{\spc{SLGT}+},\,
+\text{\spc{ENH}+},\, \text{\spc{MDT}+},\, \text{\spc{HIGH}}\}$,
+the forecast issues ``yes'' if $\hat{c} \geq t$ and ``no'' otherwise;
+the observation is ``yes'' if $c_{\mathrm{obs}} \geq t$.
+
+Scenario~A: $\hat{c} = \spc{MDT}$, $c_{\mathrm{obs}} = \spc{MDT}$.
+The mode is correct: hits at all thresholds up to \spc{MDT}+, miss only
+at \spc{HIGH}.  POD $= 1.0$ for \spc{MRGL}+ through \spc{MDT}+;
+FAR $= 0$ at those thresholds.
+
+Scenario~B: $\hat{c} = \spc{ENH}$, $c_{\mathrm{obs}} = \spc{ENH}$.
+Again correct: hits at \spc{MRGL}+ through \spc{ENH}+, correct
+rejections at \spc{MDT}+ and \spc{HIGH}.
+
+Scenario~C: $\hat{c} = \spc{NONE}$, $c_{\mathrm{obs}} = \spc{MDT}$.
+The mode misses at every threshold---a complete failure of the
+categorical forecast.  All thresholds register a miss (forecast ``no,''
+observed ``yes''), yielding POD $= 0$ across the board.  The categorical
+lane diagnoses this as starkly as the scorecard ($\alpha^* = 0$), but
+without requiring any distributional machinery.
+
+%----------------------------------------------------------
 \subsection{Pignistic Bridge Walkthrough}\label{sec:bridge_walkthrough}
 
 We now apply the possibility-to-probability bridge
 (Section~\ref{sec:poss_prob_bridge}) to each scenario, then compute
-information gain relative to a uniform baseline
-$p_{\mathrm{clim}} = 1/6 \approx 0.167$ per category
-(surprise $= \log_2 6 = 2.585$~bits).  A uniform baseline is used
-here for algebraic transparency; in practice, empirical category
-frequencies would provide a more appropriate reference, since rare
-categories such as \spc{HIGH} occur far less often than $1/K$ and
-common categories such as \spc{NONE} far more often.
+information gain relative to the SPC climatological baseline
+$p_{\mathrm{clim}} = (0.60,\, 0.18,\, 0.12,\, 0.06,\, 0.032,\,
+0.008)$, in which \spc{NONE} dominates and \spc{HIGH} is rare.
 The bridge reserves $p_{\mathrm{ign}} = \ign$, distributes
 the remaining $m$ proportionally via
 $p_i = \pi_i \cdot m / \sum_j \pi_j$,
@@ -256,9 +286,9 @@ readable column by column.
 \begin{table}[htbp]
 \centering
 \caption{Bridge conversion and information gain for the three worked
-    scenarios, relative to a uniform baseline
-    ($\log_2 6 = 2.585$~bits).
-    Asterisk ($^*$) denotes $\varepsilon$-floored values.}
+    scenarios, relative to the SPC climatological baseline.
+    Asterisk ($^*$) denotes $\varepsilon$-floored values
+    ($\varepsilon = 0.01$; see text).}
 \label{tab:bridge_ils}
 \footnotesize
 \setlength{\tabcolsep}{4pt}
@@ -269,9 +299,11 @@ readable column by column.
 \midrule
 $\ign$ & $0.10$ & $0.45$ & $0.15$ \\
 $\sum \pi$ & $1.20$ & $1.45$ & $1.00$ \\
-$p(c_{\mathrm{obs}})$ & $0.675$ & $0.209$ & $0.000^*$ \\
-Surprise (bits) & $0.567$ & $2.258$ & $6.644^*$ \\
-\textbf{IG (bits)} & $\mathbf{+2.018}$ & $\mathbf{+0.327}$ & $\mathbf{-4.059}$ \\
+$p(c_{\mathrm{obs}})$ & $0.6750$ & $0.2086$ & $0.0100^*$ \\
+$p_{\mathrm{clim}}(c_{\mathrm{obs}})$ & $0.0320$ & $0.0600$ & $0.0320$ \\
+Clim.\ surprise (bits) & $4.966$ & $4.059$ & $4.966$ \\
+Forecast surprise (bits) & $0.567$ & $2.261$ & $6.644^*$ \\
+\textbf{IG (bits)} & $\mathbf{+4.399}$ & $\mathbf{+1.798}$ & $\mathbf{-1.678}$ \\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -279,13 +311,25 @@ Surprise (bits) & $0.567$ & $2.258$ & $6.644^*$ \\
 The three scenarios trace a clear arc from skill to catastrophe.
 Scenario~A's bridge concentrates probability on the correct outcome
 ($p = 0.675$); low ignorance means little mass is stranded in the
-ignorance bin, yielding $\mathrm{IG} = +2.018$~bits---strong
-skill relative to climatology.
-Scenario~B is positive but modest ($\mathrm{IG} = +0.327$~bits): the
-high $\ign = 0.45$ correctly deflates $p(\spc{ENH})$ from the
+ignorance bin, yielding $\mathrm{IG} = +4.399$~bits---strong
+skill relative to the climatological baseline, which assigns only
+$3.2\%$ probability to \spc{MDT}.
+Scenario~B is positive and substantial ($\mathrm{IG} = +1.798$~bits):
+the high $\ign = 0.45$ correctly deflates $p(\spc{ENH})$ from the
 simple-normalization value of $0.55/1.45 = 0.379$ down to $0.209$,
-honestly reflecting the system's uncertainty.
-Scenario~C incurs a catastrophic penalty because the bridge assigns
-zero probability to the observed outcome.  Crucially, low ignorance
-($\ign = 0.15$) provides almost no cushion: the system left itself no
-escape route for an outcome it had ruled out.
+honestly reflecting the system's uncertainty, but the forecast still
+beats the $6\%$ climatological rate for \spc{ENH} by a wide margin.
+Scenario~C incurs a penalty ($\mathrm{IG} = -1.678$~bits) because the
+bridge assigns zero probability to the observed outcome.  The
+$\varepsilon$-floor ($\varepsilon = 0.01$) prevents an infinite
+penalty but still yields a surprise of $6.644$~bits---far worse than
+the climatological surprise of $4.966$~bits for \spc{MDT}.  Crucially,
+low ignorance ($\ign = 0.15$) provides almost no cushion: the system
+left itself no escape route for an outcome it had ruled out.
+
+The $\varepsilon$-floor is set at $0.01$, representing the quantisation
+floor for a system built on $O(10)$ ensemble members and human
+post-processing.  Sensitivity analysis confirms the qualitative
+conclusion is invariant: $\varepsilon = 0.001$ yields $9.97$~bits
+surprise; $\varepsilon = 0.0001$ yields $13.29$~bits.  In all cases
+Scenario~C remains strongly negative.

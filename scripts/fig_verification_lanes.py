@@ -20,7 +20,7 @@ from style import (
 
 # Colours per lane
 LANE_COLOURS = {
-    1: "#B0BEC5",   # blue-grey (scalar)
+    1: "#B0BEC5",   # blue-grey (categorical)
     2: "#90CAF9",   # light blue (probabilistic)
     3: PURPLE,      # purple (possibilistic — novel)
 }
@@ -75,7 +75,7 @@ def main():
 
     # ===== Lane headers =====
     lane_labels = [
-        "Lane 1: Scalar",
+        "Lane 1: Categorical",
         "Lane 2: Probabilistic",
         "Lane 3: Possibilistic",
     ]
@@ -84,14 +84,14 @@ def main():
              LANE_COLOURS[i], fontsize=9, fontweight="bold")
 
     # ===== Processing steps =====
-    # Lane 1: extract point forecast -> scalar metrics
+    # Lane 1: extract mode -> categorical metrics
     _box(ax, 1.8, 3.9, 2.5, 0.50,
-         r"Extract $N_c$ (point est.)",
+         r"Mode: $\hat{c} = \arg\max \pi$",
          LANE_COLOURS[1], alpha=0.75, fontsize=8)
     _arrow(ax, 1.8, 4.55, 1.8, 4.18)
 
     _box(ax, 1.8, 3.0, 2.5, 0.50,
-         "RMSE, Bias, MAE",
+         "POD, FAR, CSI, HSS",
          LANE_COLOURS[1], alpha=0.75, fontsize=8)
     _arrow(ax, 1.8, 3.62, 1.8, 3.28)
 
