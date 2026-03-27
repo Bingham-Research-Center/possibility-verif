@@ -268,6 +268,35 @@ observed ``yes''), yielding POD $= 0$ across the board.  The categorical
 lane diagnoses this as starkly as the scorecard ($\alpha^* = 0$), but
 without requiring any distributional machinery.
 
+Figure~\ref{fig:categorical_scores} places these case studies in the
+context of the full three-year synthetic reforecast.  Panel~(a) shows
+how POD, success ratio ($1 - \text{FAR}$), and CSI degrade from
+\spc{MRGL}+ to \spc{HIGH} as the threshold rises---a pattern familiar
+from SPC verification, but here derived entirely from the possibilistic
+mode.  Scenario~C's red cross at POD~$= 0$ is the visual counterpart
+of the scorecard's $\alpha^* = 0$.  Panel~(b) reveals the error
+structure: off-diagonal counts cluster near the main diagonal,
+confirming that mode errors are predominantly near-miss rather than
+catastrophic.
+
+\begin{figure*}[t]
+\centering
+\includegraphics[width=0.90\textwidth]{categorical_scores.png}
+\caption{Categorical-lane verification for the three-year synthetic
+    reforecast.
+    \textbf{(a)}~Threshold performance: POD (purple), success ratio
+    $1 - \text{FAR}$ (green), and CSI (dashed grey) at each severity
+    threshold.  Scenarios~A and~B (green labels) contribute hits at
+    their respective thresholds; Scenario~C (red cross) registers
+    POD~$= 0$ at all thresholds.  HSS is computed from the full
+    $K \times K$ table.
+    \textbf{(b)}~Confusion matrix of forecast mode vs.\ observed
+    category.  Green boxes mark the diagonal (correct mode); counts
+    are on a log scale for visibility.  Off-diagonal mass clusters
+    within one category of the diagonal, indicating near-miss errors.}
+\label{fig:categorical_scores}
+\end{figure*}
+
 %----------------------------------------------------------
 \subsection{Pignistic Bridge Walkthrough}\label{sec:bridge_walkthrough}
 
