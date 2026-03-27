@@ -11,7 +11,7 @@ Encoding (5 metrics on one plot):
   colour    H_Pi      ignorance (dark purple = confident, pale = uncertain)
   size      N_c*      conditional necessity (larger = truth more dominant)
 
-Three anchor scenarios from Section 6 are overlaid as labeled stars.
+Three scenarios from Section 6 are overlaid as labeled markers.
 
 The generate_reforecast() / scorecard_from_data() functions are designed
 as drop-ins: replace with real (pi_array, obs_categories) data for
@@ -193,8 +193,8 @@ def _draw_panel(ax, spec, alpha, sizes, hpi, obs_idx,
                     edgecolors=DARK_GREY, linewidths=0.5, alpha=0.55,
                     marker="D", zorder=3)
 
-    # ---- Anchor stars ---- #
-    anchor_offsets = {
+    # ---- Scenario markers ---- #
+    scenario_offsets = {
         "A": (-0.20, -0.16),
         "B": (-0.20, -0.16),
         "C": (-0.20, 0.14),
@@ -206,7 +206,7 @@ def _draw_panel(ax, spec, alpha, sizes, hpi, obs_idx,
                    edgecolors=edge_color, linewidths=2.0, alpha=1.0,
                    marker="*", zorder=6)
         if show_anchor_labels:
-            ox, oy = anchor_offsets[letter]
+            ox, oy = scenario_offsets[letter]
             ax.annotate(
                 f"{letter}: {desc}", xy=(sx, sy),
                 xytext=(sx + ox, sy + oy),

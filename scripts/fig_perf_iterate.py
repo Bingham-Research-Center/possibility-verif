@@ -23,6 +23,7 @@ from fig_three_scenario import compute_scorecard, SCENARIOS
 from fig_performance_diagram import generate_reforecast
 
 MISS_RED = "#C0392B"
+SCENARIO_MARKERS = {"A": "*", "B": "D", "C": "X"}
 
 
 # ------------------------------------------------------------------ #
@@ -139,14 +140,15 @@ def draw_compass(ax, x, y, text="better", color=PURPLE):
             color=color, ha="center", va="bottom", zorder=10)
 
 
-def draw_anchors_spec_alpha(ax, anchors, sz=90):
-    """Anchor stars on the (1-eta, alpha*) plane."""
+def draw_scenarios_spec_alpha(ax, anchors, sz=90):
+    """Scenario markers on the (1-eta, alpha*) plane."""
     offsets = {"A": (0.06, -0.06), "B": (0.06, -0.06), "C": (0.06, 0.05)}
     for ltr, c, v in anchors:
         sx, sy = 1 - c['eta'], c['alpha_star']
         edge = GREEN if v else MISS_RED
+        marker = SCENARIO_MARKERS.get(ltr, "*")
         ax.scatter(sx, sy, s=sz, fc="white", ec=edge,
-                   linewidths=1.8, marker="*", zorder=9)
+                   linewidths=1.8, marker=marker, zorder=9)
         ox, oy = offsets[ltr]
         ax.annotate(ltr, xy=(sx, sy), xytext=(sx + ox, sy + oy),
                     fontsize=8, fontweight="bold", color=DARK_GREY,
@@ -154,15 +156,16 @@ def draw_anchors_spec_alpha(ax, anchors, sz=90):
                     zorder=10)
 
 
-def draw_anchors_commit(ax, anchors, sz=110):
-    """Anchor stars on the (pimax, delta) plane."""
+def draw_scenarios_commit(ax, anchors, sz=110):
+    """Scenario markers on the (pimax, delta) plane."""
     offsets = {"A": (-0.06, -0.05), "B": (0.06, 0.04), "C": (0.06, 0.04)}
     for ltr, c, v in anchors:
         sx = 1 - c['H_Pi']
         sy = c['delta']
         edge = GREEN if v else MISS_RED
+        marker = SCENARIO_MARKERS.get(ltr, "*")
         ax.scatter(sx, sy, s=sz, fc="white", ec=edge,
-                   linewidths=1.8, marker="*", zorder=9)
+                   linewidths=1.8, marker=marker, zorder=9)
         ox, oy = offsets[ltr]
         ax.annotate(ltr, xy=(sx, sy), xytext=(sx + ox, sy + oy),
                     fontsize=8, fontweight="bold", color=DARK_GREY,
@@ -281,9 +284,9 @@ def v3b(data, ap, spec, anchors):
 
     # Tight figsize minimises whitespace so bbox_inches='tight' can't
     # distort the aspect ratio.  Axes box is exactly 3.0" × 3.0".
-    fig = plt.figure(figsize=(4.1, 3.6))
-    ax = fig.add_axes([0.15, 0.14, 3.0 / 4.1, 3.0 / 3.6])
-    cax = fig.add_axes([0.91, 0.32, 0.025, 0.35])
+    fig = plt.figure(figsize=(4.4, 3.9))
+    ax = fig.add_axes([0.14, 0.13, 3.2 / 4.4, 3.2 / 3.9])
+    cax = fig.add_axes([0.89, 0.30, 0.025, 0.35])
 
     ax.set_xlim(-0.02, 1.04)
     ax.set_ylim(-0.02, 1.04)
@@ -301,16 +304,16 @@ def v3b(data, ap, spec, anchors):
               alpha=0.65, zorder=1)
 
     draw_traj_spec_alpha(ax, means, gcmap=gcm, gnorm=nm)
-    draw_anchors_spec_alpha(ax, anchors)
+    draw_scenarios_spec_alpha(ax, anchors)
 
-    # Compass: black, italic, bigger arrow, clear of data
-    ax.annotate("", xy=(0.99, 1.00), xytext=(0.84, 0.85),
+    # Compass: outside axes spines into figure padding
+    ax.annotate("", xy=(0.99, 1.06), xytext=(0.84, 0.91),
                 arrowprops=dict(arrowstyle="->,head_width=0.4,head_length=0.3",
                                 color=DARK_GREY, lw=2.0),
-                zorder=10)
-    ax.text(0.91, 1.02, "sharp + truthful", fontsize=7.5,
+                clip_on=False, zorder=10)
+    ax.text(0.91, 1.09, "sharp + truthful", fontsize=7.5,
             fontstyle="italic", color=DARK_GREY, ha="center", va="bottom",
-            zorder=10)
+            clip_on=False, zorder=10)
 
     # Dual colorbar: purple | green touching, shared label
     gradient = np.linspace(nm.vmin, nm.vmax, 256)
@@ -328,13 +331,16 @@ def v3b(data, ap, spec, anchors):
     h_t = mlines.Line2D([], [], marker="o", ls="-", color=GREEN, lw=2,
                         mfc=GREEN, mec=DARK_GREY, ms=6,
                         label="Category mean")
-    h_v = mlines.Line2D([], [], marker="*", ls="None", ms=8,
+    h_a = mlines.Line2D([], [], marker="*", ls="None", ms=8,
                         mfc="white", mec=GREEN, mew=1.2,
-                        label="Anchor (hit)")
-    h_m = mlines.Line2D([], [], marker="*", ls="None", ms=8,
+                        label="Scenario A (sharp-correct)")
+    h_b = mlines.Line2D([], [], marker="D", ls="None", ms=7,
+                        mfc="white", mec=GREEN, mew=1.2,
+                        label="Scenario B (hedged-correct)")
+    h_c = mlines.Line2D([], [], marker="X", ls="None", ms=8,
                         mfc="white", mec=MISS_RED, mew=1.2,
-                        label="Anchor (miss)")
-    ax.legend(handles=[h_t, h_v, h_m], loc="lower left", fontsize=7,
+                        label="Scenario C (sharp-wrong)")
+    ax.legend(handles=[h_t, h_a, h_b, h_c], loc="lower left", fontsize=6.5,
               frameon=True, fancybox=False, edgecolor=MID_GREY)
 
     ax.set_xlabel(r"Specificity  $1\!-\!\eta$  (sharper $\rightarrow$)",
@@ -397,7 +403,7 @@ def v4b(data, ap, spec, anchors):
     ax.text(0.15, -0.30, "Uninformative", **kw)
 
     draw_traj_commit(ax, means, gcmap=gcm, gnorm=gnm)
-    draw_anchors_commit(ax, anchors)
+    draw_scenarios_commit(ax, anchors)
     draw_compass(ax, 0.95, 0.72, "better")
 
     # Manual colorbar
@@ -449,7 +455,7 @@ def v4c(data, ap, spec, anchors):
     ax.text(0.85, -0.30, "Overconfident\n& wrong", **kw)
 
     draw_traj_commit(ax, means)
-    draw_anchors_commit(ax, anchors)
+    draw_scenarios_commit(ax, anchors)
     draw_compass(ax, 0.95, 0.72, "better")
 
     cb = fig.colorbar(hb, ax=ax, shrink=0.55, pad=0.02)
@@ -506,7 +512,7 @@ def v4d(data, ap, spec, anchors):
                    zorder=1)
 
         draw_traj_commit(ax, means, fontsize=6)
-        draw_anchors_commit(ax, anchors, sz=80)
+        draw_scenarios_commit(ax, anchors, sz=80)
 
         ax.set_xlim(-0.02, 1.02)
         ax.set_ylim(-0.45, 0.85)
