@@ -1,0 +1,49 @@
+% !TEX root = ../main.tex
+%----------------------------------------------------------
+% appendix-ds-theory.tex — Connections to Dempster–Shafer Theory
+% Moved from §8 (Discussion) to appendix in Round 3 revision.
+%----------------------------------------------------------
+
+\section{Connections to Dempster--Shafer Theory}%
+\label{sec:ds_connections}
+
+The possibility--necessity duality has a well-known structural
+counterpart in Dempster--Shafer (DS) theory
+\citep{Shafer1976-MISSING}.  In DS terms, the possibility measure
+$\poss(A)$ corresponds to the plausibility function $\mathrm{Pl}(A)$:
+both represent an upper bound on the probability of the event $A$.
+Conditional necessity $\Nc(A)$ plays the role of the belief function
+$\mathrm{Bel}(A)$: both represent a lower bound.  The interval
+$[\Nc(A),\,\poss(A)]$ used throughout this paper is therefore
+structurally equivalent to the DS interval
+$[\mathrm{Bel}(A),\,\mathrm{Pl}(A)]$, and the verification metrics
+defined in Section~\ref{sec:native_verification}
+can be read as special cases of
+interval-probability verification.
+
+A key difference concerns the nature of the residual uncertainty.
+Possibilistic ignorance $\ign = 1 - \max(\pi)$ quantifies a
+\emph{coverage gap}: the fraction of plausibility that the forecasting
+system left unassigned to any outcome.  In DS theory, uncertainty
+instead arises from \emph{evidential conflict} among multiple
+information sources, and is distributed across focal elements of
+varying specificity.  The scalar $\ign$ therefore has no direct DS
+analogue; it is a distinctly possibilistic quantity.  The
+possibility-to-probability bridge
+(Section~\ref{sec:poss_prob_bridge}) is inspired by the pignistic
+transformation of \citet{Smets1990-MISSING} but extends it to
+subnormal distributions: the classical pignistic transform assumes a
+normal (i.e., $\max(\pi)=1$) mass function, whereas the bridge
+explicitly allocates the subnormality residual $\ign$ to a dedicated
+ignorance outcome before redistributing the remaining mass.
+
+The structural parallels suggest a natural avenue for generalization.
+The verification framework developed here could be extended to
+belief-function forecasts by replacing $\poss$ and $\Nc$ with
+$\mathrm{Pl}$ and $\mathrm{Bel}$ throughout.  The five-number scorecard
+extends naturally: $\alpha^{*}$ becomes the plausibility
+of the observed outcome, and $\eta$ measures the diffuseness of the
+plausibility function.  We note
+this connection as a direction for future work, as a full treatment
+would require addressing the richer combinatorial structure of general
+mass functions.
