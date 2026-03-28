@@ -10,11 +10,10 @@ estimates a fair coin at 50:50 after one hundred flips---confident,
 grounded in data.  A pundit predicts 50:50 for a sports match played in
 extreme weather between teams that have never met---uncertain, grounded
 in ignorance.  Probability theory assigns both the same distribution;
-possibility theory does not.  The coin forecast is \textit{normal}
-($\Pi_{\max} = 1$, $\ign = 0$), fully endorsing its estimate; the match
-forecast is \textit{subnormal} ($\Pi_{\max} \ll 1$, high $\ign$),
-encoding that equal odds arose from absence of evidence rather than
-weight of evidence.
+possibility theory does not.  The coin forecast is \textit{normal},
+fully endorsing its estimate; the match forecast is
+\textit{subnormal}, encoding that equal odds arose from absence of
+evidence rather than weight of evidence.
 
 Hazard forecasting increasingly relies on probabilistic methods to
 communicate uncertainty, and for good reason: calibrated probability
@@ -44,10 +43,11 @@ verification methodology.  This paper addresses this gap.
 
 % --- Why possibility theory matters for hazard verification ---
 
-Possibility theory extends probability: the interval
-$[\nec(A),\, \poss(A)]$ brackets the range of consistent probabilities,
-collapsing to a point when evidence is complete
-(Section~\ref{sec:poss_axioms}).  Possibility distributions arise naturally in several operational
+Possibility theory extends probability: for any event $A$, the interval
+from necessity $\nec(A)$ to possibility $\poss(A)$ brackets the range
+of consistent probabilities, collapsing to a point when evidence is
+complete (Section~\ref{sec:poss_axioms}; Table~\ref{tab:notation}
+collects all symbols).  Possibility distributions arise naturally in several operational
 settings.  Expert-rule systems and fuzzy inference engines produce
 membership functions that are possibility distributions by construction
 \citep{Klir1995-va}.  Imprecise-probability frameworks generate upper
@@ -56,7 +56,7 @@ possibility--necessity duality.  In severe-weather forecasting, a
 forecaster may wish to express that \spc{MDT} risk is plausible but not
 certain, while acknowledging that the mesoscale environment is poorly
 sampled---a statement that maps cleanly onto a subnormal possibility
-distribution but awkwardly onto a probability.  Assigning
+distribution $\pi$ but awkwardly onto a probability.  Assigning
 $\pi(\spc{MDT}) = 0.7$ says ``\spc{MDT} is fairly compatible with
 available evidence''; it does not say ``the long-run frequency of
 \spc{MDT} events is 70\%.''
@@ -65,29 +65,29 @@ For subnormal distributions ($\max_\omega \pi(\omega) < 1$), the
 possibilistic ignorance $\ign = 1 - \max(\pi)$ quantifies the gap
 between the system's best-supported outcome and full endorsement---a
 signal that probability, which must sum to unity, cannot represent.
-Normalizing a subnormal distribution to $\max(\pi) = 1$ erases this
+Normalising a subnormal distribution to $\max(\pi) = 1$ erases this
 signal, a problem termed \textit{ignorance erasure}: it conflates ``the
 system thinks \spc{ENH} is most likely'' with ``the system is
-confident'' (Section~\ref{sec:naive_normalization} develops this
+confident'' (Section~\ref{sec:naive_normalisation} develops this
 contrast in detail).
 
 % --- Brief literature review ---
 
 Possibility theory originates with \citet{Zadeh1978-je}, who interpreted fuzzy
-membership functions as possibility distributions.  It was formalized
+membership functions as possibility distributions.  It was formalised
 into a full uncertainty calculus by \citet{Dubois1988-nh}.
-\citet{Dubois2006-MISSING} surveys the mature theory, emphasizing the
+\citet{Dubois2006-MISSING} surveys the mature theory, emphasising the
 bracketing property $\nec(A) \leq P(A) \leq \poss(A)$ and its
 applications to risk analysis under incomplete information.
 \citet{Klir1995-va} situates possibility within a broader taxonomy of
-generalized information theories, clarifying the relationship between
+generalised information theories, clarifying the relationship between
 possibilistic and probabilistic uncertainty measures.
 
 A parallel literature addresses the verification of probabilistic
 forecasts through proper scoring rules.  \citet{Roulston2002-eq}
 introduced the information-gain framework, measuring forecast value as
 the reduction in Shannon entropy relative to a climatological baseline.
-\citet{Lawson2024-bu} formalized the information-gain decomposition for
+\citet{Lawson2024-bu} formalised the information-gain decomposition for
 atmospheric forecasts, separating overall skill into uncertainty,
 discrimination, and reliability components.  These tools are well suited
 to probability vectors but cannot be applied directly to possibility
@@ -105,20 +105,14 @@ probability may not capture an agent's epistemic state;
 Section~\ref{sec:three_component} discusses the structural parallels
 and key differences.
 
-Despite the growing use of possibility-like representations in
-expert systems, fuzzy inference, and imprecise-probability applications,
-possibilistic predictions lack a dedicated verification methodology.
-Existing approaches either normalize the distribution---
-erasing the ignorance signal---or treat possibility values as
-probabilities, violating the max-additivity axiom that distinguishes
-possibility from probability.  This paper presents a framework
-with three components: a five-number scorecard for possibilistic
-evaluation, a possibility-to-probability bridge that preserves ignorance
-as an explicit outcome, and a categorical verification lane using
-threshold-based categorical scores familiar to operational meteorologists.
-
-% --- Paper outline ---
-
+Existing approaches either normalise the distribution---erasing the
+ignorance signal---or treat possibility values as probabilities,
+violating the max-additivity axiom that distinguishes possibility from
+probability.  This paper presents a framework with three components: a
+five-number scorecard for possibilistic evaluation, a
+possibility-to-probability bridge that preserves ignorance as an explicit
+outcome, and a categorical verification lane using threshold-based
+categorical scores familiar to operational meteorologists.
 The remainder of this paper is organised as follows.
 Section~\ref{sec:poss_primer} introduces the mathematical foundations of
 possibility theory, emphasising subnormal distributions and the

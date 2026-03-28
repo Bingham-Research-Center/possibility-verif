@@ -43,14 +43,14 @@ $\ign = 1 - m$ is ignorance (Eq.~\ref{eq:ignorance}).
 \end{figure}
 
 %----------------------------------------------------------
-\subsection{Normalization Protocol}\label{sec:norm_protocol}
+\subsection{Normalisation Protocol}\label{sec:norm_protocol}
 
 Some verification quantities require the raw distribution $\pi$ while
-others require the normalized form $\pinorm = \pi / m$.  Two
-normalization operations serve distinct purposes:
+others require the normalised form $\pinorm = \pi / m$.  Two
+normalisation operations serve distinct purposes:
 
 \begin{enumerate}[leftmargin=2em]
-\item \textbf{Shape normalization} ($\pi \to \pinorm$): Rescales so
+\item \textbf{Shape normalisation} ($\pi \to \pinorm$): Rescales so
     that $\max(\pinorm) = 1$, isolating the system's relative
     preferences among outcomes.  Used for computing \Nc{}
     (Eq.~\ref{eq:cond_nec}) and the native scorecard
@@ -61,14 +61,14 @@ normalization operations serve distinct purposes:
     for information-gain verification.
 \end{enumerate}
 
-These are not alternatives: normalization operates within the possibility
+These are not alternatives: normalisation operates within the possibility
 space; the pignistic bridge converts to the probability space.
 
 Table~\ref{tab:raw_norm} specifies which form each quantity uses.
 
 \begin{table}[htbp]
 \centering
-\caption{Raw vs.\ normalized form used by each verification quantity.}
+\caption{Raw vs.\ normalised form used by each verification quantity.}
 \label{tab:raw_norm}
 \small
 \renewcommand{\arraystretch}{1.15}
@@ -82,7 +82,7 @@ Quantity & Symbol & Form & Reason \\
 %%% U_k and L_k rows removed — IRLS appendix commented out
 %%\quad Cumulative upper bound & $U_k$       & $\pi$    & For IRLS \\
 
-\multicolumn{4}{@{}l}{\textit{Normalized $(\pinorm)$}} \\[2pt]
+\multicolumn{4}{@{}l}{\textit{Normalised $(\pinorm)$}} \\[2pt]
 \quad Depth-of-truth         & $\alpha^*$  & $\pinorm$ & Shape quality \\
 \quad Nonspecificity          & $\eta$      & $\pinorm$ & Shape diffuseness \\
 \quad Conditional necessity   & $\Nc(A)$    & $\pinorm$ & Certainty given coverage \\[4pt]
@@ -92,15 +92,10 @@ Quantity & Symbol & Form & Reason \\
 \renewcommand{\arraystretch}{1.0}
 \end{table}
 
-\textbf{Why this matters:} Getting the raw/normalized distinction wrong
+\textbf{Why this matters:} Getting the raw/normalised distinction wrong
 is the single most common error in possibilistic scoring.  Computing
-\Nc{} from raw values yields nonsense (classical $N(A)$ can exceed
-$\Pi(A)$ for subnormal distributions, breaking the bracketing
-interpretation).  Computing ignorance from normalized values gives zero
-by definition.
-The distinction is loosely analogous to evaluating ensemble-mean error
-(which uses raw ensemble members) versus a rank histogram (which uses
-the normalized rank position of the observation within the ensemble).
+$\Nc$ from raw values yields nonsense; computing ignorance from
+normalised values gives zero by definition.
 
 %----------------------------------------------------------
 \subsection{Five-Number Scorecard}\label{sec:native_scorecard}
@@ -167,7 +162,7 @@ truth than to an average category.
 \label{eq:nc_star}
 \end{equation}
 where $\Nc^* > 0$ only when the observed category dominates all
-alternatives in the normalized distribution.  This is a direct
+alternatives in the normalised distribution.  This is a direct
 application of Eq.~\eqref{eq:cond_nec} evaluated at the observation.
 
 \medskip

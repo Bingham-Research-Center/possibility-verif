@@ -27,7 +27,7 @@ of mutually exclusive and collectively exhaustive outcomes for a variable
 of interest (e.g., SPC convective outlook categories
 $\Omega = \{\spc{NONE},\, \spc{MRGL},\, \spc{SLGT},\, \spc{ENH},\,
 \spc{MDT},\, \spc{HIGH}\}$).  A \textit{possibility distribution}
-$\pi: \Omega \to [0,1]$ assigns to each outcome $\omega \in \Omega$ a
+$\pi: \Omega \to [0,1]$\allowbreak{} assigns to each outcome $\omega \in \Omega$\allowbreak{} a
 degree of possibility $\pi(\omega)$ satisfying:
 
 \begin{axiomlist}
@@ -36,13 +36,13 @@ degree of possibility $\pi(\omega)$ satisfying:
 \item \textbf{Normalisation (optional):} If
     $\max_{\omega \in \Omega} \pi(\omega) = 1$, the distribution is
     \textit{normal}; otherwise it is \textit{subnormal}.  Classical
-    possibility theory \citep{Dubois1988-nh} requires normalisation: at
-    least one outcome must be fully possible for necessity to be
-    well-defined.  This paper relaxes that requirement, retaining
-    subnormal distributions when the forecasting system provides weak
-    support for all outcomes (Section~\ref{sec:subnormal}).
-    Subnormality means the system's best-supported outcome does not
-    exhaust the plausibility budget---the remaining fraction is ignorance.
+    possibility theory \citep{Dubois1988-nh} requires at least one
+    outcome to be fully possible ($\max \pi = 1$), grounding necessity
+    in complete commitment.  This paper relaxes that requirement:
+    subnormality encodes that the system's assessment derives from the
+    portion of its predictive machinery that it trusts, with the
+    remaining plausibility budget ($\ign$) explicitly flagging the
+    untrusted portion (Section~\ref{sec:subnormal}).
 \item \textbf{Max-additivity:} For any events $A, B \subseteq \Omega$
     with $A \cap B = \emptyset$,
     $\Pi(A \cup B) = \max\bigl(\Pi(A),\, \Pi(B)\bigr)$.
@@ -50,7 +50,7 @@ degree of possibility $\pi(\omega)$ satisfying:
     is governed by the maximum rather than the sum of its components.
 \end{axiomlist}
 
-From a possibility distribution $\pi$ that may or may not be normalized,
+From a possibility distribution $\pi$ that may or may not be normalised,
 two dual measures are defined for any event $A \subseteq \Omega$:
 
 \begin{align}
@@ -114,7 +114,7 @@ $\Nc^*$ & norm & \ref{eq:nc_star} & Cond.\ necessity of truth \\
 In operational forecasting, subnormality arises naturally when a system
 encounters conditions outside its training domain or when conflicting
 evidence produces weak support for all outcomes.  Rather than hiding this
-deficiency behind enforced normalization, preserving subnormality makes
+deficiency behind enforced normalisation, preserving subnormality makes
 the system's knowledge gaps explicit and verifiable.
 
 Define the (possibilistic) \textit{ignorance} measure \ign{} as the
@@ -134,7 +134,7 @@ weak support for all outcomes.  Low ignorance ($H_\Pi \approx 0$)
 indicates the system assigns high possibility to at least one
 outcome---an impossible event ($\Pi(\overline\omega) = 0$) can be ruled
 out due to known plausibility of a different outcome, rather than
-spurious confidence that stems from enforced normalization.
+spurious confidence that stems from enforced normalisation.
 
 Figure~\ref{fig:poss_anatomy} illustrates a subnormal distribution
 annotated with $\Pi_{\max}$, \ign{}, and \Nc{} for the peak category.
@@ -151,7 +151,7 @@ annotated with $\Pi_{\max}$, \ign{}, and \Nc{} for the peak category.
 \label{fig:poss_anatomy}
 \end{figure}
 
-Normalizing a subnormal distribution forces the derived probability
+Normalising a subnormal distribution forces the derived probability
 distribution to sum to unity, masking the distinction between ``the
 system predicts \spc{MDT}'' and ``the system has insufficient
 information to rule out any category.''  Preserving subnormality trades
@@ -203,7 +203,7 @@ high ignorance ($\ign = 0.5$) indicates that the system struggles with
 this meteorological scenario, and neither outcome has conditional
 necessity.
 
-Blindly normalizing Example~2 would inflate $\pi(\spc{MRGL})$ and
+Blindly normalising Example~2 would inflate $\pi(\spc{MRGL})$ and
 $\pi(\spc{SLGT})$ to 1.0, hiding the fact that the forecasting system
 struggles with this meteorological scenario.  Preserving subnormality
 makes these knowledge gaps explicit.
@@ -217,13 +217,13 @@ $\pi = (0.05,\, 0,\, 0.1,\, 0.2,\, 0.75,\, 0.15)$.
 %----------------------------------------------------------
 \subsection{Three-Component Uncertainty}\label{sec:three_component}
 
-An analogue of ``classical'' necessity (requiring a normalized
+An analogue of ``classical'' necessity (requiring a normalised
 possibility distribution $\pinorm$) supplements \poss{} and \ign{} for
-each SPC category $A$ by computing necessity after normalization of
+each SPC category $A$ by computing necessity after normalisation of
 known outcomes.  The three components are:
 
 \begin{enumerate}[leftmargin=2em]
-\item \textbf{Possibility, $\poss(A)$, $\pi$:} The raw (unnormalized)
+\item \textbf{Possibility, $\poss(A)$, $\pi$:} The raw (unnormalised)
     possibility of event $A$ from Equation~\eqref{eq:poss}, denoting
     evidence-based plausibility.
 \item \textbf{Ignorance, \ign{}:} The global ignorance measure from
@@ -231,7 +231,7 @@ known outcomes.  The three components are:
     forecasting system in capturing the notional ``true'' possibility
     distribution.
 \item \textbf{Conditional Necessity, $\Nc(A)$, $\nu_c$:} Certainty of
-    event $A$ computed \textit{after} normalizing the distribution of
+    event $A$ computed \textit{after} normalising the distribution of
     known outcomes:
 \begin{equation}
 N_c(A) = 1 - \frac{\max_{\omega \notin A} \pi(\omega)}%
@@ -242,7 +242,7 @@ This measures certainty conditional on the system's covered scenarios.
 
 All three quantities derive from the raw possibility distribution $\pi$:
 \poss{} is the peak value for each category, \ign{} measures the global
-gap to normality, and \Nc{} is computed after renormalization.  Though
+gap to normality, and \Nc{} is computed after renormalisation.  Though
 not statistically independent, they decompose the forecast signal into
 complementary facets of decision-relevant information.
 

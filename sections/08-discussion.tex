@@ -13,7 +13,7 @@ converting it to a probability.  Supporting this scorecard are a
 possibility-to-probability bridge
 (Section~\ref{sec:poss_prob_bridge}) that preserves the ignorance
 signal as an explicit outcome rather than erasing it through
-normalization, and three complementary verification lanes
+normalisation, and three complementary verification lanes
 (Section~\ref{sec:three_lanes}) that together cover
 categorical, probabilistic, and native possibilistic evaluation.
 Worked examples in Section~\ref{sec:worked_examples} demonstrated
@@ -45,16 +45,16 @@ construction \citep{Klir1995-va}.  A fuzzy inference system maps input
 meteorological variables through rule sets with fuzzy antecedents and
 consequents; the aggregated output is naturally subnormal when rules
 fire at partial strength, encoding the system's incomplete confidence
-without normalization.
+without normalisation.
 
 \textbf{Ensemble-derived possibility.}  For each category, compute the
 fraction of ensemble members predicting it---but do \textit{not}
-normalize to $\max = 1$.  Let the ensemble spread speak: if members are
+normalise to $\max = 1$.  Let the ensemble spread speak: if members are
 scattered across categories, the maximum fraction is low and $\ign$ is
 high; if members cluster, the maximum is high and $\ign$ is low.  The
 raw ensemble ``support'' for each outcome is already a possibility-like
 quantity.  This is the most accessible pathway for a NWP audience:
-ensemble spread, formalized as subnormality.
+ensemble spread, formalised as subnormality.
 
 \textbf{Severity--confidence matrices.}  Operational warning frameworks
 already encode possibilistic structure.  The UK Met Office National
@@ -67,7 +67,7 @@ Figure~\ref{fig:severity_matrix} adapts this concept to the paper's SPC
 framework, mapping severity categories against confidence levels to show
 how the joint signal varies from ``monitor'' (low severity, high
 ignorance) to ``act now'' (high severity, low ignorance).  The
-verification framework developed here formalizes this operational
+verification framework developed here formalises this operational
 intuition with precise metrics.
 
 \begin{figure}[t]
@@ -82,7 +82,7 @@ intuition with precise metrics.
     indicate low severity or low confidence (monitor).  The matrix
     illustrates how operational warning decisions already implicitly
     navigate the two-dimensional space that possibility theory
-    formalizes.}
+    formalises.}
 \label{fig:severity_matrix}
 \end{figure}
 
@@ -104,7 +104,7 @@ is empirically justified.
 %----------------------------------------------------------
 \subsection{Software Availability}\label{sec:software}
 
-All verification metrics, the bridge conversion, and the visualization
+All verification metrics, the bridge conversion, and the visualisation
 tools described in this paper are implemented in Python and publicly
 available at
 \url{https://github.com/bingham-research-center/possibility-verif}.

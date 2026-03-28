@@ -17,7 +17,7 @@ invisible to the preceding one.
 %----------------------------------------------------------
 \subsection{Scenario Setup}\label{sec:scenario_setup}
 
-Three stylized possibilistic convective outlooks are defined, each
+Three stylised possibilistic convective outlooks are defined, each
 representing a distinct forecasting situation.  All distributions are
 defined over $\Omega = \{\spc{NONE},\, \spc{MRGL},\, \spc{SLGT},\,
 \spc{ENH},\, \spc{MDT},\, \spc{HIGH}\}$ with $K = 6$.  The possibilistic forecast is envisioned as an early or unofficial Day-1 outlook,
@@ -57,7 +57,7 @@ Observed outcome: $c_{\mathrm{obs}} = \spc{MDT}$.
 The environment contains competing signals: moderate CAPE
 (1500--2000~J~kg$^{-1}$) and adequate deep-layer shear, but the timing
 and location of the mesoscale trigger remain uncertain.  Whether
-convection organizes into discrete supercells or a mesoscale convective
+convection organises into discrete supercells or a mesoscale convective
 system will determine whether the day verifies at \spc{SLGT},
 \spc{ENH}, or even \spc{MDT}.  Faced with this ambiguity, the system
 hedges: possibility is spread across four categories, and subnormality is
@@ -102,6 +102,24 @@ Observed outcome: $c_{\mathrm{obs}} = \spc{MDT}$.
 %----------------------------------------------------------
 \subsection{Categorical Example}\label{sec:categorical_walkthrough}
 
+\begin{figure*}[t]
+\centering
+\includegraphics[width=0.90\textwidth]{categorical_scores.png}
+\caption{Categorical-lane verification for the three-year synthetic
+    reforecast.
+    \textbf{(a)}~Threshold performance: POD (purple), success ratio
+    $1 - \text{FAR}$ (green), and CSI (dashed grey) at each severity
+    threshold.  Scenarios~A and~B (green labels) contribute hits at
+    their respective thresholds; Scenario~C (red cross) registers
+    POD~$= 0$ at all thresholds.  HSS is computed from the full
+    $K \times K$ table.
+    \textbf{(b)}~Confusion matrix of forecast mode vs.\ observed
+    category.  Green boxes mark the diagonal (correct mode); counts
+    are on a log scale for visibility.  Off-diagonal mass clusters
+    within one category of the diagonal, indicating near-miss errors.}
+\label{fig:categorical_scores}
+\end{figure*}
+
 The categorical lane evaluates the mode-based point forecast:
 $\hat{c} = \arg\max_\omega \pi(\omega)$, with ties broken by severity
 (the higher category wins).  For each threshold
@@ -137,30 +155,16 @@ structure: off-diagonal counts cluster near the main diagonal,
 confirming that mode errors are predominantly near-miss rather than
 catastrophic.
 
-\begin{figure*}[t]
-\centering
-\includegraphics[width=0.90\textwidth]{categorical_scores.png}
-\caption{Categorical-lane verification for the three-year synthetic
-    reforecast.
-    \textbf{(a)}~Threshold performance: POD (purple), success ratio
-    $1 - \text{FAR}$ (green), and CSI (dashed grey) at each severity
-    threshold.  Scenarios~A and~B (green labels) contribute hits at
-    their respective thresholds; Scenario~C (red cross) registers
-    POD~$= 0$ at all thresholds.  HSS is computed from the full
-    $K \times K$ table.
-    \textbf{(b)}~Confusion matrix of forecast mode vs.\ observed
-    category.  Green boxes mark the diagonal (correct mode); counts
-    are on a log scale for visibility.  Off-diagonal mass clusters
-    within one category of the diagonal, indicating near-miss errors.}
-\label{fig:categorical_scores}
-\end{figure*}
-
 %----------------------------------------------------------
 \subsection{Probabilistic Example}\label{sec:bridge_walkthrough}
 
-The possibility-to-probability bridge is now applied
-(Section~\ref{sec:poss_prob_bridge}) to each scenario, then compute
-information gain relative to the SPC climatological baseline
+Recall that the bridge reserves the ignorance fraction $\ign$ as an
+explicit $(n{+}1)$-th probability outcome, distributing the remaining
+mass proportionally among the original categories
+(Section~\ref{sec:poss_prob_bridge}).
+
+The bridge is now applied to each scenario.  Information gain is then
+computed relative to the SPC climatological baseline
 $p_{\mathrm{clim}} = (0.60,\, 0.18,\, 0.12,\, 0.06,\, 0.032,\,
 0.008)$, in which \spc{NONE} dominates and \spc{HIGH} is rare.
 The bridge reserves $p_{\mathrm{ign}} = \ign$, distributes
@@ -203,7 +207,7 @@ skill relative to the climatological baseline, which assigns only
 $3.2\%$ probability to \spc{MDT}.
 Scenario~B is positive and substantial ($\mathrm{IG} = +1.798$~bits):
 the high $\ign = 0.45$ correctly deflates $p(\spc{ENH})$ from the
-simple-normalization value of $0.55/1.45 = 0.379$ down to $0.209$,
+simple-normalisation value of $0.55/1.45 = 0.379$ down to $0.209$,
 honestly reflecting the system's uncertainty, but the forecast still
 beats the $6\%$ climatological rate for \spc{ENH} by a wide margin.
 Scenario~C incurs a penalty ($\mathrm{IG} = -1.678$~bits) because the
@@ -289,7 +293,7 @@ $\Nc^*$ (cond.\ necessity) & $0.833$ & $0.273$ & $0.00$ \\
 
 Scenario~A represents the ideal case.  The depth-of-truth
 $\alpha^* = 1.00$ confirms that the observed category (\spc{MDT})
-received the highest raw possibility after normalization, and the
+received the highest raw possibility after normalisation, and the
 conditional necessity of truth $\Nc^* = 0.833$ indicates that
 alternatives were strongly down-weighted.  Ignorance is low
 ($\ign = 0.10$), nonspecificity is modest ($\eta = 0.222$), and the
@@ -300,7 +304,7 @@ scorecard rewards this forecast.
 Scenario~B tells a different but equally honest story.  The
 depth-of-truth remains perfect ($\alpha^* = 1.00$) because \spc{ENH},
 the observed category, is indeed the possibilistic peak after shape
-normalization.  However, the system's hedging shows up clearly:
+normalisation.  However, the system's hedging shows up clearly:
 $\ign = 0.45$ is nearly five times that of Scenario~A, nonspecificity
 rises to $\eta = 0.439$, and $\Nc^* = 0.273$ is low because
 \spc{SLGT} and \spc{MDT} were assigned plausible alternatives.  The
