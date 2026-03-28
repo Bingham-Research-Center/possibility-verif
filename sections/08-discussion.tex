@@ -25,34 +25,11 @@ categories served as the running example throughout, the framework
 applies to any finite universe of discourse $\Omega$ over which a
 subnormal possibility distribution is defined.
 
-%----------------------------------------------------------
-\subsection{Applicability Beyond Severe Weather}%
-\label{sec:beyond_severe}
-
-The verification framework is domain-agnostic: any system that
-produces subnormal possibility distributions over a finite universe of
-discourse $\Omega$ can be evaluated using the five-number scorecard
-and the possibility-to-probability bridge
-without modification.  The SPC convective outlook categories
-(\spc{NONE} through \spc{HIGH}) served as an illustrative running
-example, but the same machinery applies directly to air-quality
-exceedance categories (e.g., ozone or PM$_{2.5}$ index tiers),
-wildfire risk levels, flood inundation severity classes, and climate
-scenario classifications.  In each case the forecaster supplies a
-possibility distribution $\pi$ over the domain-specific categories,
-and the scorecard quantifies how well that distribution captured the
-observed outcome.
-
-Extension to continuous forecast variables is straightforward via
-$\alpha$-cut discretization.  The continuous possibility distribution
-is sliced at a set of threshold levels $\alpha_1 > \alpha_2 > \cdots
-> \alpha_k$; each slice defines a nested categorical event (the set of
-outcomes with $\pi(\omega) \geq \alpha_i$) for which the scorecard
-applies.  For spatial fields, pointwise application
-of the scorecard at each grid cell produces spatially resolved
-verification maps, while aggregation across grid points yields
-domain-averaged skill metrics analogous to those used in conventional
-probabilistic forecast evaluation.
+Although SPC convective outlook categories served as the running
+example, the framework is domain-agnostic: any system producing
+subnormal possibility distributions over a finite $\Omega$ can be
+evaluated without modification.  Extension to continuous forecast
+variables is straightforward via $\alpha$-cut discretisation.
 
 %----------------------------------------------------------
 \subsection{Generating Possibilistic Forecasts}%
@@ -92,12 +69,6 @@ how the joint signal varies from ``monitor'' (low severity, high
 ignorance) to ``act now'' (high severity, low ignorance).  The
 verification framework developed here formalizes this operational
 intuition with precise metrics.
-
-\textbf{Conformal prediction.}  Conformal methods produce prediction
-sets at given confidence levels---structurally, these are $\alpha$-cuts
-of a possibility distribution.  Building sets at multiple $\alpha$
-levels constructs a full distribution, and the coverage guarantee maps
-onto conditional necessity.
 
 \begin{figure}[t]
 \centering
@@ -139,53 +110,43 @@ available at
 \url{https://github.com/bingham-research-center/possibility-verif}.
 
 %----------------------------------------------------------
-\subsection{Limitations and Future Directions}%
-\label{sec:limitations}
+\subsection{Limitations}\label{sec:limitations}
 
-Several limitations should be noted.  Sample-size requirements for the
-three reliability hypothesis tests
-(Section~\ref{sec:three_tests}) have not been established; at pilot
-scales (${\sim}100$ cases), these tests should be supplemented with
-illustrative case studies and bootstrap confidence intervals to guard
-against small-sample artifacts.  The scorecard is demonstrated here without a
-possibilistic skill score, because defining a principled possibilistic
-climatology---the baseline needed for skill---remains an open problem.
-A consonant (nested) reference distribution derived from observed
-category frequencies is one candidate, but it may not suit applications
-with multimodal climatologies where the nested-set assumption breaks
-down.  Formal credal-set exceedance bounds---grounded in the
-possibility--necessity duality but rigorously derived for subnormal
-distributions---and construction of possibilistic baselines are
-deferred to future work.
+\begin{itemize}[leftmargin=2em]
+\item \textbf{Sample-size requirements} for the three hypothesis tests
+    (Section~\ref{sec:three_tests}) have not been established.
+    At pilot scales (${\sim}90$ station-days), the stratified tests
+    (Tests~2 and~3) will have limited statistical power; at least 30
+    cases per stratum are needed for reasonable precision, and
+    illustrative case studies should supplement formal tests.
+\item \textbf{No possibilistic skill score} is defined, because
+    constructing a principled possibilistic climatology---the baseline
+    needed for skill---remains an open problem.
+\item \textbf{Closed-world assumption:} the bridge assumes the true
+    category is always in $\Omega$.  For open-world applications the
+    framework would need modification to allow the ignorance outcome to
+    verify as ``correct.''
+\end{itemize}
 
-The possibility-to-probability bridge assumes that the ignorance
-outcome is never observed: the true category is always one of the
-elements of $\Omega$.  This is a closed-world assumption, appropriate
-when $\Omega$ is exhaustive.  For open-world applications in which the
-true outcome may lie outside the defined categories---for instance,
-an unprecedented severe weather mode not represented in the SPC
-taxonomy---the framework would need modification to allow the ignorance
-outcome to verify as ``correct'' under certain conditions, effectively
-treating $\ign$ as a legitimate forecast of novelty.
+\subsection{Future Directions}\label{sec:future_directions}
 
-Several directions for future work follow naturally.  The
-three-component representation ($\poss$, $\ign$, $\Nc$) lends itself to
-downstream communication; a companion project (Lawson, in prep.)
-explores LLM-mediated translation of the possibilistic triplet into
-tiered plain-language advisories, using the ignorance signal to trigger
-hedged language and conditional necessity to trigger confident language.
-First,
-multivariate possibilistic verification for correlated hazards (e.g.,
-simultaneous wind and hail occurrence) would require joint possibility
-distributions and an extension of the scorecard to multidimensional
-$\Omega$.  Second, conformal prediction also produces interval-valued
-forecasts but from a frequentist calibration perspective; a formal
-comparison of conformal coverage guarantees with possibilistic
-intervals could clarify the relative merits of each
-paradigm.  Third, real-time operational implementation with automated
-scorecard dashboards would enable forecasters to monitor possibilistic
-skill across successive forecast cycles.  Finally, the performance
-diagram (Figure~\ref{fig:performance_diagram}) could be extended to
-track model development trajectories, plotting successive model
-versions as connected points to visualize the trade-offs between
-sharpness, calibration, and ignorance over time.
+\begin{itemize}[leftmargin=2em]
+\item \textbf{Possibilistic baselines and credal-set bounds:} formal
+    exceedance bounds grounded in the possibility--necessity duality,
+    rigorously derived for subnormal distributions.
+\item \textbf{Multivariate verification:} joint possibility
+    distributions over correlated hazards (e.g., simultaneous wind and
+    hail) with an extended scorecard for multidimensional $\Omega$.
+\item \textbf{Extension to continuous variables:} $\alpha$-cut
+    discretisation and spatial verification maps.
+\item \textbf{Conformal prediction:} formal comparison of conformal
+    coverage guarantees with possibilistic intervals.
+\item \textbf{Operational dashboards:} real-time scorecard monitoring
+    across successive forecast cycles.
+\item \textbf{LLM-mediated communication:} translation of the
+    possibilistic triplet ($\poss$, $\ign$, $\Nc$) into tiered
+    plain-language advisories (Lawson, in prep.).
+\item \textbf{Model-development trajectories:} extending
+    Figure~\ref{fig:performance_diagram} to track successive model
+    versions as connected points.
+\end{itemize}

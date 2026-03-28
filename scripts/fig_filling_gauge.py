@@ -48,7 +48,7 @@ def main():
 
     # Vertical dashed line at Pi_max
     ax.axvline(pi_max, linestyle="--", linewidth=1.0, color=DARK_GREY, zorder=4)
-    ax.text(pi_max, SPC_N - 0.5,
+    ax.text(pi_max - 0.04, SPC_N - 0.5,
             r"$\Pi_{\max}$" + f" = {pi_max:.2f}",
             ha="right", va="bottom", fontsize=9, color=DARK_GREY)
 

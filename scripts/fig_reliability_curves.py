@@ -142,7 +142,7 @@ def main():
               edgecolor=MID_GREY)
 
     # --- Inset: sample size per threshold ---
-    ax_inset = ax.inset_axes([0.55, 0.08, 0.40, 0.18])
+    ax_inset = ax.inset_axes([0.55, 0.14, 0.40, 0.18])
     ax_inset.bar(thresholds, counts, width=0.04, color=PURPLE, alpha=0.5,
                  edgecolor="none")
     ax_inset.set_ylabel("$n$", fontsize=7, labelpad=1)

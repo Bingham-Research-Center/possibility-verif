@@ -74,7 +74,7 @@ def main():
               fontsize=7.5, fontstyle="italic", color=GREEN, ha="right")
 
     # --- Right panel: (n+1)-category probability distribution ---
-    right_labels = list(SPC_CATEGORIES) + ["IGN"]
+    right_labels = list(SPC_CATEGORIES) + [r"$p_{\mathrm{ign}}$"]
     right_vals = np.concatenate([p_cats, [p_ign]])
     right_colours = [PURPLE] * SPC_N + [MID_GREY]
 
@@ -113,9 +113,10 @@ def main():
         )
         fig.add_artist(con)
 
-    # Arrow from the H_Pi gap to the ignorance bar
+    # Arrow from the H_Pi gap (between tallest bar and 1.0 line) to the ignorance bar
+    gap_midpoint = (pi.max() + 1.0) / 2.0
     con_ign = ConnectionPatch(
-        xyA=(x_left[int(np.argmax(pi))], pi.max()),
+        xyA=(x_left[int(np.argmax(pi))], gap_midpoint),
         coordsA=ax_l.transData,
         xyB=(SPC_N, p_ign), coordsB=ax_r.transData,
         arrowstyle="->", color=GREEN, linewidth=0.8,
@@ -132,12 +133,7 @@ def main():
         ha="center", va="bottom", fontsize=9, color=DARK_GREY,
     )
 
-    # Note about differing y-axes
-    fig.text(0.50, 0.95, "Note: y-axes differ",
-             ha="center", va="top", fontsize=8, fontstyle="italic",
-             color=GREEN,
-             bbox=dict(boxstyle="round,pad=0.3", facecolor="white",
-                       edgecolor=GREEN, linewidth=0.8, alpha=0.9))
+    # "y axes differ" note removed per revision plan
 
     fig.subplots_adjust(left=0.08, right=0.96, bottom=0.12, top=0.88,
                         wspace=0.40)

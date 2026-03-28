@@ -58,3 +58,16 @@
 % See rhoenvs.sty for available theme colours and how to define more
 \colorthemePossVerifPurple
 \colorthemePossVerifGreen
+
+% Worked-example environment: pale green tinted box
+\usepackage{tcolorbox}
+\newtcolorbox{workedexample}[1][]{%
+    colback=rationalecolor!8,
+    colframe=rationalecolor!50!black,
+    coltitle=white,
+    fonttitle=\bfseries\sffamily,
+    title={#1},
+    sharp corners,
+    boxrule=0.5pt,
+    left=4pt, right=4pt, top=2pt, bottom=2pt
+}

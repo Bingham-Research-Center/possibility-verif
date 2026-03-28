@@ -6,20 +6,13 @@
 
 \section{Worked Examples}\label{sec:worked_examples}
 
-The preceding sections developed three verification lanes---the native
-scorecard, the possibility-to-probability bridge
-with information gain, and three diagnostic hypothesis tests---in the
-abstract.  This section applies them to a concrete trio of stylized
-convective outlook scenarios.  Each scenario is designed to isolate a
-different diagnostic situation: a sharp forecast that verifies correctly,
+This section applies the three verification lanes to a trio of stylised
+convective outlook scenarios: a sharp forecast that verifies correctly,
 a hedged forecast that also verifies correctly, and a sharp forecast
-that misses badly.  The walkthroughs proceed from simplest to most complex:
-categorical mode verification first, then the probability bridge, and
-finally the native possibilistic gauge and scorecard.  This ordering
-mirrors the progression from zeroth-order (point forecast) through
-first-order (distributional) to second-order (epistemic) uncertainty,
-demonstrating how each lane adds diagnostic information invisible to
-the preceding one.
+that misses badly.  The walkthroughs proceed from categorical mode
+verification through the probability bridge to the native possibilistic
+scorecard, demonstrating how each lane adds diagnostic information
+invisible to the preceding one.
 
 %----------------------------------------------------------
 \subsection{Scenario Setup}\label{sec:scenario_setup}
@@ -27,8 +20,7 @@ the preceding one.
 Three stylized possibilistic convective outlooks are defined, each
 representing a distinct forecasting situation.  All distributions are
 defined over $\Omega = \{\spc{NONE},\, \spc{MRGL},\, \spc{SLGT},\,
-\spc{ENH},\, \spc{MDT},\, \spc{HIGH}\}$ with $K = 6$.  We envision
-the possibilistic forecast as an early or unofficial Day-1 outlook,
+\spc{ENH},\, \spc{MDT},\, \spc{HIGH}\}$ with $K = 6$.  The possibilistic forecast is envisioned as an early or unofficial Day-1 outlook,
 produced offline in parallel with real operations.  It is verified
 against the final (pre-initiation) Day-1 SPC categorical outlook at
 Norman, Oklahoma.  This like-for-like comparison has several advantages:
@@ -108,7 +100,7 @@ category the system deemed essentially impossible.
 Observed outcome: $c_{\mathrm{obs}} = \spc{MDT}$.
 
 %----------------------------------------------------------
-\subsection{Categorical-Lane Walkthrough}\label{sec:categorical_walkthrough}
+\subsection{Categorical Example}\label{sec:categorical_walkthrough}
 
 The categorical lane evaluates the mode-based point forecast:
 $\hat{c} = \arg\max_\omega \pi(\omega)$, with ties broken by severity
@@ -164,9 +156,9 @@ catastrophic.
 \end{figure*}
 
 %----------------------------------------------------------
-\subsection{Pignistic Bridge Walkthrough}\label{sec:bridge_walkthrough}
+\subsection{Probabilistic Example}\label{sec:bridge_walkthrough}
 
-We now apply the possibility-to-probability bridge
+The possibility-to-probability bridge is now applied
 (Section~\ref{sec:poss_prob_bridge}) to each scenario, then compute
 information gain relative to the SPC climatological baseline
 $p_{\mathrm{clim}} = (0.60,\, 0.18,\, 0.12,\, 0.06,\, 0.032,\,
@@ -230,29 +222,22 @@ surprise; $\varepsilon = 0.0001$ yields $13.29$~bits.  In all cases
 Scenario~C remains strongly negative.
 
 %----------------------------------------------------------
-\subsection{Filling the Gauge}\label{sec:filling_gauge}
+\subsection{Full Scorecard Comparison}\label{sec:scorecard_comparison}
 
-The gauge visualization maps each SPC category to a horizontal bar
-whose fill level represents raw possibility $\pi(\omega)$.  A fully
-filled bar ($\pi = 1.0$) would indicate complete plausibility; the gap
-between the tallest bar and $1.0$ is the ignorance $\ign$, rendered as
-empty space to the right of every bar.  The observed category is
-highlighted in green so that the reader can immediately judge whether
-the system placed high possibility on the outcome that actually
-occurred.  This representation makes subnormality and its consequences
-visible at a glance, without requiring the reader to parse numerical
-tables.
-
-Figure~\ref{fig:filling_gauge} shows the gauge visualization for
-Scenario~A.  The horizontal bars are filled to the raw possibility
-level; the gap from $\Pi_{\max}$ to $1.0$ visually encodes the
-ignorance $\ign$.  The observed category (\spc{MDT}) is highlighted
-in green.
+Before turning to the five-number scorecard, Figure~\ref{fig:filling_gauge}
+introduces a gauge visualisation for Scenario~A: each SPC category maps
+to a horizontal bar filled to its raw possibility $\pi(\omega)$, with
+the gap from $\Pi_{\max}$ to $1.0$ encoding ignorance $\ign$.  The
+observed category is highlighted in green.  For Scenario~B the gauge
+would show five partially filled bars with a large $\ign = 0.45$ gap,
+immediately signalling hedging; for Scenario~C a single dominant bar
+(\spc{NONE} at $0.85$) with the observed category (\spc{MDT}) unfilled
+at zero---sharpness aimed at the wrong outcome.
 
 \begin{figure}[t]
 \centering
 \includegraphics[width=\columnwidth]{filling_gauge.png}
-\caption{Gauge visualization for Scenario~A (sharp-correct \spc{MDT}).
+\caption{Gauge visualisation for Scenario~A (sharp-correct \spc{MDT}).
     Each horizontal bar represents an SPC category, filled to its raw
     possibility value $\pi(\omega)$.  The vertical dashed line marks
     $\Pi_{\max} = 0.90$; the gap to $1.0$ is ignorance $\ign = 0.10$.
@@ -260,29 +245,6 @@ in green.
     confirming high conditional necessity.}
 \label{fig:filling_gauge}
 \end{figure}
-
-Were we to draw the same gauge for Scenario~B, the picture would change
-qualitatively.  Five bars would be partially filled, with \spc{ENH} the
-tallest at only $0.55$; the remaining bars for \spc{SLGT} ($0.40$) and
-\spc{MDT} ($0.30$) would reach nearly the same height.  The large
-$\ign = 0.45$ gap would dominate the right-hand side of every bar,
-immediately signaling that the system is hedging rather than committing.
-The observed category (\spc{ENH}, green) would still be the tallest bar,
-but only marginally so---consistent with a forecast that is directionally
-correct yet openly uncertain.
-
-Scenario~C would present the most visually striking gauge.  A single bar
-(\spc{NONE}) would dominate at $0.85$, with \spc{MRGL} contributing a
-sliver at $0.10$ and the remaining four categories nearly empty.
-The ignorance gap ($\ign = 0.15$) would be small, reinforcing the
-impression of a confident forecast.  Yet the observed category
-(\spc{MDT}, green) would appear as an unfilled bar at zero---a stark
-visual indictment.  Placing the three gauges side by side reveals at a
-glance that sharpness alone is not a virtue: it must be aimed at the
-correct outcome.
-
-%----------------------------------------------------------
-\subsection{Full Scorecard Comparison}\label{sec:scorecard_comparison}
 
 Table~\ref{tab:scorecard_comparison} collects the five-number scorecard
 for all three scenarios.  Figure~\ref{fig:three_scenario} provides a

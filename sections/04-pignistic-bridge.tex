@@ -57,12 +57,12 @@ for normal belief functions.  The key innovation is reserving the
 ignorance mass as an explicit outcome rather than redistributing it,
 enabling verification scores to penalize subnormality directly.
 
-\textbf{Worked example.}
+\begin{workedexample}[Worked example]
 Suppose a possibilistic convective outlook produces
 $\pi = (0.05,\; 0.2,\; 0.4,\; 0.6,\; 0.1,\; 0.0)$.
 \begin{align*}
 \textit{Input:}\quad
-  & \ign = 1 - 0.6 = 0.4 \;\;(\text{40\% unsure}),
+  & \ign = 1 - 0.6 = 0.4 \;\;(\text{40\% of plausibility budget unassigned}),
     \quad \textstyle\sum_j \pi_j = 1.35 \\
 \textit{Bridge:}\quad
   & \mathbf{p} = (0.022,\; 0.089,\; 0.178,\; 0.267,\;
@@ -78,7 +78,8 @@ High \ign{} ($0.4$) correctly inflated the ignorance outcome, reducing
 $p(\spc{ENH})$ from what simple normalization would give
 ($0.6/1.35 = 0.444$) to $0.267$.  The verification score ($1.91$~bits)
 honestly reflects the system's partial uncertainty.
-Figure~\ref{fig:pignistic_bridge} visualizes this transformation.
+Figure~\ref{fig:pignistic_bridge} visualises this transformation.
+\end{workedexample}
 
 \begin{figure*}[!t]
 \centering
@@ -114,9 +115,9 @@ baseline.
 This formulation follows \citet{Roulston2002-eq}; \citet{Lawson2024-bu} extended it to atmospheric forecast evaluation with explicit decomposition diagnostics.
 
 Averaging Eq.~\eqref{eq:ig} over a verification sample yields
-the mean logarithmic score, which decomposes diagnostically:
+the mean log score, which decomposes diagnostically:
 \begin{equation}
-\mathrm{LS} = \mathrm{UNC} - \mathrm{DSC} + \mathrm{REL}
+\overline{\mathrm{LS}} = \mathrm{UNC} - \mathrm{DSC} + \mathrm{REL}
 \quad \text{(all in bits; lower is better)}
 \label{eq:ig_decomp}
 \end{equation}
@@ -166,10 +167,10 @@ IGN used in some verification literature.
 
 Simple normalization ($p_i = \pi_i / \sum_j \pi_j$) is the standard
 route from possibilities to probabilities.  It forces the result to sum
-to one regardless of model confidence: a system that is $90\%$ unsure
-($\ign = 0.9$) produces the same probability vector as one that is
-$10\%$ unsure ($\ign = 0.1$), provided their raw shapes are
-proportional.  The ignorance signal is erased.  Verification scores
+to one regardless of model confidence: a system with $\ign = 0.9$
+(leaving 90\% of the unit-interval plausibility budget unassigned)
+produces the same probability vector as one with $\ign = 0.1$,
+provided their raw shapes are proportional.  The ignorance signal is erased.  Verification scores
 applied to the normalized vector cannot distinguish a sharp, confident
 forecast from a diffuse, hedged one---the answer to ``how would you
 bet?'' is given without acknowledging ``I wouldn't bet at all.''
@@ -182,7 +183,7 @@ stranded mass earns no verification credit: it inflates the self-entropy
 of the converted forecast in proportion to $\ign$.  The more ignorant
 the system, the more mass is stranded, and the larger the penalty.
 
-\textbf{Worked contrast.}
+\begin{workedexample}[Worked contrast]
 Using $\pi = (0.05,\, 0.2,\, 0.4,\allowbreak\, 0.6,\, 0.1,\, 0.0)$
 from Section~\ref{sec:poss_prob_bridge}:
 
@@ -200,8 +201,9 @@ Self-entropy (bits) & $-\log_2(0.444) = 1.17$ & $-\log_2(0.267) = 1.91$ \\
 \end{center}
 
 \noindent The $0.74$-bit gap is the verification cost of ignoring the
-system's admitted uncertainty.  Simple normalization rewards the system
+system's admitted uncertainty.  Simple normalisation rewards the system
 for confidence it never claimed.
+\end{workedexample}
 
 \textbf{Complementarity of \ign{} and IG.}
 Possibilistic ignorance $\ign$ and information gain IG capture

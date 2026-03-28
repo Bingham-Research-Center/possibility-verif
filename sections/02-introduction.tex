@@ -27,16 +27,20 @@ satisfies these constraints.  The Storm Prediction Center (SPC)
 convective outlooks, for instance, assign ordered categorical labels
 (\spc{NONE} through \spc{HIGH}) that express graded plausibility rather
 than calibrated frequency.  SPC issues crisp categorical outlooks drawn
-on a map; this paper proposes a hypothetical possibilistic alternative
+on a map---\spc{NONE} (no categorical risk assignment), \spc{MRGL}
+(Marginal), \spc{SLGT} (Slight), \spc{ENH} (Enhanced), \spc{MDT}
+(Moderate), and \spc{HIGH}---; this paper proposes a hypothetical possibilistic alternative
 using these familiar categories as the running example, treating the
 outlook at a single point (Norman, Oklahoma) as the observation.
+These scenarios are thought experiments designed to demonstrate the
+verification framework; no claim is made that SPC currently produces
+possibilistic forecasts.
 Possibility theory \citep{Dubois1988-nh}
 provides a mathematical framework for exactly this kind of statement:
 graded compatibility of outcomes with available evidence, without the
 additivity requirement that probability imposes.  Despite a mature
-theoretical literature, no systematic framework has been proposed for verifying
-possibilistic forecasts.  This paper proposes a framework to address
-this gap.
+theoretical literature, possibilistic predictions lack a dedicated
+verification methodology.  This paper addresses this gap.
 
 % --- Why possibility theory matters for hazard verification ---
 
@@ -62,7 +66,7 @@ possibilistic ignorance $\ign = 1 - \max(\pi)$ quantifies the gap
 between the system's best-supported outcome and full endorsement---a
 signal that probability, which must sum to unity, cannot represent.
 Normalizing a subnormal distribution to $\max(\pi) = 1$ erases this
-signal, a problem we call \textit{ignorance erasure}: it conflates ``the
+signal, a problem termed \textit{ignorance erasure}: it conflates ``the
 system thinks \spc{ENH} is most likely'' with ``the system is
 confident'' (Section~\ref{sec:naive_normalization} develops this
 contrast in detail).
@@ -91,46 +95,41 @@ distributions, which violate the additivity axiom.
 The broader meteorological verification literature---including
 \citet{Murphy1993-MISSING}, \citet{Jolliffe2012-MISSING}, and
 \citet{Wilks2011-MISSING}---provides the conceptual vocabulary
-(reliability, resolution, discrimination) that we adapt below.
+(reliability, resolution, discrimination) adapted below.
 
 Adjacent frameworks---Dempster--Shafer evidence theory
 \citep{Shafer1976-MISSING}, the pignistic transformation
 \citep{Smets1990-MISSING}, and imprecise probabilities
 \citep{Walley1991-MISSING}---share the intuition that a single
-probability may not capture an agent's epistemic state, but none
-provides a verification methodology for subnormal possibility
-distributions (Appendix~\ref{sec:ds_connections}).
+probability may not capture an agent's epistemic state;
+Section~\ref{sec:three_component} discusses the structural parallels
+and key differences.
 
 Despite the growing use of possibility-like representations in
 expert systems, fuzzy inference, and imprecise-probability applications,
-no systematic verification framework has been proposed for subnormal
-possibility distributions.  Existing approaches either normalize the distribution---
+possibilistic predictions lack a dedicated verification methodology.
+Existing approaches either normalize the distribution---
 erasing the ignorance signal---or treat possibility values as
 probabilities, violating the max-additivity axiom that distinguishes
-possibility from probability.  This paper proposes a unified framework
-with three components: a five-number scorecard for native possibilistic
+possibility from probability.  This paper presents a framework
+with three components: a five-number scorecard for possibilistic
 evaluation, a possibility-to-probability bridge that preserves ignorance
 as an explicit outcome, and a categorical verification lane using
-mode-based threshold scores familiar to operational meteorologists.
+threshold-based categorical scores familiar to operational meteorologists.
 
 % --- Paper outline ---
 
-The remainder of this paper is organized as follows.
+The remainder of this paper is organised as follows.
 Section~\ref{sec:poss_primer} introduces the mathematical foundations of
-possibility theory, emphasizing subnormal distributions and the
+possibility theory, emphasising subnormal distributions and the
 three-component uncertainty framework.
 Section~\ref{sec:pignistic_bridge} develops the possibility-to-probability
-bridge that converts possibilities to probabilities without erasing
-ignorance, and reviews the information-gain decomposition.
-Section~\ref{sec:native_verification} formalizes native possibilistic
+bridge and reviews the information-gain decomposition.
+Section~\ref{sec:native_verification} formalises possibilistic
 verification via the five-number scorecard.
-Section~\ref{sec:tripartite_value} establishes three hypothesis tests
-demonstrating that each uncertainty component (possibility, ignorance,
-conditional necessity) independently contributes verification value, and
-defines three complementary verification lanes---categorical,
-probabilistic, and native possibilistic.
+Section~\ref{sec:tripartite_value} establishes that each uncertainty
+component independently contributes verification value, and
+defines three complementary verification lanes.
 Section~\ref{sec:worked_examples} walks through three worked examples
-using SPC convective outlook categories (\spc{NONE} through \spc{HIGH}).
-Section~\ref{sec:discussion} discusses applicability beyond severe
-weather and future directions; Appendix~\ref{sec:ds_connections}
-develops connections to Dempster--Shafer theory.
+using SPC convective outlook categories.
+Section~\ref{sec:discussion} discusses applicability and future directions.

@@ -9,10 +9,12 @@
 
 \section{Three-Component Value}\label{sec:tripartite_value}
 
-A reviewer might ask whether all three
-components---possibility, ignorance, and conditional necessity---independently
-contribute to verification, or whether some are redundant once others
-are known.  This section addresses that question directly.  Three
+The five-number scorecard evaluates individual forecast--observation
+pairs; this section asks whether the three \emph{components} that the
+five numbers assess---possibility ($\alpha^*$, $\eta$, $\delta$),
+ignorance ($\ign$), and conditional necessity ($\Nc^*$)---each
+independently contribute to verification, or whether some are
+redundant once others are known.  Three
 hypothesis test protocols are proposed, each isolating one component and
 asking whether it adds information the other two do not provide.  An
 affirmative answer for all three justifies the full five-number
@@ -97,24 +99,14 @@ forecasts identify genuinely confident predictions.
 \caption{Reliability of conditional necessity.  The purple curve shows
     the conditional hit rate for the observed category as a function of
     the $\Nc$ threshold $\tau$.  The horizontal dashed line marks the
-    climatological base rate ($1/K \approx 0.167$ for $K = 6$ categories).
-    When the curve lies above the base rate, high-$\Nc$ forecasts verify
+    climatological base rate ($1/K \approx 0.167$ for $K = 6$ categories):
+    the hit rate expected if forecasts were uninformative.
+    When the curve lies above this line, high-$\Nc$ forecasts verify
     better than climatology---confirming that conditional necessity is an
-    informative confidence signal.  Data are synthetic, generated to
-    illustrate the expected curve shape.}
+    informative confidence signal.  The shaded band shows a 90\% bootstrap
+    confidence interval.  Data are synthetic.}
 \label{fig:reliability}
 \end{figure}
-
-All three tests require adequate sample sizes to yield statistically
-meaningful results.  At pilot scales (${\sim}90$ station-days), the
-stratified tests (Tests~2 and~3) will have limited statistical power;
-they should be supplemented by illustrative case studies that demonstrate
-the qualitative behaviour predicted by each hypothesis.  As a rough
-guideline, Test~1 (resolution gap vs.\ baseline) requires at least 50
-forecast--observation pairs for a paired-difference bootstrap to detect
-moderate effect sizes; Tests~2 and~3 require at least 30 cases per
-stratum (high/low \ign{} or above/below the $\Nc$ threshold) to
-estimate conditional means with reasonable precision.
 
 %----------------------------------------------------------
 \subsection{Three Verification Lanes}\label{sec:three_lanes}
@@ -123,12 +115,12 @@ A single metric cannot capture full uncertainty quantification from a
 subnormal possibility distribution.  Table~\ref{tab:three_lanes}
 summarises the three verification lanes and their respective blind spots.
 
-\begin{table}[htbp]
+\begin{table*}[htbp]
 \centering
 \small
 \caption{Three verification lanes and their blind spots.}
 \label{tab:three_lanes}
-\begin{tabularx}{\columnwidth}{%
+\begin{tabularx}{\textwidth}{%
     >{\raggedright\arraybackslash}p{0.18\columnwidth}XX}
 \toprule
 Lane & Answers the question & What it misses \\
@@ -150,7 +142,7 @@ Lane & Answers the question & What it misses \\
         might still give poor probabilities after conversion. \\
 \bottomrule
 \end{tabularx}
-\end{table}
+\end{table*}
 
 Together, the three lanes catch failures that any single lane would miss:
 
@@ -217,7 +209,10 @@ but that no single metric could reveal.
     $\overline{H_\Pi}$ degradation in v2.0: the system became more
     ignorant before improving in subsequent versions---a signature of
     recalibrated uncertainty that the native possibilistic lane detects
-    but the probabilistic lane may absorb.}
+    but the probabilistic lane may absorb.
+    Ignorance changes (amber) are context-dependent: increased $\ign$
+    may indicate honest self-awareness or declining skill, depending on
+    whether discrimination also changes.}
 \label{fig:scorecard_table}
 \end{figure}
 

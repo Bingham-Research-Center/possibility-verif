@@ -34,13 +34,13 @@ def main():
 
     # --- Annotation: Pi_max dashed line ---
     ax.axhline(pi_max, linestyle="--", linewidth=1.0, color=DARK_GREY, zorder=2)
-    ax.text(SPC_N - 0.5, pi_max - 0.02,
+    ax.text(0.5, pi_max - 0.02,
             "Peak plausibility",
-            ha="right", va="top", fontsize=9, fontweight="bold",
+            ha="left", va="top", fontsize=9, fontweight="bold",
             color=DARK_GREY)
-    ax.text(SPC_N - 0.5, pi_max - 0.11,
+    ax.text(0.5, pi_max - 0.11,
             r"$\Pi_{\max}$" + f" = {pi_max:.2f}",
-            ha="right", va="top", fontsize=9, color=DARK_GREY)
+            ha="left", va="top", fontsize=9, color=DARK_GREY)
 
     # --- Annotation: H_Pi bracket on the right side ---
     bracket_x = SPC_N - 0.15

@@ -20,6 +20,7 @@ from style import apply_style, save_fig, PURPLE, DARK_GREY, MID_GREY, LIGHT_GREY
 # Colours for improvement / degradation
 IMPROVE = "#2E7D32"
 DEGRADE = "#C62828"
+AMBER   = "#F9A825"      # neutral/context-dependent (ignorance changes)
 HEADER_BG = "#E8E0F0"   # light purple for lane header bands
 
 
@@ -46,7 +47,7 @@ def main():
                 [(+1, False, 0.15), (+1, True,  0.45), (+1, True,  0.60)]),
             (r"$\overline{\delta}$",    "Resolution gap",
                 [(+1, True,  0.35), (+1, True,  0.70), (+1, True,  0.90)]),
-            (r"$\overline{H_\Pi}$",     "Ignorance",
+            (r"$\overline{H_\Pi}$",     "Ignorance*",
                 [(-1, True,  0.50), (+1, True,  0.30), (+1, True,  0.50)]),
             (r"$\overline{N_c^*}$",     "Cond. necessity",
                 [(+1, False, 0.20), (+1, True,  0.55), (+1, True,  0.75)]),
@@ -122,9 +123,13 @@ def main():
                     ha="right", va="center", fontsize=7, color=DARK_GREY)
 
             # Triangle markers
+            is_ignorance = "Ignorance" in label
             for j in range(n_ver):
                 direction, sig, mag = cells[j]
-                color = IMPROVE if direction > 0 else DEGRADE
+                if is_ignorance:
+                    color = AMBER
+                else:
+                    color = IMPROVE if direction > 0 else DEGRADE
                 marker = "^" if direction > 0 else "v"
                 s = min_s + (max_s - min_s) * mag
 
@@ -166,13 +171,15 @@ def main():
                        markeredgecolor=DEGRADE, linestyle="None",
                        markersize=8, markeredgewidth=1.4,
                        label="Non-sig. degradation"),
+        mlines.Line2D([], [], marker="s", color=AMBER, linestyle="None",
+                       markersize=6, label="Ignorance* (context-dep.)"),
     ]
     ax.legend(handles=leg_handles, loc="lower center",
-              bbox_to_anchor=(0.5, -0.01), ncol=2, fontsize=6.5,
+              bbox_to_anchor=(0.5, -0.04), ncol=2, fontsize=6.5,
               frameon=True, fancybox=False, edgecolor=MID_GREY,
               handletextpad=0.3, columnspacing=0.8)
 
-    fig.subplots_adjust(left=0.02, right=0.98, bottom=0.12, top=0.97)
+    fig.subplots_adjust(left=0.02, right=0.98, bottom=0.14, top=0.97)
     save_fig(fig, "scorecard_table")
 
 

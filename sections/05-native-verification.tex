@@ -7,7 +7,7 @@
 % Inlined plain-language explanations from A6
 %----------------------------------------------------------
 
-\section{Native Possibilistic Verification}\label{sec:native_verification}
+\section{Possibilistic Verification}\label{sec:native_verification}
 
 The possibility-to-probability bridge
 (Section~\ref{sec:poss_prob_bridge}) enables probabilistic verification
@@ -106,7 +106,9 @@ the normalized rank position of the observation within the ensemble).
 \subsection{Five-Number Scorecard}\label{sec:native_scorecard}
 
 Five summary statistics evaluate each forecast--observation pair, where
-$c_{\mathrm{obs}}$ denotes the observed SPC category and $K = |\Omega|$
+$c_{\mathrm{obs}}$ denotes the observed (verified) SPC category---in
+the Day-1 comparison framing, the category from the final SPC
+categorical outlook at the point of interest---and $K = |\Omega|$
 is the number of categories (here, $K = 6$).
 Table~\ref{tab:scorecard_defs} lists the definitions; the equations
 are given below.
@@ -141,8 +143,8 @@ where $\alpha^* = 1$ when the truth coincides with the system's peak
 category and $\alpha^* = 0$ when the system assigns zero possibility to
 the observed outcome.
 
-Inspired by the nonspecificity concept of \citet{Klir1995-va}, we
-measure the diffuseness of the normalized shape:
+Inspired by the nonspecificity concept of \citet{Klir1995-va}, the
+diffuseness of the normalised shape is measured by:
 \begin{equation}
 \eta = \frac{1}{K} \sum_{c=1}^{K} \pinorm(c) \label{eq:ns}
 \end{equation}
@@ -169,45 +171,40 @@ alternatives in the normalized distribution.  This is a direct
 application of Eq.~\eqref{eq:cond_nec} evaluated at the observation.
 
 \medskip
-\noindent\textbf{\textsf{\color{rationalecolor}Plain-language glosses}}
+\noindent\textbf{\textsf{\color{rationalecolor}Scorecard descriptions}}
 \smallskip
 
 \noindent
 \renewcommand{\arraystretch}{1.25}
 \begin{tabularx}{\columnwidth}{%
     >{\columncolor{rationalecolor!10}}c X}
-$\alpha^*$ & How much normalized possibility did the system assign to
+$\boldsymbol{\alpha^*}$ & How much normalised possibility did the system assign to
     what actually happened?  Like POD for the winning bin, but
     continuous. \\
-$\eta$ & How spread out was the normalized distribution?  Like ensemble
+$\boldsymbol{\eta}$ & How spread out was the normalised distribution?  Like ensemble
     spread or sharpness. \\
-$\delta$ & Did the system give more support to the truth than to an
+$\boldsymbol{\delta}$ & Did the system give more support to the truth than to an
     average category?  Like resolution in the Brier decomposition. \\
-$\ign$ & How much did the system admit it didn't know?
-    $\ign = 0$: fully confident; $\ign = 1$: complete ignorance. \\
-$\Nc^*$ & Among scenarios the system covered, was the truth dominant
+$\boldsymbol{\ign}$ & How much of the plausibility budget did the system leave
+    unassigned?  $\ign = 0$: fully confident; $\ign = 1$: complete ignorance. \\
+$\boldsymbol{\Nc^*}$ & Among scenarios the system covered, was the truth dominant
     enough to rule out alternatives?  A confidence flag. \\
 \end{tabularx}
 \renewcommand{\arraystretch}{1.0}
 
+Each metric is well-defined for a single forecast--observation pair.
 Overbar notation ($\overline{\alpha^*}$, $\overline{\eta}$, etc.)
-denotes summary statistics computed over the verification sample;
+denotes aggregation over the verification sample;
 the specific aggregation function (mean, median, or other robust
 estimator) and uncertainty quantification method are left to the
 practitioner.
 
-\textbf{Permutation invariance and ordinal domains.}
-The five scorecard metrics are permutation-invariant: they treat
-$\Omega$ as an unordered set.  For the SPC categories, this is
-conservative---the categories are semi-continuous, ranked in severity,
-but with notional rather than uniform spacing between levels.
-The scorecard evaluates whether the forecast pointed at the right
-category, not whether it was close in an ordinal sense.
-For ordinal domains with well-defined distances (e.g., snowfall bands in
-centimetre increments, temperature categories), a distance-sensitive
-score should supplement the scorecard to penalize far misses more
-heavily than near misses.  Such an extension, via an inter-category
-cost matrix, is straightforward but beyond the present scope.
+\textbf{Permutation invariance.}
+The five scorecard metrics treat $\Omega$ as an unordered set: they
+evaluate whether the forecast pointed at the right category, not whether
+it was close in an ordinal sense.  For ordinal domains with well-defined
+distances, a distance-sensitive score (via an inter-category cost
+matrix) should supplement the scorecard.
 
 Figure~\ref{fig:performance_diagram} provides a diagnostic view of the
 five scorecard metrics, inspired by \citet{Roebber2009-rv}.  Hexagonal
@@ -224,8 +221,10 @@ to sample count.
 The analogy with Roebber's diagram is deliberate: specificity plays the
 role of success ratio (how focused was the distribution?), $\alpha^*$
 plays the role of probability of detection (did the forecast capture
-truth?), and the $S$ hyperbolas play the role of CSI contours (net
-quality given both axes).  The key addition is ignorance $\ign$, encoded
+truth?), and the $S = \alpha^* \times (1 - \eta)$ hyperbolas play the
+role of CSI contours---both are products of the two axes, so iso-lines
+of constant joint skill are hyperbolas relating the two axes just as CSI
+iso-lines relate success ratio to POD.  The key addition is ignorance $\ign$, encoded
 as bin colour, which has no deterministic analogue.
 
 \textit{Reading the diagram:} upper right is ideal (sharp and truthful);

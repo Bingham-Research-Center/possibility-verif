@@ -62,8 +62,8 @@ def main():
     dsc_bottoms = np.minimum(0, DSC)
     bars_dsc = ax.bar(
         x, np.abs(DSC), width=bar_width, bottom=dsc_bottoms,
-        color=PURPLE, edgecolor="white", linewidth=0.8,
-        zorder=4, alpha=0.80,
+        color=PURPLE, edgecolor=DARK_GREY, linewidth=0.8,
+        zorder=4, alpha=1.0,
         label=r"DSC (discrimination, $+$skill)",
     )
 
@@ -73,8 +73,8 @@ def main():
     rel_bottoms = DSC - REL  # = IG
     bars_rel = ax.bar(
         x, REL, width=bar_width, bottom=rel_bottoms,
-        color=GREEN, edgecolor="white", linewidth=0.8,
-        zorder=3, alpha=0.80,
+        color=GREEN, edgecolor=DARK_GREY, linewidth=0.8,
+        zorder=3, alpha=1.0,
         label=r"REL (reliability, $-$penalty)",
     )
 
@@ -94,10 +94,10 @@ def main():
         net = IG[i]
         # Place annotation above or below the stack
         if net >= 0:
-            y_annot = net + 0.10
+            y_annot = max(net, DSC[i]) + 0.12
             va = "bottom"
         else:
-            y_annot = net - 0.10
+            y_annot = net - 0.12
             va = "top"
         ax.text(
             x[i], y_annot,

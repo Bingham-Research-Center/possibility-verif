@@ -6,7 +6,7 @@
 % Removed: Clyfar-specific FIS/fuzzification framing, figures
 %----------------------------------------------------------
 
-\section{Possibility Theory Primer}\label{sec:poss_primer}
+\section{Possibility Theory Foundations}\label{sec:poss_primer}
 
 This section provides a self-contained primer on possibility theory for
 atmospheric scientists.  No prior knowledge of fuzzy logic or
@@ -16,13 +16,10 @@ possibility values to the six SPC categories \spc{NONE}, \spc{MRGL},
 \spc{SLGT}, \spc{ENH}, \spc{MDT}, and \spc{HIGH}---illustrates each
 definition.  The categories are categorical and mutually exclusive: on any
 given day at any given point, exactly one category describes the observed
-outcome.  \spc{NONE} represents the absence of any SPC categorical outlook
-at the point of interest---the true null (no severe weather).  The
+outcome.  \spc{NONE} is not an SPC risk category but denotes the absence of any
+categorical outlook at the point of interest---the true null.  The
 possibilistic distribution over these categories encodes graded
-plausibility; the categories themselves are crisp.  The mathematical
-framework developed here underpins all verification metrics in subsequent
-sections.
-
+plausibility; the categories themselves are crisp.  
 \subsection{Axioms and Definitions}\label{sec:poss_axioms}
 
 Let $\Omega$ denote the \textit{universe of discourse}---the complete set
@@ -36,14 +33,16 @@ degree of possibility $\pi(\omega)$ satisfying:
 \begin{axiomlist}
 \item \textbf{Something must be possible:} There exists at least one
     outcome $\omega^* \in \Omega$ such that $\pi(\omega^*) > 0$.
-\item \textbf{Normalization (optional):} If
+\item \textbf{Normalisation (optional):} If
     $\max_{\omega \in \Omega} \pi(\omega) = 1$, the distribution is
     \textit{normal}; otherwise it is \textit{subnormal}.  Classical
-    possibility theory \citep{Dubois1988-nh} requires normalization: at
+    possibility theory \citep{Dubois1988-nh} requires normalisation: at
     least one outcome must be fully possible for necessity to be
     well-defined.  This paper relaxes that requirement, retaining
     subnormal distributions when the forecasting system provides weak
     support for all outcomes (Section~\ref{sec:subnormal}).
+    Subnormality means the system's best-supported outcome does not
+    exhaust the plausibility budget---the remaining fraction is ignorance.
 \item \textbf{Max-additivity:} For any events $A, B \subseteq \Omega$
     with $A \cap B = \emptyset$,
     $\Pi(A \cup B) = \max\bigl(\Pi(A),\, \Pi(B)\bigr)$.
@@ -56,10 +55,10 @@ two dual measures are defined for any event $A \subseteq \Omega$:
 
 \begin{align}
 \Pi(A) &= \max_{\omega \in A} \pi(\omega)
-    \quad \text{(Possibility)} \label{eq:poss} \\
+    \label{eq:poss} \\
 N(A) &= 1 - \Pi(\neg A)
      = 1 - \max_{\omega \notin A} \pi(\omega)
-    \quad \text{(Necessity)} \label{eq:nec}
+    \label{eq:nec}
 \end{align}
 
 \textbf{Interpretation:}
@@ -72,16 +71,42 @@ N(A) &= 1 - \Pi(\neg A)
     remains plausible).
 \end{itemize}
 
-For normal distributions ($\max(\pi)=1$), $N(A) \leq \Pi(A)$ always
-holds \citep{Dubois1988-nh}, and the interval $[N(A),\, \Pi(A)]$
-brackets the range of probabilities $P(A)$ consistent with the
-available information: any probability distribution compatible with
-$\pi$ must satisfy $N(A) \leq P(A) \leq \Pi(A)$.  Under subnormality
-this ordering can be violated; Section~\ref{sec:three_component}
-introduces conditional necessity $\Nc$, which restores well-behaved
-ordering by operating on the normalized shape.  This bracketing property
-is the foundation of imprecise-probability reasoning in possibility
-theory \citep{Dubois2006-MISSING}.
+For normal distributions ($\max(\pi)=1$), the interval
+$[N(A),\, \Pi(A)]$ brackets all compatible probabilities
+\citep{Dubois1988-nh,Dubois2006-MISSING}; under subnormality this
+ordering can be violated, so Section~\ref{sec:three_component}
+introduces conditional necessity $\Nc$, which restores it by operating
+on the normalised shape.
+
+Table~\ref{tab:notation} collects all recurring symbols; readers may
+find it useful as a reference card for subsequent sections.
+
+\begin{table}[htbp]
+\centering
+\caption{Notation reference for possibilistic verification.  ``Form''
+    indicates whether the quantity uses the raw ($\pi$) or normalised
+    ($\pinorm$) distribution.}
+\label{tab:notation}
+\small
+\begin{tabularx}{\columnwidth}{lclX}
+\toprule
+Symbol & Form & Eq. & Meaning \\
+\midrule
+$\Omega$ & --- & --- & Universe of discourse \\
+$\pi$ & raw & --- & Raw (possibly subnormal) distribution \\
+$\pinorm$ & norm & --- & Normalised distribution: $\pi / m$ \\
+$m$ & raw & --- & Subnormality: $\max_{\omega} \pi(\omega)$ \\
+$\poss(A)$ & raw & \ref{eq:poss} & Possibility of event $A$ \\
+$\nec(A)$ & raw & \ref{eq:nec} & Necessity of event $A$ \\
+$\Nc(A)$ & norm & \ref{eq:cond_nec} & Conditional necessity of $A$ \\
+$\ign$ & raw & \ref{eq:ignorance} & Possibilistic ignorance: $1 - m$ \\
+$\alpha^*$ & norm & \ref{eq:alpha_star} & Depth-of-truth: $\pinorm(c_{\mathrm{obs}})$ \\
+$\eta$ & norm & \ref{eq:ns} & Nonspecificity: $(1/K)\sum_c \pinorm(c)$ \\
+$\delta$ & norm & \ref{eq:rg} & Resolution gap: $\alpha^* - \eta$ \\
+$\Nc^*$ & norm & \ref{eq:nc_star} & Cond.\ necessity of truth \\
+\bottomrule
+\end{tabularx}
+\end{table}
 
 %----------------------------------------------------------
 \subsection{Subnormal Distributions and Ignorance}\label{sec:subnormal}
@@ -97,6 +122,9 @@ residual possibility ``mass'' not covered in $\pi$:
 \begin{equation}
 H_\Pi = 1 - \max_{\omega \in \Omega} \pi(\omega) \label{eq:ignorance}
 \end{equation}
+
+(The notation $H$ nods to Shannon's entropy, though the possibilistic
+ignorance measure is not information-theoretic.)
 
 \textbf{Interpretation:} \ign{} quantifies the fraction of plausibility
 unaccounted for by the model's knowledge.  High ignorance
@@ -180,7 +208,7 @@ $\pi(\spc{SLGT})$ to 1.0, hiding the fact that the forecasting system
 struggles with this meteorological scenario.  Preserving subnormality
 makes these knowledge gaps explicit.
 
-\smallskip\noindent\textit{Notation convention.}  Henceforth,
+\smallskip\noindent\textit{Notation convention.}  Hereon,
 distributions are written as ordered tuples
 $(\spc{NONE},\, \spc{MRGL},\, \spc{SLGT},\, \spc{ENH},\, \spc{MDT},\,
 \spc{HIGH})$ when context is clear:\ e.g., Example~1 is
@@ -219,9 +247,15 @@ not statistically independent, they decompose the forecast signal into
 complementary facets of decision-relevant information.
 
 This framework bears structural resemblance to Dempster--Shafer
-belief--plausibility intervals (Appendix~\ref{sec:ds_connections}), but
-\ign{} has no direct analogue, as it quantifies coverage gaps rather
-than evidential conflict.
+belief--plausibility intervals \citep{Shafer1976-MISSING}: possibility
+$\Pi(A)$ corresponds to plausibility $\mathrm{Pl}(A)$ and necessity
+$N(A)$ to belief $\mathrm{Bel}(A)$, with the pignistic transformation
+\citep{Smets1990-MISSING} providing the decision-making bridge in
+Dempster--Shafer theory just as
+Section~\ref{sec:poss_prob_bridge} does here.  The key difference is
+that \ign{} has no direct Dempster--Shafer analogue: it quantifies
+coverage gaps in the forecasting system rather than evidential conflict
+between sources.
 
 \textbf{Communication example (from Example~1):} ``\spc{MDT} risk is
 the most plausible outcome ($\Pi = 0.75$) with moderate ignorance
@@ -253,62 +287,31 @@ probability vector that sums to~1 cannot express ``I don't know'': any
 admitted uncertainty must be allocated to specific outcomes, distributing
 confidence whether or not such precision is warranted.  A subnormal
 possibility distribution reserves an explicit fraction of plausibility
-as unassigned, signaling that the system encounters conditions outside
+as unassigned, signalling that the system encounters conditions outside
 its training or coverage.  This distinction is not merely philosophical;
 it is operationally actionable, because a downstream decision-maker can
 treat high-\ign{} forecasts differently from low-\ign{} ones
 (Section~\ref{sec:three_tests}).
 
-In severe-weather forecasting, SPC already uses categorical language
-that maps more naturally onto possibility than probability.  ``\spc{MDT}
-risk is possible'' is a statement about plausibility, not calibrated
-frequency.  Possibility theory formalizes this linguistic tradition while
+In severe-weather forecasting, categorical language like ``\spc{MDT}
+risk is possible'' already expresses plausibility rather than calibrated
+frequency.  Possibility theory formalises this linguistic tradition while
 preserving the ability to derive probabilities when needed via the
-bridge in Section~\ref{sec:poss_prob_bridge}.  \citet{Roulston2002-eq}
-note similar challenges in communicating forecast uncertainty to
-end-users; the possibilistic framing provides a principled alternative
-to forcing categorical language into probabilistic moulds.
+bridge in Section~\ref{sec:poss_prob_bridge}.
 
 Critically, the bridge converts possibilities to probabilities but not
-vice versa---information is irreversibly lost in the probability-to-possibility
-direction \citep{Dubois1988-nh}.  A forecaster can issue a subnormal
-distribution that explicitly communicates ``today's setup is unusual and
-I am less confident than normal'' without manufacturing precise
-probability values that the evidence does not support.  The bridge
+vice versa---information is irreversibly lost in the
+probability-to-possibility direction \citep{Dubois1988-nh}.  A
+forecaster can issue a subnormal distribution that explicitly
+communicates ``today's setup is unusual and I am less confident than
+normal'' without manufacturing precise probability values that the
+evidence does not support.  The bridge
 (Section~\ref{sec:poss_prob_bridge}) recovers a valid probability
 distribution when one is needed, but the richer possibilistic
 representation remains available for native verification
-(Section~\ref{sec:native_verification}).
+(Section~\ref{sec:native_verification}).  In simpler terms: the bridge
+converts a possibility distribution to a probability, but there is no
+way to uniquely reconstruct the possibility distribution from its
+probabilistic image.
 
-%----------------------------------------------------------
-\subsection{Notation Table}\label{sec:notation_table}
-
-Table~\ref{tab:notation} collects all recurring symbols used throughout
-this paper.
-
-\begin{table}[htbp]
-\centering
-\caption{Notation reference for possibilistic verification.  ``Form''
-    indicates whether the quantity uses the raw ($\pi$) or normalized
-    ($\pinorm$) distribution.}
-\label{tab:notation}
-\small
-\begin{tabularx}{\columnwidth}{lclX}
-\toprule
-Symbol & Form & Eq. & Meaning \\
-\midrule
-$\Omega$ & --- & --- & Universe of discourse \\
-$\pi$ & raw & --- & Raw (possibly subnormal) distribution \\
-$\pinorm$ & norm & --- & Normalized distribution: $\pi / m$ \\
-$m$ & raw & --- & Subnormality: $\max_{\omega} \pi(\omega)$ \\
-$\poss(A)$ & raw & \ref{eq:poss} & Possibility of event $A$ \\
-$\nec(A)$ & raw & \ref{eq:nec} & Necessity of event $A$ \\
-$\Nc(A)$ & norm & \ref{eq:cond_nec} & Conditional necessity of $A$ \\
-$\ign$ & raw & \ref{eq:ignorance} & Possibilistic ignorance: $1 - m$ \\
-$\alpha^*$ & norm & \ref{eq:alpha_star} & Depth-of-truth: $\pinorm(c_{\mathrm{obs}})$ \\
-$\eta$ & norm & \ref{eq:ns} & Nonspecificity: $(1/K)\sum_c \pinorm(c)$ \\
-$\delta$ & norm & \ref{eq:rg} & Resolution gap: $\alpha^* - \eta$ \\
-$\Nc^*$ & norm & \ref{eq:nc_star} & Cond.\ necessity of truth \\
-\bottomrule
-\end{tabularx}
-\end{table}
+%%% Notation table moved to after Section 2.1.
