@@ -91,10 +91,10 @@ def main():
     # ------------------------------------------------------------------ #
     min_s, max_s = 55, 280   # marker size range
 
-    fig, ax = plt.subplots(figsize=(3.8, 5.5))
+    fig, ax = plt.subplots(figsize=(3.8, 4.8))
 
-    # y-axis: row 0 at top, extra padding at bottom for legend clearance
-    ax.set_ylim(n_rows + 0.3, -0.5)
+    # y-axis: row 0 at top
+    ax.set_ylim(n_rows + 0.2, -0.8)
     ax.set_xlim(-0.5, n_ver - 0.5)
 
     ytrans = ax.get_yaxis_transform()  # (axes_fraction_x, data_y)
@@ -141,8 +141,8 @@ def main():
 
     # Column headers
     for j, ver in enumerate(versions):
-        ax.text(j, -0.75, ver, ha="center", va="bottom",
-                fontsize=10, fontweight="bold", color=DARK_GREY)
+        ax.text(j, -0.60, ver, ha="center", va="bottom",
+                fontsize=9, fontweight="bold", color=DARK_GREY)
 
     # Clean axes
     ax.set_xticks([])
@@ -168,11 +168,11 @@ def main():
                        label="Non-sig. degradation"),
     ]
     ax.legend(handles=leg_handles, loc="lower center",
-              bbox_to_anchor=(0.5, -0.02), ncol=4, fontsize=7,
+              bbox_to_anchor=(0.5, -0.01), ncol=2, fontsize=6.5,
               frameon=True, fancybox=False, edgecolor=MID_GREY,
-              handletextpad=0.3, columnspacing=1.0)
+              handletextpad=0.3, columnspacing=0.8)
 
-    fig.tight_layout(rect=[0.32, 0.09, 1.0, 0.97])
+    fig.subplots_adjust(left=0.02, right=0.98, bottom=0.12, top=0.97)
     save_fig(fig, "scorecard_table")
 
 
