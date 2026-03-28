@@ -181,7 +181,7 @@ def _traj_labels(ax, cats, xs, ys, ns, color=GREEN, fontsize=6.5):
         ox = 0.07 if side == "right" else -0.07
         ha = "left" if side == "right" else "right"
         ax.annotate(
-            f"{c}  ($n$={ns[i]})", xy=(xs[i], ys[i]),
+            f"{c}", xy=(xs[i], ys[i]),
             xytext=(xs[i] + ox, ys[i]),
             fontsize=fontsize, fontweight="bold", color=DARK_GREY, ha=ha,
             arrowprops=dict(arrowstyle="-", color=color, lw=0.8),
@@ -306,14 +306,14 @@ def v3b(data, ap, spec, anchors):
     draw_traj_spec_alpha(ax, means, gcmap=gcm, gnorm=nm)
     draw_scenarios_spec_alpha(ax, anchors)
 
-    # Compass: outside axes spines into figure padding
-    ax.annotate("", xy=(0.99, 1.06), xytext=(0.84, 0.91),
+    # Compass: upper-right corner, within axes bounds
+    ax.annotate("", xy=(0.98, 1.01), xytext=(0.85, 0.88),
                 arrowprops=dict(arrowstyle="->,head_width=0.4,head_length=0.3",
                                 color=DARK_GREY, lw=2.0),
-                clip_on=False, zorder=10)
-    ax.text(0.91, 1.09, "sharp + truthful", fontsize=7.5,
+                zorder=10)
+    ax.text(0.84, 1.02, "sharp +\ntruthful", fontsize=7,
             fontstyle="italic", color=DARK_GREY, ha="center", va="bottom",
-            clip_on=False, zorder=10)
+            zorder=10)
 
     # Dual colorbar: purple | green touching, shared label
     gradient = np.linspace(nm.vmin, nm.vmax, 256)

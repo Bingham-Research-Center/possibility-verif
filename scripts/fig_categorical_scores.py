@@ -235,7 +235,7 @@ def main():
                       fontweight="bold", pad=8)
 
     # Colorbar inset (top-left of panel b)
-    cax = ax_conf.inset_axes([0.60, 0.82, 0.35, 0.06])
+    cax = ax_conf.inset_axes([0.62, 0.93, 0.35, 0.06])
     cbar = fig.colorbar(im, cax=cax, orientation="horizontal")
     cbar.set_ticks([0, np.log10(11), np.log10(101), vmax])
     cbar.set_ticklabels(["0", "10", "100", str(int(conf.max()))])

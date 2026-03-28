@@ -85,8 +85,15 @@ def main():
     ax_r.set_ylabel("Probability")
     ax_r.set_title("Pignistic Probability (n+1 outcomes)", fontsize=10,
                     fontweight="bold", pad=8)
-    ax_r.set_ylim(0, max(right_vals) * 1.35)
+    ax_r.set_ylim(0, 1.05)
     ax_r.axhline(1.0, linestyle=":", linewidth=0.6, color=MID_GREY, zorder=1)
+
+    # Shade the total probability mass to show sum-to-one normalisation
+    ax_r.axhspan(0, 0, color="none")  # placeholder
+    total_p = p_cats.sum() + p_ign
+    ax_r.text(SPC_N, 0.98, r"$\sum p = 1$",
+              fontsize=8, fontstyle="italic", color=GREEN,
+              ha="center", va="top")
 
     # Value labels above bars
     for i, v in enumerate(right_vals):
