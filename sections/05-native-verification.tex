@@ -232,6 +232,10 @@ All five metrics treat $\Omega$ as an unordered set---they evaluate
 whether the forecast pointed at the right category, not whether it was
 close in an ordinal sense.  For ordinal domains with well-defined
 distances, a distance-sensitive score should supplement the scorecard.
+Because no single metric can be improved without degrading another, the
+multi-metric design resists trivial gaming strategies such as flooring
+all values at $\varepsilon$ to avoid $\alpha^* = 0$
+(Section~\ref{sec:scorecard_comparison} illustrates this).
 
 %----------------------------------------------------------
 \subsection{Diagnostic Diagrams}\label{sec:diag_diagrams}
