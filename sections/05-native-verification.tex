@@ -170,42 +170,51 @@ $\Nc^*$ & Cond.\ necessity of truth & Necessity
 \end{tabular}
 \end{table}
 
+\textbf{Depth-of-truth} ($\alpha^*$):
 \begin{equation}
 \alpha^* = \pinorm(c_{\mathrm{obs}}) \label{eq:alpha_star}
 \end{equation}
-where $\alpha^* = 1$ when the truth coincides with the system's peak
+$\alpha^* = 1$ when the truth coincides with the system's peak
 category, $\alpha^* = 0$ when the system assigns zero possibility to the
 observed outcome, and intermediate values arise whenever the truth is
 plausible but not the system's top pick (e.g., $\alpha^* = 0.267$ for
 the Example~1 distribution with $c_{\mathrm{obs}} = \spc{ENH}$).
 
-Inspired by the nonspecificity concept of \citet{Klir1995-va}, the
-diffuseness of the normalised shape is measured by:
+\textbf{Nonspecificity} ($\eta$), inspired by the nonspecificity concept
+of \citet{Klir1995-va}, measures the diffuseness of the normalised
+shape:
 \begin{equation}
 \eta = \frac{1}{K} \sum_{c=1}^{K} \pinorm(c) \label{eq:ns}
 \end{equation}
 ranging from $1/K$ (sharp) to $1$ (uniform).
 
+\textbf{Resolution gap} ($\delta$):
 \begin{equation}
 \delta = \alpha^* - \eta \label{eq:rg}
 \end{equation}
 Positive $\delta$ indicates the system assigned more possibility to the
-truth than to an average category.
+truth than to an average category; negative $\delta$ means the forecast
+shape pointed away from the truth.
 
+\textbf{Ignorance} ($\ign$), carried forward from the pre-event
+framework:
 \begin{equation}
 \ign = 1 - m = 1 - \max_{\omega \in \Omega} \pi(\omega)
 \end{equation}
-(same as Eq.~\ref{eq:ignorance}).
+(same as Eq.~\ref{eq:ignorance}).  This is the only scorecard metric
+that uses the raw distribution; the others use the normalised
+shape $\pinorm$.
 
+\textbf{Conditional necessity of truth} ($\Nc^*$):
 \begin{equation}
 \Nc^* = \Nc(c_{\mathrm{obs}})
     = 1 - \max_{\omega \neq c_{\mathrm{obs}}} \pinorm(\omega)
 \label{eq:nc_star}
 \end{equation}
-Structurally, $\Nc^* = 0$ whenever the observed category is not the
-unique peak of the normalised distribution (since some alternative then
-has $\pinorm = 1$); positive values quantify how strongly the truth
-dominates all alternatives.  This is a direct application of
+$\Nc^* = 0$ whenever the observed category is not the unique peak of the
+normalised distribution (since some alternative then has $\pinorm = 1$);
+positive values quantify how strongly the truth dominates all
+alternatives.  This is a direct application of
 Eq.~\eqref{eq:cond_nec} evaluated at the observation.
 
 \medskip
@@ -216,22 +225,20 @@ Eq.~\eqref{eq:cond_nec} evaluated at the observation.
 \renewcommand{\arraystretch}{1.25}
 \begin{tabularx}{\columnwidth}{%
     >{\columncolor{rationalecolor!10}}c X}
-$\boldsymbol{\alpha^*}$ & How much normalised possibility did the system assign to
-    what actually happened?  Like POD for the winning bin, but
-    continuous.  Range $[0,\, 1]$. \\
-$\boldsymbol{\eta}$ & How spread out was the normalised distribution?  Like ensemble
-    spread or sharpness.  Range $[1/K,\, 1]$. \\
-$\boldsymbol{\delta}$ & Did the system give more support to the truth than to an
-    average category?  Like resolution in the Brier decomposition.
-    Range $[{-}(K{-}1)/K,\; {+}(K{-}1)/K]$; negative when the forecast
-    points away from the truth. \\
-$\boldsymbol{\ign}$ & How much of the plausibility budget did the system leave
-    unassigned?  $\ign = 0$: fully confident; $\ign \to 1$: near-total
-    ignorance.  Range $[0,\, 1)$.  The only metric
-    that uses the raw distribution; the others use $\pinorm$. \\
-$\boldsymbol{\Nc^*}$ & Among scenarios the system covered, was the truth dominant
-    enough to rule out alternatives?  Gated: exactly zero unless the
-    truth is the unique peak, then continuous in $(0,\, 1]$. \\
+$\boldsymbol{\alpha^*}$ \textbf{Depth-of-truth} & How much normalised
+    possibility did the system assign to what actually happened?  Like
+    POD for the winning bin, but continuous. \\
+$\boldsymbol{\eta}$ \textbf{Nonspecificity} & How spread out was the
+    normalised distribution?  Like ensemble spread or sharpness. \\
+$\boldsymbol{\delta}$ \textbf{Resolution gap} & Did the system give more
+    support to the truth than to an average category?  Like resolution
+    in the Brier decomposition. \\
+$\boldsymbol{\ign}$ \textbf{Ignorance} & How much of the plausibility
+    budget did the system leave unassigned?  $\ign = 0$: fully
+    confident; $\ign \to 1$: near-total ignorance. \\
+$\boldsymbol{\Nc^*}$ \textbf{Cond.\ necessity of truth} & Among
+    scenarios the system covered, was the truth dominant enough to rule
+    out alternatives? \\
 \end{tabularx}
 \renewcommand{\arraystretch}{1.0}
 
