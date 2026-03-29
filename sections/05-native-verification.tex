@@ -224,19 +224,13 @@ $\boldsymbol{\Nc^*}$ & \textbf{Cond.\ necessity of truth.}  Among
 \end{tabularx}
 \renewcommand{\arraystretch}{1.0}
 
-Each metric is well-defined for a single forecast--observation pair.
-Overbar notation ($\overline{\alpha^*}$, $\overline{\eta}$, etc.)
-denotes aggregation over the verification sample;
-the specific aggregation function (mean, median, or other robust
-estimator) and uncertainty quantification method are left to the
-practitioner.
-
-\textbf{Permutation invariance.}
-The five scorecard metrics treat $\Omega$ as an unordered set: they
-evaluate whether the forecast pointed at the right category, not whether
-it was close in an ordinal sense.  For ordinal domains with well-defined
-distances, a distance-sensitive score (via an inter-category cost
-matrix) should supplement the scorecard.
+Each metric is well-defined for a single forecast--observation pair;
+overbar notation ($\overline{\alpha^*}$, $\overline{\eta}$, etc.)
+denotes aggregation over the verification sample.
+All five metrics treat $\Omega$ as an unordered set---they evaluate
+whether the forecast pointed at the right category, not whether it was
+close in an ordinal sense.  For ordinal domains with well-defined
+distances, a distance-sensitive score should supplement the scorecard.
 
 %----------------------------------------------------------
 \subsection{Diagnostic Diagrams}\label{sec:diag_diagrams}

@@ -88,70 +88,33 @@ information.
 %----------------------------------------------------------
 \subsection{Three Verification Lanes}\label{sec:three_lanes}
 
-A single metric cannot capture full uncertainty quantification from a
-subnormal possibility distribution.  Table~\ref{tab:three_lanes}
-summarises the three verification lanes and their respective blind spots.
+The paper proposes three expressions for forecast uncertainty and five
+metrics to evaluate forecast quality.  No single lane captures the full
+picture, because each answers a different question and each has a blind
+spot the others fill.
 
-\begin{table*}[htbp]
-\centering
-\small
-\caption{Three verification lanes and their blind spots.}
-\label{tab:three_lanes}
-\begin{tabularx}{\textwidth}{%
-    >{\raggedright\arraybackslash}p{0.18\columnwidth}XX}
-\toprule
-Lane & Answers the question & What it misses \\
-\midrule
-\textbf{Categorical} (POD, FAR, CSI per threshold; HSS)
-    & ``Did the mode-based point forecast identify the correct severity
-        category?''
-    & All distributional information---a correct mode says nothing
-        about sharpness, hedging, or confidence. \\
-\textbf{Probabilistic} (IG via bridge)
-    & ``Was the probabilistic forecast informative?''
-    & The bridge is lossy---it compresses the full possibility shape
-        into $n{+}1$ probabilities.  Subnormality becomes a single
-        ignorance bin. \\
-\textbf{Native possibilistic} (scorecard)
-    & ``Was the possibility distribution well-shaped, sharp, and
-        honest?''
-    & No connection to probabilistic skill---a well-shaped distribution
-        might still give poor probabilities after conversion. \\
-\bottomrule
-\end{tabularx}
-\end{table*}
+The \textbf{categorical lane} (POD, FAR, CSI per threshold; HSS) asks
+``did the mode-based point forecast identify the correct severity
+category?''  It discards all distributional information: a correct mode
+says nothing about sharpness, hedging, or confidence.
 
-Together, the three lanes catch failures that any single lane would miss:
+The \textbf{probabilistic lane} (IG via bridge) asks ``was the
+probabilistic forecast informative?''  The bridge is lossy---it
+compresses the full possibility shape into $n{+}1$ probabilities, with
+subnormality collapsed into a single ignorance bin.
 
-\begin{itemize}[leftmargin=2em]
-\item A forecast with correct categorical mode but flat possibility
-    (high $\eta$) and poor IG is a broken clock that happens to be
-    right---the categorical lane passes but the other two fail.
-\item A forecast with great IG but high ignorance and low $\Nc^*$ got
-    lucky via the bridge---the raw system was hedging.
-\item A forecast with sharp possibility and high $\Nc^*$ but poor IG has
-    a bridge problem---the conversion is distorting the signal.
-\end{itemize}
+The \textbf{native possibilistic lane} (five-number scorecard) asks
+``was the possibility distribution well-shaped, sharp, and honest?''
+It has no connection to probabilistic skill: a well-shaped distribution
+might still give poor probabilities after conversion.
 
-Figure~\ref{fig:three_lanes_schematic} provides a visual summary of the
-three lanes, showing how the raw possibility distribution feeds into each
-verification pathway.
-
-\begin{figure*}[!t]
-\centering
-\includegraphics[width=0.85\textwidth]{verification_lanes.png}
-\caption{Three-lane verification schematic.  A subnormal possibility
-    distribution feeds three parallel verification pathways:
-    \textbf{Lane~1} (categorical) evaluates the mode-based point
-    forecast via POD, FAR, and CSI at each severity threshold;
-    \textbf{Lane~2} (probabilistic) applies the possibility-to-probability
-    bridge and evaluates information gain;
-    \textbf{Lane~3} (native possibilistic, highlighted in purple)
-    evaluates the raw distribution via the five-number scorecard.
-    Each lane diagnoses failure modes invisible to
-    the others (Table~\ref{tab:three_lanes}).}
-\label{fig:three_lanes_schematic}
-\end{figure*}
+Together, the three lanes catch failures that any single lane would miss.
+A forecast with correct categorical mode but flat possibility and poor
+IG is a broken clock that happens to be right---the categorical lane
+passes but the other two fail.  A forecast with strong IG but high
+ignorance and low $\Nc^*$ got lucky via the bridge---the raw system was
+hedging.  A forecast with sharp possibility and high $\Nc^*$ but poor IG
+has a bridge problem---the conversion is distorting the signal.
 
 In practice, a verification analyst would compile scorecard aggregates
 across a test sample, tracking changes between model versions or
