@@ -100,6 +100,43 @@ normalised values gives zero by definition.
 %----------------------------------------------------------
 \subsection{Five-Number Scorecard}\label{sec:native_scorecard}
 
+Section~\ref{sec:three_component} introduced three diagnostic components
+that characterise a forecast \textit{before} the outcome is known:
+possibility (plausibility of an event), ignorance (system confidence),
+and conditional necessity (dominance among covered scenarios).  Once the
+observed category $c_{\mathrm{obs}}$ is available, these components can
+be evaluated against the truth.  Five summary statistics result because
+the possibility component expands into three metrics: how much support
+the truth received ($\alpha^*$), how spread the forecast was ($\eta$),
+and whether the shape was net helpful ($\delta$).  Ignorance $\ign$
+carries forward unchanged---it is a property of the forecast itself,
+included to contextualise the other four metrics, much as sharpness
+contextualises reliability in probabilistic verification.
+Table~\ref{tab:three_to_five} maps the three pre-event components to
+the five post-event metrics.
+
+\begin{table}[htbp]
+\centering
+\caption{From three components to five scorecard metrics.  Left: the
+    three diagnostic components characterise a forecast before the
+    outcome is known (Section~\ref{sec:three_component}).  Right: once
+    $c_{\mathrm{obs}}$ is available, five metrics evaluate the same
+    components.  The possibility component expands to three metrics;
+    ignorance carries forward as forecast context.}
+\label{tab:three_to_five}
+\small
+\begin{tabular}{lll}
+\toprule
+Component & Pre-event & Post-event scorecard \\
+\midrule
+Possibility & $\poss(A)$, $\pinorm(\omega)$
+    & $\alpha^*$, $\eta$, $\delta$ \\
+Ignorance & $\ign$   & $\ign$ \\
+Necessity & $\Nc(A)$  & $\Nc^*$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
 Five summary statistics evaluate each forecast--observation pair, where
 $c_{\mathrm{obs}}$ denotes the observed (verified) SPC category---in
 the Day-1 comparison framing, the category from the final SPC
@@ -110,7 +147,9 @@ are given below.
 
 \begin{table}[htbp]
 \centering
-\caption{Five-number scorecard definitions.}
+\caption{Five-number scorecard definitions.  The Component column
+    groups metrics by the three diagnostic components of
+    Table~\ref{tab:three_to_five}.}
 \label{tab:scorecard_defs}
 \small
 \begin{tabular}{clcl}
