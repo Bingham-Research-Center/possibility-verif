@@ -47,6 +47,27 @@ Walley, P. (1991). *Statistical Reasoning with Imprecise Probabilities*. Wiley.
 
 ---
 
+## Murphy1993-MISSING
+
+**Current key:** `Murphy1993-MISSING`
+**Used in:** `02-introduction.tex`
+
+Murphy, A. H. (1993). What is a good forecast? An essay on the nature of
+goodness in weather forecasting. *Weather and Forecasting*, 8(2), 281--293.
+doi:10.1175/1520-0434(1993)008<0281:WIAGFA>2.0.CO;2
+
+---
+
+## Jolliffe2012-MISSING
+
+**Current key:** `Jolliffe2012-MISSING`
+**Used in:** `02-introduction.tex`
+
+Jolliffe, I. T., & Stephenson, D. B. (Eds.). (2012). *Forecast Verification:
+A Practitioner's Guide in Atmospheric Science* (2nd ed.). Wiley.
+
+---
+
 ## Neal2014-MISSING
 
 **Current key:** `Neal2014-MISSING`

@@ -331,3 +331,31 @@ mean possibility or maximum value) would conflate these two situations.
 The five-number scorecard correctly separates ``honestly uncertain'' from
 ``confidently wrong,'' which is precisely the distinction that
 operational forecasters need when tuning a possibilistic system.
+
+\textbf{Why five numbers?}  The metrics span complementary facets that
+no subset can capture alone.  Consider the three scenarios as evidence:
+\begin{itemize}[leftmargin=2em]
+\item \textbf{Truth-finding pair} ($\alpha^*$ vs.\ $\Nc^*$).
+    Scenario~B has $\alpha^* = 1.00$ but $\Nc^* = 0.273$: truth was the
+    top pick but closely contested by alternatives.  Had the observed
+    category been \spc{ENH} instead of \spc{MDT} in Scenario~A's
+    distribution, $\alpha^*$ would drop to $0.167$ while $\Nc^*$ would
+    remain zero---truth was plausible but far from dominant.
+    $\alpha^*$ answers ``how much support did the truth receive?'';
+    $\Nc^*$ answers ``was the truth \textit{the} winner?''
+\item \textbf{Uncertainty pair} ($\eta$ vs.\ $\ign$).
+    Scenario~B has $\eta = 0.439$ and $\ign = 0.45$: the system was both
+    hedged in shape and uncertain in commitment.  Scenario~C has
+    $\eta = 0.196$ and $\ign = 0.15$: sharp in shape \textit{and}
+    confident in commitment---but aimed at the wrong answer.
+    $\eta$ measures shape spread (normalised); $\ign$ measures overall
+    confidence (raw).  They can move independently.
+\item \textbf{Net resolution} ($\delta$).
+    The one number that combines truth-finding with spread: $\delta > 0$
+    means the forecast's shape helped; $\delta < 0$ means it hurt.
+    No other single metric captures this.
+\end{itemize}
+A reduced scorecard would conflate diagnostically distinct situations:
+dropping $\Nc^*$ loses the ``winner vs.\ supported'' distinction;
+dropping $\ign$ hides the confidence axis; dropping $\delta$ obscures
+whether the shape pointed toward or away from the truth.

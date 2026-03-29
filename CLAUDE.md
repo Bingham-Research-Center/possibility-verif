@@ -27,7 +27,7 @@ Standalone methods paper: "Possible, yes; ignorant, perhaps: a scorecard for pos
 - **Colours**: Purple `#7B1FA2`, Green `#46A21F`. Set in `preamble.tex`.
 - **Environments**: `rhoenv` (purple) for definitions/theorems. `rationaleenv` (green) for "Intuition" sidebars.
 - **Citations**: natbib + `ametsocV6.bst`. Use `\citet{}` / `\citep{}`.
-- **Appendix**: `appendix-alternative-scores.tex` (IRLS + possibilistic climatology) is **commented out** in `main.tex`. Source retained for reference/re-inclusion.
+- **Appendices**: `appendix-alternative-scores.tex` (IRLS + possibilistic climatology) and `appendix-ds-theory.tex` (D-S connections) are both **commented out** in `main.tex`. Sources retained for reference/re-inclusion.
 
 ### Macros
 
@@ -62,7 +62,7 @@ Standalone methods paper: "Possible, yes; ignorant, perhaps: a scorecard for pos
 | `commitment_diagram` | `fig_perf_iterate.py` | §4.2 | Commitment × discrimination diagnostic |
 | `severity_matrix` | `fig_severity_matrix.py` | §7.3 | Severity-confidence matrix |
 
-**Not in manuscript** (scripts retained): `upper_lower_bounds` (exceedance bounds removed in Round 2), `ffion_advisory` (LLM section removed in Round 2).
+**Not in manuscript** (scripts retained): `upper_lower_bounds` (exceedance bounds removed in Round 2), `ffion_advisory` (LLM section removed in Round 2). `fig_performance_variants.py` (design-space exploration) moved to `archive/`.
 
 ## Python
 
@@ -106,10 +106,7 @@ Exceedance bounds [L, U] were removed in Round 2 (circular under subnormality). 
   - Severity matrix connected to scorecard (m6)
 
 ### Still needed
-- Missing citation keys: Dubois2006, Smets1990, Shafer1976, Murphy1993, Jolliffe2012, Wilks2011, Walley1991, Neal2014
-- §1 (introduction) — mostly placeholder
-- §2 opening paragraph, §2.4 "Why Not Just Probabilities?"
-- §5 opening paragraph, sample-size discussion
+- Missing citation keys (see `MISSING-REFS.md`): Dubois2006, Smets1990, Shafer1976, Murphy1993, Jolliffe2012, Walley1991, Neal2014 (all use `-MISSING` placeholder keys in tex). Wilks2011 exists in paperpile.bib as `Wilks2011-vw` — just needs key swap in tex.
 - Acknowledgments and Data Availability (backmatter placeholders)
 
 ## Related Work
