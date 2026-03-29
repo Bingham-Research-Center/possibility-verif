@@ -273,6 +273,15 @@ $S = \alpha^* \times (1 - \eta)$ hyperbolas play the role of CSI
 contours.  The key addition is ignorance, encoded as bin colour, which
 has no deterministic analogue.
 
+The hex density forms a diagonal band from upper right to lower left,
+dominated by \spc{NONE} days (dark purple: confident).  The green
+trajectory sits above the hex mass for rare categories because it shows
+\textit{conditional} means---averaging only cases verified against each
+category---while the hexagons show the marginal distribution of all
+forecasts.  The trajectory's steep descent from \spc{NONE} to
+\spc{HIGH} reveals the system's breaking point: skill degrades fastest
+between \spc{SLGT} and \spc{ENH}, where predictability drops sharply.
+
 \begin{figure}[t]
 \centering
 \includegraphics[width=\columnwidth]{commitment_diagram.png}
@@ -301,8 +310,16 @@ visible only through bin colour---a weaker perceptual channel.
 Figure~\ref{fig:commitment_diagram} promotes commitment to a primary
 axis, plotting $\pi_{\max} = 1 - \ign$ against $\delta$.  These axes
 are orthogonal: $\pi_{\max}$ is the raw \emph{scale} of $\pi$; $\delta$
-is the \emph{shape quality} of $\pinorm$.  Scenario~C (sharp-wrong) sits
-in the overconfident quadrant; Scenario~B (hedged-correct) sits in the
+is the \emph{shape quality} of $\pinorm$.  Two clusters of high-count
+hexagons emerge: one in the upper right (confident and correct---mostly
+\spc{NONE} days) and one in the lower right (confident and
+wrong---forecasts that committed heavily but missed).  The lighter band
+between them contains the hedged severe-weather forecasts.  The green
+trajectory arcs from \spc{NONE} (upper right) through the severe
+categories, staying above $\delta = 0$ for all categories on
+average---even rare-event forecasts discriminate in aggregate, though
+with lower commitment.  Scenario~C (sharp-wrong) sits in the
+overconfident quadrant; Scenario~B (hedged-correct) sits in the
 cautious-discriminating region---a distinction invisible in the
 shape-quality diagram alone.
 
