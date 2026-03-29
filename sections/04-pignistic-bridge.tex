@@ -67,18 +67,17 @@ $\pi = (0.05,\; 0.2,\; 0.4,\; 0.6,\; 0.1,\; 0.0)$.
   & \mathbf{p} = (0.022,\; 0.089,\; 0.178,\; 0.267, \\
   & \qquad 0.044,\; 0.0,\;
     \underbrace{0.400}_{\text{ign}}) \\[4pt]
-\textit{Score:}\quad
+\textit{Surprise:}\quad
   & \text{If \spc{ENH} obs: }
-    {-}\log_2(0.267) = 1.907\;\text{bits;} \\
-  & p_{\mathrm{clim}}(\spc{ENH}) = 0.06
-    \;\Rightarrow\; 4.059\;\text{bits} \\[4pt]
+    S = {-}\log_2(0.267) = 1.91\;\text{bits} \\
+  & S_{\mathrm{clim}} = {-}\log_2(0.06) = 4.06\;\text{bits} \\[4pt]
 \textit{IG:}\quad
-  & 4.059 - 1.907 = 2.152\;\text{bits gained}
+  & 4.06 - 1.91 = 2.15\;\text{bits gained}
 \end{align*}
 
 High \ign{} ($0.4$) correctly inflated the ignorance outcome, reducing
 $p(\spc{ENH})$ from what simple normalisation would give
-($0.6/1.35 = 0.444$) to $0.267$.  The verification score ($1.91$~bits)
+($0.6/1.35 = 0.444$) to $0.267$.  The forecast surprise ($1.91$~bits)
 honestly reflects the system's partial uncertainty.
 Figure~\ref{fig:pignistic_bridge} visualises this transformation.
 \end{workedexample}
@@ -101,56 +100,59 @@ Figure~\ref{fig:pignistic_bridge} visualises this transformation.
 %----------------------------------------------------------
 \subsection{Information-Gain Decomposition}\label{sec:ig_decomposition}
 
-The logarithmic scoring rule---which assigns a penalty of
-$-\log_2 p(c_{\mathrm{obs}})$ bits for the probability assigned to the
-observed outcome---is the natural companion to this conversion.  Its
-information-theoretic decomposition into uncertainty, discrimination,
-and reliability mirrors the Brier score's three-component decomposition
-but operates in logarithmic units, making it particularly sensitive to
-confident misses on rare events.
-
 Once possibilities have been converted to probabilities, standard
-information-theoretic verification applies.  Information gain
-measures the reduction in surprise from replacing one forecast with
-another:
+verification applies.  Define the \textbf{surprise} of a forecast at the
+observed outcome as the log score:
 \begin{equation}
-\mathrm{IG} = D_{\mathrm{KL}}(o \,\|\, f_1) - D_{\mathrm{KL}}(o \,\|\, f_2)
+S(f,\, c_{\mathrm{obs}})
+    = -\log_2 p_f(c_{\mathrm{obs}}) \quad \text{(bits)}
+\label{eq:surprise}
+\end{equation}
+Low surprise means the forecast assigned high probability to what
+actually happened; the logarithm makes the score particularly sensitive
+to confident misses on rare events.
+
+\textbf{Information gain} (IG) measures the reduction in surprise
+from replacing a baseline forecast $f_1$ (e.g., climatology) with the
+possibilistic forecast $f_2$ (after conversion):
+\begin{equation}
+\mathrm{IG}
+    = S(f_1,\, c_{\mathrm{obs}})
+    - S(f_2,\, c_{\mathrm{obs}})
 \label{eq:ig}
 \end{equation}
-where $o$ is the observation, $f_1$ is the baseline (e.g., climatology),
-and $f_2$ is the possibilistic forecast (after conversion to
-probabilities).
-Positive IG indicates that the forecast reduced surprise relative to the
-baseline.
-This formulation follows \citet{Roulston2002-eq}; \citet{Lawson2024-bu} extended it to atmospheric forecast evaluation with explicit decomposition diagnostics.
+Positive IG indicates that the forecast reduced surprise relative to
+the baseline \citep{Roulston2002-eq}.  (Equivalently, IG is the
+difference in sample Kullback--Leibler divergences from the observation
+to each forecast; \citet{Lawson2024-bu} extended this to atmospheric
+forecast evaluation with explicit decomposition diagnostics.)
 
-Averaging Eq.~\eqref{eq:ig} over a verification sample, the mean log
-score decomposes diagnostically into
+Averaging Eq.~\eqref{eq:ig} over a verification sample, the mean
+surprise decomposes into three diagnostic terms:
 \begin{equation}
-\mathrm{UNC} - \mathrm{DSC} + \mathrm{REL}
+\overline{S}
+    = \mathrm{UNC} - \mathrm{DSC} + \mathrm{REL}
 \quad \text{(all in bits; lower is better)}
 \label{eq:ig_decomp}
 \end{equation}
-where:
-\begin{itemize}[leftmargin=2em]
-\item \textbf{UNC} is irreducible uncertainty (entropy of the base rate).
-\item \textbf{REL} is calibration error (lower is better): are stated
-    probabilities honest?
-\item \textbf{DSC} is discrimination (higher is better): can the system
-    tell events apart?
-\end{itemize}
+where \textbf{UNC} is the irreducible uncertainty (entropy of the base
+rate), \textbf{DSC} is discrimination (can the system tell events
+apart?\ higher is better), and \textbf{REL} is calibration error (are
+stated probabilities honest?\ lower is better).  We use DSC
+(discrimination) rather than the conventional RES (resolution) to avoid
+confusion with horizontal grid resolution in NWP.
 
-\noindent When the baseline $f_1$ in Eq.~\eqref{eq:ig} is climatology,
-$D_{\mathrm{KL}}(o \,\|\, \mathrm{clim}) = \mathrm{UNC}$, and information
-gain reduces to $\mathrm{IG} = \mathrm{DSC} - \mathrm{REL}$.  Positive IG
-thus requires discrimination to exceed calibration error.
+When the baseline is climatology,
+$\overline{S}(\mathrm{clim}) = \mathrm{UNC}$, and information gain
+reduces to
+$\mathrm{IG} = \mathrm{DSC} - \mathrm{REL}$: positive IG requires
+discrimination to exceed calibration error.  This decomposition is the
+logarithmic counterpart of the Brier score's three-component breakdown
+($\mathrm{BS} = \mathrm{REL} - \mathrm{RES} + \mathrm{UNC}$) but
+operates in bits---additive, interpretable information units.
 
-This decomposition diagnoses whether a possibilistic forecast's value
-arises from calibration or from discriminating between severe-weather
-regimes.  Figure~\ref{fig:ig_decomp} illustrates the decomposition for
-several forecast scenarios with net IG annotated.
-
-The IG decomposition is the logarithmic counterpart of the Brier score's familiar three-component breakdown ($\mathrm{BS} = \mathrm{REL} - \mathrm{RES} + \mathrm{UNC}$).  Where the Brier decomposition measures skill in probability-squared units, the IG decomposition measures it in bits---additive, interpretable information units.  A reliability diagram plots observed frequency against forecast probability; the REL term in Eq.~\eqref{eq:ig_decomp} is its scalar summary.  Similarly, the DSC term summarises the spread of conditional outcome distributions that a reliability diagram visualises as deviations from the diagonal.
+Figure~\ref{fig:ig_decomp} illustrates the decomposition for several
+forecast scenarios with net IG annotated.
 
 \begin{figure}[!b]
 \centering
