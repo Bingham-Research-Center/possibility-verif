@@ -24,24 +24,6 @@ $\pi$ denotes the raw (subnormal) possibility distribution,
 $m = \max_{\omega \in \Omega} \pi(\omega)$ is the subnormality, and
 $\ign = 1 - m$ is ignorance (Eq.~\ref{eq:ignorance}).
 
-\begin{figure}[t]
-\centering
-\includegraphics[width=\columnwidth]{perf_hexbin_trajectory.png}
-\caption{Possibilistic performance diagram for a three-year synthetic
-    reforecast.
-    \textbf{Hex bins:} colour is mean $\ign$ (dark purple = confident).
-    \textbf{Contours:} joint skill $S = \alpha^* \times (1 - \eta)$.
-    \textbf{Dashed diagonal:} $\delta = 0$ break-even.
-    \textbf{Green line:} category-conditional means from \spc{NONE}
-    (easy, upper right) to \spc{HIGH} (rare, lower left); dot
-    size $\propto$ sample count; shade encodes $\ign$ (dark green
-    = confident), paralleling the purple hex bins.
-    \textbf{Stars:} worked scenarios from
-    Section~\ref{sec:worked_examples} (green edge = hit, red = miss).
-    The upper-right corner is the perfect-forecast region.}
-\label{fig:performance_diagram}
-\end{figure}
-
 %----------------------------------------------------------
 \subsection{Normalisation Protocol}\label{sec:norm_protocol}
 
@@ -225,18 +207,18 @@ Eq.~\eqref{eq:cond_nec} evaluated at the observation.
 \renewcommand{\arraystretch}{1.25}
 \begin{tabularx}{\columnwidth}{%
     >{\columncolor{rationalecolor!10}}c X}
-$\boldsymbol{\alpha^*}$ \textbf{Depth-of-truth} & How much normalised
+$\boldsymbol{\alpha^*}$ & \textbf{Depth-of-truth.}  How much normalised
     possibility did the system assign to what actually happened?  Like
     POD for the winning bin, but continuous. \\
-$\boldsymbol{\eta}$ \textbf{Nonspecificity} & How spread out was the
+$\boldsymbol{\eta}$ & \textbf{Nonspecificity.}  How spread out was the
     normalised distribution?  Like ensemble spread or sharpness. \\
-$\boldsymbol{\delta}$ \textbf{Resolution gap} & Did the system give more
-    support to the truth than to an average category?  Like resolution
-    in the Brier decomposition. \\
-$\boldsymbol{\ign}$ \textbf{Ignorance} & How much of the plausibility
+$\boldsymbol{\delta}$ & \textbf{Resolution gap.}  Did the system give
+    more support to the truth than to an average category?  Like
+    resolution in the Brier decomposition. \\
+$\boldsymbol{\ign}$ & \textbf{Ignorance.}  How much of the plausibility
     budget did the system leave unassigned?  $\ign = 0$: fully
     confident; $\ign \to 1$: near-total ignorance. \\
-$\boldsymbol{\Nc^*}$ \textbf{Cond.\ necessity of truth} & Among
+$\boldsymbol{\Nc^*}$ & \textbf{Cond.\ necessity of truth.}  Among
     scenarios the system covered, was the truth dominant enough to rule
     out alternatives? \\
 \end{tabularx}
@@ -256,54 +238,41 @@ it was close in an ordinal sense.  For ordinal domains with well-defined
 distances, a distance-sensitive score (via an inter-category cost
 matrix) should supplement the scorecard.
 
+%----------------------------------------------------------
+\subsection{Diagnostic Diagrams}\label{sec:diag_diagrams}
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=\columnwidth]{perf_hexbin_trajectory.png}
+\caption{Possibilistic performance diagram for a three-year synthetic
+    reforecast, inspired by \citet{Roebber2009-rv}.
+    \textbf{Hex bins:} colour is mean $\ign$ (dark purple = confident).
+    \textbf{Contours:} joint skill $S = \alpha^* \times (1 - \eta)$.
+    \textbf{Dashed diagonal:} $\delta = 0$ break-even; above this line
+    the forecast discriminated, below it the truth received less support
+    than the categorical average.
+    \textbf{Green line:} category-conditional means from \spc{NONE}
+    (easy, upper right) to \spc{HIGH} (rare, lower left); dot
+    size $\propto$ sample count; shade encodes $\ign$ (dark green
+    = confident).
+    \textbf{Stars:} worked scenarios from
+    Section~\ref{sec:worked_examples} (green edge = hit, red = miss).
+    Upper right is ideal (sharp and truthful); lower right is the worst
+    failure mode (sharp and wrong).  The trajectory's slope reveals
+    where skill degrades fastest.}
+\label{fig:performance_diagram}
+\end{figure}
+
 Figure~\ref{fig:performance_diagram} provides a diagnostic view of the
-five scorecard metrics, inspired by \citet{Roebber2009-rv}.  Hexagonal
-bins aggregate forecast--observation pairs by specificity $1 - \eta$
-($x$-axis) and depth-of-truth $\alpha^*$ ($y$-axis).  Bin colour
-encodes mean ignorance $\ign$: dark bins are confident, pale bins
-uncertain.  Hyperbolic contours mark constant joint skill
-$S = \alpha^* \times (1 - \eta)$; the dashed diagonal marks
-$\delta = 0$.  The green trajectory connects category-conditional
-means, tracing how the system degrades from \spc{NONE} (easy, upper
-right) to \spc{HIGH} (rare, lower left), with point size proportional
-to sample count.
-
-The analogy with Roebber's diagram is deliberate: specificity plays the
-role of success ratio (how focused was the distribution?), $\alpha^*$
-plays the role of probability of detection (did the forecast capture
-truth?), and the $S = \alpha^* \times (1 - \eta)$ hyperbolas play the
-role of CSI contours---both are products of the two axes, so iso-lines
-of constant joint skill are hyperbolas relating the two axes just as CSI
-iso-lines relate success ratio to POD.  The key addition is ignorance $\ign$, encoded
-as bin colour, which has no deterministic analogue.
-
-\textit{Reading the diagram:} upper right is ideal (sharp and truthful);
-lower right is the worst failure mode (sharp and wrong).  Above the
-$\delta = 0$ diagonal, the forecast discriminated; below it, the truth
-received less support than the categorical average.  The trajectory's
-slope reveals where skill degrades fastest---a steep drop between
-adjacent categories signals the system's breaking point.
-
-Both axes of Figure~\ref{fig:performance_diagram} operate on the
-normalised shape $\pi'$: two forecasts with identical shapes but
-different commitment levels ($\ign = 0.05$ vs.\ $\ign = 0.50$) land at
-the same position.  Commitment is visible only through bin colour---a
-weaker perceptual channel.
-Figure~\ref{fig:commitment_diagram} promotes commitment to a primary
-axis: $x = \pi_{\max} = 1 - \ign$ (how much of the unit interval the
-forecaster used) versus $y = \delta = \alpha^* - \eta$ (net
-discrimination).  These axes are orthogonal---$\pi_{\max}$ is the raw
-\emph{scale} of $\pi$; $\delta$ is the \emph{shape quality} of $\pi'$.
-
-\textit{Reading the commitment diagram:} upper right is committed and
-discriminating (ideal); lower right is overconfident and wrong; upper
-left is the cautious forecast that got the shape right.  Below the
-$\delta = 0$ line, the forecast failed to discriminate.  Scenario~C
-(sharp-wrong) sits squarely in the overconfident quadrant; Scenario~B
-(hedged-correct) sits in the cautious-discriminating region---a
-distinction invisible in the shape-quality diagram.
-
-\FloatBarrier
+five scorecard metrics.  Hexagonal bins aggregate forecast--observation
+pairs by specificity $1 - \eta$ ($x$-axis) and depth-of-truth
+$\alpha^*$ ($y$-axis); bin colour encodes mean ignorance $\ign$.  The
+analogy with the \citet{Roebber2009-rv} performance diagram is
+deliberate: specificity plays the role of success ratio, $\alpha^*$
+plays the role of POD, and the
+$S = \alpha^* \times (1 - \eta)$ hyperbolas play the role of CSI
+contours.  The key addition is ignorance, encoded as bin colour, which
+has no deterministic analogue.
 
 \begin{figure}[t]
 \centering
@@ -313,23 +282,32 @@ distinction invisible in the shape-quality diagram.
     forecaster staked).
     \textbf{$y$:}~discrimination $\delta = \alpha^* - \eta$ (did the
     shape favour truth?).
-    These axes are orthogonal: $x$ is the raw scale of $\pi$; $y$ is
-    the quality of the normalised shape $\pi'$.
+    These axes are orthogonal: $\pi_{\max}$ is the raw scale of $\pi$;
+    $\delta$ is the quality of the normalised shape $\pi'$.
     \textbf{Hex bins:} coloured by count.
     \textbf{Green line:} category means from \spc{NONE} (upper right)
     to \spc{HIGH} (lower left).
     \textbf{Stars:} Section~\ref{sec:worked_examples} scenarios.
-    Upper right = committed \& discriminating.
-    Lower right = overconfident \& wrong.
+    Upper right = committed and discriminating (ideal);
+    lower right = overconfident and wrong;
+    upper left = cautious but well-shaped.
     Dashed line = $\delta = 0$ break-even.}
 \label{fig:commitment_diagram}
 \end{figure}
 
-\FloatBarrier
+Both axes of Figure~\ref{fig:performance_diagram} operate on the
+normalised shape $\pinorm$: two forecasts with identical shapes but
+different commitment levels land at the same position.  Commitment is
+visible only through bin colour---a weaker perceptual channel.
+Figure~\ref{fig:commitment_diagram} promotes commitment to a primary
+axis, plotting $\pi_{\max} = 1 - \ign$ against $\delta$.  These axes
+are orthogonal: $\pi_{\max}$ is the raw \emph{scale} of $\pi$; $\delta$
+is the \emph{shape quality} of $\pinorm$.  Scenario~C (sharp-wrong) sits
+in the overconfident quadrant; Scenario~B (hedged-correct) sits in the
+cautious-discriminating region---a distinction invisible in the
+shape-quality diagram alone.
 
 %%% §4.3 Exceedance Bounds removed in Round 2 revision.
 %%% Rationale: U = Pi(A_T) is just the possibility measure restated;
 %%% L = m * N_c(A_T) is circular under subnormality; formal credal-set
 %%% bounds remain a direction for future work (see §7.6).
-
-\FloatBarrier
