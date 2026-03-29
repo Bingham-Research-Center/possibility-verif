@@ -98,10 +98,10 @@ The \textbf{categorical lane} (POD, FAR, CSI per threshold; HSS) asks
 category?''  It discards all distributional information: a correct mode
 says nothing about sharpness, hedging, or confidence.
 
-The \textbf{probabilistic lane} (IG via bridge) asks ``was the
-probabilistic forecast informative?''  The bridge is lossy---it
-compresses the full possibility shape into $n{+}1$ probabilities, with
-subnormality collapsed into a single ignorance bin.
+The \textbf{probabilistic lane} (IG via probability conversion) asks
+``was the probabilistic forecast informative?''  The conversion is
+lossy---it compresses the full possibility shape into $n{+}1$
+probabilities, with subnormality collapsed into a single ignorance bin.
 
 The \textbf{native possibilistic lane} (five-number scorecard) asks
 ``was the possibility distribution well-shaped, sharp, and honest?''
@@ -112,9 +112,10 @@ Together, the three lanes catch failures that any single lane would miss.
 A forecast with correct categorical mode but flat possibility and poor
 IG is a broken clock that happens to be right---the categorical lane
 passes but the other two fail.  A forecast with strong IG but high
-ignorance and low $\Nc^*$ got lucky via the bridge---the raw system was
-hedging.  A forecast with sharp possibility and high $\Nc^*$ but poor IG
-has a bridge problem---the conversion is distorting the signal.
+ignorance and low $\Nc^*$ got lucky after conversion---the raw system
+was hedging.  A forecast with sharp possibility and high $\Nc^*$ but
+poor IG has a conversion problem---the probability derivation is
+distorting the signal.
 
 In practice, a verification analyst would compile scorecard aggregates
 across a test sample, tracking changes between model versions or

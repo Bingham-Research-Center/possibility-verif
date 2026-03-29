@@ -6,27 +6,29 @@
 % Ozone categories → SPC categories
 %----------------------------------------------------------
 
-\section{Possibility-to-Probability Bridge}\label{sec:pignistic_bridge}
+\section{Deriving Probabilities from Possibilities}%
+\label{sec:pignistic_bridge}
 
-The term \textit{pignistic} derives from the Latin \textit{pignus} (a
-wager): it denotes the probabilities one would assign if forced to bet.
-Standard verification scores---the logarithmic score, Brier score \citep{Brier1950-lc}, and
-information gain---require probability inputs that sum to unity.  A
-possibility distribution does not satisfy this constraint: its values
-encode plausibility rather than relative frequency, and a subnormal
-distribution does not even reach a maximum of one.  The
-\textit{possibility-to-probability bridge} developed below converts a
-subnormal possibility distribution into an $(n{+}1)$-category probability
-vector, preserving the subnormality signal as an explicit ignorance
-outcome rather than erasing it through na\"ive normalisation.
+Standard verification scores---the logarithmic score, Brier score
+\citep{Brier1950-lc}, and information gain---require probability inputs
+that sum to unity.  A possibility distribution does not satisfy this
+constraint: its values encode plausibility rather than relative
+frequency, and a subnormal distribution does not even reach a maximum of
+one.  The conversion developed below transforms a subnormal possibility
+distribution into an $(n{+}1)$-category probability vector, preserving
+the subnormality signal as an explicit ignorance outcome rather than
+erasing it through na\"ive normalisation.  The term \textit{pignistic}
+(from Latin \textit{pignus}, a wager) denotes the probabilities one
+would assign if forced to bet; the conversion shares this forced-betting
+intuition.
 
 %----------------------------------------------------------
-\subsection{Possibility-to-Probability Bridge}\label{sec:poss_prob_bridge}
+\subsection{Possibility-to-Probability Conversion}%
+\label{sec:poss_prob_bridge}
 
 Applying probabilistic verification to possibilistic forecasts requires
-converting possibility distributions to probabilities.  The
-\textit{possibility-to-probability bridge} preserves the subnormality
-signal through three steps:
+converting possibility distributions to probabilities.  The conversion
+preserves the subnormality signal through three steps:
 
 \begin{enumerate}[leftmargin=2em]
 \item \textbf{Reserve ignorance mass:}
@@ -45,15 +47,11 @@ Simple normalisation ($p_i = \pi_i / \sum_j \pi_j$) erases
 subnormality---probabilities always sum to one regardless of model
 confidence.  This is structurally analogous to the pignistic
 transformation of \citet{Smets1990-MISSING}, which was designed for
-normal belief functions.  The bridge preserves the ignorance signal,
+normal belief functions.  The conversion preserves the ignorance signal,
 ensuring that verification scores correctly penalise uncertain forecasts
 by routing probability mass into a non-observed outcome.  For normal
 distributions ($\max \pi = 1$, $\ign = 0$), both methods coincide.
-
-The bridge is a distinct transformation inspired by the same
-forced-betting intuition as the pignistic transform, which
-\citet{Smets1990-MISSING} developed within the transferable belief model
-for normal belief functions.  The key innovation is reserving the
+The key innovation over the pignistic transform is reserving the
 ignorance mass as an explicit outcome rather than redistributing it,
 enabling verification scores to penalise subnormality directly.
 
@@ -65,7 +63,7 @@ $\pi = (0.05,\; 0.2,\; 0.4,\; 0.6,\; 0.1,\; 0.0)$.
   & \ign = 1 - 0.6 = 0.4,\quad
     \textstyle\sum_j \pi_j = 1.35 \\
   & \quad (\text{40\% of plausibility budget unassigned}) \\[4pt]
-\textit{Bridge:}\quad
+\textit{Output:}\quad
   & \mathbf{p} = (0.022,\; 0.089,\; 0.178,\; 0.267, \\
   & \qquad 0.044,\; 0.0,\;
     \underbrace{0.400}_{\text{ign}}) \\[4pt]
@@ -88,24 +86,31 @@ Figure~\ref{fig:pignistic_bridge} visualises this transformation.
 \begin{figure*}[!t]
 \centering
 \includegraphics[width=0.85\textwidth]{pignistic_bridge.png}
-\caption{Possibility-to-probability bridge applied to a subnormal possibility
+\caption{Possibility-to-probability conversion applied to a subnormal
     distribution.  \textbf{Left:} raw possibility values $\pi(\omega)$
     for six SPC categories.  \textbf{Right:} resulting $(n{+}1)$-category
     probability vector, with the grey bar representing the explicit
     ignorance outcome $p_{\mathrm{ign}} = \ign$.  Arrows show
     proportional redistribution of the remaining $(1 - \ign)$ mass.  The
-    ignorance bar absorbs probability mass that simple normalisation would
-    have spread across all categories, preserving the subnormality signal.}
+    ignorance outcome absorbs probability mass that simple normalisation
+    would have spread across all categories, preserving the subnormality
+    signal.}
 \label{fig:pignistic_bridge}
 \end{figure*}
 
 %----------------------------------------------------------
 \subsection{Information-Gain Decomposition}\label{sec:ig_decomposition}
 
-The logarithmic scoring rule---which assigns a penalty of $-\log_2 p(c_{\mathrm{obs}})$ bits for the probability assigned to the observed outcome---is the natural companion to the bridge.  Its information-theoretic decomposition into uncertainty, discrimination, and reliability mirrors the Brier score's three-component decomposition but operates in logarithmic units, making it particularly sensitive to confident misses on rare events.
+The logarithmic scoring rule---which assigns a penalty of
+$-\log_2 p(c_{\mathrm{obs}})$ bits for the probability assigned to the
+observed outcome---is the natural companion to this conversion.  Its
+information-theoretic decomposition into uncertainty, discrimination,
+and reliability mirrors the Brier score's three-component decomposition
+but operates in logarithmic units, making it particularly sensitive to
+confident misses on rare events.
 
-After the bridge converts possibilities to probabilities,
-standard information-theoretic verification applies.  Information gain
+Once possibilities have been converted to probabilities, standard
+information-theoretic verification applies.  Information gain
 measures the reduction in surprise from replacing one forecast with
 another:
 \begin{equation}
@@ -113,7 +118,8 @@ another:
 \label{eq:ig}
 \end{equation}
 where $o$ is the observation, $f_1$ is the baseline (e.g., climatology),
-and $f_2$ is the possibilistic forecast (after bridge conversion).
+and $f_2$ is the possibilistic forecast (after conversion to
+probabilities).
 Positive IG indicates that the forecast reduced surprise relative to the
 baseline.
 This formulation follows \citet{Roulston2002-eq}; \citet{Lawson2024-bu} extended it to atmospheric forecast evaluation with explicit decomposition diagnostics.
@@ -175,7 +181,7 @@ applied to the normalised vector cannot distinguish a sharp, confident
 forecast from a diffuse, hedged one---the answer to ``how would you
 bet?'' is given without acknowledging ``I wouldn't bet at all.''
 
-The possibility-to-probability bridge avoids this by deferring
+The conversion avoids this by deferring
 probabilistic commitment for the ignorance portion.  Mass equal to
 $\ign$ is routed into an $(n{+}1)$-th outcome that can never be the
 observed category.  Uncertain forecasts are penalised because this
@@ -191,7 +197,7 @@ from Section~\ref{sec:poss_prob_bridge}:
 \small
 \begin{tabular}{lcc}
 \toprule
- & Simple norm.\ & Bridge \\
+ & Simple norm.\ & Conversion \\
 \midrule
 $p(\spc{ENH})$ & $0.6/1.35 = 0.444$ & $0.267$ \\
 $p_{\mathrm{ign}}$ & --- & $0.400$ \\

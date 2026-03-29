@@ -9,15 +9,15 @@
 
 \section{Possibilistic Verification}\label{sec:native_verification}
 
-The possibility-to-probability bridge
-(Section~\ref{sec:poss_prob_bridge}) enables probabilistic verification
-of possibilistic forecasts, but the conversion is lossy: it compresses
-the full possibility shape into $n{+}1$ probabilities, with the entire
-subnormality signal collapsed into a single ignorance bin.  Native
-possibilistic verification evaluates the raw distribution directly,
-preserving the shape information that the bridge discards.  The metrics
-defined below complement the bridge-based lane by diagnosing forecast
-quality in possibility space.
+Converting possibilities to probabilities
+(Section~\ref{sec:poss_prob_bridge}) enables probabilistic verification,
+but the conversion is lossy: it compresses the full possibility shape
+into $n{+}1$ probabilities, with the entire subnormality signal
+collapsed into a single ignorance bin.  Native possibilistic
+verification evaluates the raw distribution directly, preserving the
+shape information that the conversion discards.  The metrics defined
+below complement the probabilistic lane by diagnosing forecast quality
+in possibility space.
 
 All definitions use the notation of Section~\ref{sec:poss_primer}:
 $\pi$ denotes the raw (subnormal) possibility distribution,
@@ -37,14 +37,15 @@ normalisation operations serve distinct purposes:
     preferences among outcomes.  Used for computing \Nc{}
     (Eq.~\ref{eq:cond_nec}) and the native scorecard
     (Section~\ref{sec:native_scorecard}).
-\item \textbf{Possibility-to-probability bridge} ($\pi \to$ probability
-    vector): Converts possibilities to probabilities with an explicit
-    ignorance outcome (Section~\ref{sec:poss_prob_bridge}).  Used
-    for information-gain verification.
+\item \textbf{Possibility-to-probability conversion} ($\pi \to$
+    probability vector): Converts possibilities to probabilities with an
+    explicit ignorance outcome (Section~\ref{sec:poss_prob_bridge}).
+    Used for information-gain verification.
 \end{enumerate}
 
-These are not alternatives: normalisation operates within the possibility
-space; the pignistic bridge converts to the probability space.
+These are not alternatives: shape normalisation operates within the
+possibility space; the probability conversion moves to the probability
+space.
 
 Table~\ref{tab:raw_norm} specifies which form each quantity uses.
 

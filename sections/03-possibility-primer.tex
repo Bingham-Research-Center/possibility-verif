@@ -256,7 +256,7 @@ This framework bears structural resemblance to Dempster--Shafer
 belief--plausibility intervals \citep{Shafer1976-MISSING}: possibility
 $\Pi(A)$ corresponds to plausibility $\mathrm{Pl}(A)$ and necessity
 $N(A)$ to belief $\mathrm{Bel}(A)$, with the pignistic transformation
-\citep{Smets1990-MISSING} providing the decision-making bridge in
+\citep{Smets1990-MISSING} providing the decision-making conversion in
 Dempster--Shafer theory just as
 Section~\ref{sec:poss_prob_bridge} does here.  The key difference is
 that \ign{} has no direct Dempster--Shafer analogue: it quantifies
@@ -303,21 +303,18 @@ In severe-weather forecasting, categorical language like ``\spc{MDT}
 risk is possible'' already expresses plausibility rather than calibrated
 frequency.  Possibility theory formalises this linguistic tradition while
 preserving the ability to derive probabilities when needed via the
-bridge in Section~\ref{sec:poss_prob_bridge}.
+conversion in Section~\ref{sec:poss_prob_bridge}.
 
-Critically, the bridge converts possibilities to probabilities but not
-vice versa---information is irreversibly lost in the
+Critically, the conversion from possibilities to probabilities is
+one-way---information is irreversibly lost in the
 probability-to-possibility direction \citep{Dubois1988-nh}.  A
 forecaster can issue a subnormal distribution that explicitly
 communicates ``today's setup is unusual and I am less confident than
 normal'' without manufacturing precise probability values that the
-evidence does not support.  The bridge
+evidence does not support.  The conversion
 (Section~\ref{sec:poss_prob_bridge}) recovers a valid probability
 distribution when one is needed, but the richer possibilistic
 representation remains available for native verification
-(Section~\ref{sec:native_verification}).  In simpler terms: the bridge
-converts a possibility distribution to a probability, but there is no
-way to uniquely reconstruct the possibility distribution from its
-probabilistic image.
+(Section~\ref{sec:native_verification}).
 
 %%% Notation table moved to after Section 2.1.

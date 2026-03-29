@@ -131,16 +131,16 @@ near-miss rather than catastrophic.
 %----------------------------------------------------------
 \subsection{Probabilistic Example}\label{sec:bridge_walkthrough}
 
-Recall that the bridge reserves the ignorance fraction $\ign$ as an
-explicit $(n{+}1)$-th probability outcome, distributing the remaining
-mass proportionally among the original categories
-(Section~\ref{sec:poss_prob_bridge}).
+Recall that the possibility-to-probability conversion reserves the
+ignorance fraction $\ign$ as an explicit $(n{+}1)$-th outcome,
+distributing the remaining mass proportionally among the original
+categories (Section~\ref{sec:poss_prob_bridge}).
 
-The bridge is now applied to each scenario.  Information gain is then
+The conversion is now applied to each scenario.  Information gain is then
 computed relative to the SPC climatological baseline
 $p_{\mathrm{clim}} = (0.60,\, 0.18,\, 0.12,\, 0.06,\, 0.032,\,
 0.008)$, in which \spc{NONE} dominates and \spc{HIGH} is rare.
-The bridge reserves $p_{\mathrm{ign}} = \ign$, distributes
+The conversion reserves $p_{\mathrm{ign}} = \ign$, distributes
 the remaining $m$ proportionally via
 $p_i = \pi_i \cdot m / \sum_j \pi_j$,
 and appends the ignorance outcome.
@@ -149,7 +149,7 @@ readable column by column.
 
 \begin{table}[htbp]
 \centering
-\caption{Bridge conversion and information gain for the three worked
+\caption{Probability conversion and information gain for the three worked
     scenarios, relative to the SPC climatological baseline.
     Asterisk ($^*$) denotes $\varepsilon$-floored values
     ($\varepsilon = 0.01$; see text).}
@@ -173,7 +173,7 @@ Forecast surprise (bits) & $0.567$ & $2.261$ & $6.644^*$ \\
 \end{table}
 
 The three scenarios trace a clear arc from skill to catastrophe.
-Scenario~A's bridge concentrates probability on the correct outcome
+Scenario~A's derived probabilities concentrate on the correct outcome
 ($p = 0.675$); low ignorance means little mass is stranded in the
 ignorance bin, yielding $\mathrm{IG} = +4.399$~bits---strong
 skill relative to the climatological baseline, which assigns only
@@ -184,7 +184,7 @@ simple-normalisation value of $0.55/1.45 = 0.379$ down to $0.209$,
 honestly reflecting the system's uncertainty, but the forecast still
 beats the $6\%$ climatological rate for \spc{ENH} by a wide margin.
 Scenario~C incurs a penalty ($\mathrm{IG} = -1.678$~bits) because the
-bridge assigns zero probability to the observed outcome.  The
+conversion assigns zero probability to the observed outcome.  The
 $\varepsilon$-floor ($\varepsilon = 0.01$) prevents an infinite
 penalty but still yields a surprise of $6.644$~bits---far worse than
 the climatological surprise of $4.966$~bits for \spc{MDT}.  Crucially,
