@@ -64,24 +64,28 @@ threshold $\tau$, does the conditional hit rate exceed climatology?
 If so, high-necessity forecasts identify genuinely confident
 predictions---not just lucky ones.
 
-Figure~\ref{fig:reliability} illustrates this assessment: the
-conditional hit rate for the observed category rises with the \Nc{}
-threshold and remains above the climatological base-rate line,
-confirming that conditional necessity carries real diagnostic
-information.
+Figure~\ref{fig:reliability} illustrates this assessment using the
+shared synthetic reforecast.  $\Nc$ is computed at the \emph{predicted}
+(mode) category, not the observed one: the question is whether high
+$\Nc$ of the system's top pick is a reliable confidence signal.  Two
+baselines are shown: random chance ($1/K$) and the system's
+unconditional mode accuracy.  The curve rises above the system average
+at high thresholds, confirming that $\Nc$ carries diagnostic
+information---forecasts where the mode strongly dominates all
+alternatives verify more reliably than the system average.
 
 \begin{figure}[t]
 \centering
 \includegraphics[width=\columnwidth]{reliability_curves.png}
-\caption{Reliability of conditional necessity.  The purple curve shows
-    the conditional hit rate for the observed category as a function of
-    the $\Nc$ threshold $\tau$.  The horizontal dashed line marks the
-    climatological base rate ($1/K \approx 0.167$ for $K = 6$ categories):
-    the hit rate expected if forecasts were uninformative.
-    When the curve lies above this line, high-$\Nc$ forecasts verify
-    better than climatology---confirming that conditional necessity is an
-    informative confidence signal.  The shaded band shows a 90\% bootstrap
-    confidence interval.  Data are synthetic.}
+\caption{Reliability of conditional necessity for the synthetic
+    reforecast.  The purple curve shows the conditional hit rate among
+    forecasts whose mode has $\Nc(\hat{c}) \geq \tau$.
+    Two baselines: random chance ($1/K$, dashed) and the system's
+    unconditional mode accuracy (dot-dashed).  The curve rises above
+    the system average at high $\tau$, confirming that strong
+    conditional necessity identifies genuinely confident
+    predictions.  Shaded band: 90\% bootstrap CI.  Inset: sample size
+    per threshold.}
 \label{fig:reliability}
 \end{figure}
 
