@@ -240,6 +240,31 @@ all values at $\varepsilon$ to avoid $\alpha^* = 0$
 %----------------------------------------------------------
 \subsection{Diagnostic Diagrams}\label{sec:diag_diagrams}
 
+The diagnostic diagrams in this section and the aggregate figures in
+Sections~\ref{sec:tripartite_value}--\ref{sec:worked_examples} share a
+single synthetic reforecast ($n = 730$ days, two years) designed to mimic
+a possibilistic system evaluated against SPC-like base rates.  The
+generator produces one subnormal possibility distribution per day with
+the following properties:
+\begin{itemize}[leftmargin=2em]
+\item \textbf{Climatological base rates} matching approximate SPC
+    frequencies (\spc{NONE}~60\%, \spc{MRGL}~18\%, \spc{SLGT}~12\%,
+    \spc{ENH}~6\%, \spc{MDT}~3.2\%, \spc{HIGH}~0.8\%).
+\item \textbf{Category-dependent accuracy:} the forecast peaks at the
+    correct category 82\% of the time for \spc{NONE} but only 18\% for
+    \spc{HIGH}; errors are near-miss ($\pm 1$ category).
+\item \textbf{Category-dependent ignorance:} mean $\ign \approx 0.06$
+    for \spc{NONE} (confident) rising to $\ign \approx 0.52$ for
+    \spc{HIGH} (uncertain), reflecting the operational reality that
+    rare-event forecasts carry more uncertainty.
+\end{itemize}
+These choices produce a dataset that exhibits the diagnostic patterns a
+verification analyst would expect from a realistic but imperfect
+possibilistic system.  The three hand-crafted scenarios in
+Section~\ref{sec:worked_examples} are separate: they are stylised
+extremes designed to isolate specific scorecard behaviours, not draws
+from this synthetic population.
+
 \begin{figure}[t]
 \centering
 \includegraphics[width=\columnwidth]{perf_hexbin_trajectory.png}
