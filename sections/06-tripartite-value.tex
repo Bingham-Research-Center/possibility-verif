@@ -9,89 +9,66 @@
 
 \section{Three-Component Value}\label{sec:tripartite_value}
 
-The five-number scorecard evaluates individual forecast--observation
-pairs; this section asks whether the three diagnostic components
-identified in Section~\ref{sec:three_component} and mapped to post-event
-metrics in Table~\ref{tab:three_to_five}---possibility (shape quality),
-ignorance (system confidence), and conditional necessity
-(dominance)---each independently contribute verification value, or
-whether some are redundant once others are known.  Three hypothesis test
-protocols are proposed, each isolating one component and asking whether
-it adds information the other two do not provide.  An affirmative answer
-for all three justifies the full five-number scorecard.
+Each component of the five-number scorecard
+(Table~\ref{tab:three_to_five}) should earn its place by providing
+diagnostic information the others cannot.  This section first examines
+the independent value of the three components---possibility (shape
+quality), ignorance (system confidence), and conditional necessity
+(dominance)---and then steps back to show how the native possibilistic
+lane relates to probabilistic and categorical verification.
 
 %----------------------------------------------------------
-\subsection{Three Hypothesis Tests}\label{sec:three_tests}
+\subsection{Independent Value of Each Component}\label{sec:component_value}
 
-The five-number scorecard (Section~\ref{sec:native_scorecard}) can be
-used to demonstrate that each of the three named
-components---possibility, ignorance, and conditional necessity---independently
-contributes verification value.
+\paragraph{Possibility: does the shape point at the truth?}
 
-\paragraph{Test 1: Possibility compatibility ($\alpha^*$, $\delta$).}
+The possibility component ($\alpha^*$, $\eta$, $\delta$) captures
+whether the system's distributional shape favours the observed outcome.
+Its value reduces to a familiar verification question: does the system's
+resolution gap $\delta$ exceed that of a na\"ive baseline?  Comparing
+$\delta$ against climatology or persistence is the possibilistic
+analogue of comparing Brier skill scores.  For SPC outlooks, climatology
+peaks at the most frequent category and assigns near-zero possibility to
+rare outcomes like \spc{HIGH}; a skilful possibilistic system should
+outperform this baseline on days when \spc{ENH} or higher categories
+verify, exhibiting positive $\delta$ across the verification sample.
 
-\textit{Question:} ``Does the system point at the truth better than
-climatology or persistence?''
+\paragraph{Ignorance: does self-reported uncertainty track difficulty?}
 
-\textit{How to test:} Compare the forecasting system's resolution gap
-($\delta = \alpha^* - \eta$) against the same score for climatological
-and persistence baselines.  If the system's $\delta$ is consistently
-higher, the possibility component has independent skill.
+The ignorance component ($\ign$) carries forward from the pre-event
+framework as a forecast property rather than a verification metric
+(Table~\ref{tab:three_to_five}), so its diagnostic value requires
+explicit justification.  If high-\ign{} forecasts tend to have lower
+mean $\delta$ than low-\ign{} forecasts, then $\ign$ tracks actual
+forecast difficulty---the possibilistic analogue of the
+\textit{spread--skill relationship} in ensemble forecasting, where high
+ensemble spread should correspond to higher forecast error.
 
-\textit{Met analogue:} Comparing a model's Brier skill score against
-persistence---``Is your resolution better than a na\"ive forecast?''
-
-For SPC outlooks, a system that consistently assigns higher possibility
-to the observed category than to the average category will exhibit
-positive $\delta$ across the verification sample.  Climatology, by
-construction, peaks at the most frequent category and assigns near-zero
-possibility to rare outcomes like \spc{HIGH}; a skilful possibilistic
-system should outperform this baseline on days when \spc{ENH} or higher
-categories verify.
-
-\paragraph{Test 2: Ignorance self-awareness (\ign{}).}
-
-\textit{Question:} ``When the system says it is uncertain, is it
-actually performing worse?''
-
-\textit{How to test:} Stratify forecasts by \ign{} (low vs.\ high
-ignorance).  Check whether mean $\delta$ is lower in high-ignorance
-cases.  If yes, the system's self-reported uncertainty tracks actual
-forecast difficulty.
-
-\textit{Met analogue:} The \textbf{spread--skill relationship} in
-ensemble forecasting.  Stratify by ensemble spread and check whether
-high-spread cases have higher error.  This test asks the same question
-about \ign{}: is it an honest uncertainty signal, or just noise?
-
-The implications of this test are decisive for system design.  If \ign{}
-does \emph{not} track forecast difficulty, the subnormality signal is
-uninformative and normalisation is costless---one might as well enforce
+The implications are decisive for system design.  If \ign{} does
+\emph{not} track difficulty, the subnormality signal is uninformative
+and normalisation is costless---one might as well enforce
 $\max(\pi) = 1$ and simplify the framework.  If \ign{} \emph{does}
 track difficulty, normalisation destroys operationally valuable
 information: a forecaster who normalises away high-\ign{} signals loses
 the ability to distinguish confident forecasts from hedged ones.
 
-\paragraph{Test 3: Conditional necessity reliability ($\Nc^*$).}
+\paragraph{Conditional necessity: does claimed certainty verify?}
 
-\textit{Question:} ``When the system says it is sure, is it actually
-right more often?''
-
-\textit{How to test:} When $\Nc(c) > \tau$ for some threshold $\tau$,
-check whether the conditional hit rate for category $c$ exceeds the base
-rate.  If yes, high-necessity forecasts identify genuinely confident
+When the system assigns high conditional necessity to an outcome, that
+outcome should verify more often than the base rate.  This is the
+possibilistic analogue of \textit{reliability conditional on
+confidence}: ensemble forecasters routinely ask ``when the ensemble
+gives ${>}80\%$ chance of severe weather, does it verify ${>}80\%$ of
+the time?''  Here the question becomes: when $\Nc > \tau$ for
+threshold $\tau$, does the conditional hit rate exceed climatology?
+If so, high-necessity forecasts identify genuinely confident
 predictions---not just lucky ones.
 
-\textit{Met analogue:} \textbf{Reliability conditional on confidence.}
-Meteorologists check this when they ask ``when the ensemble gives
-${>}80\%$ chance of severe weather, does it actually verify
-${>}80\%$ of the time?''  This test asks: ``when the system says
-$\Nc > \tau$, does the truth verify at a rate above climatology?''
-
-Figure~\ref{fig:reliability} illustrates Test~3: conditional hit rate
-as a function of the \Nc{} threshold, plotted against the climatological
-base rate.  A curve above the base-rate line confirms that high-necessity
-forecasts identify genuinely confident predictions.
+Figure~\ref{fig:reliability} illustrates this assessment: the
+conditional hit rate for the observed category rises with the \Nc{}
+threshold and remains above the climatological base-rate line,
+confirming that conditional necessity carries real diagnostic
+information.
 
 \begin{figure}[t]
 \centering
