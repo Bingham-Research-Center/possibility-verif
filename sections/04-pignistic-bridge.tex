@@ -155,8 +155,14 @@ logarithmic counterpart of the Brier score's three-component breakdown
 ($\mathrm{BS} = \mathrm{REL} - \mathrm{RES} + \mathrm{UNC}$) but
 operates in bits---additive, interpretable information units.
 
-Figure~\ref{fig:ig_decomp} illustrates the decomposition for several
-forecast scenarios with net IG annotated.
+Figure~\ref{fig:ig_decomp} illustrates the decomposition for five
+forecast archetypes.  The key contrast is between Sharp Correct
+(nearly all discrimination retained, IG~$= +1.75$~bits) and Sharp
+Wrong (the calibration penalty consumes the discrimination entirely
+and extends below zero, IG~$= -0.75$~bits).  Hedged Wrong shows
+modest discrimination but the reliability tax swamps it---a system
+that hedges across wrong categories is penalised less harshly than
+one that commits confidently to the wrong answer.
 
 \begin{figure}[!b]
 \centering

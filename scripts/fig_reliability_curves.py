@@ -77,7 +77,7 @@ def main():
     random_base = 1.0 / SPC_N
     uncond_acc = hits.mean()  # system's unconditional mode accuracy
 
-    fig, ax = plt.subplots(figsize=(5.5, 4.5))
+    fig, ax = plt.subplots(figsize=(4.5, 3.5))
 
     # --- Skill region: shade above unconditional accuracy ---
     ax.axhspan(uncond_acc, 1.05, color=GREEN, alpha=0.06, zorder=0)
@@ -87,7 +87,7 @@ def main():
 
     # --- Bootstrap confidence band ---
     ax.fill_between(thresholds, ci_lo, ci_hi, color=PURPLE, alpha=0.15,
-                    zorder=2, label="90% bootstrap CI")
+                    zorder=2, label="Confidence interval")
 
     # --- Reliability curve ---
     ax.plot(thresholds, cond_hit, color=PURPLE, linewidth=2.0, marker="o",
@@ -99,37 +99,6 @@ def main():
     ax.axhline(uncond_acc, linestyle="-.", linewidth=1.0, color=DARK_GREY,
                zorder=3, label=f"System average ({uncond_acc:.2f})")
 
-    # --- Interpretive annotation: gain over system average ---
-    t_ann = 0.70
-    idx_ann = np.argmin(np.abs(thresholds - t_ann))
-    hr_ann = cond_hit[idx_ann]
-    if not np.isnan(hr_ann) and hr_ann > uncond_acc:
-        ax.annotate(
-            "",
-            xy=(t_ann, uncond_acc), xytext=(t_ann, hr_ann),
-            arrowprops=dict(arrowstyle="<->", color=GREEN, lw=1.2),
-        )
-        gain_pp = hr_ann - uncond_acc
-        ax.text(t_ann + 0.04, (uncond_acc + hr_ann) / 2,
-                f"+{gain_pp:.0%} pts\nabove system\naverage",
-                fontsize=7, color=GREEN, va="center",
-                bbox=dict(boxstyle="round,pad=0.25", fc="white", ec=GREEN,
-                          lw=0.5, alpha=0.9))
-
-    # Annotate the high-confidence region
-    valid_high = [i for i, c in enumerate(counts) if c >= 10]
-    if valid_high:
-        last_valid = valid_high[-1]
-        ax.annotate(
-            "high-$N_c$ forecasts\nverify reliably",
-            xy=(thresholds[last_valid], cond_hit[last_valid]),
-            xytext=(0.25, 0.97),
-            fontsize=7.5, fontweight="bold", color=PURPLE,
-            arrowprops=dict(arrowstyle="->", color=PURPLE, lw=0.8),
-            bbox=dict(boxstyle="round,pad=0.3", fc="white", ec=PURPLE,
-                      lw=0.5, alpha=0.9),
-        )
-
     ax.set_xlabel(r"$N_c(\hat{c})$ threshold  $\tau$", fontsize=10)
     ax.set_ylabel("Conditional hit rate  "
                   r"$P(\mathrm{hit}\,|\,N_c(\hat{c}) \geq \tau)$",
@@ -139,8 +108,8 @@ def main():
     ax.legend(loc="lower right", fontsize=7.5, frameon=True, fancybox=False,
               edgecolor=MID_GREY)
 
-    # --- Inset: sample size per threshold ---
-    ax_inset = ax.inset_axes([0.55, 0.14, 0.40, 0.18])
+    # --- Inset: sample size per threshold (upper left) ---
+    ax_inset = ax.inset_axes([0.04, 0.55, 0.32, 0.16])
     ax_inset.bar(thresholds, counts, width=0.04, color=PURPLE, alpha=0.5,
                  edgecolor="none")
     ax_inset.set_ylabel("$n$", fontsize=7, labelpad=1)

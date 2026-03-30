@@ -64,28 +64,29 @@ threshold $\tau$, does the conditional hit rate exceed climatology?
 If so, high-necessity forecasts identify genuinely confident
 predictions---not just lucky ones.
 
-Figure~\ref{fig:reliability} illustrates this assessment using the
-shared synthetic reforecast.  $\Nc$ is computed at the \emph{predicted}
-(mode) category, not the observed one: the question is whether high
-$\Nc$ of the system's top pick is a reliable confidence signal.  Two
-baselines are shown: random chance ($1/K$) and the system's
-unconditional mode accuracy.  The curve rises above the system average
-at high thresholds, confirming that $\Nc$ carries diagnostic
-information---forecasts where the mode strongly dominates all
-alternatives verify more reliably than the system average.
+Figure~\ref{fig:reliability} tests this by plotting the conditional hit
+rate against the $\Nc$ threshold~$\tau$: at each $\tau$, only
+forecasts whose mode has $\Nc(\hat{c}) \geq \tau$ are included.  The
+curve is nearly flat because the synthetic system already has a high
+baseline accuracy (${\sim}83\%$).  The modest tick-up at high
+thresholds ($\tau > 0.8$) is notable: it confirms that the most
+confident forecasts---where the mode strongly dominates all
+alternatives---verify even more reliably, so $\Nc$ carries a genuine
+confidence signal.  With real data or a weaker baseline system, this
+separation would be more pronounced.
 
 \begin{figure}[t]
 \centering
-\includegraphics[width=\columnwidth]{reliability_curves.png}
-\caption{Reliability of conditional necessity for the synthetic
-    reforecast.  The purple curve shows the conditional hit rate among
-    forecasts whose mode has $\Nc(\hat{c}) \geq \tau$.
-    Two baselines: random chance ($1/K$, dashed) and the system's
-    unconditional mode accuracy (dot-dashed).  The curve rises above
-    the system average at high $\tau$, confirming that strong
-    conditional necessity identifies genuinely confident
-    predictions.  Shaded band: 90\% bootstrap CI.  Inset: sample size
-    per threshold.}
+\includegraphics[width=0.75\columnwidth]{reliability_curves.png}
+\caption{Conditional hit rate vs.\ $\Nc(\hat{c})$ threshold for the
+    synthetic reforecast.  At each $\tau$, only forecasts with
+    $\Nc(\hat{c}) \geq \tau$ are retained; the purple curve shows
+    their hit rate.  Baselines: random chance ($1/K$, dashed) and
+    unconditional system accuracy (dot-dashed).  Shaded band: notional
+    confidence interval.  Inset: declining sample size at high $\tau$.
+    The near-flat curve reflects the synthetic system's high baseline
+    accuracy; the uptick at $\tau > 0.8$ confirms that $\Nc$ adds a
+    genuine confidence signal.}
 \label{fig:reliability}
 \end{figure}
 
@@ -97,10 +98,16 @@ metrics to evaluate forecast quality.  No single facet captures the full
 picture, because each answers a different question and each has a blind
 spot the others fill.
 
-The \textbf{categorical facet} (POD, FAR, CSI per threshold; HSS) asks
-``did the mode-based point forecast identify the correct severity
-category?''  It discards all distributional information: a correct mode
-says nothing about sharpness, hedging, or confidence.
+The \textbf{categorical facet} reduces each distribution to its mode
+$\hat{c} = \arg\max \pi(\omega)$ and applies threshold-based
+contingency scores: probability of detection
+(POD~$=$~hits\,/\,(hits\,+\,misses)), false alarm ratio
+(FAR~$=$~false alarms\,/\,(hits\,+\,false alarms)), critical success
+index (CSI~$=$~hits\,/\,(hits\,+\,misses\,+\,false alarms)), and the
+Heidke skill score (HSS) from the full $K \times K$ confusion matrix.
+It asks ``did the mode-based point forecast identify the correct
+severity category?'' and discards all distributional information: a
+correct mode says nothing about sharpness, hedging, or confidence.
 
 The \textbf{probabilistic facet} (IG via probability conversion) asks
 ``was the probabilistic forecast informative?''  The conversion is

@@ -211,12 +211,7 @@ def draw_traj_spec_alpha(ax, means, color=GREEN, gcmap=None, gnorm=None):
     ys = [means[c]['alpha'] for c in cats]
     ns = [means[c]['n'] for c in cats]
 
-    xs_s, ys_s = _smooth_path(xs, ys)
-    ax.plot(xs_s, ys_s, '-', color="white", lw=6, zorder=4,
-            solid_capstyle="round")
-    ax.plot(xs_s, ys_s, '-', color=color, lw=2.5, zorder=5,
-            solid_capstyle="round")
-
+    # Dots only (no smooth spline, no labels)
     s_min, s_max = 60, 350
     mx = max(ns)
     sizes = [s_min + (s_max - s_min) * (n / mx) for n in ns]
@@ -230,8 +225,6 @@ def draw_traj_spec_alpha(ax, means, color=GREEN, gcmap=None, gnorm=None):
     else:
         ax.scatter(xs, ys, s=sizes, fc=color, ec="white", lw=2.0, zorder=6)
         ax.scatter(xs, ys, s=sizes, fc=color, ec=DARK_GREY, lw=0.8, zorder=7)
-
-    _traj_labels(ax, cats, xs, ys, ns, color)
 
 
 def draw_traj_commit(ax, means, color=GREEN, fontsize=6.5,
@@ -245,12 +238,7 @@ def draw_traj_commit(ax, means, color=GREEN, fontsize=6.5,
     ys = [means[c]['delta'] for c in cats]
     ns = [means[c]['n'] for c in cats]
 
-    xs_s, ys_s = _smooth_path(xs, ys)
-    ax.plot(xs_s, ys_s, '-', color="white", lw=6, zorder=4,
-            solid_capstyle="round")
-    ax.plot(xs_s, ys_s, '-', color=color, lw=2.5, zorder=5,
-            solid_capstyle="round")
-
+    # Dots only (no smooth spline, no labels)
     s_min, s_max = 60, 350
     mx = max(ns)
     sizes = [s_min + (s_max - s_min) * (n / mx) for n in ns]
@@ -264,8 +252,6 @@ def draw_traj_commit(ax, means, color=GREEN, fontsize=6.5,
     else:
         ax.scatter(xs, ys, s=sizes, fc=color, ec="white", lw=2.0, zorder=6)
         ax.scatter(xs, ys, s=sizes, fc=color, ec=DARK_GREY, lw=0.8, zorder=7)
-
-    _traj_labels(ax, cats, xs, ys, ns, color, fontsize=fontsize)
 
 
 # ------------------------------------------------------------------ #
@@ -306,23 +292,9 @@ def v3b(data, ap, spec, anchors):
     draw_traj_spec_alpha(ax, means, gcmap=gcm, gnorm=nm)
     draw_scenarios_spec_alpha(ax, anchors)
 
-    # Compass: upper-right corner, within axes bounds
-    ax.annotate("", xy=(0.98, 1.01), xytext=(0.85, 0.88),
-                arrowprops=dict(arrowstyle="->,head_width=0.4,head_length=0.3",
-                                color=DARK_GREY, lw=2.0),
-                zorder=10)
-    ax.text(0.84, 1.02, "sharp +\ntruthful", fontsize=7,
-            fontstyle="italic", color=DARK_GREY, ha="center", va="bottom",
-            zorder=10)
-
-    # Dual colorbar: purple | green touching, shared label
-    gradient = np.linspace(nm.vmin, nm.vmax, 256)
-    p_colors = cm(nm(gradient))
-    g_colors = gcm(nm(gradient))
-    dual = np.stack([p_colors, g_colors], axis=1)
-    cax.imshow(dual, aspect='auto', origin='lower',
-               extent=[0, 1, nm.vmin, nm.vmax])
-    cax.set_xticks([])
+    # Single purple colorbar for hexbin H_Pi
+    from matplotlib.colorbar import ColorbarBase
+    cb = ColorbarBase(cax, cmap=cm, norm=nm, orientation='vertical')
     cax.yaxis.tick_right()
     cax.yaxis.set_label_position("right")
     cax.set_ylabel(r"Mean $H_\Pi$" + "\n(dark = confident)", fontsize=7)
@@ -404,7 +376,6 @@ def v4b(data, ap, spec, anchors):
 
     draw_traj_commit(ax, means, gcmap=gcm, gnorm=gnm)
     draw_scenarios_commit(ax, anchors)
-    draw_compass(ax, 0.95, 0.72, "better")
 
     # Manual colorbar
     from matplotlib.colorbar import ColorbarBase

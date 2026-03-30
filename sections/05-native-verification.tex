@@ -286,12 +286,12 @@ peak:
 \end{equation}
 where $\sigma$ is a category-dependent spread parameter (mean $\bar\sigma
 \approx 2.6$ for \spc{NONE}, $\approx 0.7$ for \spc{HIGH}) and the
-uniform noise term breaks symmetry.  The resulting distribution is
-rescaled to impose a category-dependent ignorance level: $\pi \gets \pi
-\cdot (1 - h) / \max(\pi)$, where $h \sim
-\mathcal{N}(\mu_h(c),\,\sigma_h(c))$ with $\mu_h$ ranging from $0.06$
-(\spc{NONE}) to $0.52$ (\spc{HIGH}), reflecting the operational reality
-that rare-event forecasts carry more uncertainty.
+uniform noise term breaks symmetry.  Finally, the distribution is rescaled so that its peak value equals
+$1 - h$, where $h$ is a randomly drawn ignorance level that increases
+with category rarity: mean ignorance is approximately $0.06$ for
+\spc{NONE} (very confident) and $0.52$ for \spc{HIGH} (substantially
+uncertain), reflecting the operational reality that rare-event forecasts
+carry more uncertainty.
 
 These choices produce a dataset with category-dependent accuracy and
 confidence gradients mimicking a realistic but imperfect possibilistic
@@ -307,20 +307,21 @@ from this synthetic population.
 \includegraphics[width=\columnwidth]{perf_hexbin_trajectory.png}
 \caption{Possibilistic performance diagram for the 800-day synthetic
     reforecast, inspired by \citet{Roebber2009-rv}.
-    \textbf{Hex bins:} colour is mean $\ign$ (dark purple = confident).
-    \textbf{Contours:} joint skill $S = \alpha^* \times (1 - \eta)$.
+    \textbf{Hex bins:} colour encodes mean $\ign$ (dark purple =
+    confident, pale = uncertain).
+    \textbf{Contours:} joint skill
+    $S = \alpha^* \times (1 - \eta)$, the possibilistic analogue of
+    CSI---$S$ is maximised in the upper right where forecasts are both
+    sharp (high specificity) and truthful (high depth-of-truth).
     \textbf{Dashed diagonal:} $\delta = 0$ break-even; above this line
     the forecast discriminated, below it the truth received less support
     than the categorical average.
-    \textbf{Green line:} category-conditional means from \spc{NONE}
-    (easy, upper right) to \spc{HIGH} (rare, lower left); dot
-    size $\propto$ sample count; shade encodes $\ign$ (dark green
-    = confident).
+    \textbf{Green dots:} category-conditional means (dot size $\propto$
+    sample count), tracing the progression from easy categories (upper
+    right) to rare ones (lower left).
     \textbf{Stars:} worked scenarios from
     Section~\ref{sec:worked_examples} (green edge = hit, red = miss).
-    Upper right is ideal (sharp and truthful); lower right is the worst
-    failure mode (sharp and wrong).  The trajectory's slope reveals
-    where skill degrades fastest.}
+    Lower right is the worst failure mode (sharp and wrong).}
 \label{fig:performance_diagram}
 \end{figure}
 
@@ -332,17 +333,16 @@ analogy with the \citet{Roebber2009-rv} performance diagram is
 deliberate: specificity plays the role of success ratio, $\alpha^*$
 plays the role of POD, and the
 $S = \alpha^* \times (1 - \eta)$ hyperbolas play the role of CSI
-contours.  The key addition is ignorance, encoded as bin colour, which
-has no deterministic analogue.
+contours---all three axes are maximised in the upper right.  The key
+addition is ignorance, encoded as bin colour, which has no categorical
+analogue.
 
 The hex density forms a diagonal band from upper right to lower left,
-dominated by \spc{NONE} days (dark purple: confident).  The green
-trajectory sits above the hex mass for rare categories because it shows
-\textit{conditional} means---averaging only cases verified against each
-category---while the hexagons show the marginal distribution of all
-forecasts.  The trajectory's steep descent from \spc{NONE} to
-\spc{HIGH} reveals the system's breaking point: skill degrades fastest
-between \spc{SLGT} and \spc{ENH}, where predictability drops sharply.
+dominated by \spc{NONE} days (dark purple: confident).  Green dots
+mark category-conditional means; their descent from \spc{NONE} (upper
+right) to \spc{HIGH} (lower left) reveals the system's breaking point:
+skill degrades fastest between \spc{SLGT} and \spc{ENH}, where
+predictability drops sharply.
 
 \begin{figure}[t]
 \centering
@@ -355,8 +355,8 @@ between \spc{SLGT} and \spc{ENH}, where predictability drops sharply.
     These axes are orthogonal: $\pi_{\max}$ is the raw scale of $\pi$;
     $\delta$ is the quality of the normalised shape $\pi'$.
     \textbf{Hex bins:} coloured by count.
-    \textbf{Green line:} category means from \spc{NONE} (upper right)
-    to \spc{HIGH} (lower left).
+    \textbf{Green dots:} category-conditional means from \spc{NONE}
+    (upper right) to \spc{HIGH} (lower left).
     \textbf{Stars:} Section~\ref{sec:worked_examples} scenarios.
     Upper right = committed and discriminating (ideal);
     lower right = overconfident and wrong;
@@ -377,10 +377,10 @@ hexagons emerge: one in the upper right (confident and correct---mostly
 \spc{NONE} days) and one in the lower right (confident and
 wrong---forecasts that committed heavily but missed).  The lighter band
 between them contains the hedged severe-weather forecasts.  The green
-trajectory arcs from \spc{NONE} (upper right) through the severe
-categories, staying above $\delta = 0$ for all categories on
-average---even rare-event forecasts discriminate in aggregate, though
-with lower commitment.  Scenario~C (sharp-wrong) sits in the
+dots (category-conditional means) arc from \spc{NONE} (upper right)
+through the severe categories, staying above $\delta = 0$ for all
+categories on average---even rare-event forecasts discriminate in
+aggregate, though with lower commitment.  Scenario~C (sharp-wrong) sits in the
 overconfident quadrant; Scenario~B (hedged-correct) sits in the
 cautious-discriminating region---a distinction invisible in the
 shape-quality diagram alone.

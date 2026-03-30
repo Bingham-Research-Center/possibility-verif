@@ -124,10 +124,19 @@ $\hat{c} = \spc{NONE}$ while $c_{\mathrm{obs}} = \spc{MDT}$---a miss
 at every threshold, yielding POD~$= 0$ across the board.
 
 Figure~\ref{fig:categorical_scores} places these cases in the context of
-the 800-day synthetic reforecast.  Panel~(a) shows how POD, success
-ratio, and CSI degrade as the severity threshold rises.  Panel~(b)
-reveals that mode errors cluster near the diagonal---predominantly
-near-miss rather than catastrophic.
+the 800-day synthetic reforecast.  Panel~(a) shows how POD (purple),
+success ratio $1 - \mathrm{FAR}$ (green), and CSI (dashed) degrade as
+the severity threshold rises: the system detects \spc{MRGL}+ events
+reliably but struggles at \spc{MDT}+ and above, where both POD and CSI
+drop sharply.  Scenarios~A and~B register as hits at their respective
+thresholds (green labels); Scenario~C misses everywhere (red cross).
+Panel~(b) shows the full $K \times K$ confusion matrix: diagonal
+dominance confirms that the system's mode forecast is broadly accurate,
+while the near-diagonal clustering of errors means misses are typically
+$\pm 1$ category rather than catastrophic.  The HSS of $0.708$ is
+strong but not exceptional---the categorical facet alone cannot
+distinguish the confident sharp-correct forecast (A) from an equally
+accurate but heavily hedged one.
 
 %----------------------------------------------------------
 \subsection{Probabilistic Example}\label{sec:bridge_walkthrough}
