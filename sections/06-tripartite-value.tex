@@ -26,8 +26,10 @@ The possibility component ($\alpha^*$, $\eta$, $\delta$) captures
 whether the system's distributional shape favours the observed outcome.
 Its value reduces to a familiar verification question: does the system's
 support margin $\delta$ exceed that of a na\"ive baseline?  Comparing
-$\delta$ against climatology or persistence is the possibilistic
-analogue of comparing Brier skill scores.  For SPC outlooks, climatology
+$\delta$ against climatology or persistence would be the possibilistic
+analogue of comparing Brier skill scores
+(Section~\ref{sec:limitations} notes that formalising this comparison
+requires a possibilistic climatology that remains an open problem).  For SPC outlooks, climatology
 peaks at the most frequent category and assigns near-zero possibility to
 rare outcomes like \spc{HIGH}; a skilful possibilistic system should
 outperform this baseline on days when \spc{ENH} or higher categories
@@ -59,19 +61,22 @@ outcome should verify more often than the base rate.  This is the
 possibilistic analogue of \textit{reliability conditional on
 confidence}: ensemble forecasters routinely ask ``when the ensemble
 gives ${>}80\%$ chance of severe weather, does it verify ${>}80\%$ of
-the time?''  Here the question becomes: when $\Nc > \tau$ for
+the time?''  Here the question becomes: when $\Nc(\hat{c}) > \tau$ for
 threshold $\tau$, does the conditional hit rate exceed climatology?
+(Note the shift: here we condition on the forecast's own peak category
+$\hat{c}$ rather than the observation, since reliability is a
+pre-verification property of the issued forecast.)
 If so, high-necessity forecasts identify genuinely confident
 predictions---not just lucky ones.
 
 Figure~\ref{fig:reliability} tests this by plotting the conditional hit
-rate against the $\Nc$ threshold~$\tau$: at each $\tau$, only
+rate against the $\Nc(\hat{c})$ threshold~$\tau$: at each $\tau$, only
 forecasts whose peak category has $\Nc(\hat{c}) \geq \tau$ are included.
 The curve is nearly flat because the synthetic system already has a high
 baseline accuracy (${\sim}83\%$).  The modest tick-up at high
 thresholds ($\tau > 0.8$) is notable: it confirms that the most
 confident forecasts---where the peak category strongly dominates all
-alternatives---verify even more reliably, so $\Nc$ carries a genuine
+alternatives---verify even more reliably, so $\Nc(\hat{c})$ carries a genuine
 confidence signal.  With real data or a weaker baseline system, this
 separation would be more pronounced.
 
@@ -85,7 +90,7 @@ separation would be more pronounced.
     unconditional system accuracy (dot-dashed).  Shaded band: notional
     confidence interval.  Inset: declining sample size at high $\tau$.
     The near-flat curve reflects the synthetic system's high baseline
-    accuracy; the uptick at $\tau > 0.8$ confirms that $\Nc$ adds a
+    accuracy; the uptick at $\tau > 0.8$ confirms that $\Nc(\hat{c})$ adds a
     genuine confidence signal.}
 \label{fig:reliability}
 \end{figure}
@@ -119,14 +124,14 @@ The \textbf{native possibilistic facet} (five-number scorecard) asks
 It has no connection to probabilistic skill: a well-shaped distribution
 might still give poor probabilities after conversion.
 
-Together, the three facets catch failures that any single facet would miss.
+Together, the three facets can expose failures that any single facet may miss.
 A forecast with correct peak category but flat possibility and poor
 IG is a broken clock that happens to be right---the categorical facet
 passes but the other two fail.  A forecast with strong IG but high
 ignorance and low $\Nc^*$ got lucky after conversion---the raw system
 was hedging.  A forecast with sharp possibility and high $\Nc^*$ but
-poor IG has a conversion problem---the probability derivation is
-distorting the signal.
+poor IG may indicate distortion introduced by the conversion---the
+probability derivation is compressing or shifting the signal.
 
 In practice, a verification analyst would compile scorecard aggregates
 across a test sample, tracking changes between model versions or

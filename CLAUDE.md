@@ -13,6 +13,7 @@ Standalone methods paper: "Possible, yes; ignorant, perhaps: a scorecard for pos
 - **LaTeX**: Compiled on **Overleaf with XeLaTeX** (TeX Live 2025). Locally: `latexmk -xelatex main.tex`.
 - **Figures**: `python scripts/generate_all.py` (8 figs), then separately `python scripts/fig_scorecard_table.py`, `python scripts/fig_performance_diagram.py`, `python scripts/fig_severity_matrix.py`. Outputs 12 manuscript PNGs to `figures/`.
 - **Python env**: `conda env create -f environment.yml` creates `poss-verif`.
+- **arXiv submission guidance**: distilled notes live in `resources/arxiv-latex-guidelines.md`.
 
 ## Gotchas
 

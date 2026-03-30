@@ -9,7 +9,7 @@
 This section applies the three verification facets to three stylised
 convective outlook scenarios---sharp-correct, hedged-correct, and
 sharp-wrong---illustrating how each facet adds diagnostic information
-invisible to the others.
+that may be obscured in any single facet.
 
 %----------------------------------------------------------
 \subsection{Scenario Setup}\label{sec:scenario_setup}
@@ -189,9 +189,9 @@ ignorance bin, yielding $\mathrm{IG} = +4.399$~bits---strong
 skill relative to the climatological baseline, which assigns only
 $3.2\%$ probability to \spc{MDT}.
 Scenario~B is positive and substantial ($\mathrm{IG} = +1.798$~bits):
-the high $\ign = 0.45$ correctly deflates $p(\spc{ENH})$ from the
+the high $\ign = 0.45$ deflates $p(\spc{ENH})$ from the
 simple-normalisation value of $0.55/1.45 = 0.379$ down to $0.209$,
-honestly reflecting the system's uncertainty, but the forecast still
+preserving the system's uncertainty, but the forecast still
 beats the $6\%$ climatological rate for \spc{ENH} by a wide margin.
 Scenario~C incurs a penalty ($\mathrm{IG} = -1.678$~bits) because the
 conversion assigns zero probability to the observed outcome.  The
@@ -292,7 +292,7 @@ misses in any operational sample, the net effect of flooring is
 negative: the chronic diffuseness tax outweighs the rare insurance
 payout.  Declaring a category impossible is a strong, valuable claim
 when correct---it drives $\eta$ down and $\delta$ up across the
-verification sample---and the scorecard correctly penalises it when
+verification sample---and the scorecard penalises it when
 wrong.
 
 \textbf{Why five numbers?}  Three diagnostic components
