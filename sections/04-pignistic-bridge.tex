@@ -27,9 +27,44 @@ intuition.
 \label{sec:poss_prob_bridge}
 
 Applying probabilistic verification to possibilistic forecasts requires
-converting possibility distributions to probabilities.  The conversion
-preserves the subnormality signal through three steps:
+converting possibility distributions to probabilities.  Any such
+conversion should satisfy four desiderata:
+\begin{enumerate}[leftmargin=2em, label=(\roman*)]
+\item The result is a valid probability vector (sums to unity).
+\item The ignorance signal $\ign$ is preserved, not erased.
+\item For normal distributions ($\max\pi = 1$, $\ign = 0$), the
+    conversion reduces to standard proportional normalisation.
+\item Category ordering is preserved: if $\pi_i > \pi_j$ then
+    $p_i > p_j$.
+\end{enumerate}
 
+\textbf{Intuition.}  Think of the peak possibility $m = \max(\pi)$ as
+the fraction of a unit plausibility budget that the system has committed
+to its assessment.  The remaining $1 - m$ is the ignorance share---the
+system's admission that it cannot fully account for what will happen.
+The conversion sets this ignorance share aside as an explicit ``I don't
+know'' outcome.  The committed portion is then distributed
+proportionally among the weather categories, preserving their relative
+plausibility ranking.  A confident system ($m \approx 1$) stakes nearly
+everything; an uncertain one ($m \ll 1$) strands most mass in the
+ignorance bin, where it earns no verification credit.
+
+\textbf{Distinction from the pignistic transform.}  The pignistic
+transformation of \citet{Smets1990-MISSING} was designed for
+Dempster--Shafer belief functions, where the full belief mass is
+redistributed across focal elements to form a probability.  It does not
+reserve any mass for ignorance---all plausibility is converted,
+regardless of how much evidential support it carries.  For subnormal
+possibility distributions, this would erase the very signal the paper
+seeks to preserve: a system with $\ign = 0.5$ (admitting half its
+budget is unsupported) would produce the same probability vector as one
+with $\ign = 0$ (fully committed), provided their raw shapes are
+proportional.  The conversion below avoids this by reserving the
+ignorance mass as an explicit $(n{+}1)$-th outcome, ensuring that
+subnormality directly affects verification scores.  For normal
+distributions ($\ign = 0$), both methods coincide.
+
+\textbf{Formal procedure.}  The conversion proceeds in three steps:
 \begin{enumerate}[leftmargin=2em]
 \item \textbf{Reserve ignorance mass:}
     $p_{\mathrm{ign}} = \ign = 1 - \max(\pi)$.
@@ -42,18 +77,10 @@ preserves the subnormality signal through three steps:
     outcome,''} yielding a probability distribution over $n+1$
     categories that sums to unity.
 \end{enumerate}
-
-Simple normalisation ($p_i = \pi_i / \sum_j \pi_j$) erases
-subnormality---probabilities always sum to one regardless of model
-confidence.  This is structurally analogous to the pignistic
-transformation of \citet{Smets1990-MISSING}, which was designed for
-normal belief functions.  The conversion preserves the ignorance signal,
-ensuring that verification scores correctly penalise uncertain forecasts
-by routing probability mass into a non-observed outcome.  For normal
-distributions ($\max \pi = 1$, $\ign = 0$), both methods coincide.
-The key innovation over the pignistic transform is reserving the
-ignorance mass as an explicit outcome rather than redistributing it,
-enabling verification scores to penalise subnormality directly.
+This satisfies all four desiderata: the result sums to one by
+construction (i--ii); when $\ign = 0$, step~1 reserves nothing and the
+formula reduces to $p_i = \pi_i / \sum_j\pi_j$ (iii); and
+proportionality preserves ordering (iv).
 
 \begin{workedexample}[Worked example]
 Suppose a possibilistic convective outlook produces
@@ -144,7 +171,9 @@ confusion with horizontal grid resolution in
 NWP.\footnote{DSC here denotes the same quantity as RES (resolution) in
 the Brier score decomposition.  It should not be confused with the
 distinct ``discrimination'' concept of \citet{Murphy1993-MISSING}, which
-conditions on observations rather than forecasts.}
+conditions on observations rather than forecasts.  The per-forecast
+possibilistic counterpart is the support margin~$\delta$
+(Section~\ref{sec:native_scorecard}).}
 
 When the baseline is climatology,
 $\overline{S}(\mathrm{clim}) = \mathrm{UNC}$, and information gain
@@ -154,6 +183,21 @@ discrimination to exceed calibration error.  This decomposition is the
 logarithmic counterpart of the Brier score's three-component breakdown
 ($\mathrm{BS} = \mathrm{REL} - \mathrm{RES} + \mathrm{UNC}$) but
 operates in bits---additive, interpretable information units.
+
+DSC is not part of the native possibilistic scorecard
+(Section~\ref{sec:native_scorecard}) because it is inherently a
+sample-aggregate quantity: it measures how much the system's probability
+assignments vary across different observed categories, averaged over the
+full verification dataset.  The scorecard's support margin~$\delta$
+fills the analogous per-forecast role in possibility space, measuring
+whether an individual forecast's shape favoured the truth.  A system
+with consistently positive~$\delta$ will tend to exhibit high DSC after
+conversion, but the two are not interchangeable: DSC also absorbs
+calibration effects introduced by the conversion.
+Together with CSI from the categorical facet, the three
+quantities---$\delta$ (possibilistic, per-forecast), DSC (probabilistic,
+aggregate), and CSI (categorical, binary)---triangulate the forecast's
+ability to separate outcomes from different mathematical vantage points.
 
 Figure~\ref{fig:ig_decomp} illustrates the decomposition for five
 forecast archetypes.  The key contrast is between Sharp Correct
