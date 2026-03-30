@@ -73,6 +73,22 @@ def main():
               r"$\pi = 1$ (no ignorance)",
               fontsize=7.5, fontstyle="italic", color=GREEN, ha="right")
 
+    # Annotate H_Pi gap on left panel
+    peak_idx = int(np.argmax(pi))
+    peak_val = pi[peak_idx]
+    ax_l.annotate(
+        "", xy=(peak_idx + 0.35, peak_val),
+        xytext=(peak_idx + 0.35, 1.0),
+        arrowprops=dict(arrowstyle="<->", color=GREEN, lw=1.5),
+        zorder=5,
+    )
+    ax_l.text(
+        peak_idx + 0.55, (peak_val + 1.0) / 2,
+        r"$H_\Pi = 0.40$",
+        fontsize=8, color=GREEN, ha="left", va="center",
+        fontweight="bold",
+    )
+
     # --- Right panel: (n+1)-category probability distribution ---
     right_labels = list(SPC_CATEGORIES) + [r"$p_{\mathrm{ign}}$"]
     right_vals = np.concatenate([p_cats, [p_ign]])

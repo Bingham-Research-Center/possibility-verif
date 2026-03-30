@@ -27,8 +27,10 @@ intuition.
 \label{sec:poss_prob_bridge}
 
 Applying probabilistic verification to possibilistic forecasts requires
-converting possibility distributions to probabilities.  Any such
-conversion should satisfy four desiderata:
+converting possibility distributions to probabilities.
+
+\begin{workedexample}[Desiderata]
+Any such conversion should satisfy:
 \begin{enumerate}[leftmargin=2em, label=(\roman*)]
 \item The result is a valid probability vector (sums to unity).
 \item The ignorance signal $\ign$ is preserved, not erased.
@@ -37,6 +39,7 @@ conversion should satisfy four desiderata:
 \item Category ordering is preserved: if $\pi_i > \pi_j$ then
     $p_i > p_j$.
 \end{enumerate}
+\end{workedexample}
 
 \textbf{Intuition.}  Think of the peak possibility $m = \max(\pi)$ as
 the fraction of a unit plausibility budget that the system has committed
