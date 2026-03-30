@@ -6,7 +6,7 @@
 % Ozone categories → SPC categories
 %----------------------------------------------------------
 
-\section{Deriving Probabilities from Possibilities}%
+\section{Converting Possibilities to Probabilities}%
 \label{sec:pignistic_bridge}
 
 Standard verification scores---the logarithmic score, Brier score
@@ -140,7 +140,11 @@ rate), \textbf{DSC} is discrimination (can the system tell events
 apart?\ higher is better), and \textbf{REL} is calibration error (are
 stated probabilities honest?\ lower is better).  We use DSC
 (discrimination) rather than the conventional RES (resolution) to avoid
-confusion with horizontal grid resolution in NWP.
+confusion with horizontal grid resolution in
+NWP.\footnote{DSC here denotes the same quantity as RES (resolution) in
+the Brier score decomposition.  It should not be confused with the
+distinct ``discrimination'' concept of \citet{Murphy1993-MISSING}, which
+conditions on observations rather than forecasts.}
 
 When the baseline is climatology,
 $\overline{S}(\mathrm{clim}) = \mathrm{UNC}$, and information gain
@@ -157,15 +161,18 @@ forecast scenarios with net IG annotated.
 \begin{figure}[!b]
 \centering
 \includegraphics[width=\columnwidth]{ig_decomposition.png}
-\caption{Information-gain decomposition for five forecast scenarios.
-    Bars show net $\mathrm{IG} = \mathrm{DSC} - \mathrm{REL}$ (bits),
-    with the zero baseline representing climatological performance.
-    Purple bars show discrimination (DSC; positive $=$ skill); green
-    bars show reliability penalty (REL; subtracted from DSC).  Positive
-    net IG indicates the forecast beat climatology; negative IG indicates
-    it performed worse.  The sharp-correct scenario achieves the highest
-    IG ($+1.75$~bits); the sharp-wrong scenario shows negative IG
-    ($-0.75$~bits, worse than climatology).}
+\caption{Information-gain decomposition for five forecast archetypes
+    (illustrative values).  Purple bars show gross discrimination
+    (DSC); semi-transparent green overlays show the reliability penalty
+    (REL) consuming DSC from the top.  Net
+    $\mathrm{IG} = \mathrm{DSC} - \mathrm{REL}$ is marked by the
+    horizontal tick on each bar; the zero baseline represents
+    climatological performance.  When REL exceeds DSC (Sharp Wrong,
+    Hedged Wrong), the green extends below zero---the calibration tax
+    consumed all discrimination skill and then some.  DSC and REL are
+    sample-aggregated quantities; bars represent the decomposition that
+    would result from a verification sample dominated by each forecast
+    archetype.}
 \label{fig:ig_decomp}
 \end{figure}
 

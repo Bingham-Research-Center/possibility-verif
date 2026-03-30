@@ -6,9 +6,9 @@
 
 \section{Worked Examples}\label{sec:worked_examples}
 
-This section applies the three verification lanes to three stylised
+This section applies the three verification facets to three stylised
 convective outlook scenarios---sharp-correct, hedged-correct, and
-sharp-wrong---demonstrating how each lane adds diagnostic information
+sharp-wrong---demonstrating how each facet adds diagnostic information
 invisible to the others.
 
 %----------------------------------------------------------
@@ -92,7 +92,7 @@ Observed outcome: $c_{\mathrm{obs}} = \spc{MDT}$.
 \begin{figure*}[t]
 \centering
 \includegraphics[width=0.90\textwidth]{categorical_scores.png}
-\caption{Categorical-lane verification for the three-year synthetic
+\caption{Categorical-facet verification for the 800-day synthetic
     reforecast.
     \textbf{(a)}~Threshold performance: POD (purple), success ratio
     $1 - \text{FAR}$ (green), and CSI (dashed grey) at each severity
@@ -107,7 +107,7 @@ Observed outcome: $c_{\mathrm{obs}} = \spc{MDT}$.
 \label{fig:categorical_scores}
 \end{figure*}
 
-The categorical lane reduces the full distribution to a single
+The categorical facet reduces the full distribution to a single
 deterministic category: the mode $\hat{c} = \arg\max_\omega \pi(\omega)$
 (ties broken by severity).  This is the category the system considers
 most plausible---all other distributional information is discarded.
@@ -124,7 +124,7 @@ $\hat{c} = \spc{NONE}$ while $c_{\mathrm{obs}} = \spc{MDT}$---a miss
 at every threshold, yielding POD~$= 0$ across the board.
 
 Figure~\ref{fig:categorical_scores} places these cases in the context of
-the three-year synthetic reforecast.  Panel~(a) shows how POD, success
+the 800-day synthetic reforecast.  Panel~(a) shows how POD, success
 ratio, and CSI degrade as the severity threshold rises.  Panel~(b)
 reveals that mode errors cluster near the diagonal---predominantly
 near-miss rather than catastrophic.
@@ -164,7 +164,7 @@ readable column by column.
 \midrule
 $\ign$ & $0.10$ & $0.45$ & $0.15$ \\
 $\sum \pi$ & $1.20$ & $1.45$ & $1.00$ \\
-$p(c_{\mathrm{obs}})$ & $0.6750$ & $0.2086$ & $0.0100^*$ \\
+$p(c_{\mathrm{obs}})$ & $0.675$ & $0.209$ & $0.010^*$ \\
 $p_{\mathrm{clim}}(c_{\mathrm{obs}})$ & $0.0320$ & $0.0600$ & $0.0320$ \\
 Clim.\ surprise (bits) & $4.966$ & $4.059$ & $4.966$ \\
 Forecast surprise (bits) & $0.567$ & $2.261$ & $6.644^*$ \\
@@ -192,12 +192,19 @@ the climatological surprise of $4.966$~bits for \spc{MDT}.  Crucially,
 low ignorance ($\ign = 0.15$) provides almost no cushion: the system
 left itself no escape route for an outcome it had ruled out.
 
-The $\varepsilon$-floor is set at $0.01$, representing the quantisation
-floor for a system built on $O(10)$ ensemble members and human
-post-processing.  Sensitivity analysis confirms the qualitative
-conclusion is invariant: $\varepsilon = 0.001$ yields $9.97$~bits
-surprise; $\varepsilon = 0.0001$ yields $13.29$~bits.  In all cases
-Scenario~C remains strongly negative.
+The $\varepsilon$-floor is a smoothing convention analogous to Laplace
+correction in probability estimation: it prevents the logarithmic score
+from diverging ($-\log_2(0) = \infty$) when the forecast assigns zero
+probability to the observed outcome.  The choice $\varepsilon = 0.01$
+is subjective, corresponding roughly to the quantisation floor for a
+system built on $\order{10}$ ensemble members and human
+post-processing.  Because only $p(c_{\mathrm{obs}})$ enters the
+surprise (Eq.~\ref{eq:surprise}), the full $(n{+}1)$-category
+probability vector need not sum exactly to unity after flooring.
+Sensitivity analysis confirms the qualitative conclusion is invariant:
+$\varepsilon = 0.001$ yields $9.97$~bits surprise; $\varepsilon =
+0.0001$ yields $13.29$~bits.  In all cases Scenario~C remains strongly
+negative.
 
 %----------------------------------------------------------
 \subsection{Full Scorecard Comparison}\label{sec:scorecard_comparison}

@@ -1,13 +1,14 @@
-"""Figure 3 (PDF order): Information Gain (IG) decomposition — stacked bars.
+"""Figure 3 (PDF order): Information Gain (IG) decomposition — overlay bars.
 
-Five forecast scenarios with stacked bars decomposing Information Gain
+Five forecast archetypes with overlay bars decomposing Information Gain
 into Discrimination (DSC) and Reliability (REL) components.
 
     IG = DSC - REL        (Eq. 6; higher is better)
 
 Positive IG means the forecast beats climatology; negative IG means it
 does worse.  DSC contributes positively (skill) while REL is a penalty
-(subtracted).  Plausible synthetic values are used for illustration.
+(subtracted).  Illustrative values are used; DSC and REL are
+sample-aggregated quantities (not single-forecast properties).
 """
 import numpy as np
 import matplotlib.pyplot as plt
@@ -33,13 +34,16 @@ def main():
     ]
     n = len(scenarios)
 
-    # Plausible synthetic values (bits).
+    # Plausible illustrative values (bits).
     # UNC = H(clim), entropy of the SPC climatological baseline.
     from style import SPC_CLIM
     UNC_val = -np.sum(SPC_CLIM * np.log2(SPC_CLIM))  # ~1.71 bits
 
-    DSC = np.array([1.80, 1.10, -0.30, 0.20, 0.00])  # discrimination
-    REL = np.array([0.05, 0.10, 0.45, 0.55, 0.00])   # reliability penalty
+    # DSC >= 0 always (weighted sum of KL divergences).
+    # Sharp Wrong: differentiates situations but is catastrophically
+    # miscalibrated, so DSC is modest but REL is very large.
+    DSC = np.array([1.80, 1.10, 0.35, 0.20, 0.00])   # discrimination
+    REL = np.array([0.05, 0.10, 1.10, 0.55, 0.00])    # reliability penalty
 
     IG = DSC - REL  # net information gain (higher is better)
 
@@ -48,38 +52,33 @@ def main():
 
     fig, ax = plt.subplots(figsize=(4.0, 4.2))
 
-    # --- Stacking logic ---
-    # DSC bars extend from 0: upward if positive, downward if negative.
-    # REL bars always subtract (penalty), extending downward from the DSC top.
-    #
-    # For positive DSC: DSC bar [0, DSC], then REL bar [DSC-REL, DSC] going down.
-    # For negative DSC: DSC bar [DSC, 0] going down, then REL bar [DSC-REL, DSC]
-    #   going further down.
-    # Net top of stack = DSC - REL = IG in both cases.
+    # --- Overlay logic ---
+    # Purple DSC bar: full gross discrimination (0 to DSC).
+    # Green REL overlay: from top of DSC downward by REL amount.
+    #   When REL < DSC: green overlaps the top portion of purple.
+    #   When REL > DSC: green eats through all purple and extends below 0.
+    # Visible purple below green = net IG.
 
-    # Component 1: DSC (purple, skill component)
-    # bottom = min(0, DSC), height = |DSC|
-    dsc_bottoms = np.minimum(0, DSC)
+    # Component 1: DSC (purple, full skill potential)
     bars_dsc = ax.bar(
-        x, np.abs(DSC), width=bar_width, bottom=dsc_bottoms,
+        x, DSC, width=bar_width, bottom=0,
         color=PURPLE, edgecolor=DARK_GREY, linewidth=0.8,
-        zorder=4, alpha=1.0,
+        zorder=3, alpha=1.0,
         label=r"DSC (discrimination, $+$skill)",
     )
 
-    # Component 2: REL (green, penalty — always extends downward from DSC top)
-    # REL bar goes from DSC down to DSC - REL = IG.
-    # bottom = DSC - REL, height = REL
+    # Component 2: REL overlay (green, penalty eating into DSC from top)
+    # Drawn from (DSC - REL) to DSC.  When REL > DSC, bottom goes below 0.
     rel_bottoms = DSC - REL  # = IG
     bars_rel = ax.bar(
         x, REL, width=bar_width, bottom=rel_bottoms,
         color=GREEN, edgecolor=DARK_GREY, linewidth=0.8,
-        zorder=3, alpha=1.0,
-        label=r"REL (reliability, $-$penalty)",
+        zorder=4, alpha=0.65,
+        label=r"REL (calibration penalty, $-$)",
     )
 
     # --- Baseline at IG = 0 (climatology performance) ---
-    ax.axhline(0, linewidth=1.2, color=DARK_GREY, zorder=2)
+    ax.axhline(0, linewidth=1.2, color=DARK_GREY, zorder=5)
 
     # --- UNC reference (context only) ---
     ax.axhline(UNC_val, linestyle="--", linewidth=0.8, color=MID_GREY, zorder=1)
@@ -89,12 +88,20 @@ def main():
         ha="right", va="bottom", fontsize=8, color=MID_GREY,
     )
 
+    # --- IG marker line on each bar ---
+    for i in range(n):
+        if DSC[i] > 0 or REL[i] > 0:
+            ax.plot(
+                [x[i] - bar_width / 2 - 0.03, x[i] + bar_width / 2 + 0.03],
+                [IG[i], IG[i]],
+                color=DARK_GREY, linewidth=1.5, zorder=6,
+            )
+
     # --- Annotate each bar with net IG ---
     for i in range(n):
         net = IG[i]
-        # Place annotation above or below the stack
         if net >= 0:
-            y_annot = max(net, DSC[i]) + 0.12
+            y_annot = max(DSC[i], 0) + 0.12
             va = "bottom"
         else:
             y_annot = net - 0.12
@@ -111,8 +118,8 @@ def main():
     ax.set_xticklabels(scenarios, fontsize=9)
     ax.set_ylabel("Information Gain (bits)", fontsize=10)
 
-    y_lo = min(IG.min(), DSC.min()) - 0.4
-    y_hi = max(IG.max(), DSC.max(), UNC_val) + 0.4
+    y_lo = min(IG.min(), 0) - 0.4
+    y_hi = max(DSC.max(), UNC_val) + 0.4
     ax.set_ylim(y_lo, y_hi)
 
     # Skill / no-skill region labels

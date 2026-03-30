@@ -15,7 +15,7 @@ diagnostic information the others cannot.  This section first examines
 the independent value of the three components---possibility (shape
 quality), ignorance (system confidence), and conditional necessity
 (dominance)---and then steps back to show how the native possibilistic
-lane relates to probabilistic and categorical verification.
+facet relates to probabilistic and categorical verification.
 
 %----------------------------------------------------------
 \subsection{Independent Value of Each Component}\label{sec:component_value}
@@ -90,31 +90,31 @@ alternatives verify more reliably than the system average.
 \end{figure}
 
 %----------------------------------------------------------
-\subsection{Three Verification Lanes}\label{sec:three_lanes}
+\subsection{Three Verification Facets}\label{sec:three_lanes}
 
 The paper proposes three expressions for forecast uncertainty and five
-metrics to evaluate forecast quality.  No single lane captures the full
+metrics to evaluate forecast quality.  No single facet captures the full
 picture, because each answers a different question and each has a blind
 spot the others fill.
 
-The \textbf{categorical lane} (POD, FAR, CSI per threshold; HSS) asks
+The \textbf{categorical facet} (POD, FAR, CSI per threshold; HSS) asks
 ``did the mode-based point forecast identify the correct severity
 category?''  It discards all distributional information: a correct mode
 says nothing about sharpness, hedging, or confidence.
 
-The \textbf{probabilistic lane} (IG via probability conversion) asks
+The \textbf{probabilistic facet} (IG via probability conversion) asks
 ``was the probabilistic forecast informative?''  The conversion is
 lossy---it compresses the full possibility shape into $n{+}1$
 probabilities, with subnormality collapsed into a single ignorance bin.
 
-The \textbf{native possibilistic lane} (five-number scorecard) asks
+The \textbf{native possibilistic facet} (five-number scorecard) asks
 ``was the possibility distribution well-shaped, sharp, and honest?''
 It has no connection to probabilistic skill: a well-shaped distribution
 might still give poor probabilities after conversion.
 
-Together, the three lanes catch failures that any single lane would miss.
+Together, the three facets catch failures that any single facet would miss.
 A forecast with correct categorical mode but flat possibility and poor
-IG is a broken clock that happens to be right---the categorical lane
+IG is a broken clock that happens to be right---the categorical facet
 passes but the other two fail.  A forecast with strong IG but high
 ignorance and low $\Nc^*$ got lucky after conversion---the raw system
 was hedging.  A forecast with sharp possibility and high $\Nc^*$ but
@@ -125,18 +125,20 @@ In practice, a verification analyst would compile scorecard aggregates
 across a test sample, tracking changes between model versions or
 seasons.  Figure~\ref{fig:scorecard_table} illustrates this convention
 using synthetic data for four model versions.  Metrics are grouped by
-verification lane; filled triangles denote statistically significant
-change and marker size encodes magnitude, following the scorecard style
-used by ECMWF and WMO Lead Centres for NWP inter-comparisons.
+verification facet; filled triangles denote statistically significant
+change (hypothetical; significance assessed by paired permutation test
+at the 5\% level) and marker size encodes magnitude, following the
+scorecard style used by ECMWF and WMO Lead Centres for NWP
+inter-comparisons.
 
 \textit{Reading the scorecard at a glance:} a column of large green
 triangles means the new version is broadly better; a red triangle amid
 green ones flags a trade-off that warrants investigation.  The example
 tells a common development story: version~2.0 improved discrimination
 but increased ignorance (the system learned to hedge more honestly);
-version~3.0 delivered broad gains across all three lanes; version~4.0
+version~3.0 delivered broad gains across all three facets; version~4.0
 pushed discrimination further at the cost of slight reliability
-degradation---a trade-off the three-lane view makes immediately visible
+degradation---a trade-off the three-facet view makes immediately visible
 but that no single metric could reveal.
 
 \begin{figure}[t]
@@ -144,7 +146,7 @@ but that no single metric could reveal.
 \includegraphics[width=\columnwidth]{scorecard_table.png}
 \caption{Verification scorecard for a hypothetical possibilistic
     forecasting system across three development versions, each compared
-    to a v1.0 baseline.  Rows are grouped into three verification lanes:
+    to a v1.0 baseline.  Rows are grouped into three verification facets:
     native possibilistic (five-number scorecard), probabilistic
     (information gain and its decomposition),
     and categorical (POD, FAR, CSI, HSS).  Filled triangles indicate
@@ -153,8 +155,8 @@ but that no single metric could reveal.
     Marker size encodes the magnitude of the change.  Note the
     $\overline{H_\Pi}$ degradation in v2.0: the system became more
     ignorant before improving in subsequent versions---a signature of
-    recalibrated uncertainty that the native possibilistic lane detects
-    but the probabilistic lane may absorb.
+    recalibrated uncertainty that the native possibilistic facet detects
+    but the probabilistic facet may absorb.
     Ignorance changes (amber) are context-dependent: increased $\ign$
     may indicate honest self-awareness or declining skill, depending on
     whether discrimination also changes.}

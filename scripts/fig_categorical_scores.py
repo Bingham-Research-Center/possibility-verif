@@ -4,7 +4,7 @@ Left panel:  Threshold performance curve — POD, success ratio (1-FAR),
              and CSI at each severity threshold (MRGL+ through HIGH).
 Right panel: K×K confusion matrix — forecast mode vs observed category.
 
-Uses the same 3-year synthetic reforecast as the hexbin/commitment diagrams.
+Uses the same 800-day synthetic reforecast as the hexbin/commitment diagrams.
 """
 import numpy as np
 import matplotlib.pyplot as plt
@@ -84,7 +84,7 @@ def main():
     apply_style()
 
     # --- Data ---
-    data = generate_reforecast(n_years=3)
+    data = generate_reforecast()
     pi_array = data['pi_array']
     obs_idx = data['obs_idx']
     cs = categorical_scores(pi_array, obs_idx)
@@ -171,8 +171,8 @@ def main():
     ax_perf.set_xlim(-0.3, len(thresholds) - 0.7)
     ax_perf.legend(loc="lower left", fontsize=8, frameon=True,
                    fancybox=False, edgecolor=MID_GREY)
-    ax_perf.set_title("(a)  Threshold performance", fontsize=10,
-                      fontweight="bold", pad=8)
+    ax_perf.text(0.02, 0.97, "(a)", transform=ax_perf.transAxes,
+                 fontsize=11, fontweight="bold", va="top", ha="left")
 
     # ================================================================ #
     # RIGHT PANEL: Confusion matrix                                    #
@@ -191,22 +191,6 @@ def main():
 
     im = ax_conf.imshow(conf_plot, cmap=cmap_conf, aspect="equal",
                         vmin=0, vmax=vmax, origin="upper")
-
-    # Annotations: raw counts in each cell
-    for r in range(SPC_N):
-        for c in range(SPC_N):
-            val = conf[r, c]
-            if val == 0:
-                txt = "\u2013"  # en-dash for zero
-                ax_conf.text(c, r, txt, ha="center", va="center",
-                             fontsize=7, color=MID_GREY, alpha=0.5)
-                continue
-            # White text on dark cells, dark text on light cells
-            brightness = conf_plot[r, c] / vmax if vmax > 0 else 0
-            txt_color = "white" if brightness > 0.5 else DARK_GREY
-            fontw = "bold" if r == c else "normal"
-            ax_conf.text(c, r, str(val), ha="center", va="center",
-                         fontsize=8, fontweight=fontw, color=txt_color)
 
     # ±1 off-diagonal shading (near-miss cells)
     for r in range(SPC_N):
@@ -231,41 +215,9 @@ def main():
     ax_conf.set_yticklabels(SPC_CATEGORIES, fontsize=8)
     ax_conf.set_xlabel("Observed category", fontsize=10)
     ax_conf.set_ylabel("Forecast mode", fontsize=10)
-    ax_conf.set_title("(b)  Confusion matrix", fontsize=10,
-                      fontweight="bold", pad=8)
-
-    # Colorbar inset (top-left of panel b)
-    cax = ax_conf.inset_axes([0.62, 0.93, 0.35, 0.06])
-    cbar = fig.colorbar(im, cax=cax, orientation="horizontal")
-    cbar.set_ticks([0, np.log10(11), np.log10(101), vmax])
-    cbar.set_ticklabels(["0", "10", "100", str(int(conf.max()))])
-    cbar.ax.tick_params(labelsize=6)
-    cbar.set_label("Count", fontsize=7, labelpad=1)
-
-    # Near-miss computation
-    incorrect = conf.sum() - np.trace(conf)
-    near_miss = sum(conf[r, c] for r in range(SPC_N) for c in range(SPC_N)
-                    if r != c and abs(r - c) == 1)
-    near_pct = near_miss / incorrect if incorrect > 0 else 0
-
-    # Mode accuracy + near-miss annotation
-    accuracy = np.trace(conf) / conf.sum()
-    ax_conf.text(
-        0.97, 0.03,
-        f"Mode accuracy = {accuracy:.1%}\n"
-        + r"$\pm$1 cat errors = " + f"{near_pct:.0%} of misses",
-        transform=ax_conf.transAxes, ha="right", va="bottom",
-        fontsize=8, fontweight="bold", color=DARK_GREY,
-        bbox=dict(boxstyle="round,pad=0.3", facecolor="white",
-                  edgecolor=MID_GREY, linewidth=0.6),
-    )
-
-    # Legend note
-    ax_conf.text(
-        0.03, 0.97, "Green = correct\nShading = near miss (±1 cat)",
-        transform=ax_conf.transAxes, ha="left", va="top",
-        fontsize=6.5, fontstyle="italic", color=DARK_GREY,
-    )
+    ax_conf.text(0.02, 0.97, "(b)", transform=ax_conf.transAxes,
+                 fontsize=11, fontweight="bold", va="top", ha="left",
+                 color="white")
 
     fig.tight_layout(w_pad=3.0)
     save_fig(fig, "categorical_scores")

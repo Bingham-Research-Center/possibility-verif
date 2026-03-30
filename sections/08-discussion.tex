@@ -13,7 +13,7 @@ converting it to a probability.  Supporting this scorecard are a
 possibility-to-probability conversion
 (Section~\ref{sec:poss_prob_bridge}) that preserves the ignorance
 signal as an explicit outcome rather than erasing it through
-normalisation, and three complementary verification lanes
+normalisation, and three complementary verification facets
 (Section~\ref{sec:three_lanes}) that together cover
 categorical, probabilistic, and native possibilistic evaluation.
 Worked examples in Section~\ref{sec:worked_examples} demonstrated
@@ -24,12 +24,6 @@ discards actionable information.  Although the SPC convective outlook
 categories served as the running example throughout, the framework
 applies to any finite universe of discourse $\Omega$ over which a
 subnormal possibility distribution is defined.
-
-Although SPC convective outlook categories served as the running
-example, the framework is domain-agnostic: any system producing
-subnormal possibility distributions over a finite $\Omega$ can be
-evaluated without modification.  Extension to continuous forecast
-variables is straightforward via $\alpha$-cut discretisation.
 
 %----------------------------------------------------------
 \subsection{Generating Possibilistic Forecasts}%
@@ -119,6 +113,15 @@ is empirically justified.
     category is always in $\Omega$.  For open-world applications the
     framework would need modification to allow the ignorance outcome to
     verify as ``correct.''
+\item \textbf{Unimodal synthetic data:} the synthetic reforecast
+    generates unimodal distributions (exponential decay from a single
+    peak).  The scorecard handles multimodal forecasts---e.g., bimodal
+    ``skip'' patterns common in convective outlooks---without
+    modification, but the diagnostic diagrams may exhibit different
+    clustering; bimodal forecasts would produce low $\Nc^*$ even when
+    $\alpha^*$ is high, populating the upper-left region of
+    Figure~\ref{fig:performance_diagram} that the unimodal generator
+    leaves sparse.
 \end{itemize}
 
 \subsection{Future Directions}\label{sec:future_directions}
@@ -130,8 +133,8 @@ is empirically justified.
 \item \textbf{Multivariate verification:} joint possibility
     distributions over correlated hazards (e.g., simultaneous wind and
     hail) with an extended scorecard for multidimensional $\Omega$.
-\item \textbf{Extension to continuous variables:} $\alpha$-cut
-    discretisation and spatial verification maps.
+\item \textbf{Extension to continuous variables:} appropriate
+    discretisation of the continuous domain and spatial verification maps.
 \item \textbf{Conformal prediction:} formal comparison of conformal
     coverage guarantees with possibilistic intervals.
 \item \textbf{Operational dashboards:} real-time scorecard monitoring

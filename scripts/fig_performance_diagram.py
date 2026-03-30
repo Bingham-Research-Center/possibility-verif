@@ -77,8 +77,11 @@ def scorecard_from_data(pi_array, obs_categories, K=SPC_N):
                 H_Pi=H_Pi, Nc_star=Nc_star, obs_idx=obs_idx)
 
 
-def generate_reforecast(n_years=2, K=SPC_N, seed=42):
-    """Generate a two-year synthetic possibilistic reforecast.
+def generate_reforecast(n_days=800, K=SPC_N, seed=42):
+    """Generate a synthetic possibilistic reforecast.
+
+    Default n_days=800 represents approximately eight years of ~100
+    active Great Plains Day-1 convective outlooks per season.
 
     The synthetic model has physically motivated behaviour:
       - SPC-like base rates (slightly smoothed to reduce null-day dominance):
@@ -97,7 +100,6 @@ def generate_reforecast(n_years=2, K=SPC_N, seed=42):
 
     # --- Observation climatology ---
     clim = np.array([0.60, 0.18, 0.12, 0.06, 0.032, 0.008])
-    n_days = n_years * 365
     obs_idx = rng.choice(K, size=n_days, p=clim)
     obs_categories = [SPC_CATEGORIES[i] for i in obs_idx]
 

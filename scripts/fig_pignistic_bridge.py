@@ -127,9 +127,9 @@ def main():
     # Annotate bridge equation
     fig.text(
         0.50, 0.02,
-        r"$p_i = \pi_i \cdot \Pi_{\max}\,/\,\Sigma\pi$"
+        r"$p_i = \pi_i \cdot (1 - H_\Pi)\,/\,\Sigma\pi$"
         "          "
-        r"$p_{\mathrm{ign}} = H_\Pi = 1 - \Pi_{\max}$",
+        r"$p_{\mathrm{ign}} = H_\Pi$",
         ha="center", va="bottom", fontsize=9, color=DARK_GREY,
     )
 

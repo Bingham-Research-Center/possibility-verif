@@ -95,11 +95,11 @@ Symbol & Form & Eq. & Meaning \\
 $\Omega$ & --- & --- & Universe of discourse \\
 $\pi$ & raw & --- & Raw (possibly subnormal) distribution \\
 $\pinorm$ & norm & --- & Normalised distribution: $\pi / m$ \\
-$m$ & raw & --- & Subnormality: $\max_{\omega} \pi(\omega)$ \\
+$m$ & raw & --- & Commitment (peak possibility): $\max_{\omega} \pi(\omega)$ \\
 $\poss(A)$ & raw & \ref{eq:poss} & Possibility of event $A$ \\
 $\nec(A)$ & raw & \ref{eq:nec} & Necessity of event $A$ \\
 $\Nc(A)$ & norm & \ref{eq:cond_nec} & Conditional necessity of $A$ \\
-$\ign$ & raw & \ref{eq:ignorance} & Possibilistic ignorance: $1 - m$ \\
+$\ign$ & raw & \ref{eq:ignorance} & Possibilistic ignorance (not Shannon entropy): $1 - m$ \\
 $\alpha^*$ & norm & \ref{eq:alpha_star} & Depth-of-truth: $\pinorm(c_{\mathrm{obs}})$ \\
 $\eta$ & norm & \ref{eq:ns} & Nonspecificity: $(1/K)\sum_c \pinorm(c)$ \\
 $\delta$ & norm & \ref{eq:rg} & Resolution gap: $\alpha^* - \eta$ \\
@@ -227,7 +227,7 @@ known outcomes.  The three components are:
     Equation~\eqref{eq:ignorance}, indicating inherent deficiency of the
     forecasting system in capturing the notional ``true'' possibility
     distribution.
-\item \textbf{Conditional Necessity, $\Nc(A)$, $\nu_c$:} Certainty of
+\item \textbf{Conditional Necessity, $\Nc(A)$:} Certainty of
     event $A$ computed \textit{after} normalising the distribution of
     known outcomes:
 \begin{equation}
@@ -235,6 +235,9 @@ N_c(A) = 1 - \frac{\max_{\omega \notin A} \pi(\omega)}%
     {\max_{\omega \in \Omega} \pi(\omega)} \label{eq:cond_nec}
 \end{equation}
 This measures certainty conditional on the system's covered scenarios.
+Equivalently, $\Nc(A) = 1 - \max_{\omega \notin A} \pinorm(\omega)$,
+i.e., one minus the largest normalised possibility among alternatives
+to~$A$.
 \end{enumerate}
 
 All three quantities derive from the raw possibility distribution $\pi$:

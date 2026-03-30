@@ -58,7 +58,7 @@ def count_cmap():
 # ------------------------------------------------------------------ #
 
 def get_data():
-    d = generate_reforecast(n_years=3)
+    d = generate_reforecast()
     spec = 1.0 - d['eta']
     rng = np.random.default_rng(99)
     top = d['alpha_star'] > 0.99
