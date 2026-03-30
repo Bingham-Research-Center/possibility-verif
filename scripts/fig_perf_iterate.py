@@ -211,7 +211,6 @@ def draw_traj_spec_alpha(ax, means, color=GREEN, gcmap=None, gnorm=None):
     ys = [means[c]['alpha'] for c in cats]
     ns = [means[c]['n'] for c in cats]
 
-    # Dots only (no smooth spline, no labels)
     s_min, s_max = 60, 350
     mx = max(ns)
     sizes = [s_min + (s_max - s_min) * (n / mx) for n in ns]
@@ -225,6 +224,8 @@ def draw_traj_spec_alpha(ax, means, color=GREEN, gcmap=None, gnorm=None):
     else:
         ax.scatter(xs, ys, s=sizes, fc=color, ec="white", lw=2.0, zorder=6)
         ax.scatter(xs, ys, s=sizes, fc=color, ec=DARK_GREY, lw=0.8, zorder=7)
+
+    _traj_labels(ax, cats, xs, ys, ns, color=GREEN)
 
 
 def draw_traj_commit(ax, means, color=GREEN, fontsize=6.5,
@@ -238,7 +239,6 @@ def draw_traj_commit(ax, means, color=GREEN, fontsize=6.5,
     ys = [means[c]['delta'] for c in cats]
     ns = [means[c]['n'] for c in cats]
 
-    # Dots only (no smooth spline, no labels)
     s_min, s_max = 60, 350
     mx = max(ns)
     sizes = [s_min + (s_max - s_min) * (n / mx) for n in ns]
@@ -252,6 +252,8 @@ def draw_traj_commit(ax, means, color=GREEN, fontsize=6.5,
     else:
         ax.scatter(xs, ys, s=sizes, fc=color, ec="white", lw=2.0, zorder=6)
         ax.scatter(xs, ys, s=sizes, fc=color, ec=DARK_GREY, lw=0.8, zorder=7)
+
+    _traj_labels(ax, cats, xs, ys, ns, color=GREEN)
 
 
 # ------------------------------------------------------------------ #
@@ -292,13 +294,21 @@ def v3b(data, ap, spec, anchors):
     draw_traj_spec_alpha(ax, means, gcmap=gcm, gnorm=nm)
     draw_scenarios_spec_alpha(ax, anchors)
 
-    # Single purple colorbar for hexbin H_Pi
+    # Purple colorbar for hexbin H_Pi
     from matplotlib.colorbar import ColorbarBase
     cb = ColorbarBase(cax, cmap=cm, norm=nm, orientation='vertical')
     cax.yaxis.tick_right()
     cax.yaxis.set_label_position("right")
-    cax.set_ylabel(r"Mean $H_\Pi$" + "\n(dark = confident)", fontsize=7)
+    cax.set_ylabel(r"Hex mean $H_\Pi$" + "\n(dark = confident)", fontsize=7)
     cax.tick_params(labelsize=6)
+
+    # Green colorbar for category-mean dot H_Pi shading
+    cax2 = fig.add_axes([0.89, 0.70, 0.025, 0.20])
+    cb2 = ColorbarBase(cax2, cmap=gcm, norm=nm, orientation='vertical')
+    cax2.yaxis.tick_right()
+    cax2.yaxis.set_label_position("right")
+    cax2.set_ylabel(r"Dot mean $H_\Pi$", fontsize=7)
+    cax2.tick_params(labelsize=6)
 
     h_t = mlines.Line2D([], [], marker="o", ls="-", color=GREEN, lw=2,
                         mfc=GREEN, mec=DARK_GREY, ms=6,
@@ -331,11 +341,11 @@ def v3b(data, ap, spec, anchors):
 
 
 # ------------------------------------------------------------------ #
-# V4b — Enhanced commitment–discrimination + trajectory (all days)     #
+# V4b — Enhanced commitment–support-margin + trajectory (all days)     #
 # ------------------------------------------------------------------ #
 
 def v4b(data, ap, spec, anchors):
-    """V4b: commitment-discrimination + trajectory (all days)."""
+    """V4b: commitment-support-margin + trajectory (all days)."""
     from style import FIG_DIR, FIG_FORMAT, DPI
     from matplotlib.colors import LogNorm
     import os
@@ -350,10 +360,12 @@ def v4b(data, ap, spec, anchors):
 
     # Manual axes sizing: x_range = 1.04, y_range = 1.30
     # Axes height = 3.0 * (1.30 / 1.04) = 3.75 inches
+    # Widened to 4.6" to accommodate dual colorbars
     ax_w, ax_h = 3.0, 3.0 * (1.30 / 1.04)
-    fig = plt.figure(figsize=(4.1, ax_h + 0.9))
-    ax = fig.add_axes([0.17, 0.11, ax_w / 4.1, ax_h / (ax_h + 0.9)])
-    cax = fig.add_axes([0.91, 0.30, 0.025, 0.35])
+    fig_w = 4.6
+    fig = plt.figure(figsize=(fig_w, ax_h + 0.9))
+    ax = fig.add_axes([0.15, 0.11, ax_w / fig_w, ax_h / (ax_h + 0.9)])
+    cax = fig.add_axes([0.83, 0.25, 0.025, 0.35])
 
     ax.set_xlim(-0.02, 1.02)
     ax.set_ylim(-0.45, 0.85)
@@ -369,25 +381,33 @@ def v4b(data, ap, spec, anchors):
 
     kw = dict(fontsize=8, fontstyle="italic", color=DARK_GREY,
               alpha=0.2, ha="center", va="center")
-    ax.text(0.85, 0.60, "Committed &\ndiscriminating", **kw)
-    ax.text(0.15, 0.60, "Cautious &\ndiscriminating", **kw)
+    ax.text(0.85, 0.60, "Committed &\nwell-shaped", **kw)
+    ax.text(0.15, 0.60, "Cautious &\nwell-shaped", **kw)
     ax.text(0.85, -0.30, "Overconfident\n& wrong", **kw)
     ax.text(0.15, -0.30, "Uninformative", **kw)
 
     draw_traj_commit(ax, means, gcmap=gcm, gnorm=gnm)
     draw_scenarios_commit(ax, anchors)
 
-    # Manual colorbar
+    # Count colorbar for hexbin
     from matplotlib.colorbar import ColorbarBase
     cb = plt.colorbar(hb, cax=cax)
-    cb.set_label("Count per bin (log scale)", fontsize=8)
-    cb.ax.tick_params(labelsize=7)
+    cb.set_label("Count per bin\n(log scale)", fontsize=7)
+    cb.ax.tick_params(labelsize=6)
+
+    # Green colorbar for category-mean dot H_Pi shading
+    cax2 = fig.add_axes([0.83, 0.66, 0.025, 0.18])
+    cb2 = ColorbarBase(cax2, cmap=gcm, norm=gnm, orientation='vertical')
+    cax2.yaxis.tick_right()
+    cax2.yaxis.set_label_position("right")
+    cax2.set_ylabel(r"Dot mean $H_\Pi$", fontsize=7)
+    cax2.tick_params(labelsize=6)
 
     ax.set_xlabel(
         r"Commitment  $\pi_{\max} = 1 - H_\Pi$"
         r"  (more committed $\rightarrow$)", fontsize=9)
     ax.set_ylabel(
-        r"Discrimination  $\delta = \alpha^* - \eta$"
+        r"Support margin  $\delta = \alpha^* - \eta$"
         r"  ($\rightarrow$ better)", fontsize=9)
 
     # Save WITHOUT bbox_inches='tight' to preserve aspect ratio
@@ -401,11 +421,11 @@ def v4b(data, ap, spec, anchors):
 
 
 # ------------------------------------------------------------------ #
-# V4c — Commitment–discrimination, SLGT+ only                         #
+# V4c — Commitment–support-margin, SLGT+ only                          #
 # ------------------------------------------------------------------ #
 
 def v4c(data, ap, spec, anchors):
-    """V4c: commitment-discrimination, SLGT+ only."""
+    """V4c: commitment-support-margin, SLGT+ only."""
     fig, ax = plt.subplots(figsize=(5.8, 7.0))
     cm = count_cmap()
     sev = data['obs_idx'] >= SPC_CATEGORIES.index("SLGT")
@@ -421,8 +441,8 @@ def v4c(data, ap, spec, anchors):
 
     kw = dict(fontsize=8, fontstyle="italic", color=DARK_GREY,
               alpha=0.2, ha="center", va="center")
-    ax.text(0.85, 0.60, "Committed &\ndiscriminating", **kw)
-    ax.text(0.15, 0.60, "Cautious &\ndiscriminating", **kw)
+    ax.text(0.85, 0.60, "Committed &\nwell-shaped", **kw)
+    ax.text(0.15, 0.60, "Cautious &\nwell-shaped", **kw)
     ax.text(0.85, -0.30, "Overconfident\n& wrong", **kw)
 
     draw_traj_commit(ax, means)
@@ -440,9 +460,9 @@ def v4c(data, ap, spec, anchors):
         r"Commitment  $\pi_{\max}$  (more committed $\rightarrow$)",
         fontsize=9)
     ax.set_ylabel(
-        r"Discrimination  $\delta$  ($\rightarrow$ better)", fontsize=9)
+        r"Support margin  $\delta$  ($\rightarrow$ better)", fontsize=9)
     ax.set_title(
-        f"V4c: Commitment–Discrimination  (SLGT+, $n = {sev.sum()}$)",
+        f"V4c: Commitment–Support Margin  (SLGT+, $n = {sev.sum()}$)",
         fontsize=9, fontweight="bold", pad=8)
     fig.tight_layout()
     save_fig(fig, "perf_v4c_severe")
@@ -453,7 +473,7 @@ def v4c(data, ap, spec, anchors):
 # ------------------------------------------------------------------ #
 
 def v4d(data, ap, spec, anchors):
-    """V4d: two-panel commitment-discrimination (all vs SLGT+)."""
+    """V4d: two-panel commitment-support-margin (all vs SLGT+)."""
     sev = data['obs_idx'] >= SPC_CATEGORIES.index("SLGT")
     cm = count_cmap()
     means_all = cat_means(data, spec)
@@ -499,7 +519,7 @@ def v4d(data, ap, spec, anchors):
     cb.ax.tick_params(labelsize=7)
 
     fig.suptitle(
-        "V4d: Commitment–Discrimination  (All vs Severe)",
+        "V4d: Commitment–Support Margin  (All vs Severe)",
         fontsize=10, fontweight="bold", y=1.01)
     fig.tight_layout()
     save_fig(fig, "perf_v4d_two_panel")

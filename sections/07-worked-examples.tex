@@ -8,7 +8,7 @@
 
 This section applies the three verification facets to three stylised
 convective outlook scenarios---sharp-correct, hedged-correct, and
-sharp-wrong---demonstrating how each facet adds diagnostic information
+sharp-wrong---illustrating how each facet adds diagnostic information
 invisible to the others.
 
 %----------------------------------------------------------
@@ -100,26 +100,26 @@ Observed outcome: $c_{\mathrm{obs}} = \spc{MDT}$.
     their respective thresholds; Scenario~C (red cross) registers
     POD~$= 0$ at all thresholds.  HSS is computed from the full
     $K \times K$ table.
-    \textbf{(b)}~Confusion matrix of forecast mode vs.\ observed
-    category.  Green boxes mark the diagonal (correct mode); counts
+    \textbf{(b)}~Confusion matrix of forecast peak category vs.\ observed
+    category.  Green boxes mark the diagonal (correct peak); counts
     are on a log scale for visibility.  Off-diagonal mass clusters
     within one category of the diagonal, indicating near-miss errors.}
 \label{fig:categorical_scores}
 \end{figure*}
 
 The categorical facet reduces the full distribution to a single
-deterministic category: the mode $\hat{c} = \arg\max_\omega \pi(\omega)$
-(ties broken by severity).  This is the category the system considers
-most plausible---all other distributional information is discarded.
+deterministic category: the peak category
+$\hat{c} = \arg\max_\omega \pi(\omega)$ (the system's top pick; ties
+broken by severity).  All other distributional information is discarded.
 Verification then proceeds as a standard multi-threshold contingency
 problem: for each severity threshold $t$, the forecast issues ``yes'' if
 $\hat{c} \geq t$ and ``no'' otherwise; the observation is ``yes'' if
 $c_{\mathrm{obs}} \geq t$.
 
-For Scenario~A the mode is $\hat{c} = \spc{MDT}$, matching
+For Scenario~A the peak category is $\hat{c} = \spc{MDT}$, matching
 $c_{\mathrm{obs}} = \spc{MDT}$---a hit at every threshold up to
-\spc{MDT}+.  For Scenario~B the mode is $\hat{c} = \spc{ENH}$,
-again matching the observation.  Scenario~C's mode is
+\spc{MDT}+.  For Scenario~B the peak category is $\hat{c} = \spc{ENH}$,
+again matching the observation.  Scenario~C's peak category is
 $\hat{c} = \spc{NONE}$ while $c_{\mathrm{obs}} = \spc{MDT}$---a miss
 at every threshold, yielding POD~$= 0$ across the board.
 
@@ -131,7 +131,7 @@ reliably but struggles at \spc{MDT}+ and above, where both POD and CSI
 drop sharply.  Scenarios~A and~B register as hits at their respective
 thresholds (green labels); Scenario~C misses everywhere (red cross).
 Panel~(b) shows the full $K \times K$ confusion matrix: diagonal
-dominance confirms that the system's mode forecast is broadly accurate,
+dominance confirms that the system's peak-category forecast is broadly accurate,
 while the near-diagonal clustering of errors means misses are typically
 $\pm 1$ category rather than catastrophic.  The HSS of $0.708$ is
 strong but not exceptional---the categorical facet alone cannot
@@ -236,8 +236,8 @@ visual comparison, with scorecard values printed below each panel.
 $m$ (commitment)       & $0.90$  & $0.55$  & $0.85$ \\
 $\ign$ (ignorance)     & $0.10$  & $0.45$  & $0.15$ \\
 $\alpha^*$ (depth-of-truth) & $1.00$ & $1.00$ & $0.00$ \\
-$\eta$ (nonspecificity) & $0.222$ & $0.439$ & $0.196$ \\
-$\delta$ (discrimination) & $+0.778$ & $+0.561$ & $-0.196$ \\
+$\eta$ (diffuseness) & $0.222$ & $0.439$ & $0.196$ \\
+$\delta$ (support margin) & $+0.778$ & $+0.561$ & $-0.196$ \\
 $\Nc^*$ (cond.\ necessity) & $0.833$ & $0.273$ & $0.00$ \\
 \bottomrule
 \end{tabular}
@@ -266,11 +266,11 @@ confidently ($\ign = 0.10$).
 Scenario~B tells a different but equally honest story.  Depth-of-truth
 remains perfect ($\alpha^* = 1$) because \spc{ENH} is the possibilistic
 peak, but the hedging shows up: $\ign = 0.45$, $\eta = 0.439$,
-$\Nc^* = 0.273$.  The resolution gap $\delta = +0.561$ is positive
+$\Nc^* = 0.273$.  The support margin $\delta = +0.561$ is positive
 but moderate---genuine skill tempered by acknowledged uncertainty.
 
 Scenario~C is pathological.  The system declared \spc{MDT} impossible
-($\pi = 0$), so $\alpha^* = 0$ and $\Nc^* = 0$.  The resolution gap
+($\pi = 0$), so $\alpha^* = 0$ and $\Nc^* = 0$.  The support margin
 $\delta = -0.196$ is the only negative value in the table: the forecast
 pointed \emph{away} from the truth.  Critically, ignorance was low
 ($\ign = 0.15$)---the system was confident and wrong, with no
@@ -289,7 +289,7 @@ misses---Scenario~C's $\delta$ improves by $+0.006$---but it inflates
 $\eta$ on \textit{every} forecast, costing Scenario~A $-0.004$ in
 $\delta$.  Because correct forecasts vastly outnumber catastrophic
 misses in any operational sample, the net effect of flooring is
-negative: the chronic nonspecificity tax outweighs the rare insurance
+negative: the chronic diffuseness tax outweighs the rare insurance
 payout.  Declaring a category impossible is a strong, valuable claim
 when correct---it drives $\eta$ down and $\delta$ up across the
 verification sample---and the scorecard correctly penalises it when
@@ -318,10 +318,10 @@ tangible:
     confident in commitment---but aimed at the wrong answer.
     $\eta$ measures shape spread (normalised); $\ign$ measures overall
     confidence (raw).  They can move independently.
-\item \textbf{Net resolution} ($\delta$).
+\item \textbf{Net support margin} ($\delta$).
     The one number that combines truth-finding with spread: $\delta > 0$
     means the forecast's shape helped; $\delta < 0$ means it hurt.
-    No other single metric captures this.
+    No other single scorecard metric captures this balance.
 \end{itemize}
 A reduced scorecard would conflate diagnostically distinct situations:
 dropping $\Nc^*$ loses the ``winner vs.\ supported'' distinction;

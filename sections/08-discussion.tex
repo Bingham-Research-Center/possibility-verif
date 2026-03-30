@@ -6,7 +6,7 @@
 \section{Discussion and Future Work}\label{sec:discussion}
 
 This paper has developed a self-contained verification framework for
-possibilistic forecasts.  The core contribution is a five-number
+possibilistic forecasts over finite outcome spaces.  The core contribution is a five-number
 scorecard (Section~\ref{sec:native_scorecard}) that evaluates a
 subnormal possibility distribution on its own terms---without first
 converting it to a probability.  Supporting this scorecard are a
@@ -16,7 +16,7 @@ signal as an explicit outcome rather than erasing it through
 normalisation, and three complementary verification facets
 (Section~\ref{sec:three_lanes}) that together cover
 categorical, probabilistic, and native possibilistic evaluation.
-Worked examples in Section~\ref{sec:worked_examples} demonstrated
+Worked examples in Section~\ref{sec:worked_examples} illustrated
 that each uncertainty component---possibility, ignorance, and
 conditional necessity---independently contributes verification value,
 so that collapsing the distribution into a single point forecast
@@ -76,7 +76,10 @@ intuition with precise metrics.
     indicate low severity or low confidence (monitor).  The matrix
     illustrates how operational warning decisions already implicitly
     navigate the two-dimensional space that possibility theory
-    formalises.}
+    formalises.  Worked scenarios from
+    Section~\ref{sec:worked_examples} are placed in the nearest
+    confidence column (discrete binning); exact $\ign$ values may fall
+    between column centres.}
 \label{fig:severity_matrix}
 \end{figure}
 

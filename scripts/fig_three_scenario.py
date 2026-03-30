@@ -61,7 +61,7 @@ def compute_scorecard(pi, obs_category):
     # eta — mean of the normalised distribution (spread / hedging)
     eta = pi_prime.mean()
 
-    # delta — discrimination = alpha* - eta
+    # delta — support margin = alpha* - eta
     delta = alpha_star - eta
 
     # H_Pi — hesitancy (sub-normality gap)

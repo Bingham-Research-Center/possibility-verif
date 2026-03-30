@@ -43,9 +43,9 @@ def main():
         ("Native possibilistic", [
             (r"$\overline{\alpha^*}$",  "Depth-of-truth",
                 [(+1, True,  0.30), (+1, True,  0.60), (+1, True,  0.80)]),
-            (r"$\overline{\eta}$",      "Nonspecificity",
+            (r"$\overline{\eta}$",      "Diffuseness",
                 [(+1, False, 0.15), (+1, True,  0.45), (+1, True,  0.60)]),
-            (r"$\overline{\delta}$",    "Resolution gap",
+            (r"$\overline{\delta}$",    "Support margin",
                 [(+1, True,  0.35), (+1, True,  0.70), (+1, True,  0.90)]),
             (r"$\overline{H_\Pi}$",     "Ignorance*",
                 [(-1, True,  0.50), (+1, True,  0.30), (+1, True,  0.50)]),

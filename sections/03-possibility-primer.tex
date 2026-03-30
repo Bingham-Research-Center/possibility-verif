@@ -38,11 +38,16 @@ degree of possibility $\pi(\omega)$ satisfying:
     \textit{normal}; otherwise it is \textit{subnormal}.  Classical
     possibility theory \citep{Dubois1988-nh} requires at least one
     outcome to be fully possible ($\max \pi = 1$), grounding necessity
-    in complete commitment.  This paper relaxes that requirement:
-    subnormality encodes that the system's assessment derives from the
-    portion of its predictive machinery that it trusts, with the
-    remaining plausibility budget ($\ign$) explicitly flagging the
-    untrusted portion (Section~\ref{sec:subnormal}).
+    in complete commitment.  This paper relaxes that requirement---a
+    subjective modelling choice, permitted by
+    \citeauthor{Zadeh1978-je}'s original formulation, adopted to match
+    the operational reality that forecasting systems routinely encounter
+    conditions outside their training domain and produce subnormal
+    outputs by construction.  Subnormality encodes that the system's
+    assessment derives from the portion of its predictive machinery
+    that it trusts, with the remaining plausibility budget ($\ign$)
+    explicitly flagging the untrusted portion
+    (Section~\ref{sec:subnormal}).
 \item \textbf{Max-additivity:} For any events $A, B \subseteq \Omega$
     with $A \cap B = \emptyset$,
     $\Pi(A \cup B) = \max\bigl(\Pi(A),\, \Pi(B)\bigr)$.
@@ -101,8 +106,8 @@ $\nec(A)$ & raw & \ref{eq:nec} & Necessity of event $A$ \\
 $\Nc(A)$ & norm & \ref{eq:cond_nec} & Conditional necessity of $A$ \\
 $\ign$ & raw & \ref{eq:ignorance} & Possibilistic ignorance (not Shannon entropy): $1 - m$ \\
 $\alpha^*$ & norm & \ref{eq:alpha_star} & Depth-of-truth: $\pinorm(c_{\mathrm{obs}})$ \\
-$\eta$ & norm & \ref{eq:ns} & Nonspecificity: $(1/K)\sum_c \pinorm(c)$ \\
-$\delta$ & norm & \ref{eq:rg} & Resolution gap: $\alpha^* - \eta$ \\
+$\eta$ & norm & \ref{eq:ns} & Diffuseness: $(1/K)\sum_c \pinorm(c)$ \\
+$\delta$ & norm & \ref{eq:rg} & Support margin: $\alpha^* - \eta$ \\
 $\Nc^*$ & norm & \ref{eq:nc_star} & Cond.\ necessity of truth \\
 \bottomrule
 \end{tabularx}

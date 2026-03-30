@@ -25,7 +25,7 @@ facet relates to probabilistic and categorical verification.
 The possibility component ($\alpha^*$, $\eta$, $\delta$) captures
 whether the system's distributional shape favours the observed outcome.
 Its value reduces to a familiar verification question: does the system's
-resolution gap $\delta$ exceed that of a na\"ive baseline?  Comparing
+support margin $\delta$ exceed that of a na\"ive baseline?  Comparing
 $\delta$ against climatology or persistence is the possibilistic
 analogue of comparing Brier skill scores.  For SPC outlooks, climatology
 peaks at the most frequent category and assigns near-zero possibility to
@@ -66,11 +66,11 @@ predictions---not just lucky ones.
 
 Figure~\ref{fig:reliability} tests this by plotting the conditional hit
 rate against the $\Nc$ threshold~$\tau$: at each $\tau$, only
-forecasts whose mode has $\Nc(\hat{c}) \geq \tau$ are included.  The
-curve is nearly flat because the synthetic system already has a high
+forecasts whose peak category has $\Nc(\hat{c}) \geq \tau$ are included.
+The curve is nearly flat because the synthetic system already has a high
 baseline accuracy (${\sim}83\%$).  The modest tick-up at high
 thresholds ($\tau > 0.8$) is notable: it confirms that the most
-confident forecasts---where the mode strongly dominates all
+confident forecasts---where the peak category strongly dominates all
 alternatives---verify even more reliably, so $\Nc$ carries a genuine
 confidence signal.  With real data or a weaker baseline system, this
 separation would be more pronounced.
@@ -98,16 +98,16 @@ metrics to evaluate forecast quality.  No single facet captures the full
 picture, because each answers a different question and each has a blind
 spot the others fill.
 
-The \textbf{categorical facet} reduces each distribution to its mode
-$\hat{c} = \arg\max \pi(\omega)$ and applies threshold-based
+The \textbf{categorical facet} reduces each distribution to its peak
+category $\hat{c} = \arg\max \pi(\omega)$ and applies threshold-based
 contingency scores: probability of detection
 (POD~$=$~hits\,/\,(hits\,+\,misses)), false alarm ratio
 (FAR~$=$~false alarms\,/\,(hits\,+\,false alarms)), critical success
 index (CSI~$=$~hits\,/\,(hits\,+\,misses\,+\,false alarms)), and the
 Heidke skill score (HSS) from the full $K \times K$ confusion matrix.
-It asks ``did the mode-based point forecast identify the correct
+It asks ``did the peak-category forecast identify the correct
 severity category?'' and discards all distributional information: a
-correct mode says nothing about sharpness, hedging, or confidence.
+correct peak category says nothing about sharpness, hedging, or confidence.
 
 The \textbf{probabilistic facet} (IG via probability conversion) asks
 ``was the probabilistic forecast informative?''  The conversion is
@@ -120,7 +120,7 @@ It has no connection to probabilistic skill: a well-shaped distribution
 might still give poor probabilities after conversion.
 
 Together, the three facets catch failures that any single facet would miss.
-A forecast with correct categorical mode but flat possibility and poor
+A forecast with correct peak category but flat possibility and poor
 IG is a broken clock that happens to be right---the categorical facet
 passes but the other two fail.  A forecast with strong IG but high
 ignorance and low $\Nc^*$ got lucky after conversion---the raw system
@@ -146,7 +146,7 @@ but increased ignorance (the system learned to hedge more honestly);
 version~3.0 delivered broad gains across all three facets; version~4.0
 pushed discrimination further at the cost of slight reliability
 degradation---a trade-off the three-facet view makes immediately visible
-but that no single metric could reveal.
+but that a single-metric evaluation would likely miss.
 
 \begin{figure}[t]
 \centering

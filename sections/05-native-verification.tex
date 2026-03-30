@@ -67,7 +67,7 @@ Quantity & Symbol & Form & Reason \\
 
 \multicolumn{4}{@{}l}{\textit{Normalised $(\pinorm)$}} \\[2pt]
 \quad Depth-of-truth         & $\alpha^*$  & $\pinorm$ & Shape quality \\
-\quad Nonspecificity          & $\eta$      & $\pinorm$ & Shape diffuseness \\
+\quad Diffuseness              & $\eta$      & $\pinorm$ & Shape spread \\
 \quad Conditional necessity   & $\Nc(A)$    & $\pinorm$ & Certainty given coverage \\[4pt]
 %%% L_t row removed — exceedance bounds removed in Round 2.
 \bottomrule
@@ -141,9 +141,9 @@ Symbol & Name & Component & Eq.\ \\
 \midrule
 $\alpha^*$ & Depth-of-truth & Possibility
     & \eqref{eq:alpha_star} \\
-$\eta$ & Nonspecificity & Possibility
+$\eta$ & Diffuseness & Possibility
     & \eqref{eq:ns} \\
-$\delta$ & Resolution gap & Possibility
+$\delta$ & Support margin & Possibility
     & \eqref{eq:rg} \\
 $\ign$ & Ignorance & Ignorance
     & \eqref{eq:ignorance} \\
@@ -163,21 +163,35 @@ observed outcome, and intermediate values arise whenever the truth is
 plausible but not the system's top pick (e.g., $\alpha^* = 0.267$ for
 the Example~1 distribution with $c_{\mathrm{obs}} = \spc{ENH}$).
 
-\textbf{Nonspecificity} ($\eta$), inspired by the nonspecificity concept
-of \citet{Klir1995-va}, measures the diffuseness of the normalised
-shape:
+\textbf{Diffuseness} ($\eta$), inspired by the nonspecificity concept
+of \citet{Klir1995-va}, measures how spread the normalised shape is:
 \begin{equation}
 \eta = \frac{1}{K} \sum_{c=1}^{K} \pinorm(c) \label{eq:ns}
 \end{equation}
 ranging from $1/K$ (sharp) to $1$ (uniform).
 
-\textbf{Resolution gap} ($\delta$):
+\textbf{Support margin} ($\delta$):
 \begin{equation}
 \delta = \alpha^* - \eta \label{eq:rg}
 \end{equation}
 Positive $\delta$ indicates the system assigned more possibility to the
 truth than to an average category; negative $\delta$ means the forecast
 shape pointed away from the truth.
+The name \textit{support margin} reflects this interpretation: $\delta$
+measures the margin of excess support (normalised possibility) that the
+truth received relative to the categorical average.  It is the
+per-forecast possibilistic counterpart of DSC
+(Section~\ref{sec:ig_decomposition}), which measures essentially the
+same property---separation of events from non-events---but as a
+sample-aggregate quantity in probability space.  The name avoids
+clashing with either ``resolution'' (already replaced by DSC to prevent
+confusion with NWP grid resolution) or ``discrimination'' (reserved for
+DSC).  Readers from the Brier-score literature will recognise the
+conceptual kinship with resolution (how well forecasts separate events
+from climatology); NWP practitioners may see the analogy to the Peirce
+Skill Score (hit rate minus false-alarm rate).  Like both, $\delta > 0$
+means the forecast shape favourably distinguished the truth from the
+background.
 
 \textbf{Ignorance} ($\ign$), carried forward from the pre-event
 framework:
@@ -194,12 +208,15 @@ shape $\pinorm$.
     = 1 - \max_{\omega \neq c_{\mathrm{obs}}} \pinorm(\omega)
 \label{eq:nc_star}
 \end{equation}
+$\Nc^*$ serves as a \textit{dominance margin}: it measures how strongly
+the truth dominated all alternatives in the normalised shape, akin to
+the consensus margin of an ensemble forecast.
 $\Nc^* = 0$ whenever the observed category is not the unique peak of the
 normalised distribution (since some alternative then has $\pinorm = 1$);
-positive values quantify how strongly the truth dominates all
-alternatives.  This means $\Nc^*$ provides diagnostic information only
+positive values quantify the margin by which the truth led the
+next-highest category.  This means $\Nc^*$ provides diagnostic information only
 on the subset of forecasts where $\alpha^* = 1$ (i.e., where truth
-coincides with the mode), distinguishing dominant peaks from contested
+coincides with the peak category), distinguishing dominant peaks from contested
 ones.  When $\alpha^* < 1$, $\Nc^*$ is structurally zero and adds no
 independent signal.  This is a direct application of
 Eq.~\eqref{eq:cond_nec} evaluated at the observation.
@@ -215,11 +232,11 @@ Eq.~\eqref{eq:cond_nec} evaluated at the observation.
 $\boldsymbol{\alpha^*}$ & \textbf{Depth-of-truth.}  How much normalised
     possibility did the system assign to what actually happened?  Like
     POD for the winning bin, but continuous. \\
-$\boldsymbol{\eta}$ & \textbf{Nonspecificity.}  How spread out was the
+$\boldsymbol{\eta}$ & \textbf{Diffuseness.}  How spread out was the
     normalised distribution?  Like ensemble spread or sharpness. \\
-$\boldsymbol{\delta}$ & \textbf{Resolution gap.}  Did the system give
-    more support to the truth than to an average category?  Like
-    resolution in the Brier decomposition. \\
+$\boldsymbol{\delta}$ & \textbf{Support margin.}  Did the system give
+    more support to the truth than to an average category?  Possibilistic
+    analogue of resolution in the Brier decomposition. \\
 $\boldsymbol{\ign}$ & \textbf{Ignorance.}  How much of the plausibility
     budget did the system leave unassigned?  $\ign = 0$: fully
     confident; $\ign \to 1$: near-total ignorance. \\
@@ -235,8 +252,8 @@ $m = \max\pi > 0$, normalised form $\pinorm = \pi/m$, and observed
 outcome $c_{\mathrm{obs}}$:
 \begin{align*}
 \alpha^* &= \pinorm(c_{\mathrm{obs}}) &&\in [0,\,1] \quad\text{(depth-of-truth)} \\
-\eta &= \tfrac{1}{K}\textstyle\sum_{c}\pinorm(c) &&\in [1/K,\,1] \quad\text{(nonspecificity)} \\
-\delta &= \alpha^* - \eta &&\in [-(1{-}1/K),\,1{-}1/K] \quad\text{(resolution gap)} \\
+\eta &= \tfrac{1}{K}\textstyle\sum_{c}\pinorm(c) &&\in [1/K,\,1] \quad\text{(diffuseness)} \\
+\delta &= \alpha^* - \eta &&\in [-(1{-}1/K),\,1{-}1/K] \quad\text{(support margin)} \\
 \ign &= 1 - m &&\in [0,\,1) \quad\text{(ignorance)} \\
 \Nc^* &= 1 - \max_{\omega \neq c_{\mathrm{obs}}} \pinorm(\omega) &&\in [0,\,1] \quad\text{(cond.\ necessity of truth)}
 \end{align*}
@@ -347,10 +364,10 @@ predictability drops sharply.
 \begin{figure}[t]
 \centering
 \includegraphics[width=\columnwidth]{commitment_diagram.png}
-\caption{Commitment--discrimination diagram for the same reforecast.
+\caption{Commitment--support-margin diagram for the same reforecast.
     \textbf{$x$:}~commitment $\pi_{\max} = 1 - \ign$ (how much the
     forecaster staked).
-    \textbf{$y$:}~discrimination $\delta = \alpha^* - \eta$ (did the
+    \textbf{$y$:}~support margin $\delta = \alpha^* - \eta$ (did the
     shape favour truth?).
     These axes are orthogonal: $\pi_{\max}$ is the raw scale of $\pi$;
     $\delta$ is the quality of the normalised shape $\pi'$.
@@ -358,9 +375,9 @@ predictability drops sharply.
     \textbf{Green dots:} category-conditional means from \spc{NONE}
     (upper right) to \spc{HIGH} (lower left).
     \textbf{Stars:} Section~\ref{sec:worked_examples} scenarios.
-    Upper right = committed and discriminating (ideal);
+    Upper right = committed and well-shaped (ideal);
     lower right = overconfident and wrong;
-    upper left = cautious but well-shaped.
+    upper left = cautious and well-shaped.
     Dashed line = $\delta = 0$ break-even.}
 \label{fig:commitment_diagram}
 \end{figure}
@@ -382,7 +399,7 @@ through the severe categories, staying above $\delta = 0$ for all
 categories on average---even rare-event forecasts discriminate in
 aggregate, though with lower commitment.  Scenario~C (sharp-wrong) sits in the
 overconfident quadrant; Scenario~B (hedged-correct) sits in the
-cautious-discriminating region---a distinction invisible in the
+cautious-but-well-shaped region---a distinction invisible in the
 shape-quality diagram alone.
 
 %%% §4.3 Exceedance Bounds removed in Round 2 revision.
