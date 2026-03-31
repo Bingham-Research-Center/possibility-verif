@@ -7,8 +7,8 @@
 
 Consider two forecasts, each assigning equal odds. A statistician
 estimates a fair coin at 50:50 after one hundred flips---confident,
-grounded in data. A pundit predicts 50:50 for a sports match played in
-extreme weather between teams that have never met---uncertain, grounded
+grounded in data. A media pundit predicts 50:50 for a sports match played
+between two obscure teams that have never met---uncertain, grounded
 in ignorance. Probability theory assigns both the same distribution;
 possibility theory does not. The coin forecast is \textit{normal},
 fully endorsing its estimate; the match forecast is
@@ -16,43 +16,36 @@ fully endorsing its estimate; the match forecast is
 evidence rather than weight of evidence.
 
 Hazard forecasting increasingly relies on probabilistic methods to
-communicate uncertainty, and for good reason: calibrated probability
-distributions support principled decision-making and admit rigorous
+communicate uncertainty: calibrated probability
+distributions support principled decision-making and allow rigorous
 verification through proper scoring rules. Yet probability demands
-precise quantification---each outcome receives a single number
-representing relative frequency or degree of belief, and those numbers
+precise quantification, where each outcome receives a single number
+representing relative frequency (or belief), and those numbers
 must sum to unity. Not all forecasting systems produce output that
 satisfies these constraints. This paper uses Storm Prediction Center
-(SPC) Day-1 convective outlook categories as a running example. SPC
+(SPC) convective outlook categories as a running example. SPC
 outlooks assign one of five risk categories---\spc{MRGL} (Marginal),
 \spc{SLGT} (Slight), \spc{ENH} (Enhanced), \spc{MDT} (Moderate), and
 \spc{HIGH}---or \spc{NONE} if no categorical risk is assigned
 (Section~\ref{sec:poss_primer} gives full definitions). The scenarios
-below are thought experiments; no claim is made that SPC currently
-produces possibilistic forecasts.
+below are thought experiments framed as a "shadow prediction" of Day 1 SPC Outlooks that then acted as "verification" to match like-for-like for pedagogy's sake.
 Possibility theory \citep{Dubois1988-nh}
-provides a mathematical framework for exactly this kind of statement:
-graded compatibility of outcomes with available evidence, without the
-additivity requirement that probability imposes. Despite a mature
-theoretical literature, possibilistic predictions lack a dedicated
-verification methodology. This paper addresses this gap.
+provides a mathematical framework for graded compatibility of outcomes with available evidence without imposed
+additivity requirements. This paper presents a scorecard that capture many orthogonal aspects of forecast quality in pursuit of optimisation and evaluation of forecasts under high uncertainty.
 
-% --- Why possibility theory matters for hazard verification ---
+\subsection{Possibility theory and hazard verification}
 
 Possibility theory extends probability: for any event $A$, the interval
 from necessity $\nec(A)$ to possibility $\poss(A)$ brackets the range
-of consistent probabilities, collapsing to a point when evidence is
-complete (Section~\ref{sec:poss_axioms}; Table~\ref{tab:notation}
+of consistent probabilities (Section~\ref{sec:poss_axioms}; Table~\ref{tab:notation}
 collects all symbols). Possibility distributions arise naturally in several operational
 settings. Expert-rule systems and fuzzy inference engines produce
 membership functions that are possibility distributions by construction
-\citep{Klir1995-va}. Imprecise-probability frameworks generate upper
-and lower bounds on event probabilities that map directly onto the
-possibility--necessity duality. In severe-weather forecasting, a
+\citep{Klir1995-va}. In severe-weather forecasting, a
 forecaster may wish to express that \spc{MDT} risk is plausible but not
 certain, while acknowledging that the mesoscale environment is poorly
 sampled---a statement that maps cleanly onto a subnormal possibility
-distribution $\pi$ but awkwardly onto a probability. Assigning
+distribution $\pi$ but awkwardly onto probabilities. Assigning
 $\pi(\spc{MDT}) = 0.7$ says ``\spc{MDT} is fairly compatible with
 available evidence''; it does not say ``the long-run frequency of
 \spc{MDT} events is 70\%.''
@@ -61,61 +54,53 @@ For subnormal distributions ($\max_\omega \pi(\omega) < 1$), the
 possibilistic ignorance $\ign = 1 - \max(\pi)$ quantifies the gap
 between the system's best-supported outcome and full endorsement---a
 signal that probability, which must sum to unity, cannot represent.
-Normalising a subnormal distribution to $\max(\pi) = 1$ erases this
-signal, a problem termed \textit{ignorance erasure}: it conflates ``the
+Normalising a subnormal distribution to $\pi' \equiv \max(\pi) = 1$ erases this
+signal as it conflates ``the
 system thinks \spc{ENH} is most likely'' with ``the system is
 confident'' (Section~\ref{sec:naive_normalisation} develops this
-contrast in detail).
+contrast).
 
-% --- Brief literature review ---
+\subsection{Background}
 
 Possibility theory originates with \citet{Zadeh1978-je}, who interpreted fuzzy
 membership functions as possibility distributions. It was formalised
 into a full uncertainty calculus by \citet{Dubois1988-nh}.
 \citet{Dubois2006-MISSING} surveys the mature theory, emphasising the
-bracketing property $\nec(A) \leq P(A) \leq \poss(A)$ and its
-applications to risk analysis under incomplete information.
-\citet{Klir1995-va} situates possibility within a broader taxonomy of
-generalised information theories, clarifying the relationship between
+bracketing $\nec(A) \leq P(A) \leq \poss(A)$ and its
+application to risk analysis under incomplete information.
+\citet{Klir1995-va} couches possibility within a broader group of information theories, clarifying some relationship between
 possibilistic and probabilistic uncertainty measures.
 
-A parallel literature addresses the verification of probabilistic
-forecasts through proper scoring rules. \citet{Roulston2002-eq}
-introduced the information-gain framework, measuring forecast value as
-the reduction in Shannon entropy relative to a climatological baseline.
-\citet{Lawson2024-bu} formalised the information-gain decomposition for
-atmospheric forecasts, separating overall skill into uncertainty,
-discrimination, and reliability components. These tools are well suited
-to probability vectors but cannot be applied directly to possibility
-distributions, which violate the additivity axiom.
+The author underscores that the choice of objectively optimal evaluation rules is subjective. Ultimately, metrics must be chosen to test the narrative of forecast quality. Verification of probabilistic
+forecasts often uses \textit{proper} scoring rules, where forecasters cannot hedge (e.g., incorrectly adjusting forecasts to reduce peaks but accumulate penalty). \citet{Roulston2002-eq}
+introduced ignorance, or relative entropy (REF) and logarithmic score (Good REF), measuring forecast value as
+the reduction in Shannon entropy relative to a climatological baseline (REF).
+(REFS) formalise decomposition of overall skill into uncertainty,
+discrimination, and reliability components analogous to Brier-type decomposition \citep{Lawson2024-bu}. These tools are designed for probability vectors, not possibility
+distributions that violate the additivity axiom.
 The broader meteorological verification literature
 \citep{Murphy1993-MISSING,Jolliffe2012-MISSING,Wilks2011-vw} provides
 the conceptual vocabulary (reliability, resolution, discrimination)
-adapted below.
-Adjacent frameworks---Dempster--Shafer evidence theory
+adapted below. Second-order uncertainty is not a new concept: adjacent frameworks and concepts, such as Dempster--Shafer evidence theory
 \citep{Shafer1976-MISSING}, the pignistic transformation
 \citep{Smets1990-MISSING}, and imprecise probabilities
-\citep{Walley1991-MISSING}---share the intuition that a single
-probability may not capture an agent's epistemic state
+\citep{Walley1991-MISSING}, share the intuition that a single
+probability may not capture epistemic uncertainty
 (what a forecaster actually knows and doesn't know;
-Section~\ref{sec:three_component} discusses parallels).
+Section~\ref{sec:three_component}).
 
-Existing approaches either normalise the distribution---erasing the
-ignorance signal---or treat possibility values as probabilities,
-violating the max-additivity axiom that distinguishes possibility from
-probability. This paper presents a framework with three components: a
+Nonetheless, there is motivation for encouraging explicit preservation of forecast uncertainty when communicating risk, and more so for risk-averse stakeholders that benefit most from upper-bounds (possibilities) of the undesired scenario. Existing approaches that normalise the distribution to match axiomata of possibility theory erases the
+ignorance signal. Further, possibility theory is unfamiliar in many applied fields, and clear visualisations and necessary to communicate a larger set of forecast metrics. The current paper explains a framework with three components: a
 five-number scorecard for possibilistic evaluation, a
 possibility-to-probability conversion that preserves ignorance as an
 explicit outcome, and a categorical verification facet using
 threshold-based scores familiar to operational meteorologists.
-Readers familiar with categorical verification (POD, FAR, CSI) may
-note that reducing a possibility distribution to its peak category discards most
-of the distributional information that makes possibilistic forecasts
-distinctive; Section~\ref{sec:tripartite_value} formalises this
-observation and shows what each verification approach misses.
-The remainder of this paper develops the theory
+Traditional categorical verification (POD, FAR, CSI; swets REF; joliffe ref) trades most
+distributional information for low-complexity interpretion; by reducing a possibility distribution to its peak category; Section~\ref{sec:tripartite_value} formalises this
+observation and discusses shortcomings in each verification approach.
+The remainder develops the theory modification
 (Sections~\ref{sec:poss_primer}--\ref{sec:native_verification}),
 demonstrates three complementary verification facets
 (Section~\ref{sec:tripartite_value}), walks through worked examples
-(Section~\ref{sec:worked_examples}), and discusses applicability and
+(Section~\ref{sec:worked_examples}), and concludes with applications and
 future directions (Section~\ref{sec:discussion}).
