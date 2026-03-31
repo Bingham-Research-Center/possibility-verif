@@ -104,15 +104,32 @@ picture, because each answers a different question and each has a blind
 spot the others fill.
 
 The \textbf{categorical facet} reduces each distribution to its peak
-category $\hat{c} = \arg\max \pi(\omega)$ and applies threshold-based
-contingency scores: probability of detection
-(POD~$=$~hits\,/\,(hits\,+\,misses)), false alarm ratio
-(FAR~$=$~false alarms\,/\,(hits\,+\,false alarms)), critical success
-index (CSI~$=$~hits\,/\,(hits\,+\,misses\,+\,false alarms)), and the
-Heidke skill score (HSS) from the full $K \times K$ confusion matrix.
-It asks ``did the peak-category forecast identify the correct
-severity category?'' and discards all distributional information: a
-correct peak category says nothing about sharpness, hedging, or confidence.
+category $\hat{c} = \arg\max \pi(\omega)$ (ties broken by severity)
+and applies threshold-based contingency scores.  For each severity
+threshold~$t$ (\spc{MRGL}+, \spc{SLGT}+, \ldots, \spc{HIGH}), the
+forecast issues ``yes'' if $\hat{c} \geq t$ and ``no'' otherwise; the
+observation is ``yes'' if $c_{\mathrm{obs}} \geq t$.  Four scores
+evaluate each threshold:
+\begin{align*}
+\mathrm{POD}  &= \frac{\text{hits}}{\text{hits} + \text{misses}}
+    &&\text{(did the system detect events?)} \\
+\mathrm{FAR}  &= \frac{\text{false alarms}}{\text{hits} + \text{false alarms}}
+    &&\text{(when it said ``yes,'' was it right?)} \\
+\mathrm{CSI}  &= \frac{\text{hits}}{\text{hits} + \text{misses} + \text{false alarms}}
+    &&\text{(joint penalty for misses and false alarms)}
+\end{align*}
+POD alone rewards over-forecasting; FAR alone rewards
+under-forecasting; CSI balances both.  The Heidke skill score (HSS),
+computed from the full $K \times K$ confusion matrix, measures
+agreement beyond what random chance would produce.
+Because verification is threshold-based, a peak forecast of \spc{MDT}
+when \spc{HIGH} verifies registers as a hit at all thresholds up to
+\spc{MDT}+ and a miss only at \spc{HIGH}---partial credit for
+near-misses in severity.
+The categorical facet asks ``did the peak-category forecast identify the
+correct severity category?'' and discards all distributional
+information: a correct peak says nothing about sharpness, hedging, or
+confidence.
 
 The \textbf{probabilistic facet} (IG via probability conversion) asks
 ``was the probabilistic forecast informative?''  The conversion is
