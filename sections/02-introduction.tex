@@ -22,18 +22,10 @@ verification through proper scoring rules.  Yet probability demands
 precise quantification---each outcome receives a single number
 representing relative frequency or degree of belief, and those numbers
 must sum to unity.  Not all forecasting systems produce output that
-satisfies these constraints.  The Storm Prediction Center (SPC)
-convective outlooks, for instance, assign ordered categorical labels
-(\spc{NONE} through \spc{HIGH}) that express graded plausibility rather
-than calibrated frequency.  SPC issues crisp categorical outlooks drawn
-on a map---\spc{NONE} (no categorical risk assignment), \spc{MRGL}
-(Marginal), \spc{SLGT} (Slight), \spc{ENH} (Enhanced), \spc{MDT}
-(Moderate), and \spc{HIGH}---; this paper proposes a hypothetical possibilistic alternative
-using these familiar categories as the running example, treating the
-outlook at a single point (Norman, Oklahoma) as the observation.
-These scenarios are thought experiments designed to illustrate the
-verification framework; no claim is made that SPC currently produces
-possibilistic forecasts.
+satisfies these constraints.  This paper uses Storm Prediction Center
+(SPC) convective outlook categories (\spc{NONE} through \spc{HIGH}) as
+a running example (Section~\ref{sec:poss_primer}); these are thought
+experiments, not claims about SPC's current operational products.
 Possibility theory \citep{Dubois1988-nh}
 provides a mathematical framework for exactly this kind of statement:
 graded compatibility of outcomes with available evidence, without the
@@ -92,18 +84,17 @@ atmospheric forecasts, separating overall skill into uncertainty,
 discrimination, and reliability components.  These tools are well suited
 to probability vectors but cannot be applied directly to possibility
 distributions, which violate the additivity axiom.
-The broader meteorological verification literature---including
-\citet{Murphy1993-MISSING}, \citet{Jolliffe2012-MISSING}, and
-\citet{Wilks2011-vw}---provides the conceptual vocabulary
-(reliability, resolution, discrimination) adapted below.
-
+The broader meteorological verification literature
+\citep{Murphy1993-MISSING,Jolliffe2012-MISSING,Wilks2011-vw} provides
+the conceptual vocabulary (reliability, resolution, discrimination)
+adapted below.
 Adjacent frameworks---Dempster--Shafer evidence theory
 \citep{Shafer1976-MISSING}, the pignistic transformation
 \citep{Smets1990-MISSING}, and imprecise probabilities
 \citep{Walley1991-MISSING}---share the intuition that a single
-probability may not capture an agent's epistemic state;
-Section~\ref{sec:three_component} discusses the structural parallels
-and key differences.
+probability may not capture an agent's epistemic state
+(what a forecaster actually knows and doesn't know;
+Section~\ref{sec:three_component} discusses parallels).
 
 Existing approaches either normalise the distribution---erasing the
 ignorance signal---or treat possibility values as probabilities,
@@ -118,18 +109,9 @@ note that reducing a possibility distribution to its peak category discards most
 of the distributional information that makes possibilistic forecasts
 distinctive; Section~\ref{sec:tripartite_value} formalises this
 observation and shows what each verification approach misses.
-The remainder of this paper is organised as follows.
-Section~\ref{sec:poss_primer} introduces the mathematical foundations of
-possibility theory, emphasising subnormal distributions and the
-three-component uncertainty framework.
-Section~\ref{sec:pignistic_bridge} develops the
-possibility-to-probability conversion and reviews the information-gain
-decomposition.
-Section~\ref{sec:native_verification} formalises possibilistic
-verification via the five-number scorecard.
-Section~\ref{sec:tripartite_value} illustrates that each uncertainty
-component can contribute distinct verification value, and
-defines three complementary verification facets.
-Section~\ref{sec:worked_examples} walks through three worked examples
-using SPC convective outlook categories.
-Section~\ref{sec:discussion} discusses applicability and future directions.
+The remainder of this paper develops the theory
+(Sections~\ref{sec:poss_primer}--\ref{sec:native_verification}),
+demonstrates three complementary verification facets
+(Section~\ref{sec:tripartite_value}), walks through worked examples
+(Section~\ref{sec:worked_examples}), and discusses applicability and
+future directions (Section~\ref{sec:discussion}).
