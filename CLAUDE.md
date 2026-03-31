@@ -21,6 +21,8 @@ Standalone methods paper: "Possible, yes; ignorant, perhaps: a scorecard for pos
 - **`generate_all.py` runs figs 1–8.** Figs 9–12 (`fig_scorecard_table.py`, `fig_performance_diagram.py`, `fig_severity_matrix.py`) must be run separately. `fig_perf_iterate.py` generates hexbin + commitment figures (called by `fig_performance_diagram.py`).
 - **Hexbin gridsize**: matplotlib's default `gridsize=N` computes `ny = int(N/√3)` which **floors** instead of rounding, producing hexagons ~16% too tall. Always use `gridsize=(nx, ny)` tuples with correct rounding.
 - **`rho.cls` loads heavy unused packages** (circuitikz, chemfig, matlab-prettifier, lipsum). Do not modify `rho.cls`, but be aware compilation is slow.
+- **Single space after full stops.** Use one space after `.` `?` `!`, never two. The double-space convention is not used in this repo.
+- **Semantic line breaks:** wrap lines at ~70 chars, breaking at sentence or clause boundaries. Never write paragraph-length lines — git diffs become unreadable.
 
 ## LaTeX
 

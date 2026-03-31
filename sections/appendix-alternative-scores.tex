@@ -26,7 +26,7 @@ The \textit{imprecise ranked logarithmic score} is:
 \label{eq:irls}
 \end{equation}
 where $S(p) = -\log_2(\max(p, \epsilon))$ and
-$e_k = \mathbf{1}\{c_{\mathrm{obs}} \leq k\}$.  When $L_k = U_k$ for
+$e_k = \mathbf{1}\{c_{\mathrm{obs}} \leq k\}$. When $L_k = U_k$ for
 all $k$, IRLS reduces to the standard ranked logarithmic score.
 
 \textbf{Properties:}
@@ -47,7 +47,7 @@ reforecast dataset.
 \subsection{Possibilistic Climatology}\label{sec:poss_climatology}
 
 A possibilistic baseline analogous to probabilistic climatology is
-needed for skill scores.  The recommended construction derives
+needed for skill scores. The recommended construction derives
 \textit{consonant} possibility distributions from the climatological CDF.
 
 For continuous variables with climatological CDF $F_{\mathrm{clim}}(z)$:
@@ -71,9 +71,9 @@ $u_k = F_{k-1} + 0.5\, p_k$, and define:
 Climatological ignorance is zero by convention
 ($H_{\Pi,\mathrm{clim}} = 0$): climatology is a reference distribution,
 not a live forecasting system.
-The consonant construction is the least-committed possibility distribution consistent with a given CDF: its nested $\alpha$-cuts are central intervals that encode no shape preference beyond what the cumulative frequencies imply.  For applications with multimodal climatologies or strongly asymmetric base rates, alternative constructions (e.g., non-nested random sets) may be more appropriate; the choice of climatological reference should be justified on physical grounds.  Any $\ign > 0$ from an operational system therefore reflects genuine model uncertainty beyond this baseline---the system's admitted ignorance is measured relative to a reference that, by convention, claims complete knowledge.
+The consonant construction is the least-committed possibility distribution consistent with a given CDF: its nested $\alpha$-cuts are central intervals that encode no shape preference beyond what the cumulative frequencies imply. For applications with multimodal climatologies or strongly asymmetric base rates, alternative constructions (e.g., non-nested random sets) may be more appropriate; the choice of climatological reference should be justified on physical grounds. Any $\ign > 0$ from an operational system therefore reflects genuine model uncertainty beyond this baseline---the system's admitted ignorance is measured relative to a reference that, by convention, claims complete knowledge.
 
 Persistence---the previous day's distribution used as today's
-forecast---is another valid baseline.  A system that cannot outperform
+forecast---is another valid baseline. A system that cannot outperform
 persistence has negative skill relative to the simplest possible
 dynamical reference.

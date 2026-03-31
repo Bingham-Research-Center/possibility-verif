@@ -9,7 +9,7 @@
 \section{Possibility Theory Foundations}\label{sec:poss_primer}
 
 This section provides a self-contained primer on possibility theory for
-atmospheric scientists.  No prior knowledge of fuzzy logic or
+atmospheric scientists. No prior knowledge of fuzzy logic or
 Dempster--Shafer theory is assumed; all definitions are built from scratch.
 A running example---a possibilistic convective outlook assigning
 possibility values to the six SPC categories introduced in
@@ -17,15 +17,15 @@ Section~\ref{sec:introduction}---illustrates each definition.
 The categories are mutually exclusive: on any given day at any given
 point, exactly one category describes the observed outcome.
 \spc{NONE} denotes the absence of any categorical risk assignment---the
-true null.  In all examples below, the outlook at a single point
-(Norman, Oklahoma) serves as the observation.  
+true null. In all examples below, the outlook at a single point
+(Norman, Oklahoma) serves as the observation. 
 \subsection{Axioms and Definitions}\label{sec:poss_axioms}
 
 Let $\Omega$ denote the \textit{universe of discourse}---the complete set
 of mutually exclusive and collectively exhaustive outcomes for a variable
 of interest (e.g., SPC convective outlook categories
 $\Omega = \{\spc{NONE},\, \spc{MRGL},\, \spc{SLGT},\, \spc{ENH},\,
-\spc{MDT},\, \spc{HIGH}\}$).  A \textit{possibility distribution}
+\spc{MDT},\, \spc{HIGH}\}$). A \textit{possibility distribution}
 $\pi: \Omega \to [0,1]$\allowbreak{} assigns to each outcome $\omega \in \Omega$\allowbreak{} a
 degree of possibility $\pi(\omega)$ satisfying:
 
@@ -34,15 +34,15 @@ degree of possibility $\pi(\omega)$ satisfying:
     outcome $\omega^* \in \Omega$ such that $\pi(\omega^*) > 0$.
 \item \textbf{Normalisation (optional):} If
     $\max_{\omega \in \Omega} \pi(\omega) = 1$, the distribution is
-    \textit{normal}; otherwise it is \textit{subnormal}.  Classical
+    \textit{normal}; otherwise it is \textit{subnormal}. Classical
     possibility theory \citep{Dubois1988-nh} requires at least one
     outcome to be fully possible ($\max \pi = 1$), grounding necessity
-    in complete commitment.  This paper relaxes that requirement---a
+    in complete commitment. This paper relaxes that requirement---a
     subjective modelling choice, permitted by
     \citeauthor{Zadeh1978-je}'s original formulation, adopted to match
     the operational reality that forecasting systems routinely encounter
     conditions outside their training domain and produce subnormal
-    outputs by construction.  Subnormality encodes that the system's
+    outputs by construction. Subnormality encodes that the system's
     assessment derives from the portion of its predictive machinery
     that it trusts, with the remaining plausibility budget ($\ign$)
     explicitly flagging the untrusted portion
@@ -87,7 +87,7 @@ find it useful as a reference card for subsequent sections.
 
 \begin{table}[htbp]
 \centering
-\caption{Notation reference for possibilistic verification.  ``Form''
+\caption{Notation reference for possibilistic verification. ``Form''
     indicates whether the quantity uses the raw ($\pi$) or normalised
     ($\pinorm$) distribution.}
 \label{tab:notation}
@@ -117,7 +117,7 @@ $\Nc^*$ & norm & \ref{eq:nc_star} & Cond.\ necessity of truth \\
 
 In operational forecasting, subnormality arises naturally when a system
 encounters conditions outside its training domain or when conflicting
-evidence produces weak support for all outcomes.  Rather than hiding this
+evidence produces weak support for all outcomes. Rather than hiding this
 deficiency behind enforced normalisation, preserving subnormality makes
 the system's knowledge gaps explicit and verifiable.
 
@@ -131,10 +131,10 @@ H_\Pi = 1 - \max_{\omega \in \Omega} \pi(\omega) \label{eq:ignorance}
 ignorance measure is not information-theoretic.)
 
 \textbf{Interpretation:} \ign{} quantifies the fraction of plausibility
-unaccounted for by the model's knowledge.  High ignorance
+unaccounted for by the model's knowledge. High ignorance
 ($H_\Pi \approx 1$) signals that the forecasting system encounters
 conditions outside its coverage or that conflicting evidence produces
-weak support for all outcomes.  Low ignorance ($H_\Pi \approx 0$)
+weak support for all outcomes. Low ignorance ($H_\Pi \approx 0$)
 indicates the system assigns high possibility to at least one
 outcome---an impossible event ($\Pi(\overline\omega) = 0$) can be ruled
 out due to known plausibility of a different outcome, rather than
@@ -147,10 +147,10 @@ annotated with $\Pi_{\max}$, \ign{}, and \Nc{} for the peak category.
 \centering
 \includegraphics[width=\columnwidth]{possibility_anatomy.png}
 \caption{Anatomy of a subnormal possibility distribution over SPC
-    categories.  Purple bars show raw possibility $\pi(\omega)$.  The
+    categories. Purple bars show raw possibility $\pi(\omega)$. The
     dashed line marks $\Pi_{\max} = \max(\pi)$; the gap from
     $\Pi_{\max}$ to $1.0$ is the ignorance $\ign$
-    (Eq.~\ref{eq:ignorance}).  Conditional necessity \Nc{} for the peak
+    (Eq.~\ref{eq:ignorance}). Conditional necessity \Nc{} for the peak
     category measures how strongly that category dominates the
     runner-up after normalisation (Eq.~\ref{eq:cond_nec}); the
     annotated value $0.733$ reflects $1 - 0.20/0.75$, where $0.20$
@@ -182,7 +182,7 @@ The resulting possibility distribution is:
 \]
 with $\ign = 1 - 0.75 = 0.25$ and
 $\Nc(\spc{MDT}) = 1 - 0.20/0.75 = 1 - 0.267 = 0.733$, where $0.20$
-is the runner-up raw possibility (\spc{ENH}).  Interpretation: \spc{MDT}
+is the runner-up raw possibility (\spc{ENH}). Interpretation: \spc{MDT}
 is the most plausible outcome ($\Pi = 0.75$) with moderate ignorance
 ($\ign = 0.25$); conditional necessity of $0.73$ indicates that among
 scenarios the system covers, \spc{MDT} is the dominant category.
@@ -202,7 +202,7 @@ The resulting possibility distribution is:
 \end{cases}
 \]
 with $\ign = 1 - 0.5 = 0.5$ and
-$\Nc(\spc{MRGL}) = \Nc(\spc{SLGT}) = 0.0$.  Interpretation:
+$\Nc(\spc{MRGL}) = \Nc(\spc{SLGT}) = 0.0$. Interpretation:
 \spc{MRGL} and \spc{SLGT} are equally plausible ($\Pi = 0.5$ each),
 high ignorance ($\ign = 0.5$) indicates that the system struggles with
 this meteorological scenario, and neither outcome has conditional
@@ -210,7 +210,7 @@ necessity.
 
 Blindly normalising Example~2 would inflate $\pi(\spc{MRGL})$ and
 $\pi(\spc{SLGT})$ to 1.0, hiding the fact that the forecasting system
-struggles with this meteorological scenario.  Preserving subnormality
+struggles with this meteorological scenario. Preserving subnormality
 makes these knowledge gaps explicit.
 
 \smallskip\noindent\textit{Notation convention.}  Hereon,
@@ -225,7 +225,7 @@ $\pi = (0.05,\, 0,\, 0.1,\, 0.2,\, 0.75,\, 0.15)$.
 An analogue of ``classical'' necessity (requiring a normalised
 possibility distribution $\pinorm$) supplements \poss{} and \ign{} for
 each SPC category $A$ by computing necessity after normalisation of
-known outcomes.  The three components are:
+known outcomes. The three components are:
 
 \begin{enumerate}[leftmargin=2em]
 \item \textbf{Possibility, $\poss(A)$, $\pi$:} The raw (unnormalised)
@@ -250,7 +250,7 @@ to~$A$.
 
 All three quantities derive from the raw possibility distribution $\pi$:
 \poss{} is the peak value for each category, \ign{} measures the global
-gap to normality, and \Nc{} is computed after renormalisation.  Though
+gap to normality, and \Nc{} is computed after renormalisation. Though
 not statistically independent, they decompose the forecast signal into
 complementary facets of decision-relevant information.
 
@@ -269,14 +269,14 @@ $\Pi(A)$ corresponds to plausibility $\mathrm{Pl}(A)$ and necessity
 $N(A)$ to belief $\mathrm{Bel}(A)$, with the pignistic transformation
 \citep{Smets1990-MISSING} providing the decision-making conversion in
 Dempster--Shafer theory just as
-Section~\ref{sec:poss_prob_bridge} does here.  The key difference is
+Section~\ref{sec:poss_prob_bridge} does here. The key difference is
 that \ign{} has no direct Dempster--Shafer analogue: it quantifies
 coverage gaps in the forecasting system rather than evidential conflict
 between sources.
 
 \textbf{Communication example (from Example~1):} ``\spc{MDT} risk is
 the most plausible outcome ($\Pi = 0.75$) with moderate ignorance
-($\ign = 0.25$).  Conditional necessity is $0.733$: among scenarios the
+($\ign = 0.25$). Conditional necessity is $0.733$: among scenarios the
 system covers, \spc{MDT} is the dominant category.''  This statement
 conveys:
 \begin{itemize}[leftmargin=2em]
@@ -291,38 +291,38 @@ conveys:
 \subsection{Why Not Just Probabilities?}\label{sec:why_not_prob}
 
 A probabilistic forecast assigns a single number $p(A)$ to each outcome,
-and these values must sum to unity.  A possibility distribution instead
+and these values must sum to unity. A possibility distribution instead
 provides the interval $[\nec(A),\, \poss(A)]$ that honestly represents
-the imprecision in the available evidence.  When evidence is thin---a
+the imprecision in the available evidence. When evidence is thin---a
 novel mesoscale pattern, a data-void region, a rapidly evolving
 convective mode---this interval is wide, and the forecast admits it
-cannot sharpen the estimate.  Probability forces a point value even when
+cannot sharpen the estimate. Probability forces a point value even when
 the evidence does not support one \citep{Dubois2006-MISSING}.
 
-The ignorance signal \ign{} has no probabilistic counterpart.  A
+The ignorance signal \ign{} has no probabilistic counterpart. A
 probability vector that sums to~1 cannot express ``I don't know'': any
 admitted uncertainty must be allocated to specific outcomes, distributing
-confidence whether or not such precision is warranted.  A subnormal
+confidence whether or not such precision is warranted. A subnormal
 possibility distribution reserves an explicit fraction of plausibility
 as unassigned, signalling that the system encounters conditions outside
-its training or coverage.  This distinction is not merely philosophical;
+its training or coverage. This distinction is not merely philosophical;
 it is operationally actionable, because a downstream decision-maker can
 treat high-\ign{} forecasts differently from low-\ign{} ones
 (Section~\ref{sec:component_value}).
 
 In severe-weather forecasting, categorical language like ``\spc{MDT}
 risk is possible'' already expresses plausibility rather than calibrated
-frequency.  Possibility theory formalises this linguistic tradition while
+frequency. Possibility theory formalises this linguistic tradition while
 preserving the ability to derive probabilities when needed via the
 conversion in Section~\ref{sec:poss_prob_bridge}.
 
 Critically, the conversion from possibilities to probabilities is
 one-way---information is irreversibly lost in the
-probability-to-possibility direction \citep{Dubois1988-nh}.  A
+probability-to-possibility direction \citep{Dubois1988-nh}. A
 forecaster can issue a subnormal distribution that explicitly
 communicates ``today's setup is unusual and I am less confident than
 normal'' without manufacturing precise probability values that the
-evidence does not support.  The conversion
+evidence does not support. The conversion
 (Section~\ref{sec:poss_prob_bridge}) recovers a valid probability
 distribution when one is needed, but the richer possibilistic
 representation remains available for native verification

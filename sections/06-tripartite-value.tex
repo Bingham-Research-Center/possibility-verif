@@ -11,7 +11,7 @@
 
 Each component of the five-number scorecard
 (Table~\ref{tab:three_to_five}) should earn its place by providing
-diagnostic information the others cannot.  This section first examines
+diagnostic information the others cannot. This section first examines
 the independent value of the three components---possibility (shape
 quality), ignorance (system confidence), and conditional necessity
 (dominance)---and then steps back to show how the native possibilistic
@@ -25,11 +25,11 @@ facet relates to probabilistic and categorical verification.
 The possibility component ($\alpha^*$, $\eta$, $\delta$) captures
 whether the system's distributional shape favours the observed outcome.
 Its value reduces to a familiar verification question: does the system's
-support margin $\delta$ exceed that of a na\"ive baseline?  Comparing
+support margin $\delta$ exceed that of a na\"ive baseline? Comparing
 $\delta$ against climatology or persistence would be the possibilistic
 analogue of comparing Brier skill scores
 (Section~\ref{sec:limitations} notes that formalising this comparison
-requires a possibilistic climatology that remains an open problem).  For SPC outlooks, climatology
+requires a possibilistic climatology that remains an open problem). For SPC outlooks, climatology
 peaks at the most frequent category and assigns near-zero possibility to
 rare outcomes like \spc{HIGH}; a skilful possibilistic system should
 outperform this baseline on days when \spc{ENH} or higher categories
@@ -40,16 +40,16 @@ verify, exhibiting positive $\delta$ across the verification sample.
 The ignorance component ($\ign$) carries forward from the pre-event
 framework as a forecast property rather than a verification metric
 (Table~\ref{tab:three_to_five}), so its diagnostic value requires
-explicit justification.  If high-\ign{} forecasts tend to have lower
+explicit justification. If high-\ign{} forecasts tend to have lower
 mean $\delta$ than low-\ign{} forecasts, then $\ign$ tracks actual
 forecast difficulty---the possibilistic analogue of the
 \textit{spread--skill relationship} in ensemble forecasting, where high
 ensemble spread should correspond to higher forecast error.
 
-The implications are decisive for system design.  If \ign{} does
+The implications are decisive for system design. If \ign{} does
 \emph{not} track difficulty, the subnormality signal is uninformative
 and normalisation is costless---one might as well enforce
-$\max(\pi) = 1$ and simplify the framework.  If \ign{} \emph{does}
+$\max(\pi) = 1$ and simplify the framework. If \ign{} \emph{does}
 track difficulty, normalisation destroys operationally valuable
 information: a forecaster who normalises away high-\ign{} signals loses
 the ability to distinguish confident forecasts from hedged ones.
@@ -57,7 +57,7 @@ the ability to distinguish confident forecasts from hedged ones.
 \paragraph{Conditional necessity: does claimed certainty verify?}
 
 When the system assigns high conditional necessity to an outcome, that
-outcome should verify more often than the base rate.  This is the
+outcome should verify more often than the base rate. This is the
 possibilistic analogue of \textit{reliability conditional on
 confidence}: ensemble forecasters routinely ask ``when the ensemble
 gives ${>}80\%$ chance of severe weather, does it verify ${>}80\%$ of
@@ -73,22 +73,22 @@ Figure~\ref{fig:reliability} tests this by plotting the conditional hit
 rate against the $\Nc(\hat{c})$ threshold~$\tau$: at each $\tau$, only
 forecasts whose peak category has $\Nc(\hat{c}) \geq \tau$ are included.
 The curve is nearly flat because the synthetic system already has a high
-baseline accuracy (${\sim}83\%$).  The modest tick-up at high
+baseline accuracy (${\sim}83\%$). The modest tick-up at high
 thresholds ($\tau > 0.8$) is notable: it confirms that the most
 confident forecasts---where the peak category strongly dominates all
 alternatives---verify even more reliably, so $\Nc(\hat{c})$ carries a genuine
-confidence signal.  With real data or a weaker baseline system, this
+confidence signal. With real data or a weaker baseline system, this
 separation would be more pronounced.
 
 \begin{figure}[t]
 \centering
 \includegraphics[width=0.75\columnwidth]{reliability_curves.png}
 \caption{Conditional hit rate vs.\ $\Nc(\hat{c})$ threshold for the
-    synthetic reforecast.  At each $\tau$, only forecasts with
+    synthetic reforecast. At each $\tau$, only forecasts with
     $\Nc(\hat{c}) \geq \tau$ are retained; the purple curve shows
-    their hit rate.  Baselines: random chance ($1/K$, dashed) and
-    unconditional system accuracy (dot-dashed).  Shaded band: notional
-    confidence interval.  Inset: declining sample size at high $\tau$.
+    their hit rate. Baselines: random chance ($1/K$, dashed) and
+    unconditional system accuracy (dot-dashed). Shaded band: notional
+    confidence interval. Inset: declining sample size at high $\tau$.
     The near-flat curve reflects the synthetic system's high baseline
     accuracy; the uptick at $\tau > 0.8$ confirms that $\Nc(\hat{c})$ adds a
     genuine confidence signal.}
@@ -99,16 +99,16 @@ separation would be more pronounced.
 \subsection{Three Verification Facets}\label{sec:three_lanes}
 
 The paper proposes three expressions for forecast uncertainty and five
-metrics to evaluate forecast quality.  No single facet captures the full
+metrics to evaluate forecast quality. No single facet captures the full
 picture, because each answers a different question and each has a blind
 spot the others fill.
 
 The \textbf{categorical facet} reduces each distribution to its peak
 category $\hat{c} = \arg\max \pi(\omega)$ (ties broken by severity)
-and applies threshold-based contingency scores.  For each severity
+and applies threshold-based contingency scores. For each severity
 threshold~$t$ (\spc{MRGL}+, \spc{SLGT}+, \ldots, \spc{HIGH}), the
 forecast issues ``yes'' if $\hat{c} \geq t$ and ``no'' otherwise; the
-observation is ``yes'' if $c_{\mathrm{obs}} \geq t$.  Four scores
+observation is ``yes'' if $c_{\mathrm{obs}} \geq t$. Four scores
 evaluate each threshold:
 \begin{align*}
 \mathrm{POD}  &= \frac{\text{hits}}{\text{hits} + \text{misses}}
@@ -119,7 +119,7 @@ evaluate each threshold:
     &&\text{(joint penalty for misses and false alarms)}
 \end{align*}
 POD alone rewards over-forecasting; FAR alone rewards
-under-forecasting; CSI balances both.  The Heidke skill score (HSS),
+under-forecasting; CSI balances both. The Heidke skill score (HSS),
 computed from the full $K \times K$ confusion matrix, measures
 agreement beyond what random chance would produce.
 Because verification is threshold-based, a peak forecast of \spc{MDT}
@@ -144,16 +144,16 @@ might still give poor probabilities after conversion.
 Together, the three facets can expose failures that any single facet may miss.
 A forecast with correct peak category but flat possibility and poor
 IG is a broken clock that happens to be right---the categorical facet
-passes but the other two fail.  A forecast with strong IG but high
+passes but the other two fail. A forecast with strong IG but high
 ignorance and low $\Nc^*$ got lucky after conversion---the raw system
-was hedging.  A forecast with sharp possibility and high $\Nc^*$ but
+was hedging. A forecast with sharp possibility and high $\Nc^*$ but
 poor IG may indicate distortion introduced by the conversion---the
 probability derivation is compressing or shifting the signal.
 
 In practice, a verification analyst would compile scorecard aggregates
 across a test sample, tracking changes between model versions or
-seasons.  Figure~\ref{fig:scorecard_table} illustrates this convention
-using synthetic data for four model versions.  Metrics are grouped by
+seasons. Figure~\ref{fig:scorecard_table} illustrates this convention
+using synthetic data for four model versions. Metrics are grouped by
 verification facet; filled triangles denote statistically significant
 change (hypothetical; significance assessed by paired permutation test
 at the 5\% level) and marker size encodes magnitude, following the
@@ -162,7 +162,7 @@ inter-comparisons.
 
 \textit{Reading the scorecard at a glance:} a column of large green
 triangles means the new version is broadly better; a red triangle amid
-green ones flags a trade-off that warrants investigation.  The example
+green ones flags a trade-off that warrants investigation. The example
 tells a common development story: version~2.0 improved discrimination
 but increased ignorance (the system learned to hedge more honestly);
 version~3.0 delivered broad gains across all three facets; version~4.0
@@ -175,13 +175,13 @@ but that a single-metric evaluation would likely miss.
 \includegraphics[width=\columnwidth]{scorecard_table.png}
 \caption{Verification scorecard for a hypothetical possibilistic
     forecasting system across three development versions, each compared
-    to a v1.0 baseline.  Rows are grouped into three verification facets:
+    to a v1.0 baseline. Rows are grouped into three verification facets:
     native possibilistic (five-number scorecard), probabilistic
     (information gain and its decomposition),
-    and categorical (POD, FAR, CSI, HSS).  Filled triangles indicate
+    and categorical (POD, FAR, CSI, HSS). Filled triangles indicate
     statistically significant improvement (green, upward) or degradation
     (red, downward); open triangles indicate non-significant changes.
-    Marker size encodes the magnitude of the change.  Note the
+    Marker size encodes the magnitude of the change. Note the
     $\overline{H_\Pi}$ degradation in v2.0: the system became more
     ignorant before improving in subsequent versions---a signature of
     recalibrated uncertainty that the native possibilistic facet detects
