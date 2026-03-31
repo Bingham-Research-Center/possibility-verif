@@ -98,6 +98,25 @@ contextualises reliability in probabilistic verification.
 Table~\ref{tab:three_to_five} maps the three pre-event components to
 the five post-event metrics.
 
+\begin{workedexample}[Scorecard desiderata]
+A native possibilistic scorecard should:
+\begin{enumerate}[leftmargin=2em, label=(\roman*)]
+\item Cover all three uncertainty components---possibility, ignorance,
+    and conditional necessity---so that no aspect of the forecast is
+    verified only through the probability conversion.
+\item Separate shape from commitment: factor out the confidence level
+    $m$ so that shape quality and overall confidence are evaluated
+    independently.
+\item Separate support from spread: distinguish ``did the system favour
+    the truth?'' from ``was the forecast sharp?'', because a
+    sharp-wrong forecast and a spread-correct forecast fail in
+    different ways.
+\item Include a dominance indicator to detect whether the truth was the
+    system's unique top pick or merely one of several equally plausible
+    categories.
+\end{enumerate}
+\end{workedexample}
+
 \begin{table}[htbp]
 \centering
 \caption{From three components to five scorecard metrics.  Left: the
@@ -265,9 +284,14 @@ The scorecard is constructive rather than axiomatic: the five metrics are
 chosen to separate four diagnostic dimensions---support (did the shape
 favour the truth?), spread (how diffuse was it?), commitment (how much of
 the plausibility budget was spent?), and dominance (did the truth lead
-its rivals?)---that collapse under any single-number summary.  This
-separation is what makes the scorecard resistant to trivial gaming, as
-shown below.
+its rivals?)---that collapse under any single-number summary.
+The four scorecard desiderata are satisfied: all three components are
+covered~(i); four metrics use the normalised shape~$\pinorm$ while only
+$\ign$ uses raw~$\pi$, separating shape from commitment~(ii);
+$\alpha^*$ and~$\delta$ capture support while~$\eta$ captures
+spread~(iii); and~$\Nc^*$ provides the dominance indicator~(iv).
+This separation is what makes the scorecard resistant to trivial gaming,
+as shown below.
 
 Each metric is well-defined for a single forecast--observation pair;
 overbar notation ($\overline{\alpha^*}$, $\overline{\eta}$, etc.)
