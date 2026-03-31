@@ -122,8 +122,8 @@ Figure~\ref{fig:pignistic_bridge} visualises this transformation.
 \centering
 \includegraphics[width=0.85\textwidth]{pignistic_bridge.png}
 \caption{Possibility-to-probability conversion applied to a subnormal
-    distribution.  \textbf{Left:} raw possibility values $\pi(\omega)$
-    for six SPC categories.  \textbf{Right:} resulting $(n{+}1)$-category
+    distribution.  \textbf{(a)}~Raw possibility values $\pi(\omega)$
+    for six SPC categories.  \textbf{(b)}~Resulting $(n{+}1)$-category
     probability vector, with the grey bar representing the explicit
     ignorance outcome $p_{\mathrm{ign}} = \ign$.  Arrows show
     proportional redistribution of the remaining $(1 - \ign)$ mass.  The
@@ -216,10 +216,16 @@ forecast archetypes (distinct from the three worked scenarios of
 Section~\ref{sec:worked_examples}).  The key contrast is between Sharp Correct
 (nearly all discrimination retained, IG~$= +1.75$~bits) and Sharp
 Wrong (the calibration penalty consumes the discrimination entirely
-and extends below zero, IG~$= -0.75$~bits).  Hedged Wrong shows
-modest discrimination but the reliability tax swamps it---a system
-that hedges across wrong categories is penalised less harshly than
-one that commits confidently to the wrong answer.
+and extends below zero, IG~$= -0.75$~bits).  Why does Sharp Wrong retain positive DSC at all?
+DSC measures whether the system produces different probability
+assignments for different observed categories---the ability to
+differentiate situations, regardless of direction.  A sharp-wrong
+system \textit{is} discriminating: it issues confident,
+situation-specific forecasts that just happen to point the wrong way.
+REL captures that directional error.  Hedged Wrong shows less
+discrimination and a smaller reliability penalty---a system that
+hedges across wrong categories is penalised less harshly than one that
+commits confidently to the wrong answer.
 
 \begin{figure}[!b]
 \centering
