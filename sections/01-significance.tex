@@ -7,17 +7,16 @@
 \begingroup
 \hyphenpenalty=10000
 \exhyphenpenalty=10000
-Possibilistic forecasts encode richer uncertainty than probabilities---they
-distinguish ``this outcome is merely plausible'' from ``this outcome is
-essentially certain'' while explicitly flagging when the forecasting system
-lacks knowledge.  However, no systematic method exists to verify whether
-such forecasts are sharp, honest, and useful.  This paper fills that gap
-with a five-number scorecard that evaluates each forecast on its own
-possibilistic terms, a principled conversion to probabilities that
-preserves the ignorance signal for information-gain scoring, and
-categorical threshold scores that connect to familiar operational metrics.
-Together, these three verification facets give forecast developers and
-end-users the diagnostic tools to distinguish honestly uncertain forecasts
-from confidently wrong ones---and to measure, compare, and improve
-possibilistic prediction systems.
+A probabilistic forecast must sum to unity, so it cannot express ``I
+don't know.''  A possibilistic forecast can: its subnormality explicitly
+flags how much of the plausibility budget the system left unassigned.
+This paper provides the first verification framework for such forecasts,
+built around a five-number scorecard that separately diagnoses whether the
+forecast pointed at the right outcome, how sharply, and how honestly.
+A principled conversion to probabilities preserves the ignorance signal
+for information-gain scoring, and familiar categorical threshold metrics
+(POD, FAR, CSI) connect to operational practice.  Together, these three
+verification facets let forecast developers and end-users distinguish
+honestly uncertain forecasts from confidently wrong ones---and measure
+where a possibilistic system is improving and where it is not.
 \endgroup
