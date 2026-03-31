@@ -163,8 +163,10 @@ observed outcome, and intermediate values arise whenever the truth is
 plausible but not the system's top pick (e.g., $\alpha^* = 0.267$ for
 the Example~1 distribution with $c_{\mathrm{obs}} = \spc{ENH}$).
 
-\textbf{Diffuseness} ($\eta$), inspired by the nonspecificity concept
-of \citet{Klir1995-va}, measures how spread the normalised shape is:
+\textbf{Diffuseness} ($\eta$) measures how spread the normalised shape
+is, serving a role analogous to the nonspecificity of
+\citet{Klir1995-va} (a Hartley-based measure over $\alpha$-cuts) but
+computed here as a simple arithmetic mean:
 \begin{equation}
 \eta = \frac{1}{K} \sum_{c=1}^{K} \pinorm(c) \label{eq:ns}
 \end{equation}
@@ -279,6 +281,20 @@ instance, flooring all values at $\varepsilon$ to avoid $\alpha^* = 0$
 inflates $\eta$ on every forecast, yielding a net-negative effect
 across the verification sample
 (Section~\ref{sec:scorecard_comparison} illustrates this).
+
+\textbf{Propriety.}
+The gold standard for scoring rules is \textit{propriety}: honest
+reporting should maximise the forecaster's expected score.  The
+logarithmic score in the probabilistic facet (Eq.~\ref{eq:surprise})
+satisfies this criterion.  For the native scorecard, propriety remains
+an open question: the five metrics are descriptive diagnostics, not a
+single loss function that an optimiser could target.  The multi-metric
+coupling nevertheless discourages gaming---improving one metric while
+holding the others fixed is generally not possible (e.g., broadening
+support to raise~$\alpha^*$ inflates~$\eta$ and
+penalises~$\delta$).  Establishing a formal propriety result for
+possibilistic scorecards is a direction for future work.
+
 Axiom~1 (Section~\ref{sec:poss_axioms}) precludes all-zero
 distributions, ensuring $m > 0$ and the normalisation
 $\pinorm = \pi / m$ is well defined.  A system that returns

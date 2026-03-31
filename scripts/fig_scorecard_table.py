@@ -171,7 +171,7 @@ def main():
                        markeredgecolor=DEGRADE, linestyle="None",
                        markersize=8, markeredgewidth=1.4,
                        label="Non-sig. degradation"),
-        mlines.Line2D([], [], marker="s", color=AMBER, linestyle="None",
+        mlines.Line2D([], [], marker="^", color=AMBER, linestyle="None",
                        markersize=6, label="Ignorance* (context-dep.)"),
     ]
     ax.legend(handles=leg_handles, loc="lower center",

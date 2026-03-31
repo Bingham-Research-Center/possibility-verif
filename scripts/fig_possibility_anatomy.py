@@ -24,6 +24,9 @@ def main():
     pi_max = pi.max()
     peak_idx = int(np.argmax(pi))
     h_pi = 1.0 - pi_max
+    # Conditional necessity for the peak category
+    pi_prime = pi / pi_max
+    nc_peak = 1.0 - np.max(np.delete(pi_prime, peak_idx))
 
     x = np.arange(SPC_N)
     bar_width = 0.55
@@ -65,7 +68,7 @@ def main():
 
     # --- Annotation: N_c for the peak category ---
     ax.annotate(
-        "Most certain category",
+        "Peak category",
         xy=(peak_idx, pi[peak_idx]),
         xytext=(peak_idx - 1.2, pi[peak_idx] + 0.28),
         fontsize=9, fontweight="bold", color=DARK_GREY,
@@ -73,7 +76,7 @@ def main():
         ha="center", va="bottom",
     )
     ax.text(peak_idx - 1.2, pi[peak_idx] + 0.19,
-            r"$N_c$" + f" = {SPC_CATEGORIES[peak_idx]}",
+            f"{SPC_CATEGORIES[peak_idx]};  " + r"$N_c$" + f" = {nc_peak:.3f}",
             fontsize=9, color=DARK_GREY, ha="center", va="bottom")
 
     # Axes

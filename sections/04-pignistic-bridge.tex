@@ -84,6 +84,12 @@ This satisfies all four desiderata: the result sums to one by
 construction (i--ii); when $\ign = 0$, step~1 reserves nothing and the
 formula reduces to $p_i = \pi_i / \sum_j\pi_j$ (iii); and
 proportionality preserves ordering (iv).
+Note that the allocation sums possibility values rather than taking
+maxima, departing from the max-additive axiom (Axiom~3); this is
+acceptable because the goal is a probability vector for standard
+verification, and the native scorecard
+(Section~\ref{sec:native_scorecard}) evaluates possibilistic structure
+directly.
 
 \begin{workedexample}[Worked example]
 Suppose a possibilistic convective outlook produces
@@ -141,6 +147,9 @@ S(f,\, c_{\mathrm{obs}})
 Low surprise means the forecast assigned high probability to what
 actually happened; the logarithm makes the score particularly sensitive
 to confident misses on rare events.
+To prevent $S \to \infty$ when $p_f(c_{\mathrm{obs}}) = 0$, converted
+probabilities are floored at $\varepsilon = 0.01$ throughout;
+Section~\ref{sec:bridge_walkthrough} provides sensitivity analysis.
 
 \textbf{Information gain} (IG) measures the reduction in surprise
 from replacing a baseline forecast $f_1$ (e.g., climatology) with the
@@ -203,7 +212,8 @@ aggregate), and CSI (categorical, binary)---triangulate the forecast's
 ability to separate outcomes from different mathematical vantage points.
 
 Figure~\ref{fig:ig_decomp} illustrates the decomposition for five
-forecast archetypes.  The key contrast is between Sharp Correct
+forecast archetypes (distinct from the three worked scenarios of
+Section~\ref{sec:worked_examples}).  The key contrast is between Sharp Correct
 (nearly all discrimination retained, IG~$= +1.75$~bits) and Sharp
 Wrong (the calibration penalty consumes the discrimination entirely
 and extends below zero, IG~$= -0.75$~bits).  Hedged Wrong shows
@@ -247,7 +257,7 @@ The conversion avoids this by deferring
 probabilistic commitment for the ignorance portion.  Mass equal to
 $\ign$ is routed into an $(n{+}1)$-th outcome that can never be the
 observed category.  Uncertain forecasts are penalised because this
-stranded mass earns no verification credit: it inflates the self-entropy
+stranded mass earns no verification credit: it inflates the surprise
 of the converted forecast in proportion to $\ign$.  The more ignorant
 the system, the more mass is stranded, and the larger the penalty.
 
@@ -263,7 +273,7 @@ from Section~\ref{sec:poss_prob_bridge}:
 \midrule
 $p(\spc{ENH})$ & $0.6/1.35 = 0.444$ & $0.267$ \\
 $p_{\mathrm{ign}}$ & --- & $0.400$ \\
-Self-entropy (bits) & $-\log_2(0.444) = 1.17$ & $-\log_2(0.267) = 1.91$ \\
+Surprise (bits) & $-\log_2(0.444) = 1.17$ & $-\log_2(0.267) = 1.91$ \\
 \bottomrule
 \end{tabular}
 \end{center}
