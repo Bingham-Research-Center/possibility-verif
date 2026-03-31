@@ -219,6 +219,11 @@ def main():
                  fontsize=11, fontweight="bold", va="top", ha="left",
                  color="white")
 
+    # Colorbar for confusion matrix (log-scale counts)
+    cb = fig.colorbar(im, ax=ax_conf, shrink=0.75, pad=0.03)
+    cb.set_label("Count (log scale)", fontsize=8)
+    cb.ax.tick_params(labelsize=7)
+
     fig.tight_layout(w_pad=3.0)
     save_fig(fig, "categorical_scores")
 

@@ -175,7 +175,7 @@ def main():
                        markersize=6, label="Ignorance* (context-dep.)"),
     ]
     ax.legend(handles=leg_handles, loc="lower center",
-              bbox_to_anchor=(0.5, -0.04), ncol=2, fontsize=6.5,
+              bbox_to_anchor=(0.5, -0.10), ncol=2, fontsize=6.5,
               frameon=True, fancybox=False, edgecolor=MID_GREY,
               handletextpad=0.3, columnspacing=0.8)
 

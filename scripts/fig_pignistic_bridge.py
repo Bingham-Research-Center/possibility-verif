@@ -64,8 +64,8 @@ def main():
     ax_l.set_xticks(x_left)
     ax_l.set_xticklabels(SPC_CATEGORIES, fontsize=8)
     ax_l.set_ylabel(r"Possibility $\pi(\omega)$")
-    ax_l.set_title("Raw Possibility Distribution", fontsize=10,
-                    fontweight="bold", pad=8)
+    ax_l.text(0.03, 0.97, "(a)", transform=ax_l.transAxes,
+              fontsize=10, fontweight="bold", va="top")
     ax_l.set_ylim(0, 1.10)
     ax_l.axhline(1.0, linestyle="--", linewidth=0.8, color=GREEN, zorder=1,
                  alpha=0.7)
@@ -99,8 +99,8 @@ def main():
     ax_r.set_xticks(x_right)
     ax_r.set_xticklabels(right_labels, fontsize=8)
     ax_r.set_ylabel("Probability")
-    ax_r.set_title("Pignistic Probability (n+1 outcomes)", fontsize=10,
-                    fontweight="bold", pad=8)
+    ax_r.text(0.03, 0.97, "(b)", transform=ax_r.transAxes,
+              fontsize=10, fontweight="bold", va="top")
     ax_r.set_ylim(0, 1.05)
     ax_r.axhline(1.0, linestyle=":", linewidth=0.6, color=MID_GREY, zorder=1)
 
