@@ -10,30 +10,28 @@
 \section{Possibilistic Verification}\label{sec:native_verification}
 
 Converting possibilities to probabilities
-(Section~\ref{sec:poss_prob_bridge}) enables probabilistic verification,
-but the conversion is lossy: it compresses the full possibility shape
+(Section~\ref{sec:poss_prob_bridge}) is a lossy transformation, compressing the possibility shape
 into $n{+}1$ probabilities, with the entire subnormality signal
 collapsed into a single ignorance bin. Native possibilistic
-verification evaluates the raw distribution directly, preserving the
-shape information that the conversion discards. The metrics defined
-below complement the probabilistic facet by diagnosing forecast quality
+verification includes the raw distribution, preserving the
+shape information otherwise discarded. The metrics following now diagnose forecast quality
 in possibility space.
 
 All definitions use the notation of Section~\ref{sec:poss_primer}:
-$\pi$ denotes the raw (subnormal) possibility distribution,
+$\pi$ denotes the raw possibility distribution that may or may not be subnormal (i.e., $\pi = \pi'$),
 $m = \max_{\omega \in \Omega} \pi(\omega)$ is the subnormality, and
 $\ign = 1 - m$ is ignorance (Eq.~\ref{eq:ignorance}).
 
 %----------------------------------------------------------
-\subsection{Normalisation Protocol}\label{sec:norm_protocol}
+\subsection{Normalisation method}\label{sec:norm_protocol}
 
-Some verification quantities require the raw distribution $\pi$ while
-others require the normalised form $\pinorm = \pi / m$. Two
+Regarding why some verification metrics herein (Table~\ref{tab:raw_norm}) use the raw distribution $\pi$ while
+others require the normalised form $\pinorm = \pi / m$, the two
 normalisation operations serve distinct purposes:
 
 \begin{enumerate}[leftmargin=2em]
 \item \textbf{Shape normalisation} ($\pi \to \pinorm$): Rescales so
-    that $\max(\pinorm) = 1$, isolating the system's relative
+    that $\max(\pi) = 1$, isolating the system's relative
     preferences among outcomes. Used for computing \Nc{}
     (Eq.~\ref{eq:cond_nec}) and the native scorecard
     (Section~\ref{sec:native_scorecard}).
@@ -43,11 +41,6 @@ normalisation operations serve distinct purposes:
     Used for information-gain verification.
 \end{enumerate}
 
-These are not alternatives: shape normalisation operates within the
-possibility space; the probability conversion moves to the probability
-space.
-
-Table~\ref{tab:raw_norm} specifies which form each quantity uses.
 
 \begin{table}[htbp]
 \centering
@@ -75,21 +68,15 @@ Quantity & Symbol & Form & Reason \\
 \renewcommand{\arraystretch}{1.0}
 \end{table}
 
-\textbf{Why this matters:} Getting the raw/normalised distinction wrong
-is the single most common error in possibilistic scoring. Computing
-$\Nc$ from raw values yields nonsense; computing ignorance from
-normalised values gives zero by definition.
 
 %----------------------------------------------------------
 \subsection{Five-Number Scorecard}\label{sec:native_scorecard}
 
 Section~\ref{sec:three_component} introduced three diagnostic components
 that characterise a forecast \textit{before} the outcome is known:
-possibility (plausibility of an event), ignorance (system confidence),
-and conditional necessity (dominance among covered scenarios). Once the
-observed category $c_{\mathrm{obs}}$ is available, these components can
-be evaluated against the truth. Five summary statistics result because
-the possibility component expands into three metrics: how much support
+possibility $\Pi$ (plausibility of an event), ignorance $\ign$ (system confidence),
+and conditional necessity $N_c$ (dominance among covered scenarios). When ``truth" category $c_{\mathrm{obs}}$ is observed, components can
+be evaluated against the truth. Five summary statistics provide insight into these three forecast metrics: how much support
 the truth received ($\alpha^*$), how spread the forecast was ($\eta$),
 and whether the shape was net helpful ($\delta$). Ignorance $\ign$
 carries forward unchanged---it is a property of the forecast itself,
@@ -99,21 +86,19 @@ Table~\ref{tab:three_to_five} maps the three pre-event components to
 the five post-event metrics.
 
 \begin{workedexample}[Scorecard desiderata]
-A native possibilistic scorecard should:
+A possibilistic scorecard should:
 \begin{enumerate}[leftmargin=2em, label=(\roman*)]
-\item Cover all three uncertainty components---possibility, ignorance,
-    and conditional necessity---so that no aspect of the forecast is
-    verified only through the probability conversion.
-\item Separate shape from commitment: factor out the confidence level
-    $m$ so that shape quality and overall confidence are evaluated
+\item Cover three uncertainty aspects of the forecast: possibility, ignorance,
+    and conditional necessity.
+\item Separate shape from confidence: factor out the commitment
+    $m$ so shape quality and confidence are evaluated
     independently.
 \item Separate support from spread: distinguish ``did the system favour
-    the truth?'' from ``was the forecast sharp?'', because a
-    sharp-wrong forecast and a spread-correct forecast fail in
-    different ways.
-\item Include a dominance indicator to detect whether the truth was the
+    the truth?'' from ``was the forecast sharp?'' (sharp-wrong and hedged-correct forecasts fail in
+    different ways).
+\item Include a dominance indicator: when assigning possibility to observed event $\hat{c}$, was $\hat{c}$ the
     system's unique top pick or merely one of several equally plausible
-    categories.
+    categories?
 \end{enumerate}
 \end{workedexample}
 
@@ -140,12 +125,9 @@ Necessity & $\Nc(A)$  & $\Nc^*$ \\
 \end{table}
 
 Five summary statistics evaluate each forecast--observation pair, where
-$c_{\mathrm{obs}}$ denotes the observed (verified) SPC category---in
-the Day-1 comparison framing, the category from the final SPC
-categorical outlook at the point of interest---and $K = |\Omega|$
+$c_{\mathrm{obs}}$ denotes the issued SPC category (standing in for "verification); For the point of interest, $K = |\Omega|$
 is the number of categories (here, $K = 6$).
-Table~\ref{tab:scorecard_defs} lists the definitions; the equations
-are given below.
+Table~\ref{tab:scorecard_defs} lists the definitions; the equations follow.
 
 \begin{table}[htbp]
 \centering
