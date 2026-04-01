@@ -48,10 +48,10 @@ everything; an uncertain one ($m \ll 1$) strands most mass in the
 ignorance bin, where it earns no verification credit but is a neutral measure.
 
 The pignistic
-transformation as formulated by \citet{Smets1990-MISSING} is valid for
-Dempster--Shafer belief functions, where the full belief mass is
-redistributed across focal elements to form a probability. It does not
-reserve any mass for ignorance---all plausibility is converted,
+transformation \citep{Smets1990-nf,Sudano2015-rk} is valid for
+Dempster--Shafer belief functions: a similar approach to classical possibility theory detailed in \citet{Yager2005-at}. The full belief mass is
+redistributed across focal elements to form a probability as in \citet{Le_Carrer2021-by}; it does not
+reserve any mass for ignorance. Hence all plausibility is converted,
 regardless of how much evidential support it carries. For subnormal
 possibility distributions, a system with $\ign = 0.5$ (admitting half its
 budget is unsupported) would produce the same probability vector as one
@@ -129,13 +129,13 @@ Figure~\ref{fig:pignistic_bridge} visualises this transformation.
 
 Once possibilities have been converted to probabilities, standard
 verification applies. Define the \textbf{surprise} of a forecast at the
-observed outcome as the log score:
+observed outcome as the log score \citep{Shannon1948-nc}:
 \begin{equation}
 S(f,\, c_{\mathrm{obs}})
     = -\log_2 p_f(c_{\mathrm{obs}}) \quad \text{(bits)}
 \label{eq:surprise}
 \end{equation}
-This appears throughout literature in various forms (REFS). Low surprise means the forecast assigned high probability to what
+This appears throughout literature in various forms \citep{Good1952-st,Roulston2002-eq,Benedetti2010-sa,Weijs2010-hg, Peirolo2011-sl,Cover2012-di,Todter2012-ou}. Low surprise means the forecast assigned high probability to what
 actually happened; the logarithm makes the score particularly sensitive
 to confident misses on rare events.
 To prevent $S \to \infty$ when $p_f(c_{\mathrm{obs}}) = 0$, converted
@@ -151,12 +151,12 @@ from replacing a baseline forecast $f_1$ (e.g., a previous model version, or cli
 \label{eq:ig}
 \end{equation}
 Positive IG indicates that the forecast reduced surprise relative to
-the baseline \citep{Roulston2002-eq}. (Equivalently, IG is the
+the baseline \citep{Roulston2002-eq}. Equivalently, IG is the
 difference in sample Kullback--Leibler divergences from the observation
-to each forecast; (REF).)
+to each forecast \citet{Weijs2011-cf}.
 
 Averaging Eq.~\eqref{eq:ig} over a verification sample, the mean
-surprise decomposes into three diagnostic terms:
+surprise decomposes into three diagnostic terms \citep{Hersbach2000-yb}:
 \begin{equation}
 \overline{S}
     = \mathrm{UNC} - \mathrm{DSC} + \mathrm{REL}
@@ -165,7 +165,7 @@ surprise decomposes into three diagnostic terms:
 where \textbf{UNC} is the irreducible uncertainty (entropy of the base
 rate), \textbf{DSC} is discrimination (can the system tell events
 apart?), and \textbf{REL} is calibration error (are
-stated probabilities honest?). To represent the concept of "sharpness", we use DSC
+stated probabilities honest?). As in \citet{Lawson2024-bu}, the concept of "sharpness" is abbreviated by DSC
 (discrimination) rather than RES (resolution) to avoid
 confusion with horizontal grid resolution in
 NWP.
@@ -194,7 +194,7 @@ whether an individual forecast-distribution shape favoured the truth. A system
 with consistently positive~$\delta$ will tend to exhibit high DSC after
 conversion to probabilities, but the two are not interchangeable.
 % JRL - not sure about this. ": DSC also absorbs calibration effects introduced by the conversion."
-Together with critical success index (CSI) of categories (Section XX), the three
+Together with critical success index (CSI; \citealt{Jolliffe2003-xs}) of categories (Section XX), the three
 quantities---$\delta$ (possibilistic, per-forecast), DSC (probabilistic,
 aggregate), and CSI (categorical or binary)---triangulate the forecast's
 ability to separate outcomes.
@@ -243,7 +243,7 @@ produces the same probability vector as one with $\ign = 0.1$,
 provided their raw shapes are proportional. The ignorance signal is erased. Verification scores
 applied to the normalised vector cannot distinguish a sharp, confident
 forecast from a diffuse, hedged one---the answer to ``how would you
-bet?'' is given without acknowledging ``I wouldn't bet at all.''
+bet?'' is given unable to acknowledge ``I wouldn't bet at all'' \citep{Van-Schaeybroeck2016-sl}.
 
 The conversion avoids this by deferring
 probabilistic commitment for the ignorance portion. Mass equal to

@@ -12,8 +12,8 @@ between two obscure teams that have never met---uncertain, grounded
 in ignorance. Probability theory assigns both the same distribution;
 possibility theory does not. The coin forecast is \textit{normal},
 fully endorsing its estimate; the match forecast is
-\textit{subnormal}, encoding that equal odds arose from absence of
-evidence rather than weight of evidence.
+\textit{subnormal}, marking that equal odds arose from absence of
+evidence rather than weight of evidence. The possibility $\Pi$, an effective upper-bound on uncertain probabilities \citep{Dubois1992-gd}, is most beneficial to the most risk-averse end-users, as high value is place on the caveat the worst-case scenario could be even worse due to uncertainty (that are hidden by sharp, traditional probabilities).
 
 Hazard forecasting increasingly relies on probabilistic methods to
 communicate uncertainty: calibrated probability
@@ -39,7 +39,7 @@ Possibility theory extends probability \citep{Zadeh1978-je}: for any event $A$, 
 from necessity $\nec(A)$ to possibility $\poss(A)$ brackets the range
 of consistent probabilities (Section~\ref{sec:poss_axioms}; Table~\ref{tab:notation}
 collects all symbols). Possibility distributions arise naturally in several operational
-settings; for example, expert-rule systems and fuzzy inference engines produce
+settings; for example, expert-rule systems and fuzzy inference engines \citep[][e.g.,]{Chevrie1998-go} produce
 membership functions that are possibility distributions by construction
 \citep{Klir1995-va}. Possibility functions can also be assigned more subjectively with more reliance on human confidence than calculated support in data. In severe-weather forecasting, a
 forecaster may wish to express that \spc{MDT} risk is plausible but not
@@ -50,7 +50,7 @@ $\pi(\spc{MDT}) = 0.7$ says ``\spc{MDT} is fairly compatible with
 available evidence''; it does not say ``the long-run frequency of
 \spc{MDT} events is 70\%.''
 
-For subnormal distributions ($\max_\omega \pi(\omega) < 1$), the
+For subnormal distributions ($\max_\omega \pi(\omega) < 1$),
 possibilistic ignorance $\ign = 1 - \max(\pi)$ quantifies the gap
 between the system's best-supported outcome and full endorsement---a
 signal that probability, which must sum to unity, cannot represent.

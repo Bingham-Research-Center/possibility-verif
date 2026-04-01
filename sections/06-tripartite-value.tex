@@ -33,7 +33,7 @@ rare outcomes like \spc{HIGH}; a skilful possibilistic system should
 outperform this baseline on days when \spc{ENH} or higher categories
 verify, exhibiting positive $\delta$ across the verification sample.
 
-\paragraph{Ignorance: does self-reported uncertainty track difficulty?}
+\paragraph{Ignorance: self-reported uncertainty}
 
 The ignorance component ($\ign$) carries forward from the pre-event
 framework as a neutral forecast property rather than a verification metric
@@ -43,7 +43,7 @@ forecast difficulty---the possibilistic analogue of the
 \textit{spread--skill relationship} in ensemble forecasting, where high
 ensemble spread should correspond to higher forecast error.
 
-The implications are decisive for system design. If \ign{} does
+There is overlap here with ``predicting the predictability" \citep{Coleman2024-hf}; implications are critical for insight into system design. If \ign{} does
 \emph{not} track difficulty, the subnormality signal may be uninformative, hence normalisation is costless. There is little reason to enforce
 $\max(\pi) = 1$ to simplify the framework. If \ign{} \emph{does}
 track difficulty, normalisation destroys operationally valuable
@@ -115,9 +115,8 @@ agreement beyond what random chance would produce.
 Because verification is threshold-based, a peak forecast of \spc{MDT}
 when \spc{HIGH} verifies registers as a hit at all thresholds up to
 \spc{MDT}+ and a miss only at \spc{HIGH}---partial credit for
-near-misses in severity.
-The categorical facet asks ``did the peak-category forecast identify the
-correct severity category?'' and discards all distributional
+near-misses in severity. The categorical product asks, ``did the peak-category forecast identify the
+correct severity category?'', then discards all distributional
 information: a correct peak says nothing about sharpness, hedging, or
 confidence.
 
@@ -131,7 +130,7 @@ The native \textbf{possibilistic} paradigm asks
 It has fleeting connection to probabilistic skill: a well-shaped distribution
 might still give poor probabilities after conversion.
 
-Together, the three facets can expose failures that any single facet may miss.
+Together, the three sets of metrics can expose failures that any single facet may miss.
 A forecast with correct peak category but flat possibility and poor
 IG is a broken clock that happens to be right. A forecast with strong IG but high
 ignorance and low $\Nc^*$ was lucky after conversion due to hedging in the raw system distribution. A forecast with sharp possibility and high $\Nc^*$ but
@@ -140,9 +139,9 @@ probability derivation is spuriously transforming the signal through translation
 
 In practice, an evaluator would compile scorecard aggregates
 across a test sample, tracking changes between model versions or
-seasons. Figure~\ref{fig:scorecard_table} illustrates this convention
-using a aribrary example for an example comparison of four model versions. Metrics are grouped by
-verification facet; filled triangles denote statistically significant
+seasons wit, say, scorecards \citep{Gallo2019-nc}. Figure~\ref{fig:scorecard_table} illustrates this convention
+using a arbitrary example for an example comparison of four model versions. Metrics are grouped by
+verification type; filled triangles denote statistically significant
 change (method at researcher's discretion) and marker size encodes magnitude, following the
 scorecard style used by ECMWF and WMO Lead Centres for NWP
 inter-comparisons.

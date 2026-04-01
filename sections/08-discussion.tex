@@ -36,16 +36,9 @@ exist for producing the subnormal distributions the framework evaluates.
 \textbf{Fuzzy inference systems.}  The most direct route uses fuzzy
 rules whose membership functions are possibility distributions by
 construction \citep{Klir1995-va}. A fuzzy inference system maps input
-meteorological variables through rulesets with fuzzy categories to an output forecast. As an example, the author deploys such as system to generate natively possibilistic forecasts for Utah air quality \citep{Lawson2024-jb}.
+meteorological variables through rulesets with fuzzy categories to an output forecast. Operational examples exist (e.g., \citealt{Asklany2011-yn,Camastra2015-by}), including Bingham Research Center's possibilistic forecasts for Utah air quality \citep{Lawson2024-jb}.
 
-\textbf{Ensemble-derived possibility.} (Le Carer REFs)  For each category, compute the
-fraction of ensemble members predicting it---but do \textit{not}
-normalise to $\max = 1$. Let the ensemble spread speak: if members are
-scattered across categories, the maximum fraction is low and $\ign$ is
-high; if members cluster, the maximum is high and $\ign$ is low. The
-raw ensemble ``support'' for each outcome is already a possibility-like
-quantity. This is the most accessible pathway for a NWP audience:
-ensemble spread, formalised as subnormality.
+\textbf{Ensemble-derived possibility.} The UK Met Office continue to improve production of severity--confidence matrices from ensemble forecasts \citep{Taylor2024-pz,Neal2014-jg,Taylor2019-is}. Framing ensemble spread in terms of subnormality may be the most tangible pathway for an NWP audience, and post-processing provides the opportunity to deploy methods capable of capturing edge cases with low confidence \citep{Williams2014-jb}. Increased nuance applied to National Weather Service (NWS) warnings \citep{Trujillo-Falcon2022-du} continue to extract richer warning guidance tailored to local population.
 
 \textbf{Severity--confidence matrices.}  Operational warning frameworks
 already encode possibilistic structure. The UK Met Office National
@@ -58,7 +51,7 @@ Figure~\ref{fig:severity_matrix} adapts this concept to the paper's SPC
 framework for illustration purposes, mapping severity categories against confidence levels to show
 how the joint signal varies from ``monitor'' (low severity, high
 ignorance) to ``act now'' (high severity, low ignorance). The
-verification framework developed here formalises this operational
+verification framework developed is a mere exercise and not a serious proposal for risk communication today \citep{Rothfusz2018-yk}; it is deployed only to formalise an operational
 intuition with precise metrics.
 
 \begin{figure}[t]
@@ -116,12 +109,12 @@ scorecard does not formally consider category adjacency (find discussion of stat
 
 \subsection{Future work: large-language model (LLM) outlooks}\label{sec:future_directions}
 
-The most immediate application is risk communication via large language
+Given the complexity and comprehensive covered provided by the scorecard, we must seek a complexity dial to deploy language as plain and familiar as necessary \citep{Gigerenzer2005-zs,Joslyn2009-rg}. The most immediate application is risk communication via large language
 models (LLMs). The possibilistic triplet ($\poss$, $\ign$, $\Nc$) is
-a compact, pre-digested summary of forecast state that an LLM can process to yield (theoretically) richer uncertainty discussion outlooks but (theoretically) with sufficient complexity levels adapted for the user's needs. By constraining the LLM's input to structured scorecard
+a compact, pre-digested summary of forecast state that an LLM can process to yield (theoretically) richer uncertainty discussion outlooks. The stepping-down of a scorecard to natural language (prose) is key for public communication of, e.g., SPC forecasts \citep{Krocak2022-sy}; other stakeholders benefit from a full range of forecast variables \citep{McGovern2017-kf,Le_Carrer2021-ke}, with prose at complexity sufficient for the user's needs. By constraining the LLM's input to structured scorecard
 values rather than dense numerical fields, the framework reduces the
 context the model must hold and grounds its generation in
-verifiable quantities. Preliminary work shows large reduction in hallucination.
+verifiable quantities. Preliminary work shows large reduction in hallucination \citep{Jardine1997-tn} when tightly coupled with a (digestible) dataset, tackling a similar problem as \citet{Chen2023-ax} with a simpler method than \citep{Jin2023-cv}.
 
 Translating these triplets into tiered plain-language advisories is the
 subject of ongoing work (Lawson, in prep.). Precedence of using statistics to reduce overwhelming datasets into manageable concepts or clusters exist in large-membership NWP ensembles: it is impossible for a human forecaster to synthesise 50 model forecasts simultaneously; as such, dimension reduction (thresholding; clustering; etc) is used to lower the forecaster burden on contextualising the situation and forecast problem.
