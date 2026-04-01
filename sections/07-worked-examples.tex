@@ -6,26 +6,14 @@
 
 \section{Worked Examples}\label{sec:worked_examples}
 
-This section applies the three verification facets to three stylised
-convective outlook scenarios---sharp-correct, hedged-correct, and
-sharp-wrong---illustrating how each facet adds diagnostic information
-that may be obscured in any single facet.
+To further aid interpretation, discussion that follows applies the range of verification metrics given herein to three canonical examples of
+convective outlooks: sharp-correct, hedged-correct, and
+sharp-wrong. 
 
 %----------------------------------------------------------
 \subsection{Scenario Setup}\label{sec:scenario_setup}
 
-Three stylised possibilistic convective outlooks are defined by hand,
-each representing a distinct forecasting situation. Unlike the synthetic
-reforecast used for the aggregate diagnostics in
-Sections~\ref{sec:diag_diagrams}--\ref{sec:three_lanes}, these
-scenarios are not drawn from a statistical population: they are
-deliberately chosen extremes that isolate specific scorecard behaviours.
-
-All distributions are defined over
-$\Omega = \{\spc{NONE},\, \spc{MRGL},\, \spc{SLGT},\, \spc{ENH},\,
-\spc{MDT},\, \spc{HIGH}\}$ with $K = 6$. The possibilistic forecast is
-envisioned as an early Day-1 outlook verified against the final SPC
-categorical outlook at a single point of interest. This like-for-like
+As introduced in Section~\ref{fig:ig_decomp}, the thought experiment is a notional possibilistic "shadow" forecast where the actual Day-1 outlook stands in a "verification". Given its purely illustratory application herein, despite the awkward concept, this like-for-like
 comparison ensures both forecasts share the same categorical universe.
 
 \paragraph{Scenario A: Sharp-correct \spc{MDT} forecast.}
@@ -33,7 +21,7 @@ comparison ensures both forecasts share the same categorical universe.
 A textbook severe-weather environment: all ingredients for significant
 severe thunderstorms are present and co-located. The system assigns
 high possibility to \spc{MDT} with low subnormality ($m = 0.90$,
-$\ign = 0.10$)---nearly fully committed.
+$\ign = 0.10$) --- nearly fully committed.
 
 \[
 \pi_A(\omega) = \begin{cases}
@@ -49,7 +37,7 @@ Observed outcome: $c_{\mathrm{obs}} = \spc{MDT}$.
 
 \paragraph{Scenario B: Hedged-correct \spc{ENH} forecast.}
 
-Competing signals: moderate instability and adequate shear, but the
+Competing signals of moderate instability and adequate shear mean the
 mesoscale trigger is uncertain. The system hedges across four
 categories with high subnormality ($m = 0.55$, $\ign = 0.45$),
 explicitly advertising limited confidence.
@@ -71,7 +59,7 @@ Observed outcome: $c_{\mathrm{obs}} = \spc{ENH}$.
 Model guidance unanimously favours no severe weather. The system
 confidently assigns high possibility to \spc{NONE} and near-zero to all
 severe categories. In reality, an unresolved mesoscale feature triggers
-an unexpected severe outbreak that verifies at \spc{MDT}---a category
+an unexpected severe outbreak that verifies at \spc{MDT}, a category
 the system deemed essentially impossible.
 
 \[
@@ -196,24 +184,28 @@ beats the $6\%$ climatological rate for \spc{ENH} by a wide margin.
 Scenario~C incurs a penalty ($\mathrm{IG} = -1.678$~bits) because the
 conversion assigns zero probability to the observed outcome. The
 $\varepsilon$-floor ($\varepsilon = 0.01$) prevents an infinite
-penalty but still yields a surprise of $6.644$~bits---far worse than
+penalty but still yields a surprise of $6.644$~bits --- worse than
 the climatological surprise of $4.966$~bits for \spc{MDT}. Crucially,
-low ignorance ($\ign = 0.15$) provides almost no cushion: the system
-left itself no escape route for an outcome it had ruled out.
+low ignorance ($\ign = 0.15$) provides little cushion: the system
+left itself no escape route for an outcome it had ruled impossible.
 
-The $\varepsilon$-floor is a smoothing convention analogous to Laplace
-correction in probability estimation: it prevents the logarithmic score
+The $\varepsilon$-floor prevents the logarithmic score
 from diverging ($-\log_2(0) = \infty$) when the forecast assigns zero
 probability to the observed outcome. The choice $\varepsilon = 0.01$
 is subjective, corresponding roughly to the quantisation floor for a
-system built on $\order{10}$ ensemble members and human
+system built on $\order{100}$ ensemble members and human
 post-processing. Because only $p(c_{\mathrm{obs}})$ enters the
 surprise (Eq.~\ref{eq:surprise}), the full $(n{+}1)$-category
 probability vector need not sum exactly to unity after flooring.
-Sensitivity analysis confirms the qualitative conclusion is invariant:
-$\varepsilon = 0.001$ yields $9.97$~bits surprise; $\varepsilon =
-0.0001$ yields $13.29$~bits. In all cases Scenario~C remains strongly
-negative.
+Sensitivity analysis confirms the qualitative conclusion is invariant and is left to the evaluator's subjectivity:
+
+\begin{itemize}
+    \item $\varepsilon = 0.001$ yields $9.97$~bits surprise,
+    \item $\varepsilon = 0.0001$ yields $13.29$~bits.
+\end{itemize}
+
+While the choice of $\varepsilon$ is important to test as above, we find that Scenario~C remains strongly
+negative no matter the enforced floor.
 
 %----------------------------------------------------------
 \subsection{Full Scorecard Comparison}\label{sec:scorecard_comparison}
@@ -267,9 +259,9 @@ Scenario~B tells a different but equally honest story. Depth-of-truth
 remains perfect ($\alpha^* = 1$) because \spc{ENH} is the possibilistic
 peak, but the hedging shows up: $\ign = 0.45$, $\eta = 0.439$,
 $\Nc^* = 0.273$. The support margin $\delta = +0.561$ is positive
-but moderate---genuine skill tempered by acknowledged uncertainty.
+but moderate, suggesting latent skill tempered by acknowledged uncertainty.
 
-Scenario~C is pathological. The system declared \spc{MDT} impossible
+Scenario~C is a worst-case outcome. The system declared \spc{MDT} impossible
 ($\pi = 0$), so $\alpha^* = 0$ and $\Nc^* = 0$. The support margin
 $\delta = -0.196$ is the only negative value in the table: the forecast
 pointed \emph{away} from the truth. Critically, ignorance was low
@@ -281,25 +273,25 @@ $\delta = +0.561$) from ``confidently wrong'' (Scenario~C:
 $\delta = -0.196$)---precisely the distinction that operational
 forecasters need when tuning a possibilistic system.
 
-\textbf{Why not floor everything at $\varepsilon$?}
-Scenario~C's $\alpha^* = 0$ invites a natural objection: why would a
-system ever declare a category impossible when a small floor
+Given the inability to conclusively call a ``possibilistic bust" in the manner of a binary forecast (tornado observed or not), the reader may ask: \textbf{why not floor everything at $\varepsilon$?}
+From scenario~C, $\alpha^* = 0$ invites this objection: why would a
+system declare a category impossible when a small floor
 ($\pi \geq \varepsilon$) would avoid the zero? Flooring does help on
 misses---Scenario~C's $\delta$ improves by $+0.006$---but it inflates
 $\eta$ on \textit{every} forecast, costing Scenario~A $-0.004$ in
 $\delta$. Because correct forecasts vastly outnumber catastrophic
 misses in any operational sample, the net effect of flooring is
 negative: the chronic diffuseness tax outweighs the rare insurance
-payout. Declaring a category impossible is a strong, valuable claim
+payout. Declaring a category impossible is valuable claim
 when correct---it drives $\eta$ down and $\delta$ up across the
-verification sample---and the scorecard penalises it when
+verification sample---but as the counterpart, the scorecard penalises overconfidence appropriately harshly when
 wrong.
 
-\textbf{Why five numbers?}  Three diagnostic components
+The reader may also ask for more clarity: \textbf{why five numbers?}  Three diagnostic components
 (Table~\ref{tab:three_to_five}) expand to five post-event metrics
 because the possibility component requires three numbers to capture
 support for the truth ($\alpha^*$), forecast spread ($\eta$), and their
-net balance ($\delta$). Section~\ref{sec:tripartite_value} provides the
+net balance ($\delta$). While the scorecard is constructed from insightful metrics subjectively, Section~\ref{sec:tripartite_value} provides the
 formal justification; the three scenarios make the complementarity
 tangible:
 \begin{itemize}[leftmargin=2em]
@@ -317,13 +309,14 @@ tangible:
     $\eta = 0.196$ and $\ign = 0.15$: sharp in shape \textit{and}
     confident in commitment---but aimed at the wrong answer.
     $\eta$ measures shape spread (normalised); $\ign$ measures overall
-    confidence (raw). They can move independently.
+    confidence (raw). They move independently.
 \item \textbf{Net support margin} ($\delta$).
     The one number that combines truth-finding with spread: $\delta > 0$
-    means the forecast's shape helped; $\delta < 0$ means it hurt.
+    means the forecast shape helped; $\delta < 0$ conversely so.
     No other single scorecard metric captures this balance.
 \end{itemize}
-A reduced scorecard would conflate diagnostically distinct situations:
+
+Indeed, a reduced scorecard might conflate diagnostically distinct situations:
 dropping $\Nc^*$ loses the ``winner vs.\ supported'' distinction;
 dropping $\ign$ hides the confidence axis; dropping $\delta$ obscures
 whether the shape pointed toward or away from the truth.
