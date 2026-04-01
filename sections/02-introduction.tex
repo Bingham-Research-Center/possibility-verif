@@ -18,7 +18,7 @@ evidence rather than weight of evidence.
 Hazard forecasting increasingly relies on probabilistic methods to
 communicate uncertainty: calibrated probability
 distributions support principled decision-making and allow rigorous
-verification through proper scoring rules. Yet probability demands
+verification through proper scoring rules \citep{Hendrickson1971-lx,Gneiting2007-ob}. Yet probability demands
 precise quantification, where each outcome receives a single number
 representing relative frequency (or belief), and those numbers
 must sum to unity. Not all forecasting systems produce output that
@@ -35,13 +35,13 @@ additivity requirements. This paper presents a scorecard that capture many ortho
 
 \subsection{Possibility theory and hazard verification}
 
-Possibility theory extends probability: for any event $A$, the interval
+Possibility theory extends probability \citep{Zadeh1978-je}: for any event $A$, the interval
 from necessity $\nec(A)$ to possibility $\poss(A)$ brackets the range
 of consistent probabilities (Section~\ref{sec:poss_axioms}; Table~\ref{tab:notation}
 collects all symbols). Possibility distributions arise naturally in several operational
-settings. Expert-rule systems and fuzzy inference engines produce
+settings; for example, expert-rule systems and fuzzy inference engines produce
 membership functions that are possibility distributions by construction
-\citep{Klir1995-va}. In severe-weather forecasting, a
+\citep{Klir1995-va}. Possibility functions can also be assigned more subjectively with more reliance on human confidence than calculated support in data. In severe-weather forecasting, a
 forecaster may wish to express that \spc{MDT} risk is plausible but not
 certain, while acknowledging that the mesoscale environment is poorly
 sampled---a statement that maps cleanly onto a subnormal possibility
@@ -56,7 +56,7 @@ between the system's best-supported outcome and full endorsement---a
 signal that probability, which must sum to unity, cannot represent.
 Normalising a subnormal distribution to $\pi' \equiv \max(\pi) = 1$ erases this
 signal as it conflates ``the
-system thinks \spc{ENH} is most likely'' with ``the system is
+system considers \spc{ENH} most likely'' with ``the system is
 confident'' (Section~\ref{sec:naive_normalisation} develops this
 contrast).
 
@@ -64,10 +64,8 @@ contrast).
 
 Possibility theory originates with \citet{Zadeh1978-je}, who interpreted fuzzy
 membership functions as possibility distributions. It was formalised
-into a full uncertainty calculus by \citet{Dubois1988-nh}.
-\citet{Dubois2006-MISSING} surveys the mature theory, emphasising the
-bracketing $\nec(A) \leq P(A) \leq \poss(A)$ and its
-application to risk analysis under incomplete information.
+into a full uncertainty calculus by \citet{Dubois1988-nh}. The
+bracketing $\nec(A) \leq P(A) \leq \poss(A)$ is well suited applied to risk analysis under incomplete information.
 \citet{Klir1995-va} couches possibility within a broader group of information theories, clarifying some relationship between
 possibilistic and probabilistic uncertainty measures.
 
@@ -76,7 +74,7 @@ forecasts often uses \textit{proper} scoring rules, where forecasters cannot hed
 introduced ignorance, or relative entropy (REF) and logarithmic score (Good REF), measuring forecast value as
 the reduction in Shannon entropy relative to a climatological baseline (REF).
 (REFS) formalise decomposition of overall skill into uncertainty,
-discrimination, and reliability components analogous to Brier-type decomposition \citep{Lawson2024-bu}. These tools are designed for probability vectors, not possibility
+discrimination, and reliability components analogous to Brier-type decomposition (Weijs, Toedter, Roulston/Smith, Cover/Thomas, Pierolo, Benedetti, Lawson) \citep{Lawson2024-bu}. These tools are designed for probability vectors, not possibility
 distributions that violate the additivity axiom.
 The broader meteorological verification literature
 \citep{Murphy1993-MISSING,Jolliffe2012-MISSING,Wilks2011-vw} provides
