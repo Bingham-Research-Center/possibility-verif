@@ -6,15 +6,22 @@
 
 \section{Worked Examples}\label{sec:worked_examples}
 
-To further aid interpretation, discussion that follows applies the range of verification metrics given herein to three canonical examples of
-convective outlooks: sharp-correct, hedged-correct, and
-sharp-wrong. 
+To further aid interpretation, discussion that follows
+applies the range of verification metrics given herein
+to three canonical examples of convective outlooks:
+sharp-correct, hedged-correct, and sharp-wrong.
 
 %----------------------------------------------------------
 \subsection{Scenario Setup}\label{sec:scenario_setup}
 
-As introduced in Section~\ref{fig:ig_decomp}, the thought experiment is a notional possibilistic "shadow" forecast where the actual Day-1 outlook stands in a "verification". Given its purely illustratory application herein, despite the awkward concept, this like-for-like
-comparison ensures both forecasts share the same categorical universe.
+As introduced in Section~\ref{fig:ig_decomp},
+the thought experiment is a notional possibilistic
+"shadow" forecast where the actual Day-1 outlook
+stands in a "verification".
+Given its purely illustratory application herein,
+despite the awkward concept,
+this like-for-like comparison ensures both forecasts
+share the same categorical universe.
 
 \paragraph{Scenario A: Sharp-correct \spc{MDT} forecast.}
 
@@ -197,15 +204,23 @@ system built on $\order{100}$ ensemble members and human
 post-processing. Because only $p(c_{\mathrm{obs}})$ enters the
 surprise (Eq.~\ref{eq:surprise}), the full $(n{+}1)$-category
 probability vector need not sum exactly to unity after flooring.
-Sensitivity analysis confirms the qualitative conclusion is invariant and is left to the evaluator's subjectivity:
+Sensitivity analysis confirms the qualitative
+conclusion is invariant and is left to the
+evaluator's subjectivity:
 
 \begin{itemize}
     \item $\varepsilon = 0.001$ yields $9.97$~bits surprise,
     \item $\varepsilon = 0.0001$ yields $13.29$~bits.
 \end{itemize}
 
-While the choice of $\varepsilon$ is important to test as above, we find that Scenario~C remains strongly
-negative no matter the enforced floor. The author submits the subjective choice of $\varepsilon$ is less important than the desired behaviour of information-theoretical scores \citep{McCutcheon2019-jq}.
+While the choice of $\varepsilon$ is important to
+test as above,
+we find that Scenario~C remains strongly negative
+no matter the enforced floor.
+The author submits the subjective choice of
+$\varepsilon$ is less important than the desired
+behaviour of information-theoretical
+scores \citep{McCutcheon2019-jq}.
 
 %----------------------------------------------------------
 \subsection{Full Scorecard Comparison}\label{sec:scorecard_comparison}
@@ -273,7 +288,11 @@ $\delta = +0.561$) from ``confidently wrong'' (Scenario~C:
 $\delta = -0.196$)---precisely the distinction that operational
 forecasters need when tuning a possibilistic system.
 
-Given the inability to conclusively call a ``possibilistic bust" in the manner of a binary forecast (tornado observed or not), the reader may ask: \textbf{why not floor everything at $\varepsilon$?}
+Given the inability to conclusively call a
+``possibilistic bust" in the manner of a binary
+forecast (tornado observed or not),
+the reader may ask:
+\textbf{why not floor everything at $\varepsilon$?}
 From scenario~C, $\alpha^* = 0$ invites this objection: why would a
 system declare a category impossible when a small floor
 ($\pi \geq \varepsilon$) would avoid the zero? Flooring does help on
@@ -284,15 +303,21 @@ misses in any operational sample, the net effect of flooring is
 negative: the chronic diffuseness tax outweighs the rare insurance
 payout. Declaring a category impossible is valuable claim
 when correct---it drives $\eta$ down and $\delta$ up across the
-verification sample---but as the counterpart, the scorecard penalises overconfidence appropriately harshly when
-wrong.
+verification sample---but as the counterpart,
+the scorecard penalises overconfidence
+appropriately harshly when wrong.
 
-The reader may also ask for more clarity: \textbf{why five numbers?}  Three diagnostic components
+The reader may also ask for more clarity:
+\textbf{why five numbers?} Three diagnostic components
 (Table~\ref{tab:three_to_five}) expand to five post-event metrics
 because the possibility component requires three numbers to capture
 support for the truth ($\alpha^*$), forecast spread ($\eta$), and their
-net balance ($\delta$). While the scorecard is constructed from insightful metrics subjectively, Section~\ref{sec:tripartite_value} provides the
-formal justification; the three scenarios make the complementarity
+net balance ($\delta$).
+While the scorecard is constructed from insightful
+metrics subjectively,
+Section~\ref{sec:tripartite_value} provides the
+formal justification;
+the three scenarios make the complementarity
 tangible:
 \begin{itemize}[leftmargin=2em]
 \item \textbf{Truth-finding pair} ($\alpha^*$ vs.\ $\Nc^*$).

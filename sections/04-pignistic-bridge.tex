@@ -9,21 +9,35 @@
 \section{Converting Possibilities to Probabilities}%
 \label{sec:pignistic_bridge}
 
-Probabilistic verification scores familiar to forecasters, such as the logarithmic score (REF), Brier score
-\citep{Brier1950-lc}, etc., cannot evaluate possibilities. Values $\Pi \in \pi$ encode plausibility rather than relative
-frequency, and subnormal distributions are permissible (i.e., a fully possible event is not enforced). The conversion developed below transforms a subnormal possibility
-distribution into an $(n{+}1)$-category probability vector, preserving
-the subnormality signal as explicit ignorance rather than
-erasing through na\"ive normalisation. The term \textit{pignistic}
-(from Latin \textit{pignus}, a wager) denotes the probabilities one
-would assign if forced to bet (REF); the conversion shares this forced-betting
+Probabilistic verification scores familiar to
+forecasters,
+such as the logarithmic score (REF),
+Brier score \citep{Brier1950-lc}, etc.,
+cannot evaluate possibilities.
+Values $\Pi \in \pi$ encode plausibility rather
+than relative frequency,
+and subnormal distributions are permissible
+(i.e., a fully possible event is not enforced).
+The conversion developed below transforms a
+subnormal possibility distribution into an
+$(n{+}1)$-category probability vector,
+preserving the subnormality signal as explicit
+ignorance rather than erasing through na\"ive
+normalisation.
+The term \textit{pignistic}
+(from Latin \textit{pignus}, a wager) denotes
+the probabilities one would assign if forced to
+bet (REF);
+the conversion shares this forced-betting
 intuition.
 
 %----------------------------------------------------------
 \subsection{Possibility-to-Probability Conversion}%
 \label{sec:poss_prob_bridge}
 
-We seek specific characteristics when applying probabilistic verification to possibilistic forecasts.
+We seek specific characteristics when applying
+probabilistic verification to possibilistic
+forecasts.
 
 \begin{workedexample}[Desiderata]
 Any such conversion should satisfy:
@@ -41,27 +55,46 @@ Peak possibility $m = \max(\pi)$ is \textit{commitment}: the
 fraction of a unit plausibility budget that the system reserved for
 its assessment. The remaining $1 - m$ is the
 system's admission that it cannot fully explore outcome space.
-The conversion sets this ignorance share aside as an explicit ``unsure'' outcome \citep{Lawson2024-jc}. The committed portion is then distributed
-proportionally among the weather categories, preserving their relative
-plausibility ranking. A confident system ($m \approx 1$) stakes nearly
-everything; an uncertain one ($m \ll 1$) strands most mass in the
-ignorance bin, where it earns no verification credit but is a neutral measure.
+The conversion sets this ignorance share aside
+as an explicit ``unsure'' outcome \citep{Lawson2024-jc}.
+The committed portion is then distributed
+proportionally among the weather categories,
+preserving their relative plausibility ranking.
+A confident system ($m \approx 1$) stakes nearly
+everything;
+an uncertain one ($m \ll 1$) strands most mass
+in the ignorance bin,
+where it earns no verification credit but is a
+neutral measure.
 
 The pignistic
 transformation \citep{Smets1990-nf,Sudano2015-rk} is valid for
-Dempster--Shafer belief functions: a similar approach to classical possibility theory detailed in \citet{Yager2005-at}. The full belief mass is
-redistributed across focal elements to form a probability as in \citet{Le_Carrer2021-by}; it does not
-reserve any mass for ignorance. Hence all plausibility is converted,
-regardless of how much evidential support it carries. For subnormal
-possibility distributions, a system with $\ign = 0.5$ (admitting half its
-budget is unsupported) would produce the same probability vector as one
-with $\ign = 0$ (fully committed), provided their raw shapes are
-proportional. The conversion below avoids this by reserving the
-ignorance mass as an explicit $(n{+}1)$-th outcome, ensuring
-subnormality directly affects verification scores. For normal
-distributions ($\ign = 0$), both methods coincide.
+Dempster--Shafer belief functions:
+a similar approach to classical possibility
+theory detailed in \citet{Yager2005-at}.
+The full belief mass is redistributed across
+focal elements to form a probability as
+in \citet{Le_Carrer2021-by};
+it does not reserve any mass for ignorance.
+Hence all plausibility is converted,
+regardless of how much evidential support it
+carries.
+For subnormal possibility distributions,
+a system with $\ign = 0.5$ (admitting half its
+budget is unsupported) would produce the same
+probability vector as one with $\ign = 0$
+(fully committed),
+provided their raw shapes are proportional.
+The conversion below avoids this by reserving
+the ignorance mass as an explicit
+$(n{+}1)$-th outcome,
+ensuring subnormality directly affects
+verification scores.
+For normal distributions ($\ign = 0$),
+both methods coincide.
 
-\textbf{Formal procedure.}  The conversion proceeds in three steps:
+\textbf{Formal procedure.} The conversion
+proceeds in three steps:
 \begin{enumerate}[leftmargin=2em]
 \item \textbf{Reserve} ignorance mass:
     $p_{\mathrm{ign}} = \ign = 1 - \max(\pi)$.
@@ -112,38 +145,55 @@ Figure~\ref{fig:pignistic_bridge} visualises this transformation.
 \begin{figure*}[!t]
 \centering
 \includegraphics[width=0.85\textwidth]{pignistic_bridge.png}
-\caption{Possibility-to-probability conversion applied to a subnormal
-    distribution. \textbf{(a)}~Raw possibility values $\pi(\omega)$
-    for six SPC categories. \textbf{(b)}~Resulting $(n{+}1)$-category
-    probability vector, with the grey bar representing the explicit
-    ignorance outcome $p_{\mathrm{ign}} = \ign$. Arrows show
-    proportional redistribution of the remaining $(1 - \ign)$ mass. The
-    ignorance outcome absorbs probability mass that simple normalisation
-    would have spread across all categories, preserving the subnormality
-    signal.}
+\caption{Possibility-to-probability conversion
+    applied to a subnormal distribution.
+    \textbf{(a)}~Raw possibility values
+    $\pi(\omega)$ for six SPC categories.
+    \textbf{(b)}~Resulting $(n{+}1)$-category
+    probability vector,
+    with the grey bar representing the explicit
+    ignorance outcome $p_{\mathrm{ign}} = \ign$.
+    Arrows show proportional redistribution of
+    the remaining $(1 - \ign)$ mass.
+    The ignorance outcome absorbs probability
+    mass that simple normalisation would have
+    spread across all categories,
+    preserving the subnormality signal.}
 \label{fig:pignistic_bridge}
 \end{figure*}
 
 %----------------------------------------------------------
-\subsection{Information-Gain Decomposition}\label{sec:ig_decomposition}
+\subsection{Information-Gain Decomposition}%
+\label{sec:ig_decomposition}
 
-Once possibilities have been converted to probabilities, standard
-verification applies. Define the \textbf{surprise} of a forecast at the
-observed outcome as the log score \citep{Shannon1948-nc}:
+Once possibilities have been converted to
+probabilities, standard verification applies.
+Define the \textbf{surprise} of a forecast at
+the observed outcome as the log
+score \citep{Shannon1948-nc}:
 \begin{equation}
 S(f,\, c_{\mathrm{obs}})
     = -\log_2 p_f(c_{\mathrm{obs}}) \quad \text{(bits)}
 \label{eq:surprise}
 \end{equation}
-This appears throughout literature in various forms \citep{Good1952-st,Roulston2002-eq,Benedetti2010-sa,Weijs2010-hg, Peirolo2011-sl,Cover2012-di,Todter2012-ou}. Low surprise means the forecast assigned high probability to what
-actually happened; the logarithm makes the score particularly sensitive
-to confident misses on rare events.
-To prevent $S \to \infty$ when $p_f(c_{\mathrm{obs}}) = 0$, converted
-probabilities are subjectively floored at $\varepsilon = 0.01$ throughout;
-Section~\ref{sec:bridge_walkthrough} provides sensitivity analysis.
+This appears throughout literature in
+various forms
+\citep{Good1952-st,Roulston2002-eq,Benedetti2010-sa,Weijs2010-hg, Peirolo2011-sl,Cover2012-di,Todter2012-ou}.
+Low surprise means the forecast assigned high
+probability to what actually happened;
+the logarithm makes the score particularly
+sensitive to confident misses on rare events.
+To prevent $S \to \infty$ when
+$p_f(c_{\mathrm{obs}}) = 0$,
+converted probabilities are subjectively floored
+at $\varepsilon = 0.01$ throughout;
+Section~\ref{sec:bridge_walkthrough} provides
+sensitivity analysis.
 
 \textbf{Information gain} (IG) then measures the reduction in surprise
-from replacing a baseline forecast $f_1$ (e.g., a previous model version, or climatology) with forecast $f_2$:
+from replacing a baseline forecast $f_1$
+(e.g., a previous model version,
+or climatology) with forecast $f_2$:
 \begin{equation}
 \mathrm{IG}
     = S(f_1,\, c_{\mathrm{obs}})
@@ -152,11 +202,13 @@ from replacing a baseline forecast $f_1$ (e.g., a previous model version, or cli
 \end{equation}
 Positive IG indicates that the forecast reduced surprise relative to
 the baseline \citep{Roulston2002-eq}. Equivalently, IG is the
-difference in sample Kullback--Leibler divergences from the observation
-to each forecast \citet{Weijs2011-cf}.
+difference in sample Kullback--Leibler divergences
+from the observation to each
+forecast \citet{Weijs2011-cf}.
 
-Averaging Eq.~\eqref{eq:ig} over a verification sample, the mean
-surprise decomposes into three diagnostic terms \citep{Hersbach2000-yb}:
+Averaging Eq.~\eqref{eq:ig} over a verification
+sample, the mean surprise decomposes into three
+diagnostic terms \citep{Hersbach2000-yb}:
 \begin{equation}
 \overline{S}
     = \mathrm{UNC} - \mathrm{DSC} + \mathrm{REL}
@@ -165,7 +217,9 @@ surprise decomposes into three diagnostic terms \citep{Hersbach2000-yb}:
 where \textbf{UNC} is the irreducible uncertainty (entropy of the base
 rate), \textbf{DSC} is discrimination (can the system tell events
 apart?), and \textbf{REL} is calibration error (are
-stated probabilities honest?). As in \citet{Lawson2024-bu}, the concept of "sharpness" is abbreviated by DSC
+stated probabilities honest?).
+As in \citet{Lawson2024-bu},
+the concept of ``sharpness'' is abbreviated by DSC
 (discrimination) rather than RES (resolution) to avoid
 confusion with horizontal grid resolution in
 NWP.
@@ -174,7 +228,7 @@ NWP.
 
 %\footnote{DSC here denotes the same quantity as RES (resolution) in
 %the Brier score decomposition. It should not be confused with the
-%distinct ``discrimination'' concept of \citet{Murphy1993-MISSING}, which
+%distinct ``discrimination'' concept of \citet{Murphy1984-ox}, which
 %conditions on observations rather than forecasts. The per-forecast
 %possibilistic counterpart is the support margin~$\delta$
 %(Section~\ref{sec:native_scorecard}).}
@@ -190,21 +244,34 @@ operates in bits---additive, interpretable information units.
 
 The analogue of DSC on the possibilistic scorecard
 (Section~\ref{sec:native_scorecard}) is support margin~$\delta$:
-whether an individual forecast-distribution shape favoured the truth. A system
-with consistently positive~$\delta$ will tend to exhibit high DSC after
+whether an individual forecast-distribution
+shape favoured the truth.
+A system with consistently positive~$\delta$
+will tend to exhibit high DSC after
 conversion to probabilities, but the two are not interchangeable.
 % JRL - not sure about this. ": DSC also absorbs calibration effects introduced by the conversion."
-Together with critical success index (CSI; \citealt{Jolliffe2003-xs}) of categories (Section XX), the three
-quantities---$\delta$ (possibilistic, per-forecast), DSC (probabilistic,
-aggregate), and CSI (categorical or binary)---triangulate the forecast's
-ability to separate outcomes.
+Together with critical success index
+(CSI; \citealt{Jolliffe2003-xs})
+of categories (Section XX),
+the three quantities---$\delta$ (possibilistic,
+per-forecast),
+DSC (probabilistic, aggregate),
+and CSI (categorical or binary)---triangulate
+the forecast's ability to separate outcomes.
 
 Figure~\ref{fig:ig_decomp} illustrates the decomposition for five
 forecast archetypes (distinct from the three worked scenarios of
-Section~\ref{sec:worked_examples}). The key contrast is between Sharp Correct
+Section~\ref{sec:worked_examples}).
+The key contrast is between Sharp Correct
 (nearly all discrimination retained, IG~$= +1.75$~bits) and Sharp
 Wrong (the calibration penalty consumes the discrimination entirely
-and extends below zero, IG~$= -0.75$~bits). When comparing DSC and REL, note Sharp-Wrong retains positive DSC despite net information loss, representing the salvaged benefit of ruling out some outcomes, which is then far outweighed by REL.
+and extends below zero, IG~$= -0.75$~bits).
+When comparing DSC and REL,
+note Sharp-Wrong retains positive DSC despite
+net information loss,
+representing the salvaged benefit of ruling out
+some outcomes,
+which is then far outweighed by REL.
 DSC measures whether the system produces different probability
 assignments for different observed categories---the ability to
 differentiate situations, regardless of direction. A sharp-wrong
@@ -218,16 +285,21 @@ commits confidently to the wrong answer.
 \begin{figure}[!b]
 \centering
 \includegraphics[width=\columnwidth]{ig_decomposition.png}
-\caption{Information-gain decomposition for five forecast archetypes
-    (illustrative values). Purple bars show gross discrimination
-    (DSC); semi-transparent green overlays show the reliability penalty
-    (REL) consuming DSC from the top. Net
+\caption{Information-gain decomposition for five
+    forecast archetypes (illustrative values).
+    Purple bars show gross discrimination (DSC);
+    semi-transparent green overlays show the
+    reliability penalty (REL) consuming DSC
+    from the top. Net
     $\mathrm{IG} = \mathrm{DSC} - \mathrm{REL}$ is marked by the
     horizontal tick on each bar; the zero baseline represents
     climatological performance. When REL exceeds DSC (Sharp Wrong,
     Hedged Wrong), the green extends below zero: the calibration tax
-    consumed more skill than added through discrimination. DSC and REL are
-    sample-aggregated quantities decomposed from a verification subset dominated by each forecast archetype.}
+    consumed more skill than added through
+    discrimination.
+    DSC and REL are sample-aggregated quantities
+    decomposed from a verification subset
+    dominated by each forecast archetype.}
 \label{fig:ig_decomp}
 \end{figure}
 
@@ -240,10 +312,13 @@ route from possibilities to probabilities. It forces the result to sum
 to one regardless of model confidence: a system with $\ign = 0.9$
 (leaving 90\% of the unit-interval plausibility budget unassigned)
 produces the same probability vector as one with $\ign = 0.1$,
-provided their raw shapes are proportional. The ignorance signal is erased. Verification scores
+provided their raw shapes are proportional.
+The ignorance signal is erased.
+Verification scores
 applied to the normalised vector cannot distinguish a sharp, confident
 forecast from a diffuse, hedged one---the answer to ``how would you
-bet?'' is given unable to acknowledge ``I wouldn't bet at all'' \citep{Van-Schaeybroeck2016-sl}.
+bet?'' is given unable to acknowledge
+``I wouldn't bet at all'' \citep{Van-Schaeybroeck2016-sl}.
 
 The conversion avoids this by deferring
 probabilistic commitment for the ignorance portion. Mass equal to
@@ -270,19 +345,24 @@ Surprise (bits) & $-\log_2(0.444) = 1.17$ & $-\log_2(0.267) = 1.91$ \\
 \end{tabular}
 \end{center}
 
-\noindent The $0.74$-bit gap is the verification cost of ignoring admitted uncertainty. Simple normalisation rewards the system
-for confidence it never claimed.
+\noindent The $0.74$-bit gap is the verification
+cost of ignoring admitted uncertainty.
+Simple normalisation rewards the system for
+confidence it never claimed.
 \end{workedexample}
 
 \textbf{Complementarity of \ign{} and IG.}
-Possibilistic ignorance $\ign$ and the reduction of ignorance measured by IG capture
+Possibilistic ignorance $\ign$ and the reduction
+of ignorance measured by IG capture
 complementary dimensions of forecast quality:
 \begin{itemize}[leftmargin=2em]
 \item \textbf{$\ign$ (possibilistic ignorance):} Measures the
-    forecasting system's support strength---did the system know what was
-    going on? Derived from the subnormality of the raw output
+    forecasting system's support strength---did
+    the system know what was going on?
+    Derived from the subnormality of the raw output
     (Eq.~\ref{eq:ignorance}).
-\item \textbf{IG (information gain):} Measures forecast value---did the
+\item \textbf{IG (information gain):}
+    Measures forecast value---did the
     forecast reduce surprise about what happened? Derived from the
     probability-converted forecast evaluated against observations.
 \end{itemize}
@@ -290,10 +370,13 @@ complementary dimensions of forecast quality:
 Both are needed because:
 \begin{itemize}[leftmargin=2em]
 \item A \textbf{sharp wrong} forecast has low \ign{} but negative IG.
-\item A \textbf{hedged correct} forecast has high \ign{} but positive IG.
-\item A \textbf{sharp correct} forecast has low \ign{} and high IG (ideal).
+\item A \textbf{hedged correct} forecast has
+    high \ign{} but positive IG.
+\item A \textbf{sharp correct} forecast has
+    low \ign{} and high IG (ideal).
 \item A \textbf{hedged wrong} forecast has high \ign{} and negative
-    IG---the system knew it was unsure, and it still ruled the outcome implausible.
+    IG---the system knew it was unsure,
+    and it still ruled the outcome implausible.
 \end{itemize}
 
 \FloatBarrier

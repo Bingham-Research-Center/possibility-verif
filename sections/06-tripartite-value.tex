@@ -25,7 +25,9 @@ forecasts to probabilistic and categorical verification.
 The possibility elements ($\alpha^*$, $\eta$, $\delta$) capture
 whether the system's distributional shape favours the observed outcome.
 Its value reduces to asking if the system's
-support margin $\delta$ exceeds that of a na\"ive baseline. Accordingly, comparing $\delta$ against climatology or persistence is a possibilistic
+support margin $\delta$ exceeds that of a na\"ive baseline.
+Accordingly, comparing $\delta$ against climatology
+or persistence is a possibilistic
 analogue of Brier skill-score comparison
 (Section~\ref{sec:limitations}. For SPC outlooks, climatology
 peaks at the most frequent category and assigns near-zero possibility to
@@ -36,15 +38,26 @@ verify, exhibiting positive $\delta$ across the verification sample.
 \paragraph{Ignorance: self-reported uncertainty}
 
 The ignorance component ($\ign$) carries forward from the pre-event
-framework as a neutral forecast property rather than a verification metric
-(Table~\ref{tab:three_to_five}). The admittance of ignorance is useful \textit{per se}; there is further benefit when coupled with other scorecard metrics. For example, if high-\ign{} forecasts tend to have lower
+framework as a neutral forecast property
+rather than a verification metric
+(Table~\ref{tab:three_to_five}).
+The admittance of ignorance is useful \textit{per se};
+there is further benefit when coupled with
+other scorecard metrics.
+For example, if high-\ign{} forecasts tend to have lower
 mean $\delta$ than low-\ign{} forecasts, then $\ign$ tracks actual
 forecast difficulty---the possibilistic analogue of the
 \textit{spread--skill relationship} in ensemble forecasting, where high
 ensemble spread should correspond to higher forecast error.
 
-There is overlap here with ``predicting the predictability" \citep{Coleman2024-hf}; implications are critical for insight into system design. If \ign{} does
-\emph{not} track difficulty, the subnormality signal may be uninformative, hence normalisation is costless. There is little reason to enforce
+There is overlap here with
+``predicting the predictability'' \citep{Coleman2024-hf};
+implications are critical for insight
+into system design.
+If \ign{} does \emph{not} track difficulty,
+the subnormality signal may be uninformative,
+hence normalisation is costless.
+There is little reason to enforce
 $\max(\pi) = 1$ to simplify the framework. If \ign{} \emph{does}
 track difficulty, normalisation destroys operationally valuable
 information: power to distinguish confident forecasts from hedged ones.
@@ -54,9 +67,12 @@ information: power to distinguish confident forecasts from hedged ones.
 When the system assigns high conditional necessity to an outcome, that
 outcome should verify more often than the base rate. This is the
 possibilistic analogue of \textit{reliability conditional on
-confidence}: ensemble forecast calibration answers the prompt, ``when the ensemble
-gives ${>}80\%$ chance of severe weather, does it verify ${>}80\%$ of
-the time?''  Here the question becomes: when $\Nc(\hat{c}) > \tau$ for
+confidence}: ensemble forecast calibration answers
+the prompt, ``when the ensemble
+gives ${>}80\%$ chance of severe weather,
+does it verify ${>}80\%$ of the time?''
+Here the question becomes:
+when $\Nc(\hat{c}) > \tau$ for
 threshold $\tau$, does the conditional hit rate exceed climatology?
 Note the shift: here we condition on the forecast's own peak category
 $\hat{c}$ rather than the observation, since reliability is a
@@ -85,75 +101,88 @@ separation would be more pronounced.
     unconditional system accuracy (dot-dashed). Shaded band: notional
     confidence interval. Inset: declining sample size at high $\tau$.
     The near-flat curve reflects the synthetic system's high baseline
-    accuracy; the uptick at $\tau > 0.8$ confirms that $\Nc(\hat{c})$ adds confidence signal.}
+    accuracy; the uptick at $\tau > 0.8$ confirms
+    that $\Nc(\hat{c})$ adds confidence signal.}
 \label{fig:reliability}
 \end{figure}
 
 %----------------------------------------------------------
 \subsection{Three Verification Facets}\label{sec:three_lanes}
 
-The paper proposes three expressions for forecast uncertainty and five
-metrics to evaluate forecast quality. The \textbf{categorical facet} reduces each distribution to its peak
-category $\hat{c} = \arg\max \pi(\omega)$ (ties broken by severity)
-and applies threshold-based contingency scores. For each severity
-threshold~$t$ (\spc{MRGL}+, \spc{SLGT}+, \ldots, \spc{HIGH}), the
-forecast issues ``yes'' if $\hat{c} \geq t$ and ``no'' otherwise; the
-observation is ``yes'' if $c_{\mathrm{obs}} \geq t$. Four scores
-evaluate each threshold:
-\begin{align*}
-\mathrm{POD}  &= \frac{\text{hits}}{\text{hits} + \text{misses}}
-    &&\text{(did the system detect events?)} \\
-\mathrm{FAR}  &= \frac{\text{false alarms}}{\text{hits} + \text{false alarms}}
-    &&\text{(when it said ``yes,'' was it right?)} \\
-\mathrm{CSI}  &= \frac{\text{hits}}{\text{hits} + \text{misses} + \text{false alarms}}
-    &&\text{(joint penalty for misses and false alarms)}
-\end{align*}
-POD alone rewards over-forecasting; FAR alone rewards
-under-forecasting; CSI balances both. The Heidke skill score (HSS),
-computed from the full $K \times K$ confusion matrix, measures
-agreement beyond what random chance would produce.
-Because verification is threshold-based, a peak forecast of \spc{MDT}
-when \spc{HIGH} verifies registers as a hit at all thresholds up to
-\spc{MDT}+ and a miss only at \spc{HIGH}---partial credit for
-near-misses in severity. The categorical product asks, ``did the peak-category forecast identify the
-correct severity category?'', then discards all distributional
-information: a correct peak says nothing about sharpness, hedging, or
-confidence.
+The paper proposes three expressions for forecast uncertainty
+and five metrics to evaluate forecast quality.
+The \textbf{categorical facet} reduces each distribution to
+its peak category and applies threshold-based contingency
+scores---POD, FAR, CSI, PSS, and HSS---defined in
+Section~\ref{sec:cat_scores}
+(Eqs.~\ref{eq:pod}--\ref{eq:hss_kxk}).
+Because verification is threshold-based, a peak forecast of
+\spc{MDT} when \spc{HIGH} verifies registers as a hit at
+all thresholds up to \spc{MDT}+ and a miss only at
+\spc{HIGH}---partial credit for near-misses in severity.
+The categorical product asks, ``did the peak-category
+forecast identify the correct severity category?'', then
+discards all distributional information: a correct peak
+says nothing about sharpness, hedging, or confidence.
 
-The \textbf{probabilistic facet} (IG via probability conversion) asks
-``was the probabilistic forecast informative (reduce surprise)?''  The conversion is
-lossy---it compresses the full possibility shape into $n{+}1$
+The \textbf{probabilistic facet}
+(IG via probability conversion) asks
+``was the probabilistic forecast informative
+(reduce surprise)?''
+The conversion is lossy---it compresses
+the full possibility shape into $n{+}1$
 probabilities, with subnormality collapsed into a single ignorance bin.
 
 The native \textbf{possibilistic} paradigm asks
 ``was the possibility distribution well-shaped, sharp, and honest?''
-It has fleeting connection to probabilistic skill: a well-shaped distribution
-might still give poor probabilities after conversion.
+It has fleeting connection to probabilistic skill:
+a well-shaped distribution might still give
+poor probabilities after conversion.
 
-Together, the three sets of metrics can expose failures that any single facet may miss.
-A forecast with correct peak category but flat possibility and poor
-IG is a broken clock that happens to be right. A forecast with strong IG but high
-ignorance and low $\Nc^*$ was lucky after conversion due to hedging in the raw system distribution. A forecast with sharp possibility and high $\Nc^*$ but
-poor IG may indicate distortion introduced by the conversion---the
-probability derivation is spuriously transforming the signal through translation, compression, etc. 
+Together, the three sets of metrics can expose
+failures that any single facet may miss.
+A forecast with correct peak category but flat
+possibility and poor IG is a broken clock
+that happens to be right.
+A forecast with strong IG but high ignorance
+and low $\Nc^*$ was lucky after conversion
+due to hedging in the raw system distribution.
+A forecast with sharp possibility
+and high $\Nc^*$ but poor IG may indicate
+distortion introduced by the conversion---the
+probability derivation is spuriously transforming
+the signal through translation,
+compression, etc.
 
 In practice, an evaluator would compile scorecard aggregates
 across a test sample, tracking changes between model versions or
-seasons wit, say, scorecards \citep{Gallo2019-nc}. Figure~\ref{fig:scorecard_table} illustrates this convention
-using a arbitrary example for an example comparison of four model versions. Metrics are grouped by
-verification type; filled triangles denote statistically significant
-change (method at researcher's discretion) and marker size encodes magnitude, following the
-scorecard style used by ECMWF and WMO Lead Centres for NWP
-inter-comparisons.
+seasons wit, say, scorecards \citep{Gallo2019-nc}.
+Figure~\ref{fig:scorecard_table} illustrates
+this convention using a arbitrary example
+for an example comparison of four model versions.
+Metrics are grouped by verification type;
+filled triangles denote statistically significant
+change (method at researcher's discretion)
+and marker size encodes magnitude,
+following the scorecard style used by ECMWF
+and WMO Lead Centres for NWP inter-comparisons.
 
-The scorecard provides an accessible overview at a glance: a column of large green
-triangles means the new version is broadly better; a red triangle amidst
-green ones flags a trade-off that warrants investigation. The example in Fig.~\ref{fig:scorecard_table}
-tells a narrative that version~2.0 improved discrimination
+The scorecard provides an accessible overview
+at a glance:
+a column of large green triangles means the new
+version is broadly better;
+a red triangle amidst green ones flags a trade-off
+that warrants investigation.
+The example in Fig.~\ref{fig:scorecard_table}
+tells a narrative that version~2.0
+improved discrimination
 but increased ignorance (the system learned to hedge more honestly);
 version~3.0 delivered broad gains across all three facets; version~4.0
 pushed discrimination further at the cost of slight reliability
-degradation. These unavoidable trade-offs are immediately visible and provides insights a single-metric evaluation would likely miss.
+degradation.
+These unavoidable trade-offs are immediately visible
+and provides insights a single-metric evaluation
+would likely miss.
 
 \begin{figure}[t]
 \centering
