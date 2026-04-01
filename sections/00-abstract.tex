@@ -4,39 +4,31 @@
 %----------------------------------------------------------
 
 \begin{abstract}
-Communication of risk under high uncertainty, such as severe
-convective weather, air pollution, etc., often uses sharp
-probabilities. Possibility theory (the idea that probabilities
-themselves have uncertainty) offers a framework for measuring
-multifaceted aspects of hazard forecasting. A possibility framework
-allows a stepping-down to probabilistic or categorical/binary
-predictions where needed, hence an appropriate amount of complexity
-may be retained. In pursuit of model evaluation and optimisation,
-this paper presents a dedicated verification methodology. A
-\textit{subnormal} possibility distribution $\pi$ over multiple
-outcomes---one whose maximum falls below unity---is framed as three
-forecast components: possibility $\poss$ (how plausible is each
-outcome?), ignorance $\ign$ (how much of the plausibility budget is
-unassigned?), and conditional necessity $\Nc$ (amongst covered
-outcomes, which dominates?). Ignorance $\ign$ has no probabilistic
-counterpart: probability, which must sum to unity, cannot distinguish
-confident forecasts from uncertain ones. This paper presents a
-five-number scorecard for possibilistic forecasts that evaluates this
-forecast after observing the outcome, comprising depth-of-truth
-($\alpha^*$), diffuseness ($\eta$), support margin ($\delta$),
-conditional necessity of truth ($\Nc^*$), whilst also carrying $\ign$
-as a neutral metric. A further possibility-to-probability conversion
-explicitly preserves ignorance. This allows comparison of
-probabilistic forecasts from the same system using, e.g., Brier Score
-or information gain. Finally, the same dataset is reduced
-further to categories. These may be binary (no expression of
-uncertainty); herein, they follow Storm Prediction Center (SPC)
-convention of categories to demonstrate severe-weather prediction with
-a possibilistic system. Combined, metrics on this scorecard diagnose a
-range of failure modes captured only with insight from multiple
-metrics. Visualisations created from a synthetic dataset showcases
-benefits and interpretations of the framework, and aim to persuade the
-reader that ignorance is better expressed than repressed.
+Probabilistic forecasts must sum to unity and cannot
+express ``I don't know.''
+Possibility theory relaxes this constraint:
+a subnormal distribution explicitly measures how much of
+the plausibility budget remains unassigned---an ignorance
+signal that probability cannot represent.
+This paper develops a verification framework for such
+forecasts, centred on a five-number scorecard that
+separately diagnoses whether the forecast pointed at
+the right outcome (depth-of-truth), how sharply
+(diffuseness, support margin), how confidently
+(ignorance), and how dominantly (conditional necessity).
+A possibility-to-probability conversion preserves
+ignorance for information-gain scoring;
+categorical threshold scores (POD, FAR, CSI, PSS, HSS)
+connect to operational practice.
+Together, these three complementary
+facets---possibilistic, probabilistic, and
+categorical---expose failure modes invisible to any
+single metric.
+Storm Prediction Center convective outlook categories
+serve as the running example throughout;
+a synthetic reforecast demonstrates diagnostic
+visualisations and scorecard interpretation.
+Ignorance is better expressed than repressed.
 \end{abstract}
 
 \keywords{risk communication, forecast verification,
