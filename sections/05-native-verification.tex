@@ -161,13 +161,11 @@ $\Nc^*$ & Cond.\ necessity of truth & Necessity
 $\alpha^* = 1$ when the truth coincides with the system's peak
 category, $\alpha^* = 0$ when the system assigns zero possibility to the
 observed outcome, and intermediate values arise whenever the truth is
-plausible but not the system's top pick (e.g., $\alpha^* = 0.267$ for
-the Example~1 distribution with $c_{\mathrm{obs}} = \spc{ENH}$).
+plausible but not the system's top pick.
 
-\textbf{Diffuseness} ($\eta$) measures how spread the normalised shape
-is, serving a role analogous to the nonspecificity of
-\citet{Klir1995-va} (a Hartley-based measure over $\alpha$-cuts) but
-computed here as a simple arithmetic mean:
+\textbf{Diffuseness} ($\eta$) measures the spread of the normalised distribution shape, a parallel of non-specificity in
+\citet{Klir1995-va}, computed here as an arithmetic mean that uses a baseline of uniform sampling across categories (echoing the na\"ive 50:50 in the leading paragraph):
+
 \begin{equation}
 \eta = \frac{1}{K} \sum_{c=1}^{K} \pinorm(c) \label{eq:ns}
 \end{equation}
@@ -178,30 +176,24 @@ ranging from $1/K$ (sharp) to $1$ (uniform).
 \delta = \alpha^* - \eta \label{eq:rg}
 \end{equation}
 Positive $\delta$ indicates the system assigned more possibility to the
-truth than to an average category; negative $\delta$ means the forecast
-shape pointed away from the truth.
-The name \textit{support margin} reflects this interpretation: $\delta$
+truth than to an average category; negative $\delta$ \textit{vice versa}. 
+The term \textit{support margin} reflects this interpretation: $\delta$
 measures the margin of excess support (normalised possibility) that the
 truth received relative to the categorical average. It is the
 per-forecast possibilistic counterpart of DSC
-(Section~\ref{sec:ig_decomposition}), which measures essentially the
-same property---separation of events from non-events---but as a
-sample-aggregate quantity in probability space. The name avoids
+(Section~\ref{sec:ig_decomposition}), which measures separation of events from non-events. The name avoids
 clashing with either ``resolution'' (already replaced by DSC to prevent
 confusion with NWP grid resolution) or ``discrimination'' (reserved for
-DSC). Readers from the Brier-score literature will recognise the
-conceptual kinship with resolution (how well forecasts separate events
-from climatology); NWP practitioners may see the analogy to the Peirce
-Skill Score (hit rate minus false-alarm rate). Like both, $\delta > 0$
-means the forecast shape favourably distinguished the truth from the
-background.
+DSC). Further conceptual connection with Brier-type resolution lends interpretation of ``how well forecasts separate events
+from climatology", or detection of signal over noise. When evaluating deterministic/categorical forecasts, analogy lies in the Peirce
+Skill Score (hit rate minus false-alarm rate; ref) that also measures discrimination above baseline. 
 
 \textbf{Ignorance} ($\ign$), carried forward from the pre-event
 framework:
 \begin{equation}
 \ign = 1 - m = 1 - \max_{\omega \in \Omega} \pi(\omega)
 \end{equation}
-(same as Eq.~\ref{eq:ignorance}). This is the only scorecard metric
+which defined the concept of \textit{commitment} $m$ as the complement of Eq.~\ref{eq:ignorance}. This is the only scorecard metric
 that uses the raw distribution; the others use the normalised
 shape $\pinorm$.
 
@@ -212,16 +204,14 @@ shape $\pinorm$.
 \label{eq:nc_star}
 \end{equation}
 $\Nc^*$ serves as a \textit{dominance margin}: it measures how strongly
-the truth dominated all alternatives in the normalised shape, akin to
-the consensus margin of an ensemble forecast.
-$\Nc^* = 0$ whenever the observed category is not the unique peak of the
-normalised distribution (since some alternative then has $\pinorm = 1$);
-positive values quantify the margin by which the truth led the
-next-highest category. This means $\Nc^*$ provides diagnostic information only
+the truth dominated alternatives in the normalised shape, analagous to ensemble spread (i.e., diversity of Monte Carlo simulations). When observed category $c_obs$ is not the unique peak of the
+normalised distribution, then 
+$\Nc^* = 0$, since $\pi = \pinorm$);
+positive values quantify the margin by which truth led the
+next-highest category. Hence $\Nc^*$ provides diagnostic information only
 on the subset of forecasts where $\alpha^* = 1$ (i.e., where truth
 coincides with the peak category), distinguishing dominant peaks from contested
-ones. When $\alpha^* < 1$, $\Nc^*$ is structurally zero and adds no
-independent signal. This is a direct application of
+ones. When $\alpha^* < 1$, $\Nc^*$ is structurally zero. This is an application of
 Eq.~\eqref{eq:cond_nec} evaluated at the observation.
 
 \medskip
@@ -232,20 +222,17 @@ Eq.~\eqref{eq:cond_nec} evaluated at the observation.
 \renewcommand{\arraystretch}{1.25}
 \begin{tabularx}{\columnwidth}{%
     >{\columncolor{rationalecolor!10}}c X}
-$\boldsymbol{\alpha^*}$ & \textbf{Depth-of-truth.}  How much normalised
-    possibility did the system assign to what actually happened? Like
-    POD for the winning bin, but continuous. \\
-$\boldsymbol{\eta}$ & \textbf{Diffuseness.}  How spread out was the
-    normalised distribution? Like ensemble spread or sharpness. \\
-$\boldsymbol{\delta}$ & \textbf{Support margin.}  Did the system give
-    more support to the truth than to an average category? Possibilistic
-    analogue of resolution in the Brier decomposition. \\
-$\boldsymbol{\ign}$ & \textbf{Ignorance.}  How much of the plausibility
+$\boldsymbol{\alpha^*}$ & \textbf{Depth-of-truth.} How much normalised
+    possibility did the observed category receive? High $\alpha^*$ indicates  the system recognised outcome $c_obs$. \\
+$\boldsymbol{\eta}$ & \textbf{Diffuseness.} How spread out was the
+    normalised distribution? Analogue of ensemble spread or sharpness. \\
+$\boldsymbol{\delta}$ & \textbf{Support margin.} Did the system give
+    more support to the truth than to an average category?
+    Analogue of DSC (REL) Brier-type resolution. \\
+$\boldsymbol{\ign}$ & \textbf{Ignorance.} How much of the plausibility
     budget did the system leave unassigned? $\ign = 0$: fully
     confident; $\ign \to 1$: near-total ignorance. \\
-$\boldsymbol{\Nc^*}$ & \textbf{Cond.\ necessity of truth.}  Among
-    scenarios the system covered, was the truth dominant enough to rule
-    out alternatives? \\
+$\boldsymbol{\Nc^*}$ & \textbf{Cond.\ necessity of truth.} Was truth a clear winner? A conceptual merging of recognition and conviction.   \\
 \end{tabularx}
 \renewcommand{\arraystretch}{1.0}
 
@@ -272,8 +259,6 @@ covered~(i); four metrics use the normalised shape~$\pinorm$ while only
 $\ign$ uses raw~$\pi$, separating shape from commitment~(ii);
 $\alpha^*$ and~$\delta$ capture support while~$\eta$ captures
 spread~(iii); and~$\Nc^*$ provides the dominance indicator~(iv).
-This separation is what makes the scorecard resistant to trivial gaming,
-as shown below.
 
 Each metric is well-defined for a single forecast--observation pair;
 overbar notation ($\overline{\alpha^*}$, $\overline{\eta}$, etc.)
@@ -286,39 +271,31 @@ The multi-metric design resists trivial gaming strategies: for
 instance, flooring all values at $\varepsilon$ to avoid $\alpha^* = 0$
 inflates $\eta$ on every forecast, yielding a net-negative effect
 across the verification sample
-(Section~\ref{sec:scorecard_comparison} illustrates this).
+(Section~\ref{sec:scorecard_comparison}).
 
-\textbf{Propriety.}
-The gold standard for scoring rules is \textit{propriety}: honest
-reporting should maximise the forecaster's expected score. The
+Amongst risk-based verification rules, \textit{propriety} is a gold-standard property that resists hedging:: honest
+reporting should maximise the forecaster's expected score. (Alternatively: the forecasts should not be smoothed to ``play it safe"). The
 logarithmic score in the probabilistic facet (Eq.~\ref{eq:surprise})
-satisfies this criterion. For the native scorecard, propriety remains
+satisfies this criterion (REFS). For the native scorecard, propriety remains
 an open question: the five metrics are descriptive diagnostics, not a
-single loss function that an optimiser could target. The multi-metric
-coupling nevertheless discourages gaming---improving one metric while
+single loss function to buttress optimisation. The multi-metric
+coupling nevertheless offers insight and discourages gaming. Indeed, preliminary investigation showed that improving one metric while
 holding the others fixed is generally not possible (e.g., broadening
 support to raise~$\alpha^*$ inflates~$\eta$ and
-penalises~$\delta$). Establishing a formal propriety result for
-possibilistic scorecards is a direction for future work.
-
-Axiom~1 (Section~\ref{sec:poss_axioms}) precludes all-zero
-distributions, ensuring $m > 0$ and the normalisation
-$\pinorm = \pi / m$ is well defined. A system that returns
-$\pi(\omega) = 0$ for all $\omega$ has produced no forecast and should
-be flagged before entering the verification pipeline.
+penalises~$\delta$). Establishing formal propriety for
+possibilistic scorecards is left for future work.
 
 %----------------------------------------------------------
 \subsection{Diagnostic Diagrams}\label{sec:diag_diagrams}
 
 The diagnostic diagrams in this section and the aggregate figures in
 Sections~\ref{sec:tripartite_value}--\ref{sec:worked_examples} share a
-single synthetic reforecast ($n = 800$ active days) designed to mimic a
-possibilistic system evaluated against SPC-like base rates. The sample
+single synthetic reforecast ($n = 800$ active days) that mimics SPC categorical forecasts in a possibilistic point-location manner. The sample
 size represents approximately eight years of ${\sim}100$ active
 Great Plains Day-1 convective outlooks per season, assuming a stationary
 verification climate.
 
-For each day, an observed category is drawn from approximate SPC
+To create the synthetic data for each ``day", an observed category is drawn from approximate SPC
 climatological frequencies (\spc{NONE}~60\%, \spc{MRGL}~18\%,
 \spc{SLGT}~12\%, \spc{ENH}~6\%, \spc{MDT}~3.2\%, \spc{HIGH}~0.8\%).
 A forecast peak category is selected: correct with probability
@@ -327,10 +304,12 @@ $p_{\mathrm{correct}}(c)$ (ranging from 82\% for \spc{NONE} to 18\% for
 categories with probabilities $0.4$; $\pm 2$ with $0.1$). The
 possibility distribution is generated as an exponential decay from the
 peak:
+
 \begin{equation}
 \pi(c) = \exp\!\bigl(-\sigma\,|c - c_{\mathrm{peak}}|\bigr) + U(0,\, 0.03)
 \label{eq:synth_gen}
 \end{equation}
+
 where $\sigma$ is a category-dependent spread parameter (mean $\bar\sigma
 \approx 2.6$ for \spc{NONE}, $\approx 0.7$ for \spc{HIGH}) and the
 uniform noise term breaks symmetry. Finally, the distribution is rescaled so that its peak value equals
@@ -344,29 +323,21 @@ These choices produce a dataset with category-dependent accuracy and
 confidence gradients mimicking a realistic but imperfect possibilistic
 system. At $n = 800$, the sample yields approximately 6 \spc{HIGH}
 days and 26 \spc{MDT} days, reflecting the inherent sample-size
-challenge in rare-event verification. The three hand-crafted scenarios
-in Section~\ref{sec:worked_examples} are separate: they are stylised
-extremes designed to isolate specific scorecard behaviours, not draws
-from this synthetic population.
+challenge in rare-event verification.
 
 \begin{figure}[t]
 \centering
 \includegraphics[width=\columnwidth]{perf_hexbin_trajectory.png}
 \caption{Possibilistic performance diagram for the 800-day synthetic
     reforecast, inspired by \citet{Roebber2009-rv}.
-    \textbf{Hex bins:} colour encodes mean $\ign$ (dark purple =
-    confident, pale = uncertain).
-    \textbf{Contours:} joint skill
+    Hexagons bin in Cartesian space where colour denotes mean $\ign$ (dark purple =
+    confident, pale = uncertain). Contours join a joint skill
     $S = \alpha^* \times (1 - \eta)$, the possibilistic analogue of
-    CSI---$S$ is maximised in the upper right where forecasts are both
-    sharp (high specificity) and truthful (high depth-of-truth).
-    \textbf{Dashed diagonal:} $\delta = 0$ break-even; above this line
-    the forecast discriminated, below it the truth received less support
-    than the categorical average.
-    \textbf{Green dots:} category-conditional means (dot size $\propto$
-    sample count), tracing the progression from easy categories (upper
-    right) to rare ones (lower left).
-    \textbf{Stars:} worked scenarios from
+    CSI, where $S$ is maximised in the upper right (sharp and truthful).
+    The dashed diagonal traces $\delta = 0$, a break-even threshold; above this line
+    the forecast discriminated and offered more support than a categorical average. The green circles show category means (dot size $\propto$
+    sample count), showing forecast quality as a function of observed category. tracing the progression from easy categories (upper
+    right) to rare ones (lower left). Stars mark worked scenarios from
     Section~\ref{sec:worked_examples} (green edge = hit, red = miss).
     Lower right is the worst failure mode (sharp and wrong).}
 \label{fig:performance_diagram}
@@ -384,53 +355,38 @@ contours---all three axes are maximised in the upper right. The key
 addition is ignorance, encoded as bin colour, which has no categorical
 analogue.
 
-The hex density forms a diagonal band from upper right to lower left,
+Sample are evident in a diagonal band from upper left to lower right,
 dominated by \spc{NONE} days (dark purple: confident). Green dots
-mark category-conditional means; their descent from \spc{NONE} (upper
-right) to \spc{HIGH} (lower left) reveals the system's breaking point:
-skill degrades fastest between \spc{SLGT} and \spc{ENH}, where
-predictability drops sharply.
+mark mean values stratified by their (labelled) category. Both axes of Figure~\ref{fig:performance_diagram} operate on the
+normalised shape $\pinorm$: two forecasts with identical shapes but
+different commitment levels land at the same position. Commitment is
+visible only through bin colour and less precise than Cartesian location.
 
 \begin{figure}[t]
 \centering
 \includegraphics[width=\columnwidth]{commitment_diagram.png}
-\caption{Commitment--support-margin diagram for the same reforecast.
-    \textbf{$x$:}~commitment $\pi_{\max} = 1 - \ign$ (how much the
-    forecaster staked).
-    \textbf{$y$:}~support margin $\delta = \alpha^* - \eta$ (did the
-    shape favour truth?).
-    These axes are orthogonal: $\pi_{\max}$ is the raw scale of $\pi$;
+\caption{Commitment--support-margin diagram for the same synthetic dataset. The x-axis shows commitment $m = \pi_{\max} = 1 - \ign$ (how much the
+    forecaster staked). The y-axis give margin of support $\delta = \alpha^* - \eta$ (did the
+    shape favour truth?). These axes are orthogonal: $\pi_{\max}$ is the raw scale of $\pi$;
     $\delta$ is the quality of the normalised shape $\pi'$.
-    \textbf{Hex bins:} coloured by count.
-    \textbf{Green dots:} category-conditional means from \spc{NONE}
-    (upper right) to \spc{HIGH} (lower left).
-    \textbf{Stars:} Section~\ref{sec:worked_examples} scenarios.
-    Upper right = committed and well-shaped (ideal);
-    lower right = overconfident and wrong;
-    upper left = cautious and well-shaped.
-    Dashed line = $\delta = 0$ break-even.}
+    Hex bins are coloured by count (density). Green dots mark category means as in Fig.~\ref{fig:performance_diagram}. Starred labels mark Section~\ref{sec:worked_examples} scenarios as in Fig.~\ref{fig:performance_diagram}.}
 \label{fig:commitment_diagram}
 \end{figure}
 
-Both axes of Figure~\ref{fig:performance_diagram} operate on the
-normalised shape $\pinorm$: two forecasts with identical shapes but
-different commitment levels land at the same position. Commitment is
-visible only through bin colour---a weaker perceptual channel.
-Figure~\ref{fig:commitment_diagram} promotes commitment to a primary
-axis, plotting $\pi_{\max} = 1 - \ign$ against $\delta$. These axes
+Consequently, Fig.~\ref{fig:commitment_diagram} promotes commitment to a primary
+axis, plotting $m = 1 - \ign$ against $\delta$. These axes
 are orthogonal: $\pi_{\max}$ is the raw \emph{scale} of $\pi$; $\delta$
 is the \emph{shape quality} of $\pinorm$. Two clusters of high-count
 hexagons emerge: one in the upper right (confident and correct---mostly
 \spc{NONE} days) and one in the lower right (confident and
 wrong---forecasts that committed heavily but missed). The lighter band
 between them contains the hedged severe-weather forecasts. The green
-dots (category-conditional means) arc from \spc{NONE} (upper right)
-through the severe categories, staying above $\delta = 0$ for all
+dots (category means) all stay above $\delta = 0$ for all
 categories on average---even rare-event forecasts discriminate in
-aggregate, though with lower commitment. Scenario~C (sharp-wrong) sits in the
-overconfident quadrant; Scenario~B (hedged-correct) sits in the
-cautious-but-well-shaped region---a distinction invisible in the
-shape-quality diagram alone.
+aggregate, though with lower commitment. Scenario~C (sharp-wrong) sits towards the
+overconfident quadrant; Scenario~B (hedged-correct) sits towards the
+cautious/well-shaped region---a distinction invisible in the
+shape--quality diagram alone.
 
 %%% §4.3 Exceedance Bounds removed in Round 2 revision.
 %%% Rationale: U = Pi(A_T) is just the possibility measure restated;
